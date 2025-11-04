@@ -1,0 +1,79 @@
+#include "Account_SettingScene.hpp"
+
+#include <Graphics/DefaultFont.hpp>
+#include <Input/SystemInputID.hpp>
+#include <SceneManager/SceneManager.hpp>
+#include <Auth/AuthHandler.hpp>
+#include <Bitmaps/Avatars.hpp>
+#include <DrawFunctions/DrawRectangle.hpp>
+#include <DrawFunctions/DrawBitmap.hpp>
+#include <DrawFunctions/DrawText.hpp>
+
+Account_SettingScene::Account_SettingScene(uint32_t editID, uint32_t deleteID)
+	: editID{ editID }, deleteID{ deleteID }
+{
+	menu.AppendMenuItem("ИЗМЕНИТЬ", editID);
+	menu.AppendMenuItem("УДАЛИТЬ", deleteID);
+	menu.SetStyle(MenuStyle::STYLE_3, &Default_Font_7x7_small);
+	menu.SetHorizonAlignment(MenuHorizonAlignment::CENTER);
+	menu.SetPosition({64, 40});
+	menu.Enable();
+	AddObject(&menu);
+}
+
+void Account_SettingScene::Draw(IScreen& screen)
+{
+	using namespace DrawFunctions;
+
+	BitmapData data;
+	if (GetAvatarByID(cur_account.avatar.GetOrDefault(), data))
+		DrawBitmap(screen, {12, 10}, data, WhiteColor);
+
+	int text_y = 10;
+	text_y += (data.height / 2);
+	text_y -= Default_Font_8x8.GetHeight() / 2;
+
+	DrawRectangle(
+		screen,
+		{ 44, text_y - 1 },
+		{ 44 + TextWidth(cur_account.name.GetOrDefault(), &Default_Font_8x8), text_y + Default_Font_8x8.GetHeight() },
+		WhiteColor
+	);
+
+	DrawText(screen, { 44, text_y }, cur_account.name.GetOrDefault(), WhiteColor, BlackColor, true, &Default_Font_8x8);
+}
+
+bool Account_SettingScene::ProcessInput(const AppEvent& event)
+{
+	if (IsSystemEnterEvent(event))
+	{
+		SceneManager::Instance().SwitchScene(menu.GetCurrentParam());
+	}
+
+	if (IsSystemReturnEvent(event))
+	{
+		SceneManager::Instance().Return();
+		return true;
+	}
+
+	return false;
+}
+
+void Account_SettingScene::OnShow()
+{
+	Account account;
+	if (AuthHandler::Instance().GetCurrentAccount(account))
+	{
+		cur_account.avatar.Set(account.Avatar);
+		cur_account.name.Set(account.Name);
+	}
+	else
+	{
+		SceneManager::Instance().Return();
+	}
+}
+
+bool Account_SettingScene::Loop()
+{
+	return true;
+}

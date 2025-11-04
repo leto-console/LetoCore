@@ -1,0 +1,25 @@
+# Корневой триггер для запуска сборки
+when:
+  event: [push, manual] # Запуск при пуше и по кнопке в интерфейсе
+  branch: master        # Исправлено на вашу реальную ветку master
+
+steps:
+  - name: build-stm32
+    # Используем Debian Slim через наше проверенное рабочее зеркало
+    image: dh-mirror.gitverse.ru/debian:trixie-slim
+    commands:
+      # 1. Обновляем apt и ставим компилятор со всеми embedded-зависимостями
+      - apt-get update
+      - apt-get install -y --no-install-recommends cmake make gcc-arm-none-eabi binutils-arm-none-eabi libnewlib-arm-none-eabi
+      
+      # 2. Проверяем версию установленного тулчейна
+      - arm-none-eabi-gcc --version
+
+      # 3. Создаем директорию для сборки
+      - mkdir build && cd build
+      
+      # 4. Конфигурируем CMake с указанием вашего файла тулчейна
+      - cmake -DCMAKE_TOOLCHAIN_FILE=../cmake/arm-none-eabi-toolchain.cmake ..
+      
+      # 5. Собираем проект на всех ядрах процессора Orange Pi
+      - make -j$(nproc)

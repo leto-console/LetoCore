@@ -1,0 +1,6 @@
+btn0=0
+btn1=0
+btn2=0
+btn3=0
+btn4=0
+btn5=0
