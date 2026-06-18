@@ -20,45 +20,45 @@
 #pragma pack(push, 4)
 
 /**
- * @brief Приложение Leto OS
+ * @brief Leto OS application interface
  */
 struct LetoApplication_V1
 {
-	/// Заголовок исполняемого приложения
+	/// Executable application header
 	AppBinHeader Header;
 
 	/**
-	 * @brief Проинициализировать приложение
+	 * @brief Initialize application
 	 */
 	LetoResult_V1 (*Init) (const LetoAPI_V1* api);
 	
 	/**
-	 * @brief Очистить приложение
+	 * @brief Clean up and release application resources
 	 */
 	LetoResult_V1 (*Clean) ();
 
 	/**
-	 * @brief Получить статус работы приложения
+	 * @brief Get current application status
 	 */
 	LetoAppStatus_V1 (*GetStatus) ();
 	
 	/**
-	 * @brief Обработать событие
+	 * @brief Process incoming event
 	 *
 	 * @return 
-	 * - `APP_SUCCESS` событие обработано
+	 * - `APP_SUCCESS` if event was successfully handled
 	 * 
-	 * - `APP_UNSUPPORT` событие не обрабатывается приложением
+	 * - `APP_UNSUPPORT` if event is not supported by application
 	 */
 	LetoResult_V1 (*ProcessEvent) (AppEvent event);
 	
 	/**
-	 * @brief Отрисовать приложение
+	 * @brief Render application UI
 	 */
 	LetoResult_V1 (*Draw) (IScreen* screen);
 	
 	/**
-	 * @brief Выполнить действия в фоне
+	 * @brief Execute background tasks or main loop iteration
 	 */
 	LetoResult_V1 (*Loop) ();
 	
@@ -66,6 +66,6 @@ struct LetoApplication_V1
 
 #pragma pack(pop)
 
-static_assert(std::is_standard_layout<LetoApplication_V1>::value, "LetoApplication_V1 должен быть standard_layout");
+static_assert(std::is_standard_layout<LetoApplication_V1>::value, "LetoApplication_V1 must be a standard layout type");
 
 #endif
