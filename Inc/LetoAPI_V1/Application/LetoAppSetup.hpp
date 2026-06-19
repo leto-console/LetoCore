@@ -13,7 +13,7 @@
 #include <LetoAPI_V1/LetoAPI_V1.hpp>
 
 /**
- * @brief Функция глобальной инициализации бинарного приложения
+ * @brief Global initialization function for binary application
  */
 extern LIBRARIES_EXPORT LetoResult_V1 LetoAppSetup(const LetoAPI_V1* api);
 

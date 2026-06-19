@@ -9,13 +9,12 @@
 
 #include <cstdint>
 
-/// @brief Статус приложения
+/// @brief Application status
 using LetoAppStatus_V1 = int32_t;
 
-constexpr LetoAppStatus_V1 LETO_V1_WORK_STATUS 		=  0;	///< Штатная работа приложения
-constexpr LetoAppStatus_V1 LETO_V1_CLOSE_STATUS		= -1;	///< Запрос на выход из приложения
-constexpr LetoAppStatus_V1 LETO_V1_ERROR_STATUS 	= -2;	///< Выброс ошибки в ходе работы приложения
-constexpr LetoAppStatus_V1 LETO_V1_NOT_WORK_STATUS  = -3;	///< Приложение не запущено
-
+constexpr LetoAppStatus_V1 LETO_V1_WORK_STATUS 		=  0;	///< Normal application operation
+constexpr LetoAppStatus_V1 LETO_V1_CLOSE_STATUS		= -1;	///< Application exit request
+constexpr LetoAppStatus_V1 LETO_V1_ERROR_STATUS 	= -2;	///< Error occurred during application runtime
+constexpr LetoAppStatus_V1 LETO_V1_NOT_WORK_STATUS  = -3;	///< Application not running
 
 #endif
