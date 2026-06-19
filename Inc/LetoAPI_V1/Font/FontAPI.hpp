@@ -12,25 +12,25 @@
 
 #include <Graphics/IFont.hpp>
 
-// Выравнивание по границе 4 байт 
+// Align to 4-byte boundary
 #pragma pack(push, 4)
 
-/// Функции для работы со шрифтами
+/// Font management functions
 struct FontAPI_V1
 {
-    /// TODO: Интерфейс шрифта нужно изменить - он C++-like с v-table
+    /// TODO: Font interface needs to be changed - currently it is C++-like with a v-table
     /**
-     * @brief Получить шрифт
+     * @brief Get font
      * 
-     * @param width Ширина шрифта
-     * @param height Высота шрифта
-     * @param type Тип шрифта (0 - обычный, 1 - маленький)
+     * @param width Font width
+     * @param height Font height
+     * @param type Font type (0 - regular, 1 - small)
      */
     IFont* (*GetFont)(uint32_t width, uint32_t height, uint32_t type);
 };
 
 #pragma pack(pop)
 
-static_assert(std::is_standard_layout<FontAPI_V1>::value, "FontAPI_V1 должен быть standard_layout");
+static_assert(std::is_standard_layout<FontAPI_V1>::value, "FontAPI_V1 must be a standard layout type");
 
 #endif

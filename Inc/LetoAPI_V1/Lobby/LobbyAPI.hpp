@@ -15,64 +15,64 @@
 
 #pragma pack(push, 4)
 
-/// Функции для создания игровых комнат
+/// Game lobby management functions
 struct LobbyAPI_V1
 {
     /**
-	 * @brief Получить список доступных игровых комант рядом
+	 * @brief Get list of available game lobbies nearby
 	 * 
-	 * @param[out] info Массив для получения информации
-	 * @param[in] available Размер массива для получения информации
+	 * @param[out] info Array to receive information
+	 * @param[in] available Size of the destination array
 	 *
-	 * @return Количество игровых комнат
+	 * @return Number of game lobbies
 	 */
 	uint32_t (*GetLobbiesNear) (LobbyInfo_V1* info, uint32_t available);
 
     /**
-     * @brief Создать лобби
+     * @brief Create lobby
      * 
-     * @param[out] lobby Открытое лобби
-     * @param[in] app_id Идентификатор приложения
-     * @param[in] max_count Максимальное количество подключений
+     * @param[out] lobby Opened lobby connection instance
+     * @param[in] app_id Application identifier
+     * @param[in] max_count Maximum number of connections
      */
     bool (*CreateLobby)(LobbyConnection_V1* lobby, uint16_t app_id, uint8_t max_count, LobbyConnection_V1_Callback callback);
 
     /**
-     * @brief Присоединиться к лобби
+     * @brief Join lobby
      * 
-     * @warning Подключение производится асинхронно, о результате можно узнать с помощью `GetActiveLobby`
+     * @warning Connection is established asynchronously. The outcome can be checked via `GetActiveLobby`.
      * 
-     * @param[in] info Информация о лобби
-     * @param[in] callback Функция обратного вызова для получения информации из лобби
+     * @param[in] info Lobby information
+     * @param[in] callback Callback function to receive data from the lobby
      */
     void (*JoinLobby)(LobbyInfo_V1 info, LobbyConnection_V1_Callback callback);
 
     /**
-     * @brief Проверить наличие текущего активного лобби
+     * @brief Check for active lobby connection
      * 
-     * @param[out] lobby Информация об активном лобби
+     * @param[out] lobby Active lobby connection details
      * 
-     * @return `true` - успешное подключение
+     * @return `true` if successfully connected
      */
     bool (*GetActiveLobby)(LobbyConnection_V1* lobby);
 
     /**
-     * @brief Отсоединиться от активного лобби
+     * @brief Disconnect from active lobby
      */
     void (*QuitLobby)();
 
     /**
-     * @brief Отключить Отключить участника от лобби
+     * @brief Disconnect specific member from lobby
      * 
-     * @param[in] id Идентификатор участника лобби
+     * @param[in] id Lobby member identifier
      */
     void (*DisconnectMember)(uint32_t id);
 
     /**
-	 * @brief Отправить данные в активное лобби без гарантии доставки
+	 * @brief Send unreliable data to active lobby
 	 *
-	 * @param[in] data Данные для отправки
-	 * @param[in] size Размер данных для отправки
+	 * @param[in] data Data to send
+	 * @param[in] size Size of data to send
 	 */
 	void (*SendData)(const void* data, uint32_t size);
 
@@ -80,6 +80,6 @@ struct LobbyAPI_V1
 
 #pragma pack(pop)
 
-static_assert(std::is_standard_layout<LobbyAPI_V1>::value, "LobbyAPI_V1 должен быть standard_layout");
+static_assert(std::is_standard_layout<LobbyAPI_V1>::value, "LobbyAPI_V1 must be a standard layout type");
 
 #endif

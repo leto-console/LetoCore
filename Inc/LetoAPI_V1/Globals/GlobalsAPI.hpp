@@ -12,56 +12,56 @@
 
 #include <Data/IAllocator.hpp>
 
-// Выравнивание по границе 4 байт 
+// Align to 4-byte boundary
 #pragma pack(push, 4)
 
-/// Функции для работы с глобальными контекстом
+/// Global context functions
 struct GlobalsAPI_V1
 {
     // ===================================================
-    //           Управление динамической памятью          
+    //               Dynamic Memory Management            
     // ===================================================
 
     /**
-     * @brief Выделить память в динамической памяти приложения
+     * @brief Allocate memory in application dynamic memory
      * 
-     * @param size Размер выделяемой памяти в байтах
-     * @return Указатель на выделенный блок памяти
+     * @param size Size of allocated memory in bytes
+     * @return Pointer to the allocated memory block
      */
     void* (*Alloc)(uint32_t size);
 
     /**
-     * @brief Освободить память в динамической памяти приложения
+     * @brief Free memory in application dynamic memory
      * 
-     * @param ptr Указатель на блок памяти
+     * @param ptr Pointer to the memory block
      */
     void (*Free)(const void* ptr);
 
-    /// TODO: Внимание! Потенциальная точка отказа
-    /// аллокатор может убить всё приложение
+    /// TODO: Warning! Potential single point of failure.
+    /// The allocator can crash the entire application.
     /**
-     * @brief Получить аллокатор динамической памяти приложения
+     * @brief Get application dynamic memory allocator
      */
     IAllocator* (*GetAllocator)();
 
     // ===================================================
-    //                Управление состоянием                     
+    //                   State Management                 
     // ===================================================
 
     /**
-     * @brief Получить отладочный режим работы системы
-     * @return `true` - включен, `false` - выключен
+     * @brief Get system debug mode state
+     * @return `true` if enabled, `false` if disabled
      */
     bool (*GetDebugMode)();
 
     /**
-     * @brief Получить количество миллисекунд, прошедшее с момента запуска МК
+     * @brief Get number of milliseconds elapsed since MCU startup
      */
     uint32_t (*GetCurrentMs)();
 };
 
 #pragma pack(pop)
 
-static_assert(std::is_standard_layout<GlobalsAPI_V1>::value, "GlobalsAPI_V1 должен быть standard_layout");
+static_assert(std::is_standard_layout<GlobalsAPI_V1>::value, "GlobalsAPI_V1 must be a standard layout type");
 
 #endif

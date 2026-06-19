@@ -12,23 +12,23 @@
 #pragma pack(push, 2)
 
 /**
- * @brief Информация об игровой команте
+ * @brief Game lobby information
  */
 struct LobbyInfo_V1
 {
-    /// Создатель лобби (владелец)
+    /// Lobby creator (owner)
     uint32_t owner;
     
-	/// Идентификатор приложения
+	/// Application identifier
 	uint16_t app_id;
 
-    /// Количество подключенных участников (включая создателя)
+    /// Number of connected members (including creator)
     uint16_t connected;
 
-    /// Доступное количество участников
+    /// Maximum allowed number of members
     uint16_t max_count;
 
-    /// Последняя передача информации о комнате
+    /// Timestamp of the last room information transmission
     uint32_t last_info;
 };
 

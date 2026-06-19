@@ -13,46 +13,46 @@ const uint8_t LC_MEMBERS_COUNT = 6;
 
 enum LC_State : uint8_t
 {
-	LC_STATE_DISCONNECTED 	= 0x00,	///< Подключение отсутствует
-	LC_STATE_JOINING		= 0x01,	///< В процессе установки соединения (вход в лобби)
-	LC_STATE_CONNECTED		= 0x02,	///< Соединение установлено
+	LC_STATE_DISCONNECTED 	= 0x00,	///< No connection
+	LC_STATE_JOINING		= 0x01,	///< Connection in progress (entering lobby)
+	LC_STATE_CONNECTED		= 0x02,	///< Connection established
 };
 
 #pragma pack(push, 2)
 
 /**
- * @brief Callback для обработки получения данных
+ * @brief Callback for data reception handling
  *
- * @param[in] id Идентификатор отправителя
- * @param[in] data Данные для получения
- * @param[in] size Размер данных для получения
+ * @param[in] id Identifier of the sender
+ * @param[in] data Received data buffer
+ * @param[in] size Size of the received data
  */
 using LobbyConnection_V1_Callback = void (*)(uint32_t id, const void* data, uint32_t size);
 
 /**
- * @brief Структура с данными о подключении
+ * @brief Lobby connection data structure
  */
 struct LobbyConnection_V1
 {
-	/// Создатель лобби (владелец)
-    uint32_t owner;
+	/// Lobby creator (owner)
+	uint32_t owner;
     
-	/// Идентификатор приложения
+	/// Application identifier
 	uint16_t app_id;
 
-    /// Количество подключенных участников (включая создателя)
-    uint16_t connected;
+	/// Number of connected members (including creator)
+	uint16_t connected;
 
-    /// Доступное количество участников
-    uint16_t max_count;
+	/// Maximum allowed number of members
+	uint16_t max_count;
 
-	/// Участники лобби
+	/// Lobby members
 	uint32_t members[LC_MEMBERS_COUNT];
 	
-	/// Callback для обработки получения данных
+	/// Callback for data reception handling
 	LobbyConnection_V1_Callback callback;
 
-	/// Подключение открыто
+	/// Connection state
 	uint8_t state;
 };
 
