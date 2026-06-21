@@ -12,7 +12,6 @@
 #include <cstdint>
 
 #include <LetoAPI_V1/Lobby/LobbyConnection.hpp>
-#include <LetoAPI_V1/Lobby/LobbyConnection.hpp>
 #include <LetoAPI_V1/Lobby/LobbyInfo.hpp>
 
 #include <LetoAPI_V1/Web/WebConnection.hpp>
@@ -27,9 +26,9 @@
 #include <Time/Timer.hpp>
 
 /**
- * @brief Класс, обрабатывающий сетевое взаимодействие
+ * @brief Class handling network interaction
  * 
- * @warning Доступен только на уровне OS, при создании в приложении - UB
+ * @warning Available only at OS level. Creation within an application results in UB (Undefined Behavior).
  */
 class LIBRARIES_EXPORT LobbyManager_V1
 {
@@ -44,28 +43,28 @@ protected:
     // ===========================================================================================
 
     Timer find_timer;
-    WebConnection_V1 find_connection;   ///< Подключение к WC_PORT_FND_LOBBY
-    WebConnection_V1 main_conection;    ///< Подключение к WC_PORT_CON_LOBBY
+    WebConnection_V1 find_connection;   ///< Connection to WC_PORT_FND_LOBBY
+    WebConnection_V1 main_conection;    ///< Connection to WC_PORT_CON_LOBBY
 
     /**
-     * @brief Проверить является ли пользователь участником текущего лобби
+     * @brief Check if user is member of current lobby
      * 
-     * @param[in] id Идентификатор пользователя
-     * @param[out] pos Позиция пользователя в списке
+     * @param[in] id User identifier
+     * @param[out] pos User position in the list
      */
     bool IsMember(uint32_t id, uint32_t* pos = nullptr) const;
 
     /**
-     * @brief Отправить общую информацию об активном лобби
+     * @brief Send common information about active lobby
      */
     void SendCommonInfo() const;
 
     /**
-     * @brief Отправить информацию о подключенных участниках
+     * @brief Send information about connected members
      * 
-     * @param[in] part Номер тройки пользователей для отправки (0 или 1)
+     * @param[in] part Index of user triad to send (0 or 1)
      * 
-     * @warning Функция выполняется сервером
+     * @warning This function is executed by the server.
      */
     void SendMembersInfo(uint32_t part) const;
 
@@ -83,77 +82,76 @@ public:
         return instance;
     }
 
-    /** ========================= Функции доступные в LetoAPI_V1 =========================  */
+    /** ========================= Functions available in LetoAPI_V1 =========================  */
 
     /**
-	 * @brief Получить список доступных игровых комант рядом
+	 * @brief Get list of available game lobbies nearby
 	 * 
-	 * @param[out] info Массив для получения информации
-	 * @param[in] available Размер массива для получения информации
+	 * @param[out] info Array to receive information
+	 * @param[in] available Size of the destination array
 	 *
-	 * @return Количество игровых комнат
+	 * @return Number of game lobbies
 	 */
     uint32_t GetLobbiesNear(LobbyInfo_V1* info, uint32_t available);
 
     /**
-     * @brief Создать лобби
+     * @brief Create lobby
      * 
-     * @param[out] lobby Открытое лобби
-     * @param[in] app_id Идентификатор приложения
-     * @param[in] max_count Максимальное количество подключений
+     * @param[out] lobby Opened lobby connection instance
+     * @param[in] app_id Application identifier
+     * @param[in] max_count Maximum number of connections
      */
     bool CreateLobby(LobbyConnection_V1* lobby, uint16_t app_id, uint8_t max_count, LobbyConnection_V1_Callback callback);
 
     /**
-     * @brief Присоединиться к лобби
+     * @brief Join lobby
      * 
-     * @param[in] info Информация о лобби
-     * @param[in] callback Функция обратного вызова для получения информации из лобби
+     * @param[in] info Lobby information
+     * @param[in] callback Callback function to receive data from the lobby
      */
     void JoinLobby(LobbyInfo_V1 info, LobbyConnection_V1_Callback callback);
 
     /**
-     * @brief Проверить наличие текущего активного лобби
+     * @brief Check for active lobby connection
      */
     bool GetActiveLobby(LobbyConnection_V1* lobby);
     
     /**
-     * @brief Выйти из текущего лобби
+     * @brief Exit current lobby
      * 
-     * Может быть вызвано как создателем лобби, так и участником
+     * Can be invoked by both lobby creator and member.
      */
     void QuitLobby();
 
     /**
-     * @brief Отключить участника от лобби
+     * @brief Disconnect member from lobby
      */
     void DisconnectMember(uint32_t ID);
 
     /**
-	 * @brief Отправить данные в активное лобби без гарантии доставки
+	 * @brief Send unreliable data to active lobby
 	 *
-	 * @param[in] data Данные для отправки
-	 * @param[in] size Размер данных для отправки
+	 * @param[in] data Data to send
+	 * @param[in] size Size of the data to send
 	 */
 	void SendData(const void* data, uint32_t size);
 
     /** ==================================================================================  */
 
     /**
-     * @brief Проверить наличие запроса на подключение к лобби
+     * @brief Check for pending lobby connection request
      */
     bool GetJoiningLobby(LobbyConnection_V1* lobby);
 
     /**
-     * @brief Глобальный сброс состояния
+     * @brief Global state reset
      */
     void GlobalReset();
 
 	/**
-	 * @brief Выполнить действия в фоне
+	 * @brief Execute background tasks
 	 */
     void Loop();
 };
-
 
 #endif

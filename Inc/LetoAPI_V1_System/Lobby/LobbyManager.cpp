@@ -176,7 +176,7 @@ void LobbyManager_V1::SendData(const void *data, uint32_t size)
 
 void LobbyManager_V1::Loop()
 {
-    // Раз в 100 мс меняется счетчик
+    // Counter changes once every 100 ms
     static uint8_t cnt = 0xFF;
 
     if (!find_timer.Expired())
@@ -185,7 +185,7 @@ void LobbyManager_V1::Loop()
     cnt++;
     find_timer.Start();
 
-    // Раз в 600 мс (2-ой цикл)
+    // Once every 600 ms (2nd cycle)
     if (cnt % 6 == 2)
     {
         const uint32_t LOBBY_INFO_TIMEOUT = 4000;
@@ -199,10 +199,10 @@ void LobbyManager_V1::Loop()
     if (global_lobby.state == LC_STATE_DISCONNECTED)
         return;
 
-    ///< Действия выполняемые создателем лобби
+    // Actions executed by the lobby creator
     if (global_lobby.owner == GetDeviceID())
     {
-        // Раз в 200 мс (1-ый цикл)
+        // Once every 200 ms (1st cycle)
         if (cnt % 2 == 1)
         {
             bool was_added = false;
@@ -213,19 +213,19 @@ void LobbyManager_V1::Loop()
                     info.device.joining_lobby == GetDeviceID() &&
                     global_lobby.connected < global_lobby.max_count)
                 {
-                    // Устройство уже подключено к лобби
+                     // Device is already connected to the lobby
                     if (IsMember(info.device.id))
                         return;
 
                     global_lobby.members[global_lobby.connected++] = info.device.id;
 
-                    // 5 секунд с момента подключения не анализируется активность абонентов
+                    // Subscriber activity is not analyzed for 5 seconds from the moment of connection.
                     join_timer.Start(5000);
                     was_added = true;
                 }
             }
 
-            // Отправить вне очереди информацию о подключенных устройствах
+             // Send information about connected devices out of turn
             if (was_added)
             {
                 SendCommonInfo();
@@ -234,13 +234,13 @@ void LobbyManager_V1::Loop()
             }
         }
 
-        // Раз в 700 мс (6-ой цикл)
+        // Once every 700 ms (6th cycle)
         if (cnt % 7 == 6 && join_timer.Expired(false))
         {
             bool member_active[LC_MEMBERS_COUNT]{};
-            member_active[0] = true;    ///< Хост всегда активен
+            member_active[0] = true;    /// Host is always active
 
-            // Контроль активности участников
+            // Monitor member activity
             for (WebDeviceInfo_ListItem& info : WebDevicesList)
             {
                 uint32_t pos;
@@ -256,33 +256,33 @@ void LobbyManager_V1::Loop()
             }
         }
         
-        // Раз в 700 мс (0-ый цикл)
+        // Once every 700 ms (0th cycle)
         if (cnt % 7 == 0)
         {
             SendCommonInfo();
         }
 
-        // Раз в 700 мс (3-ий цикл)
+        // Once every 700 ms (3rd cycle)
         if (cnt % 7 == 3)
         {
             SendMembersInfo(0);
         }
 
-        // Раз в 700 мс (5-ый цикл)
+        // Once every 700 ms (5th cycle)
         if (cnt % 7 == 5)
         {
             SendMembersInfo(1);
         }
     }
-    ///< Действия выполняемые участниками лобби
+    /// Actions executed by the lobby members
     else
     {
-        // Раз в 900 мс (7-ой цикл)
+        // Once every 900 ms (7th cycle)
         if (cnt % 9 == 7 && join_timer.Expired(false))
         {
             bool host_active{ false };
 
-            // Контроль активности хоста лобби
+            // Monitor lobby host activity
             for (const LobbyInfo_V1& info : lobbies_near)
             {
                 if (info.owner == global_lobby.owner)
@@ -295,15 +295,15 @@ void LobbyManager_V1::Loop()
             if (!host_active)
             {
                 global_lobby.state = LC_STATE_DISCONNECTED;
-                /// TODO: Возможно какой-то специфический колбек о том, что соединение разорвано
+                /// TODO: Maybe need to add specific callback for user about lost connection with host.
                 return;
             }
 
-            // Контролю подключения к хосту
+            // Monitor host connection state
             if (!IsMember(GetDeviceID()))
             {
                 global_lobby.state = LC_STATE_DISCONNECTED;
-                /// TODO: Возможно какой-то специфический колбек о том, что соединение разорвано
+                /// TODO: Maybe need to add specific callback for user about disconnection.
                 return;
             }
             else if (global_lobby.state == LC_STATE_JOINING)
