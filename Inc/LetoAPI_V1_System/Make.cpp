@@ -1,7 +1,6 @@
 #include "Make.hpp"
 
 #include "Text/Make.hpp"
-#include "Support/Make.hpp"
 #include "Globals/Make.hpp"
 #include "Web/Make.hpp"
 #include "User/Make.hpp"
@@ -20,7 +19,6 @@ const LetoAPI_V1* Make_LetoAPI_V1()
     static const LetoAPI_V1 api
     {
         &version,
-        Make_SupportAPI(),
         Make_TextAPI(),
         Make_GlobalsAPI(),
         Make_WebAPI(),

@@ -12,7 +12,6 @@
 #include <cstdint>
 #include <type_traits>
 
-#include <LetoAPI_V1/Support/SupportAPI.hpp>
 #include <LetoAPI_V1/Text/TextAPI.hpp>
 #include <LetoAPI_V1/Globals/GlobalsAPI.hpp>
 #include <LetoAPI_V1/Web/WebAPI.hpp>
@@ -35,9 +34,6 @@ struct LetoAPI_V1
         uint16_t minor;		///< Minor API version
     }
     *Version;
-
-    /// Function support control
-    const SupportAPI_V1 *Support;
 
     /// Text processing functions
     const TextAPI_V1 *Text;
