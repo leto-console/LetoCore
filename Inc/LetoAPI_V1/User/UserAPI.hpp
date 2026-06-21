@@ -13,21 +13,21 @@
 #include <Storage/NamedSpace.hpp>
 #include <Graphics/BitmapData.hpp>
 
-// Выравнивание по границе 4 байт 
+// Align to 4-byte boundary
 #pragma pack(push, 4)
 
-/// Функции для работы с пользователями
+/// User management functions
 struct UserAPI_V1
 {
-    /// @brief Получить пользовательское пространство
+    /// @brief Get user space
     NamedSpace* (*GetUserSpace)();
     
-    /// @brief Получить аватар по идентификатору
+    /// @brief Get avatar by identifier
     bool (*GetAvatarByID)(uint32_t ID, BitmapData* data);
 };
 
 #pragma pack(pop)
 
-static_assert(std::is_standard_layout<UserAPI_V1>::value, "UserAPI_V1 должен быть standard_layout");
+static_assert(std::is_standard_layout<UserAPI_V1>::value, "UserAPI_V1 must be a standard layout type");
 
 #endif
