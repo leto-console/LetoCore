@@ -15,13 +15,13 @@
 #include <LetoAPI_V1/Lobby/LobbyConnection.hpp>
 #include <Time/Timer.hpp>
 
-/// @brief Доступные лобби рядом
+/// @brief Available lobbies nearby
 extern LIBRARIES_EXPORT StaticList<LobbyInfo_V1, 8> lobbies_near;
 
-/// @brief Текущее лобби
+/// @brief Current lobby connection instance
 extern LIBRARIES_EXPORT LobbyConnection_V1 global_lobby;
 
-/// @brief Таймер подключения
+/// @brief Connection timer
 extern LIBRARIES_EXPORT Timer join_timer;
 
 #endif
