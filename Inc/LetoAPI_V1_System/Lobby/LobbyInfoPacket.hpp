@@ -15,20 +15,20 @@
 
 enum { FLP_INFO, FLP_MEMBERS_INFO };
 
-/// @brief Пакет обмена информацией о подключениях
+/// @brief Connection information exchange packet
 struct LobbyInfoPacket
 {
     uint8_t type;
 
     union
     {
-        // Используется при FLP_INFO
+        // Used when type is FLP_INFO
         LobbyInfo_V1 info;
 
-        // Используется при FLP_USER_INFO
+        // Used when type is FLP_MEMBERS_INFO
         struct 
         {
-            uint8_t number;         ///< Номер 3-ки (0 или 1)
+            uint8_t number;         ///< Index of user triad (0 or 1)
             uint32_t members[3];
         }
         user_info;
