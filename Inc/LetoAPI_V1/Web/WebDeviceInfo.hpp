@@ -12,29 +12,29 @@
 #pragma pack(push, 4)
 
 /**
- * @brief Информация об устройстве в сети
+ * @brief Network device information
  */
 struct WebDeviceInfo_V1
 {
-	/// Канал подключения (COM, nRF, другое)
+	/// Connection channel (COM, nRF, other)
 	uint8_t channel;
 
-	/// Идентификатор
+	/// Identifier
 	uint32_t id;
 		
-	/// Идентификатор аватарки
+	/// Avatar identifier
 	uint32_t avatar_id;
 
-	/// Идентификатор открытого приложения
+	/// Active application identifier
 	uint32_t app_id;
 	
-	/// Сетевое имя (UTF-8)
+	/// Network name (UTF-8)
 	char web_name[32];
 
-	/// Наличие подключение к лобби
+	/// Lobby connection ownership status
 	uint32_t lobby_owner;
 
-	/// Запрос на подключение к лобби
+	/// Lobby connection request status
 	uint32_t joining_lobby;
 };
 
