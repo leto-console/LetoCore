@@ -9,16 +9,16 @@
 
 #include <cstdint>
 
-//#ifdef STM32F4_LIBRARIES_EXPORT     ///< Эти функции можно использовать только в Libraries
+//#ifdef STM32F4_LIBRARIES_EXPORT     ///< These functions can only be used within Libraries
 
 
 /**
- * @brief Функция обратного вызова при получении сообщений из информационного порта
+ * @brief Callback function for handling messages from information port
  */
 extern void LobbyInfoCallback(uint8_t /*channel*/, uint8_t /*port*/, uint32_t id, const void* data, uint32_t size);
 
 /**
- * @brief Функция обратного вызова при получении сообщений из основного порта
+ * @brief Callback function for handling messages from main port
  */
 extern void LobbyMainCallback(uint8_t /*channel*/, uint8_t /*port*/, uint32_t id, const void* data, uint32_t size);
 
