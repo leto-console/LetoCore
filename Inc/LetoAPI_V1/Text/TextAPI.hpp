@@ -12,24 +12,24 @@
 
 #include <type_traits>
 
-// Выравнивание по границе 4 байт 
+// Align to 4-byte boundary
 #pragma pack(push, 4)
 
-/// Функции для работы с текстом
+/// Text processing functions
 struct TextAPI_V1
 {
-    /// Отформатировать текст
+    /// Format text string
     int (*FormatText)(char* const buffer, const size_t buffer_size, const char* const format, ...);
 
-    /// Отформатировать вещественное значение
+    /// Format floating-point value
     int (*FormatFloat)(char* const buffer, const size_t buffer_size, const size_t fract_part, float value);
 
-    /// Сканировать текст
+    /// Scan and parse text string
     int (*ScanText)(char* const buffer, const size_t buffer_size, const char* const format, ...);
 };
 
 #pragma pack(pop)
 
-static_assert(std::is_standard_layout<TextAPI_V1>::value, "TextAPI_V1 должен быть standard_layout");
+static_assert(std::is_standard_layout<TextAPI_V1>::value, "TextAPI_V1 must be a standard layout type");
 
 #endif
