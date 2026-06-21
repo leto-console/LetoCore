@@ -12,7 +12,7 @@
 #include <LetoAPI_V1/Support/SupportAPI.hpp>
 
 /**
- * @brief Создать и проинициализировать API
+ * @brief Create and initialize API
  */
 extern LIBRARIES_EXPORT const SupportAPI_V1* Make_SupportAPI();
 

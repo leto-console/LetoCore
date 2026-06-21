@@ -12,7 +12,7 @@
 #include <LetoAPI_V1/Font/FontAPI.hpp>
 
 /**
- * @brief Создать и проинициализировать API
+ * @brief Create and initialize API
  */
 extern LIBRARIES_EXPORT const FontAPI_V1* Make_FontAPI();
 

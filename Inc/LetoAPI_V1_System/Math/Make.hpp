@@ -12,7 +12,7 @@
 #include <LetoAPI_V1/Math/MathAPI.hpp>
 
 /**
- * @brief Создать и проинициализировать API
+ * @brief Create and initialize API
  */
 extern LIBRARIES_EXPORT const MathAPI_V1* Make_MathAPI();
 

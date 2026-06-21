@@ -12,7 +12,7 @@
 #include <LetoAPI_V1/Text/TextAPI.hpp>
 
 /**
- * @brief Создать и проинициализировать API
+ * @brief Create and initialize API
  */
 extern LIBRARIES_EXPORT const TextAPI_V1* Make_TextAPI();
 

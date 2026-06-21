@@ -12,7 +12,7 @@
 #include <LetoAPI_V1/Globals/GlobalsAPI.hpp>
 
 /**
- * @brief Создать и проинициализировать API
+ * @brief Create and initialize API
  */
 extern LIBRARIES_EXPORT const GlobalsAPI_V1* Make_GlobalsAPI();
 

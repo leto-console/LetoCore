@@ -12,7 +12,7 @@
 #include <LetoAPI_V1/Lobby/LobbyAPI.hpp>
 
 /**
- * @brief Создать и проинициализировать API
+ * @brief Create and initialize API
  */
 extern LIBRARIES_EXPORT const LobbyAPI_V1* Make_LobbyAPI();
 
