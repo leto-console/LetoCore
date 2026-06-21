@@ -19,21 +19,21 @@ enum
 
 #pragma pack(push, 4)
 
-/// Контроль поддержки функций
+/// Function support control
 struct SupportAPI_V1
 {
-    /// Импортировать функцию
+    /// Import function
     void (*Import) (const char* function);
     
-    /// Проверить состояние импорта
+    /// Check import status
     int (*CheckImport) ();
 
-    /// Сбросить результат импорта
+    /// Reset import check result
     void (*ResetCheckResult) ();
 };
 
 #pragma pack(pop)
 
-static_assert(std::is_standard_layout<SupportAPI_V1>::value, "SupportAPI_V1 должен быть standard_layout");
+static_assert(std::is_standard_layout<SupportAPI_V1>::value, "SupportAPI_V1 must be a standard layout type");
 
 #endif
