@@ -12,75 +12,75 @@
 
 #include <Graphics/IFont.hpp>
 
-// Выравнивание по границе 4 байт 
+// Align to 4-byte boundary
 #pragma pack(push, 4)
 
-/// Функции для работы с математикой
+/// Mathematical functions
 struct MathAPI_V1
 {
-    /// Функция вычисления арккосинуса
+    /// Arccosine function
     float (*acosf)(float x);
 
-    /// Функция вычисления арксинуса
+    /// Arcsine function
     float (*asinf)(float x);
 
-    /// Вычисление арктангенса
+    /// Arctangent function
     float (*atanf)(float x);
     
-    /// Вычисление арктангенса2
+    /// Arctangent function with two arguments
     float (*atan2f)(float y, float x);
 
-    ///@brief Вычисление косинуса
+    /// @brief Cosine function
     float (*cosf)(float x);
 
-    /// @brief Вычисление синуса
+    /// @brief Sine function
     float (*sinf)(float x);
 
-    /// @brief Вычисление тангенса
+    /// @brief Tangent function
     float (*tanf)(float x);
 
-    /// @brief Округление вниз
+    /// @brief Round down to nearest integer
     float (*floorf)(float x);
 
-    /// @brief Округление вверх
+    /// @brief Round up to nearest integer
     float (*ceilf)(float x);
 
-    /// @brief Округление к ближайшему целому
+    /// @brief Round to nearest integer
     float (*roundf)(float x);
 
-    /// @brief Квадратный корень
+    /// @brief Square root
     float (*sqrtf)(float x);
 
-    /// @brief Возведение в степень
+    /// @brief Power function
     float (*powf)(float x, float y);
 
-    /// @brief Абсолютное значение
+    /// @brief Absolute value
     float (*fabs)(float x);
 
-    /// @brief Вычисление гипотенузы
+    /// @brief Hypotenuse calculation
     float (*hypotf)(float x, float y);
 
-    /// @brief Экспонента
+    /// @brief Exponential function
     float (*expf)(float x);
 
-    /// @brief Натуральный логарифм
+    /// @brief Natural logarithm
     float (*logf)(float x);
 
-    /// @brief Остаток от деления
+    /// @brief Floating-point remainder of division
     float (*fmodf)(float x, float y);
 
-    /// @brief Копирование знака
+    /// @brief Sign copysign function
     float (*copysignf)(float number, float sign);
 
-    /// @brief Проверка на корректность
+    /// @brief Check if value is NaN
     bool (*isnanf)(float x);
 
-    /// @brief Проверка на корректность
+    /// @brief Check if value is infinity
     bool (*isinff)(float x);
 };
 
 #pragma pack(pop)
 
-static_assert(std::is_standard_layout<MathAPI_V1>::value, "MathAPI_V1 должен быть standard_layout");
+static_assert(std::is_standard_layout<MathAPI_V1>::value, "MathAPI_V1 must be a standard layout type");
 
 #endif
