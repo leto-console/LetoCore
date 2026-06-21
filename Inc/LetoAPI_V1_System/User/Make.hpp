@@ -12,7 +12,7 @@
 #include <LetoAPI_V1/User/UserAPI.hpp>
 
 /**
- * @brief Создать и проинициализировать API
+ * @brief Create and initialize API
  */
 extern LIBRARIES_EXPORT const UserAPI_V1* Make_UserAPI();
 
