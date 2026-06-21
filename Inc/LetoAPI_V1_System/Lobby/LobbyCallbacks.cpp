@@ -49,7 +49,7 @@ void LobbyInfoCallback(uint8_t /*channel*/, uint8_t /*port*/, uint32_t id, const
     
     if (packet.type == FLP_MEMBERS_INFO)
     {
-        // Консистентное получение данных об участниках
+        // Consistent data acquisition for connected members.
         static uint32_t members[6]{};
 
         if (packet.user_info.number == 0)
