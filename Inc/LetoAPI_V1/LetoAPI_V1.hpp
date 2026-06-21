@@ -23,49 +23,49 @@
 
 #define LETO_API_V1_MINOR 0
 
-// Выравнивание по границе 4 байт 
+// Align to 4-byte boundary
 #pragma pack(push, 4)
 
 struct LetoAPI_V1
 {
-    /// Версия используемого API
+    /// API version details
     const struct VersionAPI
     {
-        uint16_t major;		///< Мажорная версия используемого API
-        uint16_t minor;		///< Минорная версия используемого API
+        uint16_t major;		///< Major API version
+        uint16_t minor;		///< Minor API version
     }
     *Version;
 
-    /// Контроль поддержки функций
+    /// Function support control
     const SupportAPI_V1 *Support;
 
-    /// Функции для работы с текстом
+    /// Text processing functions
     const TextAPI_V1 *Text;
     
-    /// Функции для работы с глобальными контекстом
+    /// Global context functions
     const GlobalsAPI_V1* Globals;
 
-    /// Функции для сетевого взаимодействия
+    /// Network interaction functions
     const WebAPI_V1* Web;
 
-    /// Функции для работы с пользователями
+    /// User management functions
     const UserAPI_V1* User;
 
-    /// Функции для работы со шрифтами
+    /// Font management functions
     const FontAPI_V1* Font;
 
-    /// Функции для работы с математикой
+    /// Mathematical functions
     const MathAPI_V1* Math;
 
-    /// Функции для создания игровых комнат
+    /// Game lobby management functions
     const LobbyAPI_V1* Lobby;
 };
 
 #pragma pack(pop)
 
-/// @brief Объект LetoAPI_V1
+/// @brief LetoAPI_V1 instance pointer
 extern LIBRARIES_EXPORT const LetoAPI_V1* leto_api_v1;
 
-static_assert(std::is_standard_layout<LetoAPI_V1>::value, "LetoAPI_V1 должен быть standard_layout");
+static_assert(std::is_standard_layout<LetoAPI_V1>::value, "LetoAPI_V1 must be a standard layout type");
 
 #endif
