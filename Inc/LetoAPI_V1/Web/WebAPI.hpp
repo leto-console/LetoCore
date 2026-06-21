@@ -15,61 +15,61 @@
 
 #pragma pack(push, 4)
 
-/// Функции для сетевого взаимодейтствия
+/// Network interaction functions
 struct WebAPI_V1
 {
 	/**
-	 * @brief Создать подключение
+	 * @brief Create connection
 	 * 
-     * @param[out] connection Открытое подключение
-	 * @param[in] channel Канал подключения (COM, nRF, другое)
-	 * @param[in] port Порт для подключения
-	 * @param[in] id Идентификатор устройства для подключения (при 0 - broadcast)
-	 * @param[in] callback Функция обратного вызова при получении данных (может быть NULL)
-     * 
-     * @return `true` - Подключение успешно создано
+	 * @param[out] connection Opened connection instance
+	 * @param[in] channel Connection channel (COM, nRF, other)
+	 * @param[in] port Connection port
+	 * @param[in] id Device identifier for connection (0 for broadcast)
+	 * @param[in] callback Callback function for data reception (can be NULL)
+	 * 
+	 * @return `true` if connection was successfully created
 	 */
 	bool (*CreateConnection) (WebConnection_V1* connection, uint8_t channel, uint8_t port, uint32_t id, WebConnection_V1_Callback callback);
 	
 	/**
-	 * @brief Закрыть подключение
+	 * @brief Close connection
 	 *
-	 * @param[in] connection Открытое подключение
+	 * @param[in] connection Opened connection instance
 	 */
 	void (*CloseConnection) (WebConnection_V1 connection);
 	
 	/**
-	 * @brief Отправить данные
+	 * @brief Send data
 	 *
-	 * @param[in] connection Открытое подключение
-	 * @param[in] data Данные для отправки
-	 * @param[in] size Размер данных для отправки
+	 * @param[in] connection Opened connection instance
+	 * @param[in] data Data to send
+	 * @param[in] size Size of the data to send
 	 */
 	void (*SendData) (WebConnection_V1 connection, const void* data, uint32_t size);
 	
 	/**
-	 * @brief Получить список устройств рядом
+	 * @brief Get list of nearby devices
 	 * 
-	 * @param[out] info Массив для получения информации
-	 * @param[in] available Размер массива для получения информации
+	 * @param[out] info Array to receive information
+	 * @param[in] available Size of the destination array
 	 *
-	 * @return Количество устройств
+	 * @return Number of devices
 	 */
 	uint32_t (*GetDevicesNear) (WebDeviceInfo_V1* info, uint32_t available);
 
 	/**
-	 * @brief Найти устройство по идентификатору
+	 * @brief Find device by identifier
 	 * 
-	 * @param[in] id Идентификатор устройства
-	 * @param[out] info Информация об устройстве
+	 * @param[in] id Device identifier
+	 * @param[out] info Device information
 	 * 
-	 * @return `true` - Устройство успешно найдено
+	 * @return `true` if device was successfully found
 	 */
 	bool (*FindDeviceNear)(uint32_t id, WebDeviceInfo_V1* info);
 };
 
 #pragma pack(pop)
 
-static_assert(std::is_standard_layout<WebAPI_V1>::value, "WebAPI_V1 должен быть standard_layout");
+static_assert(std::is_standard_layout<WebAPI_V1>::value, "WebAPI_V1 must be a standard layout type");
 
 #endif
