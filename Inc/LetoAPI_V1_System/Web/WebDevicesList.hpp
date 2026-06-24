@@ -18,14 +18,14 @@ struct WebDeviceInfo_ListItem
 {
     WebDeviceInfo_V1 device;
     
-    /// Последняя активность устройства
+    /// Last device activity timestamp
     uint32_t last_activity;
 
-    /// Последняя активность устройства в приложении
+    /// Last device activity in application
     uint32_t last_app_activity;
 };
 
-// Список с активными на данный момент устройствами
+// List of currently active devices
 extern LIBRARIES_EXPORT StaticList<WebDeviceInfo_ListItem, MaxWebDevices> WebDevicesList;
 
 #endif /* INC_LETO_API_V1_WEB_WEB_DEVICES_LIST_HPP_ */
