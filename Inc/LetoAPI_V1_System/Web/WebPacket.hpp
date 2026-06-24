@@ -15,41 +15,41 @@
 
 enum WP_FLAGS : uint8_t
 {
-	WP_FLAG_SYN = (0x01 << 0),	///< Флаг синхронизации (сообщение ожидает подтверждения)
-	WP_FLAG_ACK = (0x01 << 1),	///< Флаг подтверждения (ответ на флаг синхронизации)
+	WP_FLAG_SYN = (0x01 << 0),	///< Synchronization flag (message awaits acknowledgment)
+	WP_FLAG_ACK = (0x01 << 1),	///< Acknowledgment flag (response to synchronization flag)
 };
 
 #pragma pack(push, 1)
 
 /**
- * @brief Низкоуровеный пакет с данными
+ * @brief Low-level data packet
  */
 struct WebPacket_V1
 {
-	/// [0...1] - Магическое число для контроля сообщения
+	/// [0...1] - Magic number for message validation
 	uint8_t __magic[2] = { 0xC1, 0xA0 };
 	
-	/// [2...5] - Идентификатор отправителя
+	/// [2...5] - Sender identifier
 	uint32_t id_from;
 	
-	/// [6...9] - Идентификатор получателя
+	/// [6...9] - Receiver identifier
 	uint32_t id_to;
 	
-	/// [10] - Порт (системный, игровой, синхронизационный и т.д.)
+	/// [10] - Port (system, game, synchronization, etc.)
 	uint8_t port;
 
-	/// [11...26] - Данные (16 Байт)
+	/// [11...26] - Data (16 bytes)
 	uint8_t data[16];
 
-	/* Ниже идут не учитываемые при расчете CRC16 данные */
+	/* Below are fields not included in CRC16 calculation */
 	
-	/// [27] - Флаги `WP_FLAGS`
+	/// [27] - Flags `WP_FLAGS`
 	uint8_t flags;
 	
-	/// [28] - Резерв
+	/// [28] - Reserved
 	uint8_t __reserved__;
 
-	/// [29] - Количество оставшихся попыток отправки
+	/// [29] - Remaining send attempts count
 	uint8_t retries;
 
 	/// [30...31] - CRC16
@@ -87,7 +87,7 @@ struct WebPacket_V1
 
 #pragma pack(pop)
 
-static_assert(std::is_standard_layout<WebPacket_V1>::value, "WebPacket_V1 должен быть standard_layout");
+static_assert(std::is_standard_layout<WebPacket_V1>::value, "WebPacket_V1 must be standard_layout");
 static_assert(sizeof(WebPacket_V1) == 32);
 
 #endif /* INC_LETO_API_V1_WEB_WEB_PACKET_HPP_ */
