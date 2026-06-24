@@ -37,11 +37,12 @@ BaseGame::~BaseGame()
 	ClearGameScenes();
 }
 
-void BaseGame::AddGameScene(uint32_t ID, BaseGameScene* scene)
+BaseGameScene* BaseGame::AddGameScene(uint32_t ID, BaseGameScene* scene)
 {
 	if (ID >= GAME_SCENES)
-		return;
+		return nullptr;
 	game_scenes[ID] = scene;
+	return scene;
 }
 
 void BaseGame::ClearGameScenes()

@@ -27,10 +27,6 @@
  // Интерфейс базовой игры
 class LIBRARIES_EXPORT BaseGame
 {
-private:
-	// Добавление игровых сцен (вызывается в Init)
-	void AddGameScene(uint32_t ID, BaseGameScene* scene);
-
 protected:
 	// Текущая игровая сцена
 	enum { GAME_SCENES = 32 };
@@ -44,6 +40,15 @@ protected:
 	bool close_flag = false;
 
 	BaseGameScene* CurrentScene() const;
+
+	// Добавление игровых сцен (вызывается в Init)
+	BaseGameScene* AddGameScene(uint32_t ID, BaseGameScene* scene);
+
+	template <typename ID>
+	BaseGameScene* AddGameScene(ID id, BaseGameScene* scene)
+	{
+		return AddGameScene((uint32_t)id, scene);
+	}
 
 public:
 	BaseGame(const AppBinHeader& header);

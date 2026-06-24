@@ -20,7 +20,6 @@
 #include <DrawFunctions/DrawText.hpp>
 
 #include <UI/Menu/ParamMenu.hpp>
-#include <LetoAPI_V1/LetoAPI_V1.hpp> 
 
 template <typename Param, uint8_t MaxSize>
 class DialogParamMenu : public ISceneObject

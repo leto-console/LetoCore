@@ -9,7 +9,10 @@ Timer::Timer(uint32_t period_ms)
 
 void Timer::Start()
 {
-	start_ms = leto_api_v1->Globals->GetCurrentMs();
+	if (leto_api_v1)
+		start_ms = leto_api_v1->Globals->GetCurrentMs();
+	else
+		start_ms = 0;
 	return_expired = false;
 }
 

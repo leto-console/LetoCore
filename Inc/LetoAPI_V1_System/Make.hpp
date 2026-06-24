@@ -20,4 +20,11 @@
  */
 extern LIBRARIES_EXPORT const LetoAPI_V1* Make_LetoAPI_V1();
 
+struct LIBRARIES_EXPORT LetoAPI_V1_StaticMaker
+{
+    LetoAPI_V1_StaticMaker();
+};
+
+static LetoAPI_V1_StaticMaker __LetoAPI_V1_Static_Maker__;
+
 #endif
