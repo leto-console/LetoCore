@@ -116,7 +116,7 @@ void WebManager_V1::SendSynchronizeData(WebConnection_V1 connection, const void 
     item.packet.flags |= WP_FLAG_SYN;
     memcpy(item.packet.data, data, size > sizeof(item.packet.data) ? sizeof(item.packet.data) : size);
 
-    // Запрет на отправление одинаковых данных при активной синхронизации
+    // Prevent sending duplicate data during active synchronization
     for (WebPacket_SyncItem& sync_item : sync_out)
     {
         if (sync_item.buffer_item.channel == item.channel &&
@@ -133,7 +133,7 @@ void WebManager_V1::SendSynchronizeData(WebConnection_V1 connection, const void 
 void WebManager_V1::ReceiveData(uint8_t channel, const WebPacket_V1& packet)
 {
     /**
-     * Если получено подтверждение отправляемого сообщения, сбрасываем его
+     * If acknowledgment received for sent message, clear it
      */
     if (packet.flags & WP_FLAG_ACK)
     {
@@ -151,11 +151,11 @@ void WebManager_V1::ReceiveData(uint8_t channel, const WebPacket_V1& packet)
         return;
     }
 
-    // Обрабатываются либо широковещательные пакеты, либо с нужными ID
+    // Process only broadcast packets or packets with matching ID
     if (packet.id_to && packet.id_to != GetDeviceID())
         return;
 
-    // Свои пакеты не обрабатываются
+    // Do not process own packets
     if (packet.id_from == GetDeviceID())
         return;
 
