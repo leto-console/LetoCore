@@ -12,15 +12,15 @@
 #include <LetoAPI_V1/LetoAPI_V1.hpp>
 
 /**
- * @brief Создать и проинициализировать системный API
+ * @brief Create and initialize system API
  * 
- * Создание объекта системного API может быть произведено только в самой системе
+ * System API object creation is allowed only within the system itself
  * 
- * @warning Вызов данной функции в приложении приведет к UB
+ * @warning Calling this function in application causes UB
  */
 extern LIBRARIES_EXPORT const LetoAPI_V1* Make_LetoAPI_V1();
 
-/// Автоматическое создание API при инициализации статических переменных
+/// Automatic API creation during static variables initialization
 static struct LetoAPI_V1_StaticMaker
 {
     LetoAPI_V1_StaticMaker() { Make_LetoAPI_V1(); }
