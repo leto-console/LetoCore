@@ -1,7 +1,7 @@
 /**
  * @file WebPacketParser.hpp
  * @date Jun 06, 2026
- * @author Timur
+ * @author Rakhimov T.
  */
 
 #ifndef INC_LETO_API_V1_WEB_WEB_PACKET_PARSER_HPP_

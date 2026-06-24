@@ -1,7 +1,7 @@
 /**
  * @file FatFsMnt.hpp
  * @date May 31, 2026
- * @author Timur
+ * @author Rakhimov T.
  */
 
 #ifndef INC_FATFS_MNT_HPP_

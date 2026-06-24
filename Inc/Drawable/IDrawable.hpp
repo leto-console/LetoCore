@@ -1,7 +1,7 @@
 /**
  * @file IDrawable.hpp
  * @date Dec 09, 2025
- * @author Timur
+ * @author Rakhimov T.
  */
 
 #ifndef INC_DRAWABLE_I_DRAWABLE_HPP_

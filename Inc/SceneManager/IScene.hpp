@@ -1,7 +1,7 @@
 /**
  * @file IScene.hpp
  * @date Oct 19, 2025
- * @author Timur
+ * @author Rakhimov T.
  */
 
 #ifndef INC_SCENE_MANAGER_I_SCENE_HPP_

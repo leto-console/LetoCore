@@ -1,7 +1,7 @@
 /**
  * @file MenuHolder.hpp
  * @date Mar 28, 2026
- * @author Timur
+ * @author Rakhimov T.
  */
 
 #ifndef INC_UI_MENU_MENU_HOLDER_HPP_

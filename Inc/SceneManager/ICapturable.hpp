@@ -1,7 +1,7 @@
 /**
  * @file ICapturable.hpp
  * @date Dec 17, 2025
- * @author Timur
+ * @author Rakhimov T.
  */
 
 #ifndef INC_SCENE_MANAGER_I_CAPTURABLE_HPP_

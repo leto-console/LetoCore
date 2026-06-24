@@ -1,7 +1,7 @@
 /**
  * @file BaseGameObject.hpp
  * @date Apr 06, 2026
- * @author Timur
+ * @author Rakhimov T.
  */
 
 #ifndef INC_GAME_SUPPORT_BASE_GAME_OBJECT_HPP_

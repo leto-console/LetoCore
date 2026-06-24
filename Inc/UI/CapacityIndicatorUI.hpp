@@ -1,7 +1,7 @@
 /**
  * @file CapacityIndicatorUI
  * @date Mar 26, 2026
- * @author Timur
+ * @author Rakhimov T.
  */
 
 #ifndef INC_UI_CAPACITY_INDICATOR_UI_HPP_

@@ -1,7 +1,7 @@
 /**
  * @file FatFsTask.hpp
  * @date May 31, 2026
- * @author Timur
+ * @author Rakhimov T.
  */
 
 #ifndef INC_FATFS_TASK_HPP_

@@ -1,7 +1,7 @@
 /**
  * @file Range.hpp
  * @date Mar 31, 2026
- * @author Timur
+ * @author Rakhimov T.
  */
 
 #ifndef INC_DATA_RANGE_HPP_

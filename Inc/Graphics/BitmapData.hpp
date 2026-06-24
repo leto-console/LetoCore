@@ -1,7 +1,7 @@
 /**
  * @file BitmapData.hpp
  * @date Dec 26, 2025
- * @author Timur
+ * @author Rakhimov T.
  * 
  */
 

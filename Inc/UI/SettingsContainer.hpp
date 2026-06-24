@@ -1,7 +1,7 @@
 /**
  * @file SettingsContainer.npp
  * @date Mar 27, 2026
- * @author Timur
+ * @author Rakhimov T.
  */
 
 #ifndef INC_UI_SETTINGS_CONTAINER_HPP_

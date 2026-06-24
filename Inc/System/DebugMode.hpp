@@ -1,7 +1,7 @@
 /**
  * @file DebugMode.hpp
  * @date Mar 28, 2026
- * @author Timur
+ * @author Rakhimov T.
  */
 
 #ifndef INC_SYSTEM_DEBUG_MODE_HPP_

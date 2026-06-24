@@ -1,7 +1,7 @@
 /**
  * @file Eyes.hpp
  * @date Apr 12, 2026
- * @author Timur
+ * @author Rakhimov T.
  */
 
 #ifndef INC_BITMAPS_EYES_HPP_

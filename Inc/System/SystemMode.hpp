@@ -1,7 +1,7 @@
 /**
  * @file SystemMode.hpp
  * @date Feb 21, 2026
- * @author Timur
+ * @author Rakhimov T.
  */
 
 #ifndef INC_SYSTEM_SYSTEM_MODE_HPP_
