@@ -31,7 +31,7 @@ const MathAPI_V1* Make_MathAPI()
         &::roundf,
         &::sqrtf,
         &::powf,
-        &::fabs,
+        &::fabsf,
         &::hypotf,
         &::expf,
         &::logf,
