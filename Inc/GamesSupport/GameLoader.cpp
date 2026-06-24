@@ -208,8 +208,7 @@ bool LoadGame(const char *path)
     	__ISB(); // Очищаем конвейер, чтобы процессор гарантированно читал новые инструкции
 #endif
 
-        const LetoAPI_V1* api_v1 = Make_LetoAPI_V1();
-        LetoResult_V1 res = app->Init(api_v1);
+        LetoResult_V1 res = app->Init(leto_api_v1);
         if (res != LETO_V1_SUCCESS)
         {
         	VC_Printf("App_V1 Init fail\r\n", RedColor);

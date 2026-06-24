@@ -20,11 +20,4 @@
  */
 extern LIBRARIES_EXPORT const LetoAPI_V1* Make_LetoAPI_V1();
 
-/// Automatic API creation during static variables initialization
-static struct LetoAPI_V1_StaticMaker
-{
-    LetoAPI_V1_StaticMaker() { Make_LetoAPI_V1(); }
-} 
-__LetoAPI_V1_Static_Maker__;
-
 #endif
