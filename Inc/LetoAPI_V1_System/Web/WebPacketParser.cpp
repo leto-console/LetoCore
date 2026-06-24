@@ -22,7 +22,7 @@ void WebPacketParser::CallbackByte(uint8_t channel, uint8_t byte)
 	if (channel >= WC_CHANNEL_MAX)
 		return;
 
-	// Первые 2 байта контрольные
+	// First 2 bytes are magic number
 	if (current_byte[channel] >= 0 && current_byte[channel] < sizeof(example_command.__magic))
 	{
 		if (byte != example_command_raw[current_byte[channel]])
@@ -34,7 +34,7 @@ void WebPacketParser::CallbackByte(uint8_t channel, uint8_t byte)
 
 	buffer[channel][current_byte[channel]++] = byte;
 
-	// Если текущее количество байт равно размеру команды, отправляем её в кольцевой буфер команд
+	// If current byte count equals packet size, send it to command ring buffer
 	if (current_byte[channel] == sizeof(WebPacket_V1))
 	{
 		WebPacket_V1 msg_in{};
