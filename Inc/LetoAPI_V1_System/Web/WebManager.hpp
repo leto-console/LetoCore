@@ -25,29 +25,29 @@ const uint32_t POOL_SIZE = 8;
 
 struct WebPacket_BufferItem
 {
-	WebPacket_V1 packet;			///< Пакет
-	uint8_t channel;				///< Канал
+	WebPacket_V1 packet;			///< Packet
+	uint8_t channel;				///< Channel
 };
 
 struct WebPacket_SyncItem
 {
-	WebPacket_BufferItem buffer_item;	///< Пакет и канал
-	uint32_t last_send_ms;				///< Время последней отправки
+	WebPacket_BufferItem buffer_item;	///< Packet and channel
+	uint32_t last_send_ms;				///< Last send timestamp
 };
 
 /**
- * @brief Вспомогательный объект для контроля открытых соединений
+ * @brief Helper object for managing open connections
  */
 struct WebConnection_PoolItem
 {
-	WebConnection_V1 connection;    ///< Данные по соединению
-    uint32_t last_active_ms;        ///< Время последней активности соединения
+	WebConnection_V1 connection;    ///< Connection data
+    uint32_t last_active_ms;        ///< Last connection activity timestamp
 };
 
 /**
- * @brief Класс, обрабатывающий сетевое взаимодействие
+ * @brief Class handling network interaction
  * 
- * @warning Доступен только на уровне OS, при создании в приложении - UB
+ * @warning Available only at OS level; creating in application causes UB
  */
 class LIBRARIES_EXPORT WebManager_V1
 {
@@ -61,15 +61,15 @@ private:
 
     // ===========================================================================================
 
-	RingFIFO_Static<WebPacket_BufferItem, 32> buffer;			///< Буфер отправляемых сообщений (вычитывается задачей отправки)
+	RingFIFO_Static<WebPacket_BufferItem, 32> buffer;			///< Outgoing messages buffer (read by send task)
 	uint32_t buffer_pps{};	///< Packets/sec
 	uint32_t buffer_cnt{};	///< Counter
 	Timer buffer_sec_timer{ 1000 };
 
     StaticList<WebConnection_PoolItem, POOL_SIZE> pool;
 
-	StaticList<WebPacket_SyncItem, 8> sync_out;		///< Буфер выходных сообщений с гарантией доставки
-	StaticList<WebPacket_SyncItem, 8> sync_in;		///< Буфер входных сообщений с гарантией доставки
+	StaticList<WebPacket_SyncItem, 8> sync_out;		///< Output messages buffer with delivery guarantee
+	StaticList<WebPacket_SyncItem, 8> sync_in;		///< Input messages buffer with delivery guarantee
 
     bool FindConnection(WebConnection_PoolItem** connection, uint8_t channel, uint8_t port, uint32_t id);
 
@@ -89,108 +89,108 @@ public:
 
 	uint32_t BufferCount() const { return buffer.Count(); }
 
-	/// Количество web-пакетов в секунду
+	/// Web packets per second
 	uint32_t BufferPPS() const { return buffer_pps; }
 
-	/** ========================= Функции доступные в LetoAPI_V1 =========================  */
+	/** ========================= Functions available in LetoAPI_V1 =========================  */
 
     /**
-	 * @brief Создать подключение
+	 * @brief Create connection
 	 * 
-     * @param[out] connection Открытое подключение
-	 * @param[in] channel Канал подключения (COM, nRF, другое)
-	 * @param[in] port Порт для подключения
-	 * @param[in] id Идентификатор устройства для подключения (при 0 - broadcast)
-	 * @param[in] callback Функция обратного вызова при получении данных (может быть NULL)
+     * @param[out] connection Open connection
+	 * @param[in] channel Connection channel (COM, nRF, other)
+	 * @param[in] port Connection port
+	 * @param[in] id Device identifier for connection (0 for broadcast)
+	 * @param[in] callback Callback function on data receive (can be NULL)
      * 
-     * @return `true` - Подключение успешно создано
+     * @return `true` if connection successfully created
 	 */
     bool CreateConnection(WebConnection_V1* connection, uint8_t channel, uint8_t port, uint32_t id, WebConnection_V1_Callback callback);
 
     /**
-	 * @brief Закрыть подключение
+	 * @brief Close connection
 	 *
-	 * @param[in] connection Открытое подключение
+	 * @param[in] connection Open connection
 	 */
 	void CloseConnection (WebConnection_V1 connection);
 
     /**
-	 * @brief Отправить данные без гарантии доставки
+	 * @brief Send data without delivery guarantee
 	 *
-	 * @param[in] connection Открытое подключение
-	 * @param[in] data Данные для отправки
-	 * @param[in] size Размер данных для отправки
+	 * @param[in] connection Open connection
+	 * @param[in] data Data to send
+	 * @param[in] size Data size to send
 	 */
 	void SendData (WebConnection_V1 connection, const void* data, uint32_t size);
 
     /**
-	 * @brief Получить список устройств рядом
+	 * @brief Get list of nearby devices
 	 * 
-	 * @param[out] info Массив для получения информации
-	 * @param[in] available Размер массива для получения информации
+	 * @param[out] info Array for receiving information
+	 * @param[in] available Array size for receiving information
 	 *
-	 * @return Количество устройств
+	 * @return Number of devices
 	 */
 	uint32_t GetDevicesNear (WebDeviceInfo_V1* info, uint32_t available) const;
 
 	/**
-	 * @brief Найти устройство по идентификатору
+	 * @brief Find device by identifier
 	 * 
-	 * @param[in] id Идентификатор устройства
-	 * @param[out] info Информация об устройстве
+	 * @param[in] id Device identifier
+	 * @param[out] info Device information
 	 * 
-	 * @return `true` - Устройство успешно найдено
+	 * @return `true` if device successfully found
 	 */
 	bool FindDeviceNear(uint32_t id, WebDeviceInfo_V1* info) const;
 
 	/** ==================================================================================  */
 
     /**
-     * @brief Получить список открытых подключений
+     * @brief Get list of open connections
      * 
-     * @param[out] info Массив для получения информации
-	 * @param[in] available Размер массива для получения информации
+     * @param[out] info Array for receiving information
+	 * @param[in] available Array size for receiving information
 	 *
-	 * @return Количество подключений
+	 * @return Number of connections
      */
     uint32_t GetConnections(WebConnection_V1* info, uint32_t available);
 
 	/**
-	 * @brief Отправить данные с гарантией доставки
+	 * @brief Send data with delivery guarantee
 	 * 
-	 * @param[in] connection Открытое подключение
-	 * @param[in] data Данные для отправки
-	 * @param[in] size Размер данных для отправки
+	 * @param[in] connection Open connection
+	 * @param[in] data Data to send
+	 * @param[in] size Data size to send
 	 */
 	void SendSynchronizeData(WebConnection_V1 connection, const void* data, uint32_t size);
 
 	/**
-	 * @brief Получить данные
+	 * @brief Receive data
 	 * 
-	 * @param[in] channel Канал подключения (COM, nRF, другое)
-	 * @param[in] port Порт для подключения
-	 * @param[in] id Идентификатор устройства для подключения (при 0 - broadcast)
-	 * @param[in] data Данные для получения
-	 * @param[in] size Размер данных для получения
+	 * @param[in] channel Connection channel (COM, nRF, other)
+	 * @param[in] port Connection port
+	 * @param[in] id Device identifier for connection (0 for broadcast)
+	 * @param[in] data Data to receive
+	 * @param[in] size Data size to receive
 	 */
 	void ReceiveData(uint8_t channel, const WebPacket_V1& packet);
 
 	/**
-	 * @brief Проверить наличие пакета для отправки
+	 * @brief Check for packet to send
 	 * 
-	 * @param[out] item Структура с информацией об отправляемом пакете
+	 * @param[out] item Structure with information about packet to send
 	 * 
-	 * @return Наличие пакета
+	 * @return Packet availability
 	 */
 	bool CheckBuffer(WebPacket_BufferItem& info);
 
 	/**
-	 * @brief Переключиться на следующий пакет для отправки
+	 * @brief Switch to next packet to send
 	 */
 	void NextBuffer();
 
 	/**
-	 * @brief Выполнить действия в фоне
+	 * @brief Execute background actions
 	 */
 	void Loop();
 };
