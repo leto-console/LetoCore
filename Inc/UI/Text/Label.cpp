@@ -30,6 +30,7 @@ void Label::SetText(const StaticText32 &text)
 {
     label_text = text;
     text_width = DrawFunctions::TextWidth(label_text, label_font);
+    UpdateOffsets();
     Invalidate();
 }
 
@@ -44,21 +45,7 @@ Label& Label::SetHorizonAlignment(LabelHorizonAlignment alignment)
 
     h_align = alignment;
 
-    switch (h_align)
-    {
-    case LabelHorizonAlignment::CENTER:
-        h_offset += size.x / 2;
-        h_offset -= text_width / 2;
-        break;
-    case LabelHorizonAlignment::RIGHT:
-        h_offset = size.x;
-        h_offset -= text_width;
-        break;
-    case LabelHorizonAlignment::LEFT:
-    default:
-        break;
-    }
-
+    UpdateOffsets();
     Invalidate();
     return *this;
 }
@@ -69,21 +56,7 @@ Label& Label::SetVerticalAlignment(LabelVerticalAlignment alignment)
 
     v_align = alignment;
 
-    switch (v_align)
-    {
-    case LabelVerticalAlignment::CENTER:
-        v_offset += size.y / 2;
-        v_offset -= text_height / 2;
-        break;
-    case LabelVerticalAlignment::BOTTOM:
-        v_offset = size.y;
-        v_offset -= text_height;
-        break;
-    case LabelVerticalAlignment::TOP:
-    default:
-        break;
-    }
-
+    UpdateOffsets();
     Invalidate();
     return *this;
 }
@@ -93,7 +66,9 @@ Label& Label::SetFont(IFont *font)
     if (font)
     {
         label_font = font;
+        text_width = DrawFunctions::TextWidth(label_text, label_font);
         text_height = label_font->GetHeight();
+        UpdateOffsets();
         Invalidate();
     }
     return *this;
@@ -127,4 +102,39 @@ Label& Label::SetColorInverse(bool inverse)
         Invalidate();
     }
     return *this;
+}
+
+void Label::UpdateOffsets()
+{
+    h_offset = v_offset = 0;
+    
+    switch (h_align)
+    {
+    case LabelHorizonAlignment::CENTER:
+        h_offset += size.x / 2;
+        h_offset -= text_width / 2;
+        break;
+    case LabelHorizonAlignment::RIGHT:
+        h_offset = size.x;
+        h_offset -= text_width;
+        break;
+    case LabelHorizonAlignment::LEFT:
+    default:
+        break;
+    }
+
+    switch (v_align)
+    {
+    case LabelVerticalAlignment::CENTER:
+        v_offset += size.y / 2;
+        v_offset -= text_height / 2;
+        break;
+    case LabelVerticalAlignment::BOTTOM:
+        v_offset = size.y;
+        v_offset -= text_height;
+        break;
+    case LabelVerticalAlignment::TOP:
+    default:
+        break;
+    }
 }

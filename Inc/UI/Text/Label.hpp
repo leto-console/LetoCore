@@ -63,6 +63,8 @@ private:
 	int h_offset = 0;
 	int v_offset = 0;
 
+	void UpdateOffsets();
+
 	StaticText32 label_text;
 
 	int text_width = 0;
