@@ -46,14 +46,21 @@ public:
 		Disable();
 	}
 
+	void InitBaseCatchers()
+	{
+		RegUpEvent(&IsSystemPrevEvent);
+		RegDownEvent(&IsSystemNextEvent);
+		RegEnterEvent(&IsSystemEnterEvent);
+	}
+
 	void OnShow() override
 	{
 		ResetCurrentID();
 	}
 
-	void RegUpEvent(const AppEvent& event) 	{ menu.RegUpEvent(event); }
-	void RegDownEvent(const AppEvent& event) 	{ menu.RegDownEvent(event); }
-	void RegEnterEvent(const AppEvent& event) { enter_catcher.Catch(event); }
+	void RegUpEvent(IsEventFunc is_event) 		{ menu.RegUpEvent(is_event); }
+	void RegDownEvent(IsEventFunc is_event) 	{ menu.RegDownEvent(is_event); }
+	void RegEnterEvent(IsEventFunc is_event) 	{ enter_catcher.Catch(is_event); }
 
 	void SetText(int level, const StaticText32& text)
 	{

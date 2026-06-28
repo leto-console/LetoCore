@@ -14,10 +14,12 @@
 #include <UI/ButtonHoldHandler.hpp>
 #include <UI/ButtonMultiPressHandler.hpp>
 
+#include <Input/IsEventFunc.hpp>
+
 namespace GameButtonHandlerMiddleware
 {
-	extern LIBRARIES_EXPORT void HandleEvent(const AppEvent& event, const AppEvent& source, ButtonHoldHandler& handler);
-	extern LIBRARIES_EXPORT void HandleEvent(const AppEvent& event, const AppEvent& source, ButtonMultiPressHandler& handler, int button);
+	extern LIBRARIES_EXPORT void HandleEvent(const AppEvent& event, IsEventFunc is_event, ButtonHoldHandler& handler);
+	extern LIBRARIES_EXPORT void HandleEvent(const AppEvent& event, IsEventFunc is_event, ButtonMultiPressHandler& handler, int button);
 };
 
 #endif

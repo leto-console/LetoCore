@@ -3,6 +3,7 @@
 #include <Input/ButtonEvent.hpp>
 #include <Input/EncoderEvent.hpp>
 #include <Input/DiscreteSignalEventTypes.hpp>
+#include "SystemInputID.hpp"
 
 bool IsSystemLeftEvent(const AppEvent& event, bool pressed)
 {
@@ -22,6 +23,56 @@ bool IsSystemRightEvent(const AppEvent& event, bool pressed)
 	{
 	case AE_Button:
 		return event.id == SYSTEM_BTN_RIGHT && ButtonEvent::IsPressed(event, pressed);
+	default:
+		break;
+	}
+	return false;
+}
+
+bool IsSystemTurnLeftEvent(const AppEvent &event, bool pressed)
+{
+	(void) pressed;
+	switch (event.source)
+	{
+	case AE_Encoder:
+		return event.id == SYSTEM_ENC_MAIN && event.data == (uint8_t)EncoderEvent::TURN_LEFT;
+	default:
+		break;
+	}
+	return false;
+}
+
+bool IsSystemTurnRightEvent(const AppEvent &event, bool pressed)
+{
+	(void) pressed;
+	switch (event.source)
+	{
+	case AE_Encoder:
+		return event.id == SYSTEM_ENC_MAIN && event.data == (uint8_t)EncoderEvent::TURN_RIGHT;
+	default:
+		break;
+	}
+	return false;
+}
+
+bool IsSystemUpEvent(const AppEvent &event, bool pressed)
+{
+	switch (event.source)
+	{
+	case AE_Button:
+		return event.id == SYSTEM_BTN_UP && ButtonEvent::IsPressed(event, pressed);
+	default:
+		break;
+	}
+	return false;
+}
+
+bool IsSystemDownEvent(const AppEvent &event, bool pressed)
+{
+	switch (event.source)
+	{
+	case AE_Button:
+		return event.id == SYSTEM_BTN_DOWN && ButtonEvent::IsPressed(event, pressed);
 	default:
 		break;
 	}

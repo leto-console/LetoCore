@@ -12,6 +12,7 @@
 
 #include <Data/StaticList.hpp>
 #include <ABI/AppEvent.hpp>
+#include <Input/IsEventFunc.hpp>
 
 template <typename Class>
 class InputCatcher
@@ -19,9 +20,9 @@ class InputCatcher
 public:
 	using OnCatchFunc = void(Class::*)();
     using Comparator = bool(*)(const AppEvent& e1, const AppEvent& e2);
-
+    
 protected:
-    StaticList<AppEvent, 4> events;
+    StaticList<IsEventFunc, 4> is_events;
 
     Class* instance;
     OnCatchFunc callback{};
@@ -46,19 +47,21 @@ public:
 	}
 
     // Отловить вывод требуемого типа
-    void Catch(const AppEvent& event) { events.Push(event); }
+    void Catch(IsEventFunc is_event) { is_events.Push(is_event); }
 
     // Обработать событие пользовательского ввода
     bool ProcessInput(const AppEvent& event)
     {
-        if (events.Count() == 0)
+        if (is_events.Count() == 0)
             return false;
 
-        for (const AppEvent& _event : events)
+        for (IsEventFunc _is_event : is_events)
         {
-            if (comparator(_event, event) && instance && callback)
+            /// TODO::::
+            if (_is_event(event, true))
             {
-                (instance->*callback)();
+                if (instance && callback)
+                    (instance->*callback)();
                 return true;
             }
         }

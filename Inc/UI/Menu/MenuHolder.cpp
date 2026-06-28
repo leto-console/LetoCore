@@ -3,6 +3,8 @@
 #include <DrawFunctions/DrawText.hpp>
 #include <Input/ButtonEvent.hpp>
 
+#include <Input/SystemInputID.hpp>
+
 MenuHolder::MenuHolder(StaticListView<StaticText32> texts, uint8_t visible_elements, Point2_i position)
 	: texts{ texts }, visible_elements{ visible_elements }, 
 	up_catcher{ ButtonEvent::Compare, this, &MenuHolder::Up },
@@ -11,14 +13,20 @@ MenuHolder::MenuHolder(StaticListView<StaticText32> texts, uint8_t visible_eleme
 	SetPosition(position);
 }
 
-void MenuHolder::RegUpEvent(const AppEvent & event)
+void MenuHolder::InitBaseCatchers()
 {
-	up_catcher.Catch(event);
+	RegUpEvent(&IsSystemPrevEvent);
+    RegDownEvent(&IsSystemNextEvent);
 }
 
-void MenuHolder::RegDownEvent(const AppEvent & event)
+void MenuHolder::RegUpEvent(IsEventFunc is_event)
 {
-	down_catcher.Catch(event);
+	up_catcher.Catch(is_event);
+}
+
+void MenuHolder::RegDownEvent(IsEventFunc is_event)
+{
+	down_catcher.Catch(is_event);
 }
 
 void MenuHolder::OnShow()
@@ -71,15 +79,29 @@ uint8_t MenuHolder::Count() const
 void MenuHolder::ResetCurrentID()
 {
 	currentID = topID = 0;
+	ready = false;
 	if (vertical_align == MenuVerticalAlignment::CENTER)
 	{
 		topID = currentID - visible_elements / 2;
 	}
 }
 
+bool MenuHolder::IsResultReady(int &idx) const
+{
+	if (!IDrawable::IsActive() || !ready)
+		return false;
+	idx = currentID;
+	return true;
+}
+
+void MenuHolder::SubmitReady()
+{
+	ready = false;
+}
+
 void MenuHolder::Up()
 {
-	if (currentID == 0) return;
+	if (ready || currentID == 0) return;
 	currentID--;
 
 	if (vertical_align == MenuVerticalAlignment::CENTER)
@@ -94,7 +116,7 @@ void MenuHolder::Up()
 
 void MenuHolder::Down()
 {
-	if (currentID >= Count() - 1) return;
+	if (ready || currentID >= Count() - 1) return;
 	currentID++;
 
 	if (vertical_align == MenuVerticalAlignment::CENTER)
@@ -105,6 +127,11 @@ void MenuHolder::Down()
 	{
 		if (currentID >= topID + visible_elements) topID = currentID - visible_elements + 1;
 	}
+}
+
+void MenuHolder::Enter()
+{
+	ready = true;
 }
 
 void MenuHolder::Draw(IScreen& screen, Point2_i offset)
@@ -174,6 +201,8 @@ void MenuHolder::Draw(IScreen& screen, Point2_i offset)
 
 bool MenuHolder::ProcessInput(const AppEvent& event)
 {	
+	if (ready) return true;
+
 	if (up_catcher.ProcessInput(event) ||
 		down_catcher.ProcessInput(event))
 		return true;

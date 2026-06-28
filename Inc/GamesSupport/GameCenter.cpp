@@ -11,6 +11,10 @@
 
 GameCenter* SystemGameCenter = nullptr;
 
+static uint8_t GameButtonIds[] = {
+    SYSTEM_BTN_UP, SYSTEM_BTN_DOWN, SYSTEM_BTN_LEFT, SYSTEM_BTN_RIGHT, SYSTEM_BTN_ENTER
+};
+
 bool GameCenter::IsInputForGame(const AppEvent &event)
 {
 	if (event.source == AE_Button)
@@ -24,7 +28,7 @@ bool GameCenter::IsInputForGame(const AppEvent &event)
 	}
 	else if (event.source == AE_Encoder)
 	{
-		return event.id == GAME_ENC_MAIN;
+		return event.id == SYSTEM_ENC_MAIN;
 	}
 
 	return false;

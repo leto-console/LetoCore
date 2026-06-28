@@ -13,7 +13,6 @@
 #include <Graphics/IScreen.hpp>
 
 #include <ABI/AppEvent.hpp>
-#include <GamesSupport/GameInputID.hpp>
 
 #include <string>
 
