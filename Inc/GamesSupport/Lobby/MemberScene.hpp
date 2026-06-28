@@ -11,13 +11,17 @@
 
 #include <GamesSupport/BaseGameScene.hpp>
 #include <UI/Text/Label.hpp>
+#include <UI/Menu/ParamMenu.hpp>
+#include <LetoAPI_V1/LetoAPI_V1.hpp>
 
 class LobbyScene;
 
 class LIBRARIES_EXPORT MemberScene : public BaseGameScene
 {
 public:
-    MemberScene(BaseGame* game, LobbyScene* lobby);
+    MemberScene(BaseGame* game, LobbyScene* main_scene, LobbyConnection_V1_Callback callback);
+
+    void OnShow() override;
 
     void ProcessGameInput(const AppEvent& event) override;
 
@@ -26,7 +30,23 @@ public:
     void Loop() override;
 
 protected:
-    Label label_text;
+    Label label_text, status_text;
+
+    LobbyScene* main_scene;
+    LobbyConnection_V1 lobby;
+    bool opened;
+
+    LobbyInfo_V1 near_info[8]{};
+    uint32_t near_cnt{};
+
+    enum { NONE, MENU_START, MENU_QUIT, HOST_ID = 10 };
+    ParamMenu<uint8_t, 8> menu;
+
+    LobbyConnection_V1_Callback callback;
+    
+    void RefreshLobbiesNear();
+    void RefreshMenu();
+    void Quit();
 };
 
 #endif

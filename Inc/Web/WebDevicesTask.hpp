@@ -16,10 +16,12 @@
 #include <Data/StaticText.hpp>
 
 #include <LetoAPI_V1/Web/WebConnection.hpp>
+#include <LetoAPI_V1/Web/WebDeviceInfo.hpp>
 
 class LIBRARIES_EXPORT WebDevicesTask : public PriorityTask
 {
 protected:
+	WebDeviceInfo_V1 self_info;
 	WebConnection_V1 connection;	
 	Account account;
 	Timer refresh_timer;
@@ -31,6 +33,9 @@ protected:
 	bool UpdateInfo();
 	void SendAccountMsg();
 	void SendAppMsg();
+
+	void ClearSelfInfo();
+	void SaveSelfInfo();
 
 	bool Do() override;
 

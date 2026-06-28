@@ -13,7 +13,7 @@
 #include <GamesSupport/Lobby/HostScene.hpp>
 #include <GamesSupport/Lobby/MemberScene.hpp>
 
-#include <UI/Menu/Menu.hpp>
+#include <UI/Menu/ParamMenu.hpp>
 #include <UI/Text/Label.hpp>
 
 class LIBRARIES_EXPORT LobbyScene : public BaseGameScene
@@ -23,7 +23,10 @@ public:
 
     void SwitchMode(LobbyMode mode);
 
-    LobbyScene(BaseGame* game);
+public:
+    LobbyScene(BaseGame* game, uint8_t max_count, 
+        LobbyConnection_V1_Callback host_callback,
+        LobbyConnection_V1_Callback member_callback);
 
     void OnShow() override;
 
@@ -40,7 +43,7 @@ protected:
     HostScene host_scene;
     MemberScene member_scene;
 
-    Menu<2> select_menu;
+    ParamMenu<LobbyMode, 2> select_menu;
     Label select_label;
 
     uint32_t prevID{}, successID{};

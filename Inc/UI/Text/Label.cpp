@@ -28,10 +28,13 @@ bool Label::ProcessInput(const AppEvent &event)
 
 void Label::SetText(const StaticText32 &text)
 {
-    label_text = text;
-    text_width = DrawFunctions::TextWidth(label_text, label_font);
-    UpdateOffsets();
-    Invalidate();
+    if (text != label_text)
+    {
+        label_text = text;
+        text_width = DrawFunctions::TextWidth(label_text, label_font);
+        UpdateOffsets();
+        Invalidate();
+    }
 }
 
 StaticTextView Label::GetText() const

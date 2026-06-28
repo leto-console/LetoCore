@@ -71,6 +71,8 @@ private:
 	StaticList<WebPacket_SyncItem, 8> sync_out;		///< Output messages buffer with delivery guarantee
 	StaticList<WebPacket_SyncItem, 8> sync_in;		///< Input messages buffer with delivery guarantee
 
+	WebDeviceInfo_V1 self_info;
+
     bool FindConnection(WebConnection_PoolItem** connection, uint8_t channel, uint8_t port, uint32_t id);
 
 public:
@@ -144,6 +146,16 @@ public:
 	bool FindDeviceNear(uint32_t id, WebDeviceInfo_V1* info) const;
 
 	/** ==================================================================================  */
+
+	/**
+	 * @brief Set self_info WebDeviceInfo
+	 */
+	void SetSelfInfo(WebDeviceInfo_V1 info);
+
+	/**
+	 * @brief Get self_info WebDeviceInfo
+	 */
+	WebDeviceInfo_V1 GetSelfData() const;
 
     /**
      * @brief Get list of open connections

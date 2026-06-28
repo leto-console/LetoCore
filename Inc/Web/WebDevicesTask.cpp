@@ -14,7 +14,7 @@
 enum DEVICE_INFO_TYPE
 {
 	INFO_NAME_0_6 = 0,
-	INFO_NAME_7_10,
+	INFO_NAME_7_12,
 	INFO_ID_ACTIVE_LOBBY,
 	INFO_AVATAR_JOIN_LOBBY,
 	INFO_MAX
@@ -41,6 +41,14 @@ void WebDevicesTask::SendAccountMsg()
 	// Уведомление, что устройство активно и готово 
 	u_data[0] = 0x00;
 
+	self_info.channel = WC_CHANNEL_ALL;
+	self_info.id = device_id;
+	self_info.avatar_id = account.Avatar;
+	self_info.lobby_owner = lobby_owner;
+	self_info.joining_lobby = join_lobby;
+	memset(self_info.web_name, 0, sizeof(self_info.web_name));
+	memcpy(self_info.web_name, &account.Name[0], 10);
+
 	for (uint8_t info = 0; info < INFO_MAX; ++info)
 	{
 		memset(u_data + 2, 0, 6);
@@ -51,8 +59,8 @@ void WebDevicesTask::SendAccountMsg()
 		case INFO_NAME_0_6:
 			memcpy(u_data + 2, &account.Name[0], 6);
 			break;
-		case INFO_NAME_7_10:
-			memcpy(u_data + 2, &account.Name[6], 4);
+		case INFO_NAME_7_12:
+			memcpy(u_data + 2, &account.Name[6], 6);
 			break;
 		case INFO_ID_ACTIVE_LOBBY:
 			memcpy(u_data + 2, &device_id, 4);
@@ -63,6 +71,7 @@ void WebDevicesTask::SendAccountMsg()
 			memcpy(u_data + 6, &join_lobby, 4);
 			break;
 		}
+
 
 		WebManager_V1::Instance().SendData(connection, u_data, sizeof(u_data));
 	}
@@ -82,7 +91,19 @@ void WebDevicesTask::SendAppMsg()
 	u_data[1] = id & 0xFF;
 	u_data[2] = (id >> 8) & 0xFF;
 
+	self_info.app_id = id;
+
 	WebManager_V1::Instance().SendData(connection, u_data, sizeof(u_data));
+}
+
+void WebDevicesTask::ClearSelfInfo()
+{
+	memset(&self_info, 0, sizeof(self_info));
+}
+
+void WebDevicesTask::SaveSelfInfo()
+{
+	WebManager_V1::Instance().SetSelfInfo(self_info);
 }
 
 void WebDevicesTask::RefreshDevicesList()
@@ -111,11 +132,13 @@ bool WebDevicesTask::Do()
 	if (!inited) return true;
 
 	RefreshDevicesList();
+	ClearSelfInfo();
 	if (UpdateInfo())
 	{
 		SendAccountMsg();
 		SendAppMsg();
 	}
+	SaveSelfInfo();
 
 	return true;
 }
@@ -140,8 +163,8 @@ static void WebDevTask_Callback(uint8_t channel, uint8_t port, uint32_t id, cons
 				case INFO_NAME_0_6:
 					memcpy(&info.device.web_name[0], &u_data[2], 6);
 					break;
-				case INFO_NAME_7_10:
-					memcpy(&info.device.web_name[6], &u_data[2], 4);
+				case INFO_NAME_7_12:
+					memcpy(&info.device.web_name[6], &u_data[2], 6);
 					break;
 				case INFO_ID_ACTIVE_LOBBY:
 					memcpy(&info.device.id, &u_data[2], 4);

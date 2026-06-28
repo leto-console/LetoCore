@@ -5,11 +5,15 @@
 
 #include <GamesSupport/BaseGame.hpp>
 #include <Input/SystemInputID.hpp>
+#include <System/DeviceID.hpp>
 
 using namespace DrawFunctions;
 
-LobbyScene::LobbyScene(BaseGame* game) 
-    : BaseGameScene{ game }, scene_mode{ NONE }, host_scene{ game, this }, member_scene{ game, this }
+LobbyScene::LobbyScene(BaseGame* game, uint8_t max_count, 
+    LobbyConnection_V1_Callback host_callback, LobbyConnection_V1_Callback member_callback) 
+    : BaseGameScene{ game }, scene_mode{ NONE }, 
+    host_scene{ game, this, max_count, host_callback }, 
+    member_scene{ game, this, member_callback }
 {
     IFont* font = leto_api_v1->Font->GetFont(7, 7, 1);
 
@@ -22,8 +26,6 @@ LobbyScene::LobbyScene(BaseGame* game)
 
     select_menu.InitBaseCatchers();
     select_menu.EnableReadyLogic();
-    select_menu.AppendMenuItem("СОЗДАТЬ");
-    select_menu.AppendMenuItem("НАЙТИ");
     select_menu.SetStyle(MenuStyle::STYLE_3, font);
     select_menu.SetHorizonAlignment(MenuHorizonAlignment::CENTER);
     select_menu.SetPosition({80, 30});
@@ -35,6 +37,19 @@ LobbyScene::LobbyScene(BaseGame* game)
 void LobbyScene::OnShow()
 {
     prevID = game->GetGameSceneID();
+
+    LobbyConnection_V1 connection;
+    if (leto_api_v1->Lobby->GetActiveLobby(&connection))
+    {
+        SwitchMode(connection.owner == GetDeviceID() ? HOST : MEMBER);
+        return;     
+    }
+    else
+        SwitchMode(SELECT);
+
+    select_menu.Clear();
+    select_menu.AppendMenuItem("СОЗДАТЬ", HOST);
+    select_menu.AppendMenuItem("НАЙТИ", MEMBER);
 }
 
 void LobbyScene::ProcessGameInput(const AppEvent &event)
@@ -45,23 +60,13 @@ void LobbyScene::ProcessGameInput(const AppEvent &event)
     {
     case HOST:
     {
-        if (_return) 
-        {
-            SwitchMode(SELECT);
-            return;
-        }
         host_scene.ProcessGameInput(event);
         return;
     }
     case MEMBER:
     {
-        if (_return) 
-        {
-            SwitchMode(SELECT);
-            return;
-        }
         member_scene.ProcessGameInput(event);
-        break;
+        return;
     }
     case SELECT:
     default:
@@ -75,12 +80,11 @@ void LobbyScene::ProcessGameInput(const AppEvent &event)
     }
     select_menu.MainProcessInput(event);
 
-    int idx;
-    if (select_menu.IsResultReady(idx))
+    LobbyMode mode;
+    if (select_menu.IsResultParamReady(mode))
     {
         select_menu.SubmitReady();
-        if (idx == 0)       SwitchMode(HOST);
-        else if (idx == 1)  SwitchMode(MEMBER);
+        SwitchMode(mode);
     }
 }
 
@@ -132,5 +136,41 @@ void LobbyScene::Loop()
 
 void LobbyScene::SwitchMode(LobbyMode mode)
 {
+    switch (scene_mode)
+    {
+    case HOST:
+    {
+        host_scene.OnHide();
+        break;
+    }
+    case MEMBER:
+    {
+        member_scene.OnHide();
+        break;
+    }
+    case SELECT:
+    default:
+        break;
+    }
+
+    //////////////////////////////////////////////////////////////////////
     scene_mode = mode;
+    //////////////////////////////////////////////////////////////////////
+
+    switch (scene_mode)
+    {
+    case HOST:
+    {
+        host_scene.OnShow();
+        break;
+    }
+    case MEMBER:
+    {
+        member_scene.OnShow();
+        break;
+    }
+    case SELECT:
+    default:
+        break;
+    }
 }

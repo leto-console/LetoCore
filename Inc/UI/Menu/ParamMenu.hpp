@@ -24,7 +24,15 @@ public:
 	{
 	}
 
-	void AppendMenuItem(const StaticText32& text, Param param = {})
+	bool IsResultParamReady(Param& param) const
+	{
+		int idx;
+		if (!MenuHolder::IsResultReady(idx)) return false;
+		param = params[idx];
+		return true;
+	} 
+
+	void AppendMenuItem(const StaticText32& text, Param param)
 	{
 		Menu<MaxSize>::AppendMenuItem(text);
 		params.Push(param);

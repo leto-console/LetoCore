@@ -76,6 +76,12 @@ uint32_t WebManager_V1::GetDevicesNear(WebDeviceInfo_V1 *info, uint32_t availabl
 
 bool WebManager_V1::FindDeviceNear(uint32_t id, WebDeviceInfo_V1 *info) const
 {
+    if (id == GetDeviceID())
+    {
+        if (info) *info = self_info;
+        return true;
+    }
+
     for (WebDeviceInfo_ListItem dev_info : WebDevicesList)
     {
         if (dev_info.device.id != id) continue;
@@ -84,6 +90,16 @@ bool WebManager_V1::FindDeviceNear(uint32_t id, WebDeviceInfo_V1 *info) const
     }  
 
     return false;
+}
+
+void WebManager_V1::SetSelfInfo(WebDeviceInfo_V1 info)
+{
+    self_info = info;
+}
+
+WebDeviceInfo_V1 WebManager_V1::GetSelfData() const
+{
+    return self_info;
 }
 
 uint32_t WebManager_V1::GetConnections(WebConnection_V1 *info, uint32_t available)
