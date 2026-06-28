@@ -19,6 +19,7 @@ struct LIBRARIES_EXPORT RGBColor
     uint8_t R, G, B;
 
     bool operator==(const RGBColor& color) const { return memcmp(this, &color, sizeof(RGBColor)) == 0; }
+    bool operator!=(const RGBColor& color) const { return !operator==(color); }
 };
 
 constexpr RGBColor WhiteColor 		{ 0xFF, 0xFF, 0xFF };

@@ -13,6 +13,7 @@
 #include <SceneManager/IScene.hpp>
 #include <SceneManager/ISceneBuilder.hpp>
 #include <UI/Menu/ParamMenu.hpp>
+#include <UI/Text/Label.hpp>
 #include <Auth/Account_CreateScene.hpp>
 
 class LIBRARIES_EXPORT AuthScene : public IScene
@@ -21,6 +22,7 @@ protected:
 	IScene* current_subscene{};
 	Account_CreateScene create_scene;
 
+	Label label_input;
 	ParamMenu<int, 16> menu;
 
 public:

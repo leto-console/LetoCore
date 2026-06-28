@@ -4,9 +4,9 @@
 
 #define __GET_SYMBOL(text) (text < 0 ? 256 + text : text)
 
-static IFont* defaultFont = nullptr;
+static const IFont* defaultFont = nullptr;
 
-static bool CheckAndSetFont(IFont*& font)
+static bool CheckAndSetFont(const IFont*& font)
 {
     if (font) return true;
     if (!defaultFont) return false;
@@ -14,12 +14,17 @@ static bool CheckAndSetFont(IFont*& font)
     return true;
 }
 
-void DrawFunctions::SetDefaultFont(IFont *font)
+void DrawFunctions::SetDefaultFont(const IFont *font)
 {
     defaultFont = font;
 }
 
-void DrawFunctions::DrawChar(IScreen& screen, Point2_i point, const char *symbol, RGBColor color, RGBColor background, bool inverse, IFont *font)
+const IFont *DrawFunctions::GetDefaultFont()
+{
+    return defaultFont;
+}
+
+void DrawFunctions::DrawChar(IScreen& screen, Point2_i point, const char *symbol, RGBColor color, RGBColor background, bool inverse, const IFont *font)
 {
     if (!CheckAndSetFont(font)) 
         return;
@@ -43,7 +48,7 @@ void DrawFunctions::DrawChar(IScreen& screen, Point2_i point, const char *symbol
 	}
 }
 
-void DrawFunctions::DrawText(IScreen &screen, Point2_i point, const char *text, size_t length, RGBColor color, RGBColor background, bool inverse, IFont *font)
+void DrawFunctions::DrawText(IScreen &screen, Point2_i point, const char *text, size_t length, RGBColor color, RGBColor background, bool inverse, const IFont *font)
 {
     if (!CheckAndSetFont(font) || !text) 
         return;
@@ -79,7 +84,7 @@ void DrawFunctions::DrawText(IScreen &screen, Point2_i point, const char *text, 
 
 }
 
-int DrawFunctions::TextWidth(const char *text, size_t length, IFont *font)
+int DrawFunctions::TextWidth(const char *text, size_t length, const IFont *font)
 {
     if (!CheckAndSetFont(font) || !text) 
         return 0;

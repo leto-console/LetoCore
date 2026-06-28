@@ -25,12 +25,12 @@ public:
 	uint8_t GetWidth() const { return width; }
 	uint8_t GetHeight() const { return height; }
 
-	virtual const uint8_t* GetEmptyChar() = 0;
-	virtual const uint8_t* GetLoveChar() = 0;
-	virtual const uint8_t* GetCuteChar() = 0;
+	virtual const uint8_t* GetEmptyChar() const = 0;
+	virtual const uint8_t* GetLoveChar() const = 0;
+	virtual const uint8_t* GetCuteChar() const = 0;
 
-	virtual const uint8_t* GetASCIIChar(uint32_t code) = 0;
-	virtual const uint8_t* GetRussianChar(uint32_t first_part, uint32_t second_part) = 0;
+	virtual const uint8_t* GetASCIIChar(uint32_t code) const = 0;
+	virtual const uint8_t* GetRussianChar(uint32_t first_part, uint32_t second_part) const = 0;
 };
 
 #endif

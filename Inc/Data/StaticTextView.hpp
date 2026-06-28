@@ -20,6 +20,9 @@ public:
 	constexpr StaticTextView(const StaticText<Capacity>& text) noexcept 
 		: begin_ptr{ text.begin() }, capacity{ Capacity } { }
 
+	StaticTextView(const char* text) noexcept 
+		: begin_ptr{ text }, capacity{ strlen(text) } { }
+
 	const char* ConstChar() const noexcept { return begin_ptr; }
 
 	bool Empty() const noexcept { return TextLength() == 0; }

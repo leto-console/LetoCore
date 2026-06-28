@@ -38,11 +38,11 @@ protected:
 public:
 	DefaultFont(uint8_t width, uint8_t height) : IFont{ width, height } {}
 
-	const uint8_t* GetEmptyChar() override { return EmptyCharacter->code; };
-	const uint8_t* GetLoveChar() override { return LoveCharacter->code; };
-	const uint8_t* GetCuteChar() override { return CuteCharacter->code; };
+	const uint8_t* GetEmptyChar() const override { return EmptyCharacter->code; };
+	const uint8_t* GetLoveChar() const override { return LoveCharacter->code; };
+	const uint8_t* GetCuteChar() const override { return CuteCharacter->code; };
 
-	const uint8_t* GetASCIIChar(uint32_t code) override
+	const uint8_t* GetASCIIChar(uint32_t code) const override
 	{
 		if (code >= 32 && code <= 47)
 		{
@@ -77,7 +77,7 @@ public:
 
 		return EmptyCharacter->code;
 	};
-	const uint8_t* GetRussianChar(uint32_t first_part, uint32_t second_part) override
+	const uint8_t* GetRussianChar(uint32_t first_part, uint32_t second_part) const override
 	{
 		if (first_part == 208 && RussianCharacters)
 		{

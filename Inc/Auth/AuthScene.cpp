@@ -25,6 +25,14 @@ AuthScene::AuthScene() :
 	menu.SetVerticalAlignment(MenuVerticalAlignment::CENTER);
 	menu.Enable();
 	AddObject(&menu);
+
+	label_input.SetText("ВОЙТИ:");
+	label_input.SetFont(&Default_Font_7x7);
+	label_input.SetPosition({0, 5});
+	label_input.SetSize({160, 20});
+	label_input.SetHorizonAlignment(LabelHorizonAlignment::CENTER);
+	label_input.Enable();
+	AddObject(&label_input);
 }
 
 void AuthScene::ShowSelectScene()
@@ -77,9 +85,6 @@ void AuthScene::Draw(IScreen& screen)
 
 	if (menu.GetCurrentParam() > _USER_START)
 	{
-		StaticText32 text = "ВОЙТИ:";
-		DrawText(screen, { 48, 5 }, text, WhiteColor, BlackColor, false, &Default_Font_7x7);
-
 		Account account;
 		AuthHandler::Instance().GetAccount(menu.GetCurrentParam() - _USER_START, account);
 		

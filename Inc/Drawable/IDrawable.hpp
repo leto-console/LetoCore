@@ -26,13 +26,23 @@ protected:
 	/// Флаг отображения объекта
 	bool is_active = true;
 
+	/// TODO: Внедрить поддержку "грязных" прямоугольников
+	/// Флаг валидности отображаемого объекта (необходимо для рендеринга)
+	bool is_valid = false;
+
 public:
 	virtual ~IDrawable() = default;
 
-	IDrawable* SetWidth(int width)
+	IDrawable& SetSize(Point2_i size)
+	{
+		this->size = size;
+		return *this;
+	}
+
+	IDrawable& SetWidth(int width)
 	{ 
 		size.x = width; 
-		return this; 
+		return *this; 
 	}
 
 	int GetWidth() const 
@@ -40,10 +50,10 @@ public:
 		return size.x; 
 	}
 
-	IDrawable* SetHeight(int height)
+	IDrawable& SetHeight(int height)
 	{
 		size.y = height;
-		return this; 
+		return *this; 
 	}
 
 	int GetHeight() const
@@ -52,10 +62,10 @@ public:
 	}
 
 	// Настройка отображения объекта
-	virtual IDrawable* SetActive(bool active = true)
+	virtual IDrawable& SetActive(bool active = true)
 	{
 		is_active = active;
-		return this;
+		return *this;
 	}
 
 	virtual bool IsActive() const
@@ -63,10 +73,25 @@ public:
 		return is_active;
 	}
 
-	virtual IDrawable* SetPosition(Point2_i pos)
+	virtual void Validate()
+	{
+		is_valid = true;
+	}
+
+	virtual void Invalidate()
+	{
+		is_valid = false;
+	}
+
+	virtual bool IsValid() const
+	{
+		return is_valid;
+	}
+
+	virtual IDrawable& SetPosition(Point2_i pos)
 	{
 		this->position = pos;
-		return this;
+		return *this;
 	}
 
 	virtual Point2_i GetPosition() const
