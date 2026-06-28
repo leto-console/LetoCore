@@ -29,13 +29,11 @@ protected:
     Comparator comparator{};
 
 public:
-    InputCatcher(Comparator comparator) 
-        : comparator{ comparator }
+    InputCatcher() 
     {
     }
 
-    InputCatcher(Comparator comparator, Class* instance, OnCatchFunc callback)
-        : comparator{ comparator }
+    InputCatcher(Class* instance, OnCatchFunc callback)
     {
         InitInstance(instance, callback);
     }

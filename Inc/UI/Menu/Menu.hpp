@@ -19,7 +19,7 @@ protected:
 	StaticList<StaticText32, MaxSize> texts;
 
 public:
-	Menu(uint8_t visible_elements = 8, Point2_i position = {}) : MenuHolder{ texts, visible_elements, position }
+	Menu(uint8_t visible_elements = 8, Point2_i position = {}, bool ready_logic = false) : MenuHolder{ texts, visible_elements, position, ready_logic }
 	{
 	}
 

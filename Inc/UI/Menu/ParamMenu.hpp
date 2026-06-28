@@ -19,8 +19,8 @@ protected:
 	StaticList<Param, MaxSize> params;
 
 public:
-	ParamMenu(uint8_t height = 8, Point2_i position = {})
-		: Menu<MaxSize>{ height, position }
+	ParamMenu(uint8_t height = 8, Point2_i position = {}, bool ready_logic = false)
+		: Menu<MaxSize>{ height, position, ready_logic }
 	{
 	}
 

@@ -5,10 +5,12 @@
 
 #include <Input/SystemInputID.hpp>
 
-MenuHolder::MenuHolder(StaticListView<StaticText32> texts, uint8_t visible_elements, Point2_i position)
+MenuHolder::MenuHolder(StaticListView<StaticText32> texts, uint8_t visible_elements, Point2_i position, bool ready_logic)
 	: texts{ texts }, visible_elements{ visible_elements }, 
-	up_catcher{ ButtonEvent::Compare, this, &MenuHolder::Up },
-	down_catcher{ ButtonEvent::Compare, this, &MenuHolder::Down }
+	up_catcher{ this, &MenuHolder::Up },
+	down_catcher{ this, &MenuHolder::Down },
+	enter_cather{ this, &MenuHolder::Enter },
+	ready_logic{ ready_logic }
 {
 	SetPosition(position);
 }
@@ -17,6 +19,12 @@ void MenuHolder::InitBaseCatchers()
 {
 	RegUpEvent(&IsSystemPrevEvent);
     RegDownEvent(&IsSystemNextEvent);
+	RegEnterEvent(&IsSystemEnterEvent);
+}
+
+void MenuHolder::EnableReadyLogic()
+{
+	ready_logic = true;
 }
 
 void MenuHolder::RegUpEvent(IsEventFunc is_event)
@@ -27,6 +35,11 @@ void MenuHolder::RegUpEvent(IsEventFunc is_event)
 void MenuHolder::RegDownEvent(IsEventFunc is_event)
 {
 	down_catcher.Catch(is_event);
+}
+
+void MenuHolder::RegEnterEvent(IsEventFunc is_event)
+{
+	enter_cather.Catch(is_event);
 }
 
 void MenuHolder::OnShow()
@@ -88,7 +101,7 @@ void MenuHolder::ResetCurrentID()
 
 bool MenuHolder::IsResultReady(int &idx) const
 {
-	if (!IDrawable::IsActive() || !ready)
+	if (!ready_logic || !IDrawable::IsActive() || !ready)
 		return false;
 	idx = currentID;
 	return true;
@@ -101,7 +114,7 @@ void MenuHolder::SubmitReady()
 
 void MenuHolder::Up()
 {
-	if (ready || currentID == 0) return;
+	if (ready_logic && ready || currentID == 0) return;
 	currentID--;
 
 	if (vertical_align == MenuVerticalAlignment::CENTER)
@@ -116,7 +129,7 @@ void MenuHolder::Up()
 
 void MenuHolder::Down()
 {
-	if (ready || currentID >= Count() - 1) return;
+	if (ready_logic && ready || currentID >= Count() - 1) return;
 	currentID++;
 
 	if (vertical_align == MenuVerticalAlignment::CENTER)
@@ -201,22 +214,12 @@ void MenuHolder::Draw(IScreen& screen, Point2_i offset)
 
 bool MenuHolder::ProcessInput(const AppEvent& event)
 {	
-	if (ready) return true;
+	if (ready_logic && ready) return true;
 
 	if (up_catcher.ProcessInput(event) ||
-		down_catcher.ProcessInput(event))
+		down_catcher.ProcessInput(event) ||
+		ready_logic && enter_cather.ProcessInput(event))
 		return true;
-
-	if (IsSystemPrevEvent(event, true))
-	{
-		Up();
-		return true;
-	}
-	else if (IsSystemNextEvent(event, true))
-	{
-		Down();
-		return true;
-	}
 
 	return false;
 }

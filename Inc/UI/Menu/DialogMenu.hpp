@@ -38,9 +38,10 @@ protected:
 	IFont* font;
 
 public:
-	DialogParamMenu() : menu{ 3 }, enter_catcher{ &ButtonEvent::Compare }
+	DialogParamMenu() : menu{ 3 }
 	{
 		font = leto_api_v1->Font->GetFont(7, 7, 0);
+		menu.InitBaseCatchers();
 		menu.SetStyle(MenuStyle::STYLE_3, leto_api_v1->Font->GetFont(7, 7, 1));
 		menu.SetHorizonAlignment(MenuHorizonAlignment::CENTER);
 		Disable();

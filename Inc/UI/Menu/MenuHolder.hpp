@@ -50,19 +50,22 @@ protected:
 	int topID{};						/// Индекс первой строки (сверху)
 
 	bool reset_on_show{ true };			/// Сбрасывать ли автоматически меню при отображении
+	bool ready_logic = false;			/// Включение логики `IsResultReady`
 	bool ready = false;					/// В меню выбран элемент
 
     StaticListView<StaticText32> texts;
 
-	InputCatcher<MenuHolder> up_catcher, down_catcher;
+	InputCatcher<MenuHolder> up_catcher, down_catcher, enter_cather;
 
 public:
-	MenuHolder(StaticListView<StaticText32> texts, uint8_t visible_elements = 8, Point2_i position = {});
+	MenuHolder(StaticListView<StaticText32> texts, uint8_t visible_elements = 8, Point2_i position = {}, bool ready_logic = false);
 
 	void InitBaseCatchers();
+	void EnableReadyLogic();	/// TODO: Сделать такую логику по умолчанию, пока что сохранено для обратной совместимости
 	
 	void RegUpEvent(IsEventFunc is_event);
 	void RegDownEvent(IsEventFunc is_event);
+	void RegEnterEvent(IsEventFunc is_event);
 
 	void OnShow() override;
 

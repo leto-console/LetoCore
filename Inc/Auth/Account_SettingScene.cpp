@@ -12,6 +12,7 @@
 Account_SettingScene::Account_SettingScene(uint32_t editID, uint32_t deleteID)
 	: editID{ editID }, deleteID{ deleteID }
 {
+	menu.InitBaseCatchers();
 	menu.AppendMenuItem("ИЗМЕНИТЬ", editID);
 	menu.AppendMenuItem("УДАЛИТЬ", deleteID);
 	menu.SetStyle(MenuStyle::STYLE_3, &Default_Font_7x7_small);

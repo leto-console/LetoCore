@@ -21,6 +21,7 @@ AuthScene::AuthScene() :
 	menu{ 5, {40, 30} },
 	create_scene{ *this }
 {
+	menu.InitBaseCatchers();
 	menu.SetStyle(MenuStyle::STYLE_2, &Default_Font_7x7);
 	menu.SetVerticalAlignment(MenuVerticalAlignment::CENTER);
 	menu.Enable();
@@ -31,7 +32,6 @@ AuthScene::AuthScene() :
 	label_input.SetPosition({0, 5});
 	label_input.SetSize({160, 20});
 	label_input.SetHorizonAlignment(LabelHorizonAlignment::CENTER);
-	label_input.Enable();
 	AddObject(&label_input);
 }
 
@@ -83,8 +83,12 @@ void AuthScene::Draw(IScreen& screen)
 
 	Point2_i icon_point{10, 24};
 
+	label_input.Disable();
+
 	if (menu.GetCurrentParam() > _USER_START)
 	{
+		label_input.Enable();
+
 		Account account;
 		AuthHandler::Instance().GetAccount(menu.GetCurrentParam() - _USER_START, account);
 		

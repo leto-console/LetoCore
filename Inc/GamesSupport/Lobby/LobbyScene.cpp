@@ -21,6 +21,7 @@ LobbyScene::LobbyScene(BaseGame* game)
     select_label.Enable();
 
     select_menu.InitBaseCatchers();
+    select_menu.EnableReadyLogic();
     select_menu.AppendMenuItem("СОЗДАТЬ");
     select_menu.AppendMenuItem("НАЙТИ");
     select_menu.SetStyle(MenuStyle::STYLE_3, font);

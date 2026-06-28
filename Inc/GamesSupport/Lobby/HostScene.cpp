@@ -6,7 +6,7 @@ HostScene::HostScene(BaseGame *game, LobbyScene *lobby) : BaseGameScene{ game }
 {
     IFont* font = leto_api_v1->Font->GetFont(7, 7, 1);
 
-    label_text.SetText("УЧАСТНИКИ!");
+    label_text.SetText("ХОСТ!");
     label_text.SetFont(font);
     label_text.SetActive();
 }
