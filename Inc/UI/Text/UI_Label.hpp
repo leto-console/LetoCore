@@ -52,10 +52,14 @@ public:
 	UI_Label& SetFont(IFont* font);
 
 	UI_Label& SetTextColor(RGBColor color);
+	RGBColor GetTextColor() const;
 
 	UI_Label& SetBackroundColor(RGBColor color);
+	RGBColor GetBackroundColor() const;
 
 	UI_Label& SetColorInverse(bool inverse);
+
+	void UpdateOffsets();
 
 private:
 	StaticText32 label_text;
@@ -73,8 +77,6 @@ private:
 	int text_height = 0;
 
 	IFont* label_font = nullptr;
-
-	void UpdateOffsets();
 };
 
 #endif

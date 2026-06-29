@@ -19,36 +19,42 @@ HostScene::HostScene(BaseGame* game, LobbyScene* main_scene, uint8_t max_count, 
     
     int y_pos = 22;
     status_text = label_text;
-    status_text.SetTextColor(CyanColor);
+    status_text.SetTextColor(GrayColor);
     status_text.SetPosition({0, y_pos});
     status_text.SetText("ОЖИДАНИЕ");
     y_pos += 18;
 
     for (uint8_t i = 0; i < MEMBERS_COUNT; ++i)
     {
-        members_text[i] = label_text;
-        members_text[i].SetPosition({30, y_pos});
-        members_text[i].SetHorizonAlignment(LabelHorizonAlignment::LEFT);
-        members_text[i].Disable();
+        int32_t x_ready = 10;
 
         members_ready[i].SetRadius(2);
         members_ready[i].SetMainColor(GreenColor);
-        members_ready[i].SetPosition({24, y_pos + 3});
+        members_ready[i].SetPosition({x_ready, y_pos + 3});
         members_ready[i].Disable();
+
+        members_text[i] = label_text;
+        members_text[i].SetPosition({x_ready + 6, y_pos});
+        members_text[i].SetHorizonAlignment(LabelHorizonAlignment::LEFT);
+        members_text[i].Disable();
+
         y_pos += 8;
     }
     y_pos += 8;
+    y_menu_bottom_pos = y_pos;
 
     menu.InitBaseCatchers();
     menu.EnableReadyLogic();
     menu.SetStyle(MenuStyle::STYLE_3, font);
     menu.SetHorizonAlignment(MenuHorizonAlignment::CENTER);
-    menu.SetPosition({80, y_pos});
+    menu.SetPosition({120, 55});
     menu.Enable();
 
     // In the end because label_text is copy source for other labels
+    label_text.SetSize({160, 10});
+    label_text.UpdateOffsets();
     label_text.SetTextColor(BlackColor);
-    label_text.SetBackroundColor(CyanColor);
+    label_text.SetBackroundColor(YellowColor);
 }
 
 void HostScene::OnShow()
@@ -61,7 +67,7 @@ void HostScene::ProcessGameInput(const AppEvent &event)
 {
     if (!opened)
     {
-        main_scene->SwitchMode(LobbyScene::SELECT);
+        Quit();
         return;
     }
 
@@ -104,33 +110,13 @@ void HostScene::Loop()
         }
         return;
     }
-
-    for (UI_Label& label : members_text)
-        label.Disable();
-
-    for (UI_Circle& circle : members_ready)
-        circle.Disable();
     
-    opened = leto_api_v1->Lobby->GetActiveLobby(&lobby);
+    RefreshLobby();
+        
     if (opened) 
     {
-        if (lobby.connected == 1)
-            status_text.SetText("ОЖИДАНИЕ");
-        else
-        {
-            status_text.SetText("УЧАСТНИКИ:");
-            for (int i = 0; i < lobby.connected; ++i)
-            {                
-                WebDeviceInfo_V1 info;
-                if (leto_api_v1->Web->FindDeviceNear(lobby.members[i], &info))
-                {
-                    members_text[i].SetText(info.web_name);
-                    members_text[i].Enable();
-                    if (info.flags & WD_FLAG_READY)
-                        members_ready[i].Enable();
-                }
-            }
-        }
+        status_text.SetText("УЧАСТНИКИ:");
+        RefreshMembers();
     }
     else
     {
@@ -138,6 +124,35 @@ void HostScene::Loop()
     }
 
     RefreshMenu();
+}
+
+void HostScene::RefreshMembers()
+{
+    for (UI_Label& label : members_text)
+        label.Disable();
+
+    for (UI_Circle& circle : members_ready)
+        circle.Disable();
+    
+    if (!opened) return;
+
+    for (int i = 0; i < lobby.connected; ++i)
+    {                
+        WebDeviceInfo_V1 info;
+        if (leto_api_v1->Web->FindDeviceNear(lobby.members[i], &info))
+        {
+            members_text[i].SetText(info.web_name);
+            members_text[i].SetTextColor(info.id == leto_api_v1->Globals->GetDeviceID() ? label_text.GetBackroundColor() : WhiteColor);
+            members_text[i].Enable();
+            if (info.flags & WD_FLAG_READY)
+                members_ready[i].Enable();
+        }
+    }
+}
+
+void HostScene::RefreshLobby()
+{
+    opened = leto_api_v1->Lobby->GetActiveLobby(&lobby);
 }
 
 void HostScene::RefreshMenu()

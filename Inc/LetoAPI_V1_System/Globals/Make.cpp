@@ -5,6 +5,7 @@
 #include <System/CommonAllocator.hpp>
 #include <System/DebugMode.hpp>
 #include <Time/TimeUtils.hpp>
+#include <System/DeviceID.hpp>
 
 void* Alloc(uint32_t size)
 {
@@ -36,7 +37,8 @@ const GlobalsAPI_V1* Make_GlobalsAPI()
         &Free,
         &GetAllocator,
         &GetDebugMode,
-        &GetCurrentMs
+        &GetCurrentMs,
+        &GetDeviceID
     };
 	
     return &api;

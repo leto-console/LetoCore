@@ -43,12 +43,15 @@ protected:
     bool opened;
 
     enum { NONE, MENU_START, MENU_QUIT };
-    ParamMenu<uint8_t, 2> menu;
-
-    uint8_t max_count;
+    ParamMenu<uint8_t, 8> menu;
 
     LobbyConnection_V1_Callback callback;
 
+    uint8_t max_count;
+    int32_t y_menu_bottom_pos;
+
+    void RefreshMembers();
+    void RefreshLobby();
     void RefreshMenu();
     void Quit();
 };

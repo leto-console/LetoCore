@@ -87,6 +87,11 @@ UI_Label& UI_Label::SetTextColor(RGBColor color)
     return *this;
 }
 
+RGBColor UI_Label::GetTextColor() const
+{
+    return label_text_color;
+}
+
 UI_Label& UI_Label::SetBackroundColor(RGBColor color)
 {
     if (label_background_color != color)
@@ -95,6 +100,11 @@ UI_Label& UI_Label::SetBackroundColor(RGBColor color)
         Invalidate();
     }
     return *this;
+}
+
+RGBColor UI_Label::GetBackroundColor() const
+{
+    return label_background_color;
 }
 
 UI_Label& UI_Label::SetColorInverse(bool inverse)

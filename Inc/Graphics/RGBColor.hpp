@@ -60,6 +60,10 @@ constexpr RGBColor LightGreenColor 	{ "#8BC34A" };
 
 constexpr RGBColor BlueColor		{ "#2196f3" };
 
+constexpr RGBColor YellowColor      { "#FFEB3B" };
+
+constexpr RGBColor DeepOrangeColor  { "#FF5722" };
+
 constexpr RGBColor IndigoColor      { "#3f51b5" };
 
 #endif

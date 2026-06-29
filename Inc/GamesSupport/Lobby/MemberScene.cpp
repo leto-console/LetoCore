@@ -5,34 +5,15 @@
 
 #include <Input/SystemInputID.hpp>
 
-MemberScene::MemberScene(BaseGame* game, LobbyScene* main_scene, LobbyConnection_V1_Callback callback) 
-    : BaseGameScene{ game }, main_scene{ main_scene }, callback{ callback }
+static const StaticText32 ST_AVAILABLE_HOSTS{ "ДОСТУПНЫЕ ХОСТЫ:" }; ///< ДОСТУПНЫЕ ХОСТЫ:
+static const StaticText32 ST_CONNECTED{ "ВЫ ПОДКЛЮЧЕНЫ!" };         ///< ВЫ ПОДКЛЮЧЕНЫ
+static const StaticText32 ST_WAITING{ "ОЖИДАЕМ" };                  ///< ОЖИДАЕМ
+
+MemberScene::MemberScene(BaseGame* game, LobbyScene* main_scene, uint8_t max_count, LobbyConnection_V1_Callback callback) 
+    : HostScene{ game, main_scene, max_count, callback }
 {
-    IFont* font = leto_api_v1->Font->GetFont(7, 7, 1);
-
-    label_text.SetText("ИГРОВАЯ КОМНАТА");
-    label_text.SetFont(font);
-    label_text.SetPosition({0, 10});
-    label_text.SetSize({160, 10});
-    label_text.SetHorizonAlignment(LabelHorizonAlignment::CENTER);
-    label_text.SetActive();
-
-    int y_pos = 22;
-    status_text = label_text;
-    status_text.SetPosition({0, y_pos});
-    status_text.SetText("ХОСТЫ:");
-    y_pos += 18;
-
-    menu.InitBaseCatchers();
-    menu.EnableReadyLogic();
-    menu.SetStyle(MenuStyle::STYLE_3, font);
-    menu.SetHorizonAlignment(MenuHorizonAlignment::CENTER);
-    menu.SetPosition({80, y_pos});
-    menu.Enable();
-
-    // In the end because label_text is copy source for other labels
-    label_text.SetTextColor(BlackColor);
-    label_text.SetBackroundColor(CyanColor);
+    status_text.SetText(ST_AVAILABLE_HOSTS);
+    label_text.SetBackroundColor(DeepOrangeColor);
 }
 
 void MemberScene::OnShow()
@@ -48,14 +29,7 @@ void MemberScene::ProcessGameInput(const AppEvent &event)
         return;
     }
 
-    menu.ProcessInput(event);
-}
-
-void MemberScene::Draw(IScreen &screen)
-{
-    label_text.MainDraw(screen);
-    status_text.MainDraw(screen);
-    menu.MainDraw(screen);
+    if (menu.ProcessInput(event)) return;
 }
 
 void MemberScene::Loop()
@@ -84,27 +58,34 @@ void MemberScene::Loop()
         return;
     }
 
-    RefreshLobbiesNear();
+    for (UI_Label& label : members_text)
+        label.Disable();
+
+    for (UI_Circle& circle : members_ready)
+        circle.Disable();
+
+    RefreshLobby();
 
     if (opened)
     {
-        status_text.SetText("ПОДКЛЮЧЕНЫ!");
+        status_text.SetText(ST_CONNECTED);
+        RefreshMembers();
     }
     else if (near_cnt)
     {
-        status_text.SetText("ХОСТЫ:");
+        status_text.SetText(ST_AVAILABLE_HOSTS);
     }
     else
     {
-        status_text.SetText("ОЖИДАЕМ");
+        status_text.SetText(ST_WAITING);
     }
 
     RefreshMenu();
 }
 
-void MemberScene::RefreshLobbiesNear()
+void MemberScene::RefreshLobby()
 {
-    opened = leto_api_v1->Lobby->GetActiveLobby(&lobby);
+    HostScene::RefreshLobby();
     near_cnt = leto_api_v1->Lobby->GetLobbiesNear(near_info, sizeof(near_info) / sizeof(near_info[0]));
 }
 
@@ -114,6 +95,7 @@ void MemberScene::RefreshMenu()
 
     if (!opened)
     {
+        menu.SetPosition({80, 40});
         for (uint32_t i = 0; i < near_cnt; ++i)
         {
             char txt[16];
@@ -123,14 +105,9 @@ void MemberScene::RefreshMenu()
     }
     else
     {
+        menu.SetPosition({120, 55});
         if (!leto_api_v1->Lobby->GetReady())
             menu.AppendMenuItem("НАЧАТЬ", MENU_START);
         menu.AppendMenuItem("ВЫЙТИ", MENU_QUIT);    
     }
-}
-
-void MemberScene::Quit()
-{
-    leto_api_v1->Lobby->QuitLobby();
-    main_scene->SwitchMode(LobbyScene::SELECT);
 }

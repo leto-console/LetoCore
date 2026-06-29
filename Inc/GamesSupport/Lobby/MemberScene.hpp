@@ -10,43 +10,37 @@
 #include "LibrariesExport.h"
 
 #include <GamesSupport/BaseGameScene.hpp>
+#include <GamesSupport/Lobby/HostScene.hpp>
+#include <UI/Geometry/UI_Circle.hpp>
 #include <UI/Text/UI_Label.hpp>
 #include <UI/Menu/ParamMenu.hpp>
 #include <LetoAPI_V1/LetoAPI_V1.hpp>
 
 class LobbyScene;
 
-class LIBRARIES_EXPORT MemberScene : public BaseGameScene
+class LIBRARIES_EXPORT MemberScene : public HostScene
 {
 public:
-    MemberScene(BaseGame* game, LobbyScene* main_scene, LobbyConnection_V1_Callback callback);
+    MemberScene(BaseGame* game, LobbyScene* main_scene, uint8_t max_count, LobbyConnection_V1_Callback callback);
 
     void OnShow() override;
 
     void ProcessGameInput(const AppEvent& event) override;
 
-    void Draw(IScreen& screen) override;
+    // void Draw(IScreen& screen) override;
 
     void Loop() override;
 
 protected:
-    UI_Label label_text, status_text;
 
-    LobbyScene* main_scene;
-    LobbyConnection_V1 lobby;
-    bool opened;
+    enum { NONE, MENU_START, MENU_QUIT, HOST_ID = 10 };
 
     LobbyInfo_V1 near_info[8]{};
     uint32_t near_cnt{};
 
-    enum { NONE, MENU_START, MENU_QUIT, HOST_ID = 10 };
-    ParamMenu<uint8_t, 8> menu;
-
-    LobbyConnection_V1_Callback callback;
-    
-    void RefreshLobbiesNear();
+    void RefreshLobby();
     void RefreshMenu();
-    void Quit();
+    //void Quit();
 };
 
 #endif

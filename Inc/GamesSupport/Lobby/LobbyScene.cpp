@@ -13,7 +13,7 @@ LobbyScene::LobbyScene(BaseGame* game, uint8_t max_count,
     LobbyConnection_V1_Callback host_callback, LobbyConnection_V1_Callback member_callback) 
     : BaseGameScene{ game }, scene_mode{ NONE }, 
     host_scene{ game, this, max_count, host_callback }, 
-    member_scene{ game, this, member_callback }
+    member_scene{ game, this, max_count, member_callback }
 {
     IFont* font = leto_api_v1->Font->GetFont(7, 7, 1);
 
@@ -41,7 +41,7 @@ void LobbyScene::OnShow()
     LobbyConnection_V1 connection;
     if (leto_api_v1->Lobby->GetActiveLobby(&connection))
     {
-        SwitchMode(connection.owner == GetDeviceID() ? HOST : MEMBER);
+        SwitchMode(connection.owner == leto_api_v1->Globals->GetDeviceID() ? HOST : MEMBER);
         return;     
     }
     else

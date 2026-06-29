@@ -35,13 +35,17 @@ public:
 
 	IDrawable& SetSize(Point2_i size)
 	{
+		Invalidate();
 		this->size = size;
+		Invalidate();
 		return *this;
 	}
 
 	IDrawable& SetWidth(int width)
 	{ 
-		size.x = width; 
+		Invalidate();
+		size.x = width;
+		Invalidate();
 		return *this; 
 	}
 
@@ -52,7 +56,9 @@ public:
 
 	IDrawable& SetHeight(int height)
 	{
+		Invalidate();
 		size.y = height;
+		Invalidate();
 		return *this; 
 	}
 
@@ -65,6 +71,7 @@ public:
 	virtual IDrawable& SetActive(bool active = true)
 	{
 		is_active = active;
+		Invalidate();
 		return *this;
 	}
 
@@ -81,6 +88,7 @@ public:
 	virtual void Invalidate()
 	{
 		is_valid = false;
+		/// TODO: Добавить логику отправки областей, которые нужно отрендерить
 	}
 
 	virtual bool IsValid() const
@@ -90,7 +98,9 @@ public:
 
 	virtual IDrawable& SetPosition(Point2_i pos)
 	{
+		Invalidate();
 		this->position = pos;
+		Invalidate();
 		return *this;
 	}
 

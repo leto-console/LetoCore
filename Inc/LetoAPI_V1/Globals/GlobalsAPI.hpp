@@ -58,6 +58,11 @@ struct GlobalsAPI_V1
      * @brief Get number of milliseconds elapsed since MCU startup
      */
     uint32_t (*GetCurrentMs)();
+
+    /**
+     * @brief Get device hardware identifier
+     */
+    uint32_t (*GetDeviceID)();
 };
 
 #pragma pack(pop)
