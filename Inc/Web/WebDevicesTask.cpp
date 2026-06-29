@@ -17,6 +17,7 @@ enum DEVICE_INFO_TYPE
 	INFO_NAME_7_12,
 	INFO_ID_ACTIVE_LOBBY,
 	INFO_AVATAR_JOIN_LOBBY,
+	INFO_FLAGS,
 	INFO_MAX
 };
 
@@ -49,6 +50,10 @@ void WebDevicesTask::SendAccountMsg()
 	memset(self_info.web_name, 0, sizeof(self_info.web_name));
 	memcpy(self_info.web_name, &account.Name[0], 10);
 
+	self_info.flags &=~ WD_FLAG_READY;
+	if (LobbyManager_V1::Instance().GetReady())
+		self_info.flags |= WD_FLAG_READY;
+
 	for (uint8_t info = 0; info < INFO_MAX; ++info)
 	{
 		memset(u_data + 2, 0, 6);
@@ -63,12 +68,15 @@ void WebDevicesTask::SendAccountMsg()
 			memcpy(u_data + 2, &account.Name[6], 6);
 			break;
 		case INFO_ID_ACTIVE_LOBBY:
-			memcpy(u_data + 2, &device_id, 4);
-			memcpy(u_data + 6, &lobby_owner, 4);
+			memcpy(u_data + 2, &self_info.id, 4);
+			memcpy(u_data + 6, &self_info.lobby_owner, 4);
 			break;
 		case INFO_AVATAR_JOIN_LOBBY:
-			memcpy(u_data + 2, &account.Avatar, 4);
-			memcpy(u_data + 6, &join_lobby, 4);
+			memcpy(u_data + 2, &self_info.avatar_id, 4);
+			memcpy(u_data + 6, &self_info.joining_lobby, 4);
+			break;
+		case INFO_FLAGS:
+			memcpy(u_data + 2, &self_info.flags, 1);
 			break;
 		}
 
@@ -173,6 +181,9 @@ static void WebDevTask_Callback(uint8_t channel, uint8_t port, uint32_t id, cons
 				case INFO_AVATAR_JOIN_LOBBY:
 					memcpy(&info.device.avatar_id, &u_data[2], 4);
 					memcpy(&info.device.joining_lobby, &u_data[6], 4);
+					break;
+				case INFO_FLAGS:
+					memcpy(&info.device.flags, &u_data[2], 1);
 					break;
 				}
 				return;

@@ -1,8 +1,8 @@
-#include "Label.hpp"
+#include "UI_Label.hpp"
 
 #include <DrawFunctions/DrawText.hpp>
 
-Label::Label(Point2_i pos, Point2_i size)
+UI_Label::UI_Label(Point2_i pos, Point2_i size)
 {
     SetPosition(pos);
     SetWidth(size.x);
@@ -11,7 +11,7 @@ Label::Label(Point2_i pos, Point2_i size)
     text_height = DrawFunctions::GetDefaultFont()->GetHeight();
 }
 
-void Label::Draw(IScreen &screen, Point2_i offset)
+void UI_Label::Draw(IScreen &screen, Point2_i offset)
 {
     using namespace DrawFunctions;
 
@@ -20,13 +20,13 @@ void Label::Draw(IScreen &screen, Point2_i offset)
     DrawText(screen, _draw_pos, label_text, label_text_color, label_background_color, label_inverse, label_font);
 }
 
-bool Label::ProcessInput(const AppEvent &event)
+bool UI_Label::ProcessInput(const AppEvent &event)
 {
     (void) event;
     return false;
 }
 
-void Label::SetText(const StaticText32 &text)
+void UI_Label::SetText(const StaticText32 &text)
 {
     if (text != label_text)
     {
@@ -37,12 +37,12 @@ void Label::SetText(const StaticText32 &text)
     }
 }
 
-StaticTextView Label::GetText() const
+StaticTextView UI_Label::GetText() const
 {
     return label_text;
 }
 
-Label& Label::SetHorizonAlignment(LabelHorizonAlignment alignment)
+UI_Label& UI_Label::SetHorizonAlignment(LabelHorizonAlignment alignment)
 {
     if (alignment == h_align) return *this;
 
@@ -53,7 +53,7 @@ Label& Label::SetHorizonAlignment(LabelHorizonAlignment alignment)
     return *this;
 }
 
-Label& Label::SetVerticalAlignment(LabelVerticalAlignment alignment)
+UI_Label& UI_Label::SetVerticalAlignment(LabelVerticalAlignment alignment)
 {
     if (alignment == v_align) return *this;
 
@@ -64,7 +64,7 @@ Label& Label::SetVerticalAlignment(LabelVerticalAlignment alignment)
     return *this;
 }
 
-Label& Label::SetFont(IFont *font)
+UI_Label& UI_Label::SetFont(IFont *font)
 {
     if (font)
     {
@@ -77,7 +77,7 @@ Label& Label::SetFont(IFont *font)
     return *this;
 }
 
-Label& Label::SetTextColor(RGBColor color)
+UI_Label& UI_Label::SetTextColor(RGBColor color)
 {
     if (label_text_color != color)
     {
@@ -87,7 +87,7 @@ Label& Label::SetTextColor(RGBColor color)
     return *this;
 }
 
-Label& Label::SetBackroundColor(RGBColor color)
+UI_Label& UI_Label::SetBackroundColor(RGBColor color)
 {
     if (label_background_color != color)
     {
@@ -97,7 +97,7 @@ Label& Label::SetBackroundColor(RGBColor color)
     return *this;
 }
 
-Label& Label::SetColorInverse(bool inverse)
+UI_Label& UI_Label::SetColorInverse(bool inverse)
 {
     if (label_inverse != inverse)
     {
@@ -107,7 +107,7 @@ Label& Label::SetColorInverse(bool inverse)
     return *this;
 }
 
-void Label::UpdateOffsets()
+void UI_Label::UpdateOffsets()
 {
     h_offset = v_offset = 0;
     

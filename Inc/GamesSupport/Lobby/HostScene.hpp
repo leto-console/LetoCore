@@ -11,7 +11,8 @@
 
 #include <GamesSupport/BaseGameScene.hpp>
 
-#include <UI/Text/Label.hpp>
+#include <UI/Geometry/UI_Circle.hpp>
+#include <UI/Text/UI_Label.hpp>
 #include <UI/Menu/ParamMenu.hpp>
 #include <LetoAPI_V1/LetoAPI_V1.hpp>
 
@@ -31,8 +32,11 @@ public:
     void Loop() override;
 
 protected:
-    Label label_text, status_text;
-    Label members_text[6];
+    UI_Label label_text, status_text;
+
+    enum { MEMBERS_COUNT = 6 };
+    UI_Label members_text[MEMBERS_COUNT];
+    UI_Circle members_ready[MEMBERS_COUNT];
 
     LobbyScene* main_scene;
     LobbyConnection_V1 lobby;

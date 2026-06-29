@@ -14,7 +14,7 @@
 #include <GamesSupport/Lobby/MemberScene.hpp>
 
 #include <UI/Menu/ParamMenu.hpp>
-#include <UI/Text/Label.hpp>
+#include <UI/Text/UI_Label.hpp>
 
 class LIBRARIES_EXPORT LobbyScene : public BaseGameScene
 {
@@ -44,7 +44,7 @@ protected:
     MemberScene member_scene;
 
     ParamMenu<LobbyMode, 2> select_menu;
-    Label select_label;
+    UI_Label select_label;
 
     uint32_t prevID{}, successID{};
 };

@@ -1,12 +1,13 @@
-/*
- * Label.hpp
- *
- *  Created on: Jun 28, 2026
- *      Author: Rakhimov T.
+/**
+ * @file UI_Label.hpp
+ * @date Jun 28, 2026
+ * @author Rakhimov T.
  */
 
-#ifndef INC_UI_LABEL_HPP_
-#define INC_UI_LABEL_HPP_
+#ifndef INC_UI_TEXT_UI_LABEL_HPP_
+#define INC_UI_TEXT_UI_LABEL_HPP_
+
+#include "LibrariesExport.h"
 
 #include <SceneManager/ISceneObject.hpp>
 
@@ -27,11 +28,11 @@ enum class LabelVerticalAlignment : uint8_t
 };
 
 /// @brief Text label UI element
-class Label : public ISceneObject
+class LIBRARIES_EXPORT UI_Label : public ISceneObject
 {
 public:
-	Label() = default;
-    Label(Point2_i pos, Point2_i size);
+	UI_Label() = default;
+    UI_Label(Point2_i pos, Point2_i size);
 	
 	void Draw(IScreen& screen, Point2_i offset = {}) override;
 
@@ -43,37 +44,37 @@ public:
 	StaticTextView GetText() const;
 
 	// Установить горизонтальное выравнивание
-	Label& SetHorizonAlignment(LabelHorizonAlignment alignment);
+	UI_Label& SetHorizonAlignment(LabelHorizonAlignment alignment);
 
 	// Установить вертикальное выравнивание
-	Label& SetVerticalAlignment(LabelVerticalAlignment align);
+	UI_Label& SetVerticalAlignment(LabelVerticalAlignment align);
 
-	Label& SetFont(IFont* font);
+	UI_Label& SetFont(IFont* font);
 
-	Label& SetTextColor(RGBColor color);
+	UI_Label& SetTextColor(RGBColor color);
 
-	Label& SetBackroundColor(RGBColor color);
+	UI_Label& SetBackroundColor(RGBColor color);
 
-	Label& SetColorInverse(bool inverse);
+	UI_Label& SetColorInverse(bool inverse);
 
 private:
+	StaticText32 label_text;
+
 	LabelHorizonAlignment h_align = LabelHorizonAlignment::LEFT;
 	LabelVerticalAlignment v_align = LabelVerticalAlignment::TOP;
+	RGBColor label_text_color = WhiteColor;
+	RGBColor label_background_color = BlackColor;
+	bool label_inverse = false;
 
 	int h_offset = 0;
 	int v_offset = 0;
-
-	void UpdateOffsets();
-
-	StaticText32 label_text;
 
 	int text_width = 0;
 	int text_height = 0;
 
 	IFont* label_font = nullptr;
-	RGBColor label_text_color = WhiteColor;
-	RGBColor label_background_color = BlackColor;
-	bool label_inverse = false;
+
+	void UpdateOffsets();
 };
 
 #endif

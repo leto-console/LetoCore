@@ -42,6 +42,16 @@ void SendData(const void* data, uint32_t size)
 	LobbyManager_V1::Instance().SendData(data, size);
 }
 
+void SetReady(bool ready)
+{
+	LobbyManager_V1::Instance().SetReady(ready);
+}
+
+bool GetReady()
+{
+	return LobbyManager_V1::Instance().GetReady();
+}
+
 // ====================================================================================================
 
 const LobbyAPI_V1* Make_LobbyAPI()
@@ -54,7 +64,9 @@ const LobbyAPI_V1* Make_LobbyAPI()
 		&GetActiveLobby,
 		&QuitLobby,
 		&DisconnectMember,
-		&SendData
+		&SendData,
+		&SetReady,
+		&GetReady
 	};
 
     return &api;

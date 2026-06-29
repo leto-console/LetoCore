@@ -164,6 +164,7 @@ void LobbyManager_V1::DisconnectMember(uint32_t ID)
 void LobbyManager_V1::QuitLobby()
 {    
     global_lobby.state = LC_STATE_DISCONNECTED;
+    SetReady(false);
 }
 
 void LobbyManager_V1::SendData(const void *data, uint32_t size)
@@ -172,6 +173,16 @@ void LobbyManager_V1::SendData(const void *data, uint32_t size)
         return;
     
     WebManager_V1::Instance().SendData(main_conection, data, size);
+}
+
+void LobbyManager_V1::SetReady(bool ready)
+{
+    this->ready = ready;
+}
+
+bool LobbyManager_V1::GetReady()
+{
+    return ready;
 }
 
 void LobbyManager_V1::Loop()

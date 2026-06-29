@@ -86,4 +86,8 @@ using Point2_u8 = Point2<uint8_t>;
 using Point2_u16 = Point2<uint16_t>;
 using Point2_u32 = Point2<uint32_t>;
 
+using Point2_i8 = Point2<int8_t>;
+using Point2_i16 = Point2<int16_t>;
+using Point2_i32 = Point2<int32_t>;
+
 #endif

@@ -10,7 +10,7 @@
 #include "LibrariesExport.h"
 
 #include <GamesSupport/BaseGameScene.hpp>
-#include <UI/Text/Label.hpp>
+#include <UI/Text/UI_Label.hpp>
 #include <UI/Menu/ParamMenu.hpp>
 #include <LetoAPI_V1/LetoAPI_V1.hpp>
 
@@ -30,7 +30,7 @@ public:
     void Loop() override;
 
 protected:
-    Label label_text, status_text;
+    UI_Label label_text, status_text;
 
     LobbyScene* main_scene;
     LobbyConnection_V1 lobby;

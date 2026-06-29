@@ -17,11 +17,11 @@ MemberScene::MemberScene(BaseGame* game, LobbyScene* main_scene, LobbyConnection
     label_text.SetHorizonAlignment(LabelHorizonAlignment::CENTER);
     label_text.SetActive();
 
-    int y_pos = 30;
+    int y_pos = 22;
     status_text = label_text;
     status_text.SetPosition({0, y_pos});
     status_text.SetText("ХОСТЫ:");
-    y_pos += 10;
+    y_pos += 18;
 
     menu.InitBaseCatchers();
     menu.EnableReadyLogic();
@@ -79,7 +79,7 @@ void MemberScene::Loop()
         }
         else if (param == MENU_START)
         {
-            //.... Logic of start the game
+            leto_api_v1->Lobby->SetReady(true);
         }
         return;
     }
@@ -123,7 +123,8 @@ void MemberScene::RefreshMenu()
     }
     else
     {
-        menu.AppendMenuItem("НАЧАТЬ", MENU_START);
+        if (!leto_api_v1->Lobby->GetReady())
+            menu.AppendMenuItem("НАЧАТЬ", MENU_START);
         menu.AppendMenuItem("ВЫЙТИ", MENU_QUIT);    
     }
 }

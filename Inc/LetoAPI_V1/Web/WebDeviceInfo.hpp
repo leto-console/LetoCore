@@ -9,7 +9,10 @@
 
 #include <cstdint>
 
-#pragma pack(push, 4)
+#pragma pack(push, 1)
+
+const uint8_t WD_FLAG_NONE 		= (0x00);
+const uint8_t WD_FLAG_READY 	= (0x01 << 0);
 
 /**
  * @brief Network device information
@@ -36,6 +39,9 @@ struct WebDeviceInfo_V1
 
 	/// Lobby connection request status
 	uint32_t joining_lobby;
+
+	/// Device flags
+	uint8_t flags;
 };
 
 #pragma pack(pop)

@@ -1,10 +1,11 @@
 #include <Drawable/Circle.hpp>
 #include <DrawFunctions/DrawCircle.hpp>
+#include "Circle.hpp"
 
 using namespace Drawable;
 
 Drawable::Circle::Circle(int radius, int outline)
-	: radius { radius }, outline { outline }
+	: radius { radius }, outline { outline }, color{ WhiteColor }, background{ BlackColor }
 {
 }
 
@@ -28,6 +29,18 @@ int Drawable::Circle::GetOutline() const
 	return outline;
 }
 
+Circle &Drawable::Circle::SetMainColor(RGBColor color)
+{
+	this->color = color; 
+	return *this;
+}
+
+Circle &Drawable::Circle::SetBackroundColor(RGBColor color)
+{
+	this->background = color; 
+	return *this;
+}
+
 void Drawable::Circle::Draw(IScreen& screen, Point2_i offset)
 {
 	using namespace DrawFunctions;
@@ -35,7 +48,7 @@ void Drawable::Circle::Draw(IScreen& screen, Point2_i offset)
 	if (!IsActive())
 		return;
 		
-	DrawCircle(screen, position + offset, radius, WhiteColor);
+	DrawCircle(screen, position + offset, radius, color);
 	if (outline)
-		DrawCircle(screen, position + offset, outline, BlackColor);
+		DrawCircle(screen, position + offset, outline, background);
 }

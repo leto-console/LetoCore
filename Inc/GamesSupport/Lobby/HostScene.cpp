@@ -17,17 +17,24 @@ HostScene::HostScene(BaseGame* game, LobbyScene* main_scene, uint8_t max_count, 
     label_text.SetHorizonAlignment(LabelHorizonAlignment::CENTER);
     label_text.SetActive();
     
-    int y_pos = 30;
+    int y_pos = 22;
     status_text = label_text;
+    status_text.SetTextColor(CyanColor);
     status_text.SetPosition({0, y_pos});
     status_text.SetText("ОЖИДАНИЕ");
-    y_pos += 10;
+    y_pos += 18;
 
-    for (Label& label : members_text)
+    for (uint8_t i = 0; i < MEMBERS_COUNT; ++i)
     {
-        label = label_text;
-        label.SetPosition({0, y_pos});
-        label.Disable();
+        members_text[i] = label_text;
+        members_text[i].SetPosition({30, y_pos});
+        members_text[i].SetHorizonAlignment(LabelHorizonAlignment::LEFT);
+        members_text[i].Disable();
+
+        members_ready[i].SetRadius(2);
+        members_ready[i].SetMainColor(GreenColor);
+        members_ready[i].SetPosition({24, y_pos + 3});
+        members_ready[i].Disable();
         y_pos += 8;
     }
     y_pos += 8;
@@ -66,8 +73,10 @@ void HostScene::Draw(IScreen &screen)
     label_text.MainDraw(screen);
     status_text.MainDraw(screen);
     menu.MainDraw(screen);
-    for (Label& label : members_text)
+    for (UI_Label& label : members_text)
         label.MainDraw(screen);
+    for (UI_Circle& circle : members_ready)
+        circle.MainDraw(screen);
 
     if (opened)
     {
@@ -96,8 +105,11 @@ void HostScene::Loop()
         return;
     }
 
-    for (Label& label : members_text)
+    for (UI_Label& label : members_text)
         label.Disable();
+
+    for (UI_Circle& circle : members_ready)
+        circle.Disable();
     
     opened = leto_api_v1->Lobby->GetActiveLobby(&lobby);
     if (opened) 
@@ -113,7 +125,9 @@ void HostScene::Loop()
                 if (leto_api_v1->Web->FindDeviceNear(lobby.members[i], &info))
                 {
                     members_text[i].SetText(info.web_name);
-                    members_text[i].SetActive();
+                    members_text[i].Enable();
+                    if (info.flags & WD_FLAG_READY)
+                        members_ready[i].Enable();
                 }
             }
         }

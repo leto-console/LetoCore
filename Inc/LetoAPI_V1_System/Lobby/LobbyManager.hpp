@@ -46,6 +46,8 @@ protected:
     WebConnection_V1 find_connection;   ///< Connection to WC_PORT_FND_LOBBY
     WebConnection_V1 main_conection;    ///< Connection to WC_PORT_CON_LOBBY
 
+    bool ready{};
+
     /**
      * @brief Check if user is member of current lobby
      * 
@@ -135,6 +137,20 @@ public:
 	 * @param[in] size Size of the data to send
 	 */
 	void SendData(const void* data, uint32_t size);
+
+    /**
+     * @brief Set readiness for connection.
+     * 
+     * @param[in] ready True if ready for connection, false otherwise.
+     */
+    void SetReady(bool ready);
+
+    /** 
+     * @brief Get readiness for connection.
+     * 
+     * @return True if ready for connection, false otherwise.
+     */
+    bool GetReady();
 
     /** ==================================================================================  */
 

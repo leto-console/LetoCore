@@ -19,15 +19,20 @@ namespace Drawable
 	protected:
 		int radius{}, outline{};
 
+		RGBColor color, background;
+
 	public:
 		// Радиус и размер контура (при outline = 0 круг заливается)
-		Circle(int radius, int outline = 0);
+		explicit Circle(int radius = 0, int outline = 0);
 
 		void SetRadius(int radius);
 		int GetRadius() const;
 
 		void SetOutline(int outline);
 		int GetOutline() const;
+
+		Circle& SetMainColor(RGBColor color);
+		Circle& SetBackroundColor(RGBColor color);
 
 		void Draw(IScreen& screen, Point2_i offset = {}) override;
 	};
