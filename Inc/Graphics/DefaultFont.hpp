@@ -102,8 +102,8 @@ public:
 	}
 };
 
-extern LIBRARIES_EXPORT DefaultFont Default_Font_8x8;
-extern LIBRARIES_EXPORT DefaultFont Default_Font_7x7;
-extern LIBRARIES_EXPORT DefaultFont Default_Font_7x7_small;
+extern LIBRARIES_EXPORT const DefaultFont Default_Font_8x8;
+extern LIBRARIES_EXPORT const DefaultFont Default_Font_7x7;
+extern LIBRARIES_EXPORT const DefaultFont Default_Font_7x7_small;
 
 #endif /* INC_SSD1306_CHARACTERS_HPP_ */

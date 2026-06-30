@@ -8,7 +8,7 @@
 HostScene::HostScene(BaseGame* game, LobbyScene* main_scene, uint8_t max_count, LobbyConnection_V1_Callback callback) 
     : BaseGameScene{ game }, main_scene{ main_scene }, max_count{ max_count }, callback{ callback }
 {
-    IFont* font = leto_api_v1->Font->GetFont(7, 7, 1);
+    const IFont* font = leto_api_v1->Font->GetFont(7, 7, 1);
 
     label_text.SetText("ИГРОВАЯ КОМНАТА");
     label_text.SetFont(font);

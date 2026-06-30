@@ -64,7 +64,7 @@ UI_Label& UI_Label::SetVerticalAlignment(LabelVerticalAlignment alignment)
     return *this;
 }
 
-UI_Label& UI_Label::SetFont(IFont *font)
+UI_Label& UI_Label::SetFont(const IFont *font)
 {
     if (font)
     {

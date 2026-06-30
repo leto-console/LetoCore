@@ -13,8 +13,6 @@
 #include <Data/StaticListView.hpp>
 #include <Input/Devices/UserInputDevice.hpp>
 
-__attribute__((used))  volatile static UserInputDevice* dev;
-
 class UserInputTickTask : public PriorityTask
 {
 protected:
@@ -23,11 +21,7 @@ protected:
 	bool Do() override
 	{
 		for (UserInputDevice* user_input : user_inputs)
-		{
-			dev = user_input;
-			(void) dev;
 			user_input->Tick();
-		}
 		return true;
 	}
 

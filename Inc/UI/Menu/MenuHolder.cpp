@@ -48,7 +48,7 @@ void MenuHolder::OnShow()
 		ResetCurrentID();
 }
 
-void MenuHolder::SetStyle(MenuStyle style, IFont* font)
+void MenuHolder::SetStyle(MenuStyle style, const IFont* font)
 {
 	this->style = style;
 	if (font)

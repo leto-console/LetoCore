@@ -28,7 +28,7 @@ class SettingsContainer : public ISceneObject
 protected:
 	StaticText32 title;
 	StaticList<ISettingUI*, 32> settings{};
-	IFont* settings_font{};
+	const IFont* settings_font{};
 	IAllocator* allocator;
 
 	bool auto_alignment = false;
@@ -93,7 +93,7 @@ public:
 		return setting;
 	}
 
-	void SetFont(IFont* settings_font)
+	void SetFont(const IFont* settings_font)
 	{
 		this->settings_font = settings_font;
 		for (ISettingUI* setting : settings)

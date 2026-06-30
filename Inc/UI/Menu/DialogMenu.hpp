@@ -35,7 +35,7 @@ protected:
 
 	InputCatcher<DialogParamMenu> enter_catcher;
 
-	IFont* font;
+	const IFont* font;
 
 public:
 	DialogParamMenu() : menu{ 3 }

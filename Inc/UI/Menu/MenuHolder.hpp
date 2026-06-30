@@ -39,7 +39,7 @@ class LIBRARIES_EXPORT MenuHolder : public ISceneObject
 {
 protected:
 	int CharWidth = 8, CharHeight = 8;
-	IFont* font{};
+	const IFont* font{};
 	MenuStyle style = MenuStyle::STYLE_1;
 	MenuHorizonAlignment horizon_align = MenuHorizonAlignment::LEFT;
 	MenuVerticalAlignment vertical_align = MenuVerticalAlignment::TOP;
@@ -81,7 +81,7 @@ public:
 	// Установить вертикальное выравнивание
 	void SetVerticalAlignment(MenuVerticalAlignment align);
 
-	void SetStyle(MenuStyle style, IFont* font = nullptr);
+	void SetStyle(MenuStyle style, const IFont* font = nullptr);
 
 	/// @brief Сбрасывать ли автоматически меню при отображении
 	/// @param reset при `true` позиция курсора в `OnShow` в меню будет автоматически сброшена

@@ -472,8 +472,8 @@ public:
 
 // ====================================================================================================
 
-DefaultFont Default_Font_8x8 = DefaultFont_8x8();
-DefaultFont Default_Font_7x7 = DefaultFont_7x7();
-DefaultFont Default_Font_7x7_small = DefaultFont_7x7_small();
+const DefaultFont Default_Font_8x8 = DefaultFont_8x8();
+const DefaultFont Default_Font_7x7 = DefaultFont_7x7();
+const DefaultFont Default_Font_7x7_small = DefaultFont_7x7_small();
 
 // ====================================================================================================

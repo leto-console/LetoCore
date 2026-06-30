@@ -49,7 +49,7 @@ public:
 	// Установить вертикальное выравнивание
 	UI_Label& SetVerticalAlignment(LabelVerticalAlignment align);
 
-	UI_Label& SetFont(IFont* font);
+	UI_Label& SetFont(const IFont* font);
 
 	UI_Label& SetTextColor(RGBColor color);
 	RGBColor GetTextColor() const;
@@ -76,7 +76,7 @@ private:
 	int text_width = 0;
 	int text_height = 0;
 
-	IFont* label_font = nullptr;
+	const IFont* label_font = nullptr;
 };
 
 #endif

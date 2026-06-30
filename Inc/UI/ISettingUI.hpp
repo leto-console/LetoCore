@@ -30,7 +30,7 @@ protected:
 
 	bool delimiter = true;
 
-	IFont* setting_font{};
+	const IFont* setting_font{};
 
 	// Текущее значение настройки
 	virtual StaticText32 CurrentValueRepr() = 0;
@@ -45,7 +45,7 @@ public:
 	ISettingUI(const StaticText32& name, Point2_i position = {});
 	virtual ~ISettingUI() = default;
 
-	void SetFont(IFont* setting_font);
+	void SetFont(const IFont* setting_font);
 
 	// Обновить текущее значение настройки (запрос из eeprom)
 	virtual void UpdateCurrentValue() = 0;

@@ -41,7 +41,7 @@ ISettingUI::ISettingUI(const StaticText32& name, Point2_i position)
 	SetHeight(8);
 }
 
-void ISettingUI::SetFont(IFont* setting_font)
+void ISettingUI::SetFont(const IFont* setting_font)
 {
 	this->setting_font = setting_font;
 }
