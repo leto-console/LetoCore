@@ -29,14 +29,14 @@ struct WebAPI_V1
 	 * 
 	 * @return `true` if connection was successfully created
 	 */
-	bool (*CreateConnection) (WebConnection_V1* connection, uint8_t channel, uint8_t port, uint32_t id, WebConnection_V1_Callback callback);
+	bool (*const CreateConnection) (WebConnection_V1* connection, uint8_t channel, uint8_t port, uint32_t id, WebConnection_V1_Callback callback);
 	
 	/**
 	 * @brief Close connection
 	 *
 	 * @param[in] connection Opened connection instance
 	 */
-	void (*CloseConnection) (WebConnection_V1 connection);
+	void (*const CloseConnection) (WebConnection_V1 connection);
 	
 	/**
 	 * @brief Send data
@@ -45,7 +45,7 @@ struct WebAPI_V1
 	 * @param[in] data Data to send
 	 * @param[in] size Size of the data to send
 	 */
-	void (*SendData) (WebConnection_V1 connection, const void* data, uint32_t size);
+	void (*const SendData) (WebConnection_V1 connection, const void* data, uint32_t size);
 	
 	/**
 	 * @brief Get list of nearby devices
@@ -55,7 +55,7 @@ struct WebAPI_V1
 	 *
 	 * @return Number of devices
 	 */
-	uint32_t (*GetDevicesNear) (WebDeviceInfo_V1* info, uint32_t available);
+	uint32_t (*const GetDevicesNear) (WebDeviceInfo_V1* info, uint32_t available);
 
 	/**
 	 * @brief Find device by identifier
@@ -65,7 +65,7 @@ struct WebAPI_V1
 	 * 
 	 * @return `true` if device was successfully found
 	 */
-	bool (*FindDeviceNear)(uint32_t id, WebDeviceInfo_V1* info);
+	bool (*const FindDeviceNear)(uint32_t id, WebDeviceInfo_V1* info);
 };
 
 #pragma pack(pop)

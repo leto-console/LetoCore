@@ -19,64 +19,64 @@
 struct MathAPI_V1
 {
     /// Arccosine function
-    float (*acosf)(float x);
+    float (*const acosf)(float x);
 
     /// Arcsine function
-    float (*asinf)(float x);
+    float (*const asinf)(float x);
 
     /// Arctangent function
-    float (*atanf)(float x);
+    float (*const atanf)(float x);
     
     /// Arctangent function with two arguments
-    float (*atan2f)(float y, float x);
+    float (*const atan2f)(float y, float x);
 
     /// @brief Cosine function
-    float (*cosf)(float x);
+    float (*const cosf)(float x);
 
     /// @brief Sine function
-    float (*sinf)(float x);
+    float (*const sinf)(float x);
 
     /// @brief Tangent function
-    float (*tanf)(float x);
+    float (*const tanf)(float x);
 
     /// @brief Round down to nearest integer
-    float (*floorf)(float x);
+    float (*const floorf)(float x);
 
     /// @brief Round up to nearest integer
-    float (*ceilf)(float x);
+    float (*const ceilf)(float x);
 
     /// @brief Round to nearest integer
-    float (*roundf)(float x);
+    float (*const roundf)(float x);
 
     /// @brief Square root
-    float (*sqrtf)(float x);
+    float (*const sqrtf)(float x);
 
     /// @brief Power function
-    float (*powf)(float x, float y);
+    float (*const powf)(float x, float y);
 
     /// @brief Absolute value
-    float (*fabs)(float x);
+    float (*const fabs)(float x);
 
     /// @brief Hypotenuse calculation
-    float (*hypotf)(float x, float y);
+    float (*const hypotf)(float x, float y);
 
     /// @brief Exponential function
-    float (*expf)(float x);
+    float (*const expf)(float x);
 
     /// @brief Natural logarithm
-    float (*logf)(float x);
+    float (*const logf)(float x);
 
     /// @brief Floating-point remainder of division
-    float (*fmodf)(float x, float y);
+    float (*const fmodf)(float x, float y);
 
     /// @brief Sign copysign function
-    float (*copysignf)(float number, float sign);
+    float (*const copysignf)(float number, float sign);
 
     /// @brief Check if value is NaN
-    bool (*isnanf)(float x);
+    bool (*const isnanf)(float x);
 
     /// @brief Check if value is infinity
-    bool (*isinff)(float x);
+    bool (*const isinff)(float x);
 };
 
 #pragma pack(pop)

@@ -28,21 +28,21 @@ struct GlobalsAPI_V1
      * @param size Size of allocated memory in bytes
      * @return Pointer to the allocated memory block
      */
-    void* (*Alloc)(uint32_t size);
+    void* (*const Alloc)(uint32_t size);
 
     /**
      * @brief Free memory in application dynamic memory
      * 
      * @param ptr Pointer to the memory block
      */
-    void (*Free)(const void* ptr);
+    void (*const Free)(const void* ptr);
 
     /// TODO: Warning! Potential single point of failure.
     /// The allocator can crash the entire application.
     /**
      * @brief Get application dynamic memory allocator
      */
-    IAllocator* (*GetAllocator)();
+    IAllocator* (*const GetAllocator)();
 
     // ===================================================
     //                   State Management                 
@@ -52,17 +52,19 @@ struct GlobalsAPI_V1
      * @brief Get system debug mode state
      * @return `true` if enabled, `false` if disabled
      */
-    bool (*GetDebugMode)();
+    bool (*const GetDebugMode)();
 
     /**
      * @brief Get number of milliseconds elapsed since MCU startup
      */
-    uint32_t (*GetCurrentMs)();
+    uint32_t (*const GetCurrentMs)();
 
     /**
      * @brief Get device hardware identifier
      */
-    uint32_t (*GetDeviceID)();
+    uint32_t (*const GetDeviceID)();
+
+
 };
 
 #pragma pack(pop)

@@ -33,28 +33,28 @@ struct LetoAPI_V1
         uint16_t major;		///< Major API version
         uint16_t minor;		///< Minor API version
     }
-    *Version;
+    *const Version;
 
     /// Text processing functions
-    const TextAPI_V1 *Text;
+    const TextAPI_V1* const Text;
     
     /// Global context functions
-    const GlobalsAPI_V1* Globals;
+    const GlobalsAPI_V1* const Globals;
 
     /// Network interaction functions
-    const WebAPI_V1* Web;
+    const WebAPI_V1* const Web;
 
     /// User management functions
-    const UserAPI_V1* User;
+    const UserAPI_V1* const User;
 
     /// Font management functions
-    const FontAPI_V1* Font;
+    const FontAPI_V1* const Font;
 
     /// Mathematical functions
-    const MathAPI_V1* Math;
+    const MathAPI_V1* const Math;
 
     /// Game lobby management functions
-    const LobbyAPI_V1* Lobby;
+    const LobbyAPI_V1* const Lobby;
 };
 
 #pragma pack(pop)

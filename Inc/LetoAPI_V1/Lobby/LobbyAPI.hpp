@@ -26,7 +26,7 @@ struct LobbyAPI_V1
 	 *
 	 * @return Number of game lobbies
 	 */
-	uint32_t (*GetLobbiesNear) (LobbyInfo_V1* info, uint32_t available);
+	uint32_t (*const GetLobbiesNear) (LobbyInfo_V1* info, uint32_t available);
 
     /**
      * @brief Create lobby
@@ -35,7 +35,7 @@ struct LobbyAPI_V1
      * @param[in] app_id Application identifier
      * @param[in] max_count Maximum number of connections
      */
-    bool (*CreateLobby)(LobbyConnection_V1* lobby, uint16_t app_id, uint8_t max_count, LobbyConnection_V1_Callback callback);
+    bool (*const CreateLobby)(LobbyConnection_V1* lobby, uint16_t app_id, uint8_t max_count, LobbyConnection_V1_Callback callback);
 
     /**
      * @brief Join lobby
@@ -45,7 +45,7 @@ struct LobbyAPI_V1
      * @param[in] info Lobby information
      * @param[in] callback Callback function to receive data from the lobby
      */
-    void (*JoinLobby)(LobbyInfo_V1 info, LobbyConnection_V1_Callback callback);
+    void (*const JoinLobby)(LobbyInfo_V1 info, LobbyConnection_V1_Callback callback);
 
     /**
      * @brief Check for active lobby connection
@@ -54,19 +54,19 @@ struct LobbyAPI_V1
      * 
      * @return `true` if successfully connected
      */
-    bool (*GetActiveLobby)(LobbyConnection_V1* lobby);
+    bool (*const GetActiveLobby)(LobbyConnection_V1* lobby);
 
     /**
      * @brief Disconnect from active lobby
      */
-    void (*QuitLobby)();
+    void (*const QuitLobby)();
 
     /**
      * @brief Disconnect specific member from lobby
      * 
      * @param[in] id Lobby member identifier
      */
-    void (*DisconnectMember)(uint32_t id);
+    void (*const DisconnectMember)(uint32_t id);
 
     /**
 	 * @brief Send unreliable data to active lobby
@@ -74,21 +74,21 @@ struct LobbyAPI_V1
 	 * @param[in] data Data to send
 	 * @param[in] size Size of data to send
 	 */
-	void (*SendData)(const void* data, uint32_t size);
+	void (*const SendData)(const void* data, uint32_t size);
 
     /**
      * @brief Set readiness for connection.
      * 
      * @param[in] ready True if ready for connection, false otherwise.
      */
-    void (*SetReady)(bool ready);
+    void (*const SetReady)(bool ready);
 
     /**
      * @brief Get readiness for connection.
      * 
      * @return True if ready for connection, false otherwise.
      */
-    bool (*GetReady)();
+    bool (*const GetReady)();
 };
 
 #pragma pack(pop)

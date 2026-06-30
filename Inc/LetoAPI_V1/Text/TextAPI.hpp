@@ -19,13 +19,13 @@
 struct TextAPI_V1
 {
     /// Format text string
-    int (*FormatText)(char* const buffer, const size_t buffer_size, const char* const format, ...);
+    int (*const FormatText)(char* const buffer, const size_t buffer_size, const char* const format, ...);
 
     /// Format floating-point value
-    int (*FormatFloat)(char* const buffer, const size_t buffer_size, const size_t fract_part, float value);
+    int (*const FormatFloat)(char* const buffer, const size_t buffer_size, const size_t fract_part, float value);
 
     /// Scan and parse text string
-    int (*ScanText)(char* const buffer, const size_t buffer_size, const char* const format, ...);
+    int (*const ScanText)(char* const buffer, const size_t buffer_size, const char* const format, ...);
 };
 
 #pragma pack(pop)

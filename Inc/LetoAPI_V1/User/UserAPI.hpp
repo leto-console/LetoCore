@@ -20,10 +20,10 @@
 struct UserAPI_V1
 {
     /// @brief Get user space
-    NamedSpace* (*GetUserSpace)();
+    NamedSpace* (*const GetUserSpace)();
     
     /// @brief Get avatar by identifier
-    bool (*GetAvatarByID)(uint32_t ID, BitmapData* data);
+    bool (*const GetAvatarByID)(uint32_t ID, BitmapData* data);
 };
 
 #pragma pack(pop)

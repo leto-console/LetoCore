@@ -26,7 +26,7 @@ struct FontAPI_V1
      * @param height Font height
      * @param type Font type (0 - regular, 1 - small)
      */
-    const IFont* (*GetFont)(uint32_t width, uint32_t height, uint32_t type);
+    const IFont* (*const GetFont)(uint32_t width, uint32_t height, uint32_t type);
 };
 
 #pragma pack(pop)
