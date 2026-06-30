@@ -12,7 +12,7 @@
 #include <Data/ArenaAllocator.hpp>
 
 #ifndef SYSTEM_ALLOCATOR_SIZE
-#define SYSTEM_ALLOCATOR_SIZE (6 * 1024)
+#define SYSTEM_ALLOCATOR_SIZE (4 * 1024)
 #endif
 
 /// @brief Системный аллокатор (для билдеров объектов, задач и прочего)
