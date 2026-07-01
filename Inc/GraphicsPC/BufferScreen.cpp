@@ -62,5 +62,7 @@ void BufferScreen::ClearScreen()
 
 void BufferScreen::FillScreen(RGBColor color)
 {
-	memset(image, color == WhiteColor ? WHITE : BLACK, sizeof(uint32_t) * width * height);
+	uint32_t u32_color = RGBColor_to_U32model(color);
+	for (size_t i = 0; i < width * height; ++i)
+        image[i] = u32_color;
 }

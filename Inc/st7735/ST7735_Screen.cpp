@@ -82,7 +82,9 @@ void ST7735_Screen::ClearScreen()
 
 void ST7735_Screen::FillScreen(RGBColor color)
 {
-	memset(image, color == WhiteColor ? ST7735_WHITE : ST7735_BLACK, sizeof(uint16_t) * area_width * area_height);
+	uint16_t u16_color = RGBColor_to_U16Model(color);
+	for (size_t i = 0; i < area_width * area_height; ++i)
+        image[i] = u16_color;
 }
 
 #endif /* USE_HAL_DRIVER */
