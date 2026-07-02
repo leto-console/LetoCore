@@ -46,6 +46,9 @@ constexpr RGBColor WhiteColor 		{ "#ffffff" };
 constexpr RGBColor BlackColor 		{ "#000000" };
 
 constexpr RGBColor CyanColor        { "#00ffff" };
+constexpr RGBColor aRedColor        { "#ff0000" };
+constexpr RGBColor aGreenColor      { "#00ff00" };
+constexpr RGBColor aBlueColor       { "#0000ff" };
 
 /// https://www.materialpalette.com/
 
