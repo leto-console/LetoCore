@@ -90,7 +90,7 @@ bool NamedSpace::Free(const StaticText32& name)
 			uint16_t _size = (rec.size + DATA_NAME_SIZE + 2) - i;
 			if (_size > EMPTY_SIZE)
 				_size = EMPTY_SIZE;
-			storage.Write(
+			storage->Write(
 				start_address + rec.address + i,
 				&empty, _size
 			);
@@ -123,8 +123,8 @@ bool NamedSpace::Create(const StaticText32& name, const void* data, uint16_t dat
 	if (!Allocate(_addr, name, header))
 		return false;
 
-	storage.Write(start_address + _addr,						&header,	sizeof(header));
-	storage.Write(start_address + _addr + (int) sizeof(header),	data,		data_size);
+	storage->Write(start_address + _addr,						&header,	sizeof(header));
+	storage->Write(start_address + _addr + (int) sizeof(header),	data,		data_size);
 	return true;
 }
 
@@ -135,7 +135,7 @@ bool NamedSpace::Read(const StaticText32& name, void* data, uint16_t data_size)
 	{
 		if (rec.size != data_size)
 			return false;
-		storage.Read(start_address + rec.DataAddress(), data, data_size);
+		storage->Read(start_address + rec.DataAddress(), data, data_size);
 		return true;
 	}
 	return false;
@@ -149,7 +149,7 @@ bool NamedSpace::Update(const StaticText32& name, const void* data, uint16_t dat
 		if (rec.size != data_size)
 			return false;
 		
-		storage.Write(start_address + rec.DataAddress(), data, data_size);
+		storage->Write(start_address + rec.DataAddress(), data, data_size);
 		return true;
 	}
 	return false;
@@ -158,7 +158,7 @@ bool NamedSpace::Update(const StaticText32& name, const void* data, uint16_t dat
 // ----------------------------------------------------------------------------------------------------
 
 
-NamedSpace::NamedSpace(uint16_t start_address, uint16_t space_size, IBinaryStorage& storage)
+NamedSpace::NamedSpace(uint16_t start_address, uint16_t space_size, IBinaryStorage* storage)
 	: start_address{ start_address }, space_size{ space_size }, storage{ storage }
 {
 }
@@ -191,7 +191,7 @@ void NamedSpace::Clear()
 		if (_size > CLEAR_SIZE)
 			_size = CLEAR_SIZE;
 
-		storage.Write(addr, empty, _size);
+		storage->Write(addr, empty, _size);
 	}
 }
 
@@ -244,7 +244,7 @@ void NamedSpace::Scan()
 	for (uint16_t high_addr = start_address; high_addr < start_address + space_size; high_addr += READ_SIZE)
 	{
 		char data[32]{};
-		storage.Read(high_addr, data, READ_SIZE);
+		storage->Read(high_addr, data, READ_SIZE);
 		for (uint16_t low_addr = 0; low_addr < READ_SIZE; ++low_addr)
 		{
 			if (!b_start && (data[low_addr] == 0x00 || data[low_addr] == 0xFF))

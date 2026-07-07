@@ -134,7 +134,7 @@ bool GameCenter::ProcessInput(const AppEvent& event)
 		SceneManager::Instance().Return();
 		return true;
 	}
-	else if (IsSystemEnterEvent(event))
+	else if (IsSystemEnterEvent(event) && games_menu.Count())
 	{
 		LoadGame(games_menu.GetCurrentParam()->path);
 		return true;

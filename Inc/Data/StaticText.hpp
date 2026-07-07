@@ -15,7 +15,7 @@ struct StaticText
 {	
 protected:
 	char text[TextCapacity]{};
-	const uint32_t MaxCapacity = (TextCapacity - 1);
+	static constexpr uint32_t MaxCapacity = (TextCapacity - 1);
 
 public:
 	StaticText() = default;

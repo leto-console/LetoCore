@@ -37,10 +37,11 @@ protected:
 	Storage* storage{ nullptr };
 
 	uint16_t accounts_count{};
+	uint16_t space_size{};
 
 	mutable StaticList<Account, 16> last_get_accounts{};
 	StaticList<StoredDataCell<Account>*, 16> accounts{};
-	StaticList<NamedSpace*, 16> spaces{};
+	NamedSpace* current_space{};
 
 	AuthHandler() = default;
 
@@ -84,15 +85,15 @@ public:
 	bool Login(uint32_t ID);
 
 	/*
+		Выйти из системы
+	*/
+	void Logout();
+
+	/*
 		Проинициализировать адрес в eeprom с авторизационными настройками и держатель памяти.
 		Область памяти с авторизационными настройками занимает 16 байт
 	*/
-	void Init(uint16_t auth_address, Storage& auth_storage, uint16_t auth_accounts_count);
-
-	/*
-		Добавить пространство аккаунта на определенном индексе
-	*/
-	void InitAccountSpace(uint16_t index, uint16_t start_address, uint16_t space_size);
+	void Init(uint16_t auth_address, Storage& auth_storage, uint16_t auth_accounts_count, uint16_t start_address, uint16_t space_size);
 
 	/*
 		Получить информацию об аккаунте с требуемым идентификатором

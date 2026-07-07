@@ -5,8 +5,8 @@
 
 #include <Input/SystemInputID.hpp>
 
-MenuHolder::MenuHolder(StaticListView<StaticText32> texts, uint8_t visible_elements, Point2_i position, bool ready_logic)
-	: texts{ texts }, visible_elements{ visible_elements }, 
+MenuHolder::MenuHolder(uint8_t visible_elements, Point2_i position, bool ready_logic)
+	: visible_elements{ visible_elements }, 
 	up_catcher{ this, &MenuHolder::Up },
 	down_catcher{ this, &MenuHolder::Down },
 	enter_cather{ this, &MenuHolder::Enter },
@@ -75,18 +75,6 @@ void MenuHolder::SetVerticalAlignment(MenuVerticalAlignment align)
 {
 	this->vertical_align = align;
 	ResetCurrentID();
-}
-
-StaticText32 MenuHolder::GetText(uint8_t ID) const
-{
-	if (ID >= texts.Count())
-		return texts.Back();
-	return texts[ID];
-}
-
-uint8_t MenuHolder::Count() const
-{
-	return texts.Count();
 }
 
 void MenuHolder::ResetCurrentID()
@@ -166,13 +154,13 @@ void MenuHolder::Draw(IScreen& screen, Point2_i offset)
 
 		if (horizon_align == MenuHorizonAlignment::CENTER && style == MenuStyle::STYLE_3)
 		{
-			elem_offset_x -= (TextWidth(texts[i], font) / 2);
+			elem_offset_x -= (TextWidth(GetText(i), font) / 2);
 		}
 
 		DrawText(
 			screen,
 			{style == MenuStyle::STYLE_3 ? elem_offset_x : CharWidth + elem_offset_x, elem_offset_y},
-			texts[i],
+			GetText(i),
 			WhiteColor, BlackColor,
 			style == MenuStyle::STYLE_1 ? false : i == currentID, 
 			font);

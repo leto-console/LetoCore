@@ -19,7 +19,7 @@ protected:
 	StaticList<StaticText32, MaxSize> texts;
 
 public:
-	Menu(uint8_t visible_elements = 8, Point2_i position = {}, bool ready_logic = false) : MenuHolder{ texts, visible_elements, position, ready_logic }
+	Menu(uint8_t visible_elements = 8, Point2_i position = {}, bool ready_logic = false) : MenuHolder{ visible_elements, position, ready_logic }
 	{
 	}
 
@@ -38,6 +38,19 @@ public:
 	{
 		texts.Clear();
 	}
+
+	uint8_t Count() const override 
+	{
+		return texts.Count();
+	}
+
+	const StaticText32& GetText(uint8_t ID) const override
+	{
+		if (ID >= texts.Count())
+			return texts.Back();
+		return texts[ID];
+	}
+
 };
 
 #endif

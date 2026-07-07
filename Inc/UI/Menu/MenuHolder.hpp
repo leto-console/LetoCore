@@ -53,12 +53,10 @@ protected:
 	bool ready_logic = false;			/// Включение логики `IsResultReady`
 	bool ready = false;					/// В меню выбран элемент
 
-    StaticListView<StaticText32> texts;
-
 	InputCatcher<MenuHolder> up_catcher, down_catcher, enter_cather;
 
 public:
-	MenuHolder(StaticListView<StaticText32> texts, uint8_t visible_elements = 8, Point2_i position = {}, bool ready_logic = false);
+	MenuHolder(uint8_t visible_elements = 8, Point2_i position = {}, bool ready_logic = false);
 
 	void InitBaseCatchers();
 	void EnableReadyLogic();	/// TODO: Сделать такую логику по умолчанию, пока что сохранено для обратной совместимости
@@ -69,11 +67,11 @@ public:
 
 	void OnShow() override;
 
-	uint8_t Count() const;
+	virtual uint8_t Count() const = 0;
+	virtual const StaticText32& GetText(uint8_t idx) const = 0;
 
-	uint8_t GetItemsCount() const { return texts.Count(); }
 	uint8_t GetCurrentID() const { return currentID; }
-	StaticText32 GetCurrentText() const { return texts[currentID]; }
+	StaticText32 GetCurrentText() const { return GetText(currentID); }
 
 	// Установить горизонтальное выравнивание
 	void SetHorizonAlignment(MenuHorizonAlignment align);
@@ -86,8 +84,6 @@ public:
 	/// @brief Сбрасывать ли автоматически меню при отображении
 	/// @param reset при `true` позиция курсора в `OnShow` в меню будет автоматически сброшена
 	void SetResetOnShow(bool reset);
-
-	StaticText32 GetText(uint8_t ID) const;
 
 	void ResetCurrentID();
 

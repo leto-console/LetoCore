@@ -49,7 +49,7 @@ static void ShowIndigoScreen(uint8_t size0, uint8_t size1)
     leto_api_v1->Text->FormatText(txt, sizeof(txt), "%03d:%03d [%03d]", size0, size1, StackGuard::PATTERN_SIZE);
     indigo.SetData(txt);
 
-    SystemDisplay->Render(&indigo);
+    while (!SystemDisplay->Render(&indigo));
     SystemDisplay->Loop();
 }
 

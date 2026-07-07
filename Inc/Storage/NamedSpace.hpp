@@ -69,7 +69,7 @@ protected:
 	const uint16_t space_size;
 
 	// Хранилище данных
-	IBinaryStorage& storage;
+	IBinaryStorage* storage;
 
 	// Список записей объектов в области памяти
 	StaticList<ScanRecord, 32> records;
@@ -97,7 +97,7 @@ protected:
 	bool Update(const StaticText32& name, const void* data, uint16_t data_size);
 
 public:
-	NamedSpace(uint16_t start_address, uint16_t space_size, IBinaryStorage& storage);
+	NamedSpace(uint16_t start_address, uint16_t space_size, IBinaryStorage* storage);
 
 	// Получить занятое количество байтов ресурса
 	int GetUsedBytes() const override;

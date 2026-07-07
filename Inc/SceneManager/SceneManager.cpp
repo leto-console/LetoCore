@@ -178,7 +178,7 @@ void SceneManager::Draw(IScreen& screen)
 
 		DrawCapacity(screen, p, "S", capacity1, SystemAllocator);
 		DrawCapacity(screen, p, "C", capacity2, CommonAllocator);
-		//DrawCapacity(screen, p, "L", capacity3, LetoAPI_Allocator);
+		DrawCapacity(screen, p, "E", capacity3, EternalAllocator);
     }
 }
 

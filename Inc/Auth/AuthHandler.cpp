@@ -1,5 +1,9 @@
 #include <Auth/AuthHandler.hpp>
 
+#include <System/SystemAllocator.hpp>
+#include <System/EternalAllocator.hpp>
+#include "AuthHandler.hpp"
+
 bool AuthHandler::GetIndexByID(uint32_t ID, uint32_t& idx) const
 {
 	Account account;
@@ -38,21 +42,26 @@ bool AuthHandler::CreateAccount(const StaticText32& name, uint32_t avatar, uint3
 	if (!CanCreateAccount(&index))
 		return false;
 
-	if (!accounts[index] || !spaces[index])
+	if (!accounts[index] || current_space)
 		return false;
 
 	if (!new_ID_cell || !new_ID_cell->Get(ID))
 		return false;
 
-	Account account;
+	current_space = SystemAllocator.Make<NamedSpace>(accounts[index]->GetAddress() + sizeof(Account), space_size - sizeof(Account), storage);
+	if (!current_space) return false;
+
+	current_space->Clear();
+
+	Account account{};
 	account.ID = ID;
 	account.Avatar = avatar;
 	account.Name = name;
 
 	new_ID_cell->Set(ID + 1);
+	cur_ID_cell->Set(ID);
 
 	accounts[index]->Set(account);
-	spaces[index]->Clear();
 
 	return true;
 }
@@ -64,12 +73,11 @@ bool AuthHandler::DeleteAccount(uint32_t ID)
 	if (!GetIndexByID(ID, idx))
 		return false;
 
-	if (!accounts[idx] || !spaces[idx])
+	if (!accounts[idx])
 		return false;
 
 	Account account{};
 	accounts[idx]->Set(account);
-	spaces[idx]->Clear();
 	return true;
 }
 
@@ -93,26 +101,36 @@ StaticListView<Account> AuthHandler::GetAccounts() const
 bool AuthHandler::Login(uint32_t ID)
 {
 	uint32_t idx;
-	if (!cur_ID_cell || !GetIndexByID(ID, idx) || !spaces[idx])
+	if (!cur_ID_cell || !GetIndexByID(ID, idx) || current_space)
 		return false;
 
-	spaces[idx]->Scan();
+	current_space = SystemAllocator.Make<NamedSpace>(accounts[idx]->GetAddress() + sizeof(Account), space_size - sizeof(Account), storage);
+	if (!current_space) return false;
+
+	current_space->Scan();
 	cur_ID_cell->Set(ID);
 
 	return true;
 }
 
-void AuthHandler::Init(uint16_t auth_address, Storage& auth_storage, uint16_t auth_accounts_count)
+void AuthHandler::Logout()
+{
+	current_space = nullptr;
+	// cur_ID_cell->Set(0);
+}
+
+void AuthHandler::Init(uint16_t auth_address, Storage& auth_storage, uint16_t auth_accounts_count, uint16_t start_address, uint16_t space_size)
 {
 	if (auth_accounts_count > (uint16_t) accounts.Size())
 		auth_accounts_count = (uint16_t) accounts.Size();
 
 	this->storage = &auth_storage;
 	this->accounts_count = auth_accounts_count;
+	this->space_size = space_size;
 
 	if (!cur_ID_cell)
 	{
-		cur_ID_cell = new StoredDataCell<uint32_t>(auth_address, auth_storage);
+		cur_ID_cell = EternalAllocator.Make<StoredDataCell<uint32_t>>(auth_address, &auth_storage);
 		uint32_t ID;
 		if (cur_ID_cell->Get(ID) && (ID == UINT32_MAX))
 			cur_ID_cell->Set(0);
@@ -120,24 +138,18 @@ void AuthHandler::Init(uint16_t auth_address, Storage& auth_storage, uint16_t au
 
 	if (!new_ID_cell)
 	{
-		new_ID_cell = new StoredDataCell<uint32_t>(auth_address + 4, auth_storage);
+		new_ID_cell = EternalAllocator.Make<StoredDataCell<uint32_t>>(auth_address + 4, &auth_storage);
 		uint32_t ID;
 		if (new_ID_cell->Get(ID) && (ID == 0 || ID == UINT32_MAX))
 			new_ID_cell->Set(1);
 	}
+
+	for (uint16_t i = 0; i < auth_accounts_count; ++i)
+	{
+		accounts[i + 1] = EternalAllocator.Make<StoredDataCell<Account>>(start_address + i * space_size, storage);
+	}
 }
 
-void AuthHandler::InitAccountSpace(uint16_t index, uint16_t start_address, uint16_t space_size)
-{
-	if (index >= accounts_count || index == 0)
-		return;
-
-	if (!accounts[index])
-		accounts[index] = new StoredDataCell<Account>(start_address, *storage);
-
-	if (!spaces[index])
-		spaces[index] = new NamedSpace(start_address + sizeof(Account), space_size - sizeof(Account), *storage);
-}
 
 bool AuthHandler::GetAccount(uint32_t ID, Account& account) const
 {
@@ -195,7 +207,7 @@ bool AuthHandler::GetCurrentSpace(NamedSpace*& account_space)
 	if (!cur_ID_cell || !cur_ID_cell->Get(cur_ID) || cur_ID == 0 || !GetIndexByID(cur_ID, cur_idx))
 		return false;
 
-	account_space = spaces[cur_idx];
+	account_space = current_space;
 	return true;
 }
 

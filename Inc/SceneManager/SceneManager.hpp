@@ -11,6 +11,7 @@
 #include <SceneManager/IScene.hpp>
 #include <SceneManager/ISceneBuilder.hpp>
 #include <System/CommonAllocator.hpp>
+#include <System/EternalAllocator.hpp>
 #include <ABI/AppEvent.hpp>
 #include <UI/ButtonHoldHandler.hpp>
 #include <Time/Timer.hpp>
@@ -35,7 +36,7 @@ protected:
 	// (TEMP) Отрисовка занятости аллокаторов
 	CapacityIndicatorUI capacity1{{}, {20, 5}, &SystemAllocator};
 	CapacityIndicatorUI capacity2{{}, {20, 5}, &CommonAllocator};
-	//CapacityIndicatorUI capacity3{{}, {20, 5}, &LetoAPI_Allocator};
+	CapacityIndicatorUI capacity3{{}, {20, 5}, &EternalAllocator};
 
 	// ======================================== Singleton ========================================
 

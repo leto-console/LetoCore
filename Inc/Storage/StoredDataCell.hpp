@@ -30,13 +30,15 @@ protected:
 	uint16_t address;
 
 	// Держатель настроек в памяти
-	Storage& storage;
+	Storage* storage;
 
 public:
-	StoredDataCell(uint16_t address, Storage& storage)
+	StoredDataCell(uint16_t address, Storage* storage)
 		: address { address }, storage{ storage }
 	{
 	}
+
+	uint16_t GetAddress() const { return address; }
 
 	void Clear()
 	{
@@ -48,7 +50,7 @@ public:
 	void Set(const T& value) override
 	{
 		this->value = value;
-		storage.Write(address, &value, sizeof(T));
+		storage->Write(address, &value, sizeof(T));
 	}
 
 	// Получить значение из eeprom
@@ -56,7 +58,7 @@ public:
 	{
 		if (!inited)
 		{
-			storage.Read(address, &(this->value), sizeof(T));
+			storage->Read(address, &(this->value), sizeof(T));
 			inited = true;
 		}
 		value = this->value;
@@ -88,10 +90,10 @@ protected:
 	uint8_t bit;
 
 	// Держатель настроек в памяти
-	Storage& storage;
+	Storage* storage;
 
 public:
-	StoredDataCell(uint16_t address, uint8_t bit, Storage& storage)
+	StoredDataCell(uint16_t address, uint8_t bit, Storage* storage)
 		: address{ address }, bit{ bit }, storage{ storage }
 	{
 	}
@@ -108,14 +110,14 @@ public:
 		this->value = value;
 
 		uint8_t byte{};
-		storage.Read(address, &byte, 1);
+		storage->Read(address, &byte, 1);
 
 		if (value)
 			byte |= (1 << bit);
 		else
 			byte &= ~(1 << bit);
 
-		storage.Write(address, &byte, 1);
+		storage->Write(address, &byte, 1);
 	}
 
 	// Получить значение из eeprom
@@ -124,7 +126,7 @@ public:
 		if (!inited)
 		{
 			uint8_t byte{};
-			storage.Read(address, &byte, 1);
+			storage->Read(address, &byte, 1);
 			this->value = (byte >> bit) & 0x1;
 			inited = true;
 		}

@@ -12,7 +12,7 @@
 
 #include <Data/IAllocator.hpp>
 
-template <int ArenaSize>
+template <int ArenaSize, bool FreeAllowed = true>
 class ArenaAllocator : public IAllocator
 {
 protected:
@@ -56,7 +56,7 @@ public:
 
 	void Free(const void* ptr) override
 	{
-		if (ptr < data || ptr >= &data[ArenaSize])
+		if (!FreeAllowed || ptr < data || ptr >= &data[ArenaSize])
 			return;
 
 		uint32_t size{};
@@ -70,7 +70,7 @@ public:
 
 	void Clear(const void* ptr)
 	{
-		if (ptr < data || ptr >= &data[ArenaSize])
+		if (!FreeAllowed || ptr < data || ptr >= &data[ArenaSize])
 			return;
 
 		_inner_idx = (static_cast<const uint8_t*>(ptr) - data - sizeof(uint32_t));
@@ -78,6 +78,7 @@ public:
 
 	void Clear() override
 	{
+		if (!FreeAllowed) return;
 		_inner_idx = 0;
 	}
 };
