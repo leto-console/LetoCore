@@ -47,4 +47,16 @@ public:
 	virtual int GetTotalBytes() const = 0;
 };
 
+// Перегрузка placement new для работы с интерфейсом IAllocator
+inline void* operator new(size_t size, IAllocator& allocator) noexcept
+{
+    return allocator.Alloc(static_cast<uint32_t>(size));
+}
+
+// Перегрузка для массивов (если потребуется)
+inline void* operator new[](size_t size, IAllocator& allocator) noexcept
+{
+    return allocator.Alloc(static_cast<uint32_t>(size));
+}
+
 #endif
