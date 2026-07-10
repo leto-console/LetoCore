@@ -7,7 +7,8 @@
 #ifndef INC_DATA_I_ALLOCATOR_HPP_
 #define INC_DATA_I_ALLOCATOR_HPP_
 
-#include <stdint.h>
+#include <cstdint>
+#include <cstddef>
 #include <utility>
 #include <new>
 
