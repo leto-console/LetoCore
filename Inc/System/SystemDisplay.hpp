@@ -10,8 +10,12 @@
 #include "LibrariesExport.h"
 
 #include <Graphics/IDisplay.hpp>
+#include <System/StackGuard.hpp>
 
 /// @brief Системный дисплей (доступен отовсюду)
 extern LIBRARIES_EXPORT IDisplay* SystemDisplay;
+
+/// @brief Разрушение его лишает возможности отрисовывать что-либо на дисплее
+extern LIBRARIES_EXPORT StackGuard* DisplayStackGuard;
 
 #endif

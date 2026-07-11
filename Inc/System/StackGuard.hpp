@@ -29,36 +29,6 @@
  * @endverbatim
  */
 
-class IndigoScreenDrawer : public IDrawer
-{
-public:
-    IndigoScreenDrawer()
-    {
-        restart[0] = "ПЕРЕЗАПУСТИТЕ";
-        restart[1] = "КОНСОЛЬ";
-    }
-
-    void SetMessage(const StaticText32& set_message) { message = set_message; } 
-    void SetData(const StaticText32& set_data) { data = set_data; }
-
-    void Draw(IScreen& screen)
-    {
-        screen.FillScreen(IndigoColor);
-        DrawFunctions::DrawText(screen, { 30, 30 }, message, WhiteColor, RedColor);
-        DrawFunctions::DrawText(screen, { 30, 50 }, restart[0], WhiteColor, BlackColor);
-        DrawFunctions::DrawText(screen, { 30, 60 }, restart[1], WhiteColor, BlackColor);
-        DrawFunctions::DrawText(screen, { 30, 80 }, data, WhiteColor, BlackColor, true);
-    }
-
-    bool Loop() { return true; }
-
-protected:
-    StaticText32 restart[2];
-    StaticText32 message;
-    StaticText32 data;
-
-};
-
 
 class LIBRARIES_EXPORT StackGuard
 {
@@ -75,8 +45,7 @@ private:
     volatile uint32_t pattern[PATTERN_SIZE];
 };
 
-extern LIBRARIES_EXPORT StackGuard* SystemStackGuard0;   ///< Разрушение его лишает возможности отрисовывать что-либо на дисплее
-extern LIBRARIES_EXPORT StackGuard* SystemStackGuard1;   ///< Разрушение его лишает возможности использовать переменные из heap/bss до дисплея
+extern LIBRARIES_EXPORT StackGuard* SystemStackGuard;   ///< Разрушение его лишает возможности использовать переменные из heap/bss до дисплея
 
 extern LIBRARIES_EXPORT void SystemStackGuardLoop();
 

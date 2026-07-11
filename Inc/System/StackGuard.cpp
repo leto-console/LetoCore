@@ -1,7 +1,9 @@
 #include "StackGuard.hpp"
 
-#include <System/SystemDisplay.hpp>
-#include <LetoAPI_V1/LetoAPI_V1.hpp>
+#include "IndigoScreen.hpp"
+#include "SystemDisplay.hpp"
+
+#include <cstdio>
 
 StackGuard::StackGuard()
 {
@@ -38,60 +40,29 @@ uint16_t StackGuard::Check()
     return check_result;
 }
 
-static void ShowIndigoScreen(uint8_t size0, uint8_t size1)
-{
-    if (!SystemDisplay) return;
 
-    char txt[20];
-    IndigoScreenDrawer indigo;
-    indigo.SetMessage("STACK OVERFLOW");
+static void MemoryFault(uint8_t size0, uint8_t size1)
+{    
+    static char data[20];
+    snprintf(data, sizeof(data), "%03d:%03d [%03d]", size0, size1, StackGuard::PATTERN_SIZE);
 
-    leto_api_v1->Text->FormatText(txt, sizeof(txt), "%03d:%03d [%03d]", size0, size1, StackGuard::PATTERN_SIZE);
-    indigo.SetData(txt);
-
-    while (!SystemDisplay->Render(&indigo));
-    SystemDisplay->Loop();
+    CrashIndigoScreen("STACK OVERFLOW", data);
 }
 
-static void MemoryFault(uint8_t size0, uint8_t size1, bool big_problem = false)
-{
-    if (big_problem) goto loop;
-
-    // Вызов какого-нибудь прерывания
-    // Запрет на другие прерывания
-    // При возможности обновить состояние дисплея (написать о MemoryFault)
-    // Скорее всего возможности такой не будет, поскольку стек уже разрушен (но нужно проанализировать этот момент)
-    //
-    // Проанализировано: несмотря на то, что стек разрушен, если он не разрушил ключевую рабочую логику (отображения)
-    // можно попробовать отрисовать сообщение об ошибке - синий экран - и свалиться в ошибку
-    // Для этого нужен предварительный анализ, что разрушено
-
-    ShowIndigoScreen(size0, size1);
-    
-    loop:
-
-#ifdef USE_HAL_DRIVER
-    while (1) { }
-#else
-    throw "StackGuard::MemoryFault";
-#endif
-}
-
-StackGuard* SystemStackGuard0 = nullptr;
-StackGuard* SystemStackGuard1 = nullptr;
+StackGuard* SystemStackGuard = nullptr;
 
 void SystemStackGuardLoop()
 {
-    if (!SystemStackGuard0 || !SystemStackGuard1) return;
+    if (!DisplayStackGuard || !SystemStackGuard) return;
 
-    uint16_t check0 = SystemStackGuard0->Check();
-    uint16_t check1 = SystemStackGuard1->Check();
+    uint16_t check0 = DisplayStackGuard->Check();
+    uint16_t check1 = SystemStackGuard->Check();
 
     if (!check0 && !check1) return;
 
     // Большая проблема в области отрисовки дисплея
     if (check0 && (check0 & 0xFF == 2))
-        MemoryFault(0, 0, true);
+        MemoryFault(0, 0);
 
     MemoryFault(check0 >> 8, check1 >> 8);
 }
