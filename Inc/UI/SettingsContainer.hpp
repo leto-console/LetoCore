@@ -139,14 +139,14 @@ public:
 
 		for (int i = 0, y = settings_font ? settings_font->GetHeight() : 8; i < settings.Count(); ++i)
 		{
-			if (auto_alignment)
-			{
-				settings[i]->SetPosition({0, y});
-				y += settings[i]->GetHeight();
-			}
-
 			if (settings[i]->IsActive())
 			{
+				if (auto_alignment)
+				{
+					settings[i]->SetPosition({0, y});
+					y += settings[i]->GetHeight();
+				}
+
 				settings[i]->Draw(screen);
 			}
 		}

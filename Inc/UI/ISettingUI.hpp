@@ -1,8 +1,7 @@
-/*
- * SettingUI.hpp
- *
- *  Created on: Dec 17, 2025
- *      Author: Timur
+/**
+ * @file SettingUI.hpp
+ * @date Dec 17, 2025
+ * @author Rakhimov T.
  */
 
 #ifndef INC_UI_SETTING_UI_HPP_

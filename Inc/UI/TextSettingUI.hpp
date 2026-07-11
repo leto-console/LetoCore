@@ -93,6 +93,8 @@ protected:
 	/* Обновляет текущее поле */
 	void UpdateCurrentValue() override
 	{
+		if (IsCaptured()) return;
+
 		cur_text = edit_text = setting->GetOrDefault();
 		if (setting_font)
 		{

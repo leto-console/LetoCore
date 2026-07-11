@@ -56,6 +56,7 @@ void ISettingUI::Draw(IScreen& screen, Point2_i offset)
 		name_value_offset = TextWidth(name + ": ");
 	}
 
+	UpdateCurrentValue();
 	DrawName(screen);
 	DrawValue(screen);
 }

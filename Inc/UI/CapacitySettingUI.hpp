@@ -52,6 +52,8 @@ public:
 	/* Обновляет текущее поле */
 	void UpdateCurrentValue() override
 	{
+		if (IsCaptured()) return;
+
 		//cur_idx = -1;
 		//T get_value = cell->GetOrDefault();
 		//for (int i = 0; i < (int)list.size(); i++)
