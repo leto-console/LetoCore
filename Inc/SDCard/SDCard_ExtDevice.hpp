@@ -1,0 +1,31 @@
+/**
+ * @file SDCard_ExtDevice.hpp
+ * @date Jul 15, 2026
+ * @author Rakhimov T.
+ */
+
+#ifndef INC_SDCARD_SDCARD_EXT_DEVICE_HPP_
+#define INC_SDCARD_SDCARD_EXT_DEVICE_HPP_
+
+#include "LibrariesExport.h"
+
+#include <System/ExtDevice.hpp>
+
+struct LIBRARIES_EXPORT SDCard_ExtDevice : public ExtDevice
+{
+public:
+    SDCard_ExtDevice();
+
+    ExtDeviceFeatures GetFeatures() override { return ExtDeviceFeatures::NONE; }
+
+    void Enable() override;
+
+    void Disable() override;
+
+protected:
+    bool DeviceInit() override;
+
+    void DeviceTick() override;
+};
+
+#endif
