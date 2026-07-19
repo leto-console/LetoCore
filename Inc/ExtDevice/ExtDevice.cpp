@@ -38,8 +38,8 @@ void ExtDevice::MainLoop()
     DeviceTick();
 }
 
-ExtDeviceStatus ExtDevice::GetStatus()
+ExtDeviceStatus ExtDevice::GetStatus(bool draw)
 {
-    if (init_retries) init_allow = true;
+    if (init_retries && draw) init_allow = true;
     return status;
 }

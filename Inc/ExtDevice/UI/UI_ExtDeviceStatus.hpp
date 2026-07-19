@@ -10,12 +10,12 @@
 #include "LibrariesExport.h"
 
 #include <SceneManager/ISceneObject.hpp>
-#include <System/ExtDevice.hpp>
+#include <ExtDevice/ExtDevice.hpp>
 
 class LIBRARIES_EXPORT UI_ExtDeviceStatus : public ISceneObject
 {
 public:
-    UI_ExtDeviceStatus(ExtDevice& device);
+    UI_ExtDeviceStatus(ExtDevice* device);
 
     void SetFont(IFont* font);
 
@@ -23,7 +23,7 @@ public:
     bool ProcessInput(const AppEvent& event) override;
 
 private:
-    ExtDevice& device;
+    ExtDevice* device;
     const IFont* font;
 };
 

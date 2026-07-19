@@ -69,4 +69,6 @@ constexpr RGBColor DeepOrangeColor  { "#FF5722" };
 
 constexpr RGBColor IndigoColor      { "#3f51b5" };
 
+constexpr RGBColor PurpleColor      { "#9C27B0" };
+
 #endif

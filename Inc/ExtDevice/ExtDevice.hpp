@@ -45,7 +45,7 @@ public:
     const char* GetName() const;
 
     /**
-     * @brief Init external device asynchronously (awaiting GetStatus call)
+     * @brief Init external device asynchronously (awaiting GetStatus call with draw = `true` arg)
      */
     void AsyncInit(uint8_t retries = 3);
 
@@ -62,7 +62,7 @@ public:
     /**
      * @brief Get status of external device
      */
-    ExtDeviceStatus GetStatus();
+    ExtDeviceStatus GetStatus(bool draw = false);
 
     /**
      * @brief Enable external device

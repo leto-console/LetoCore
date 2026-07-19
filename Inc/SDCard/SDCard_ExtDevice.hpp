@@ -9,7 +9,7 @@
 
 #include "LibrariesExport.h"
 
-#include <System/ExtDevice.hpp>
+#include <ExtDevice/ExtDevice.hpp>
 
 struct LIBRARIES_EXPORT SDCard_ExtDevice : public ExtDevice
 {
@@ -27,5 +27,7 @@ protected:
 
     void DeviceTick() override;
 };
+
+extern LIBRARIES_EXPORT SDCard_ExtDevice* sdcard_extdev;
 
 #endif

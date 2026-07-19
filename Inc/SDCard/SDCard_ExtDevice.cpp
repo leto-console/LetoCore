@@ -9,6 +9,8 @@ bool SDCard_ExtDevice::DeviceInit()
 #ifdef USE_HAL_DRIVER
     int init = SDCARD_Init();
     return init == 0;
+#else
+    return true;
 #endif
 }
 
@@ -37,3 +39,5 @@ void SDCard_ExtDevice::DeviceTick()
         status = ExtDeviceStatus::DISCONNECTED;
 #endif
 }
+
+SDCard_ExtDevice* sdcard_extdev = nullptr;
