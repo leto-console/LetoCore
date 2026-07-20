@@ -71,6 +71,7 @@ bool UI_ExtDeviceStatus::ProcessInput(const AppEvent& event)
     else if (IsSystemAltEvent(event))
     {
         alt_mode = !alt_mode;
+        return true;
     }
 
     return false;
