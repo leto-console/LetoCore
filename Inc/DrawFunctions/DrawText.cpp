@@ -52,7 +52,11 @@ void DrawFunctions::DrawText(IScreen &screen, Point2_i point, const char *text, 
 {
     if (!CheckAndSetFont(font) || !text) 
         return;
+	
+	const char CTRL_OPEN_SYMBOL = '{';
+	const char CTRL_CLOSE_SYMBOL = '}';
 
+	RGBColor draw_color = color; 
 	size_t idx{};
 	int symbol{};
 	uint8_t font_width = font->GetWidth(), font_height = font->GetHeight();
@@ -60,7 +64,44 @@ void DrawFunctions::DrawText(IScreen &screen, Point2_i point, const char *text, 
 	while (text[idx] != '\0' && idx < length) {
 		symbol = __GET_SYMBOL(text[idx]);
 
-		if (symbol == 208 || symbol == 209)
+		if (symbol == CTRL_OPEN_SYMBOL) 
+		{ 
+			// Обработка тегов управления
+			idx += 2;
+			symbol = __GET_SYMBOL(text[idx]);
+
+			/* 
+				{ #RRGGBB } - смена цвета
+				{ # } - отмена смены цвета
+			*/
+			if (symbol == '#') 
+			{
+				if (idx + 2 < length)
+				{
+					symbol = __GET_SYMBOL(text[idx + 2]);
+					if (symbol == CTRL_CLOSE_SYMBOL)			/* { # } - отмена смены цвета */
+					{
+						draw_color = color;
+						idx += 3;
+						continue;
+					}
+				}
+				if (idx + 8 < length)
+				{
+					symbol = __GET_SYMBOL(text[idx + 8]);		/* { #RRGGBB } - смена цвета */
+					if (symbol == CTRL_CLOSE_SYMBOL)
+					{
+						draw_color = RGBColor{ &text[idx] };
+						idx += 9;
+						continue;
+					}
+				}
+			}
+
+			++idx;
+			continue;
+		}
+		else if (symbol == 208 || symbol == 209)
 		{
 			// Русский символ - Wide char
 			int first_symbol = symbol;
@@ -68,15 +109,15 @@ void DrawFunctions::DrawText(IScreen &screen, Point2_i point, const char *text, 
 			++idx;
 			symbol = __GET_SYMBOL(text[idx]);
 
-			DrawFunctions::DrawBitmap(screen, point, font->GetRussianChar(first_symbol, symbol), font_width, font_height, color, background, inverse);
+			DrawFunctions::DrawBitmap(screen, point, font->GetRussianChar(first_symbol, symbol), font_width, font_height, draw_color, background, inverse);
 		}
 		else if (symbol >= 32 && symbol <= 122)
 		{
-			DrawFunctions::DrawBitmap(screen, point, font->GetASCIIChar(symbol), font_width, font_height, color, background, inverse);
+			DrawFunctions::DrawBitmap(screen, point, font->GetASCIIChar(symbol), font_width, font_height, draw_color, background, inverse);
 		}
 		else
 		{
-			DrawFunctions::DrawBitmap(screen, point, font->GetEmptyChar(), font_width, font_height, color, background, inverse);
+			DrawFunctions::DrawBitmap(screen, point, font->GetEmptyChar(), font_width, font_height, draw_color, background, inverse);
 		}
 		++idx;
 		point.x += font_width;

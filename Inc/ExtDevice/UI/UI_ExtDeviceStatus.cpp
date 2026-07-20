@@ -3,6 +3,8 @@
 #include <DrawFunctions/DrawText.hpp>
 #include <Input/SystemInputID.hpp>
 
+#include <cstdio>
+
 struct UI_ExtDeviceStatusDef
 {
     StaticText32 text;
@@ -24,7 +26,7 @@ UI_ExtDeviceStatus::UI_ExtDeviceStatus(ExtDevice* device)
 {
 }
 
-void UI_ExtDeviceStatus::SetFont(IFont *font) { this->font = font; }
+void UI_ExtDeviceStatus::SetFont(const IFont *font) { this->font = font; }
 
 void UI_ExtDeviceStatus::Draw(IScreen& screen, Point2_i offset)
 {
@@ -38,14 +40,23 @@ void UI_ExtDeviceStatus::Draw(IScreen& screen, Point2_i offset)
 
     if ((uint32_t) status >= sizeof(ui_status) / sizeof(ui_status[0]))
         return;
-    
-    const StaticText32& txt_status = ui_status[(uint32_t) status].text;
-    RGBColor color = ui_status[(uint32_t) status].color;
 
     if (!font) font = DrawFunctions::GetDefaultFont();
     int name_offset = DrawFunctions::TextWidth(device->GetName(), font) + font->GetWidth();
     DrawFunctions::DrawText(screen, position, device->GetName(), WhiteColor, BlackColor, false, font);
-    DrawFunctions::DrawText(screen, position + Point2_i{ name_offset, 0 }, txt_status, color, BlackColor, false, font);
+
+    if (alt_mode)
+    {
+        char txt[64];
+        snprintf(txt, sizeof(txt), "{ #00ffff }t:{ # }%-5d{ #00ffff }i:{ # }%-5d", device->GetAverageTimeTick(), device->GetAverageTimeInit());
+        DrawFunctions::DrawText(screen, position + Point2_i{ name_offset, 0 }, txt, sizeof(txt), WhiteColor, BlackColor, false, font);
+    }
+    else
+    {
+        const StaticText32& txt_status = ui_status[(uint32_t) status].text;
+        RGBColor color = ui_status[(uint32_t) status].color;
+        DrawFunctions::DrawText(screen, position + Point2_i{ name_offset, 0 }, txt_status, color, BlackColor, false, font);
+    }
 }
 
 bool UI_ExtDeviceStatus::ProcessInput(const AppEvent& event)
@@ -56,6 +67,10 @@ bool UI_ExtDeviceStatus::ProcessInput(const AppEvent& event)
     {
         device->AsyncInit();
         return true;
+    }
+    else if (IsSystemAltEvent(event))
+    {
+        alt_mode = !alt_mode;
     }
 
     return false;

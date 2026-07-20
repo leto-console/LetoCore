@@ -10,6 +10,7 @@
 #include "LibrariesExport.h"
 
 #include <cstdint>
+#include <Data/MovingAverage.hpp>
 
 /**
  * @brief External device status
@@ -79,6 +80,8 @@ public:
      */
     virtual ExtDeviceFeatures GetFeatures() = 0;
 
+    uint32_t GetAverageTimeInit() const { return time_init; }
+    uint32_t GetAverageTimeTick() const { return time_tick.Get(); }
 
 protected:
     ExtDeviceStatus status{ ExtDeviceStatus::UNDEFINED };
@@ -98,6 +101,9 @@ private:
 
     uint8_t init_retries{};
     bool init_allow{};
+
+    uint32_t time_init;
+    MovingAverage<uint32_t, 8> time_tick;
 };
 
 #endif

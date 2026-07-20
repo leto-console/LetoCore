@@ -23,6 +23,7 @@ enum SYSTEM_INPUT_IDs : uint8_t
 	SYSTEM_BTN_RIGHT,		///< Клавиша вправо
 	SYSTEM_BTN_ENTER,		///< Клавиша Enter
 	SYSTEM_BTN_MENU,		///< Клавиша Меню
+	SYSTEM_BTN_ALT,			///< Клавиша Alt (B)
 
 	__SYSTEN_ENC_IDs = 128,
 	SYSTEM_ENC_MAIN,		///< Главный энкодер
@@ -41,5 +42,6 @@ extern LIBRARIES_EXPORT bool IsSystemNextEvent(const AppEvent& event, bool press
 extern LIBRARIES_EXPORT bool IsSystemReturnEvent(const AppEvent& event, bool pressed = true);
 extern LIBRARIES_EXPORT bool IsSystemEnterEvent(const AppEvent& event, bool pressed = true);
 extern LIBRARIES_EXPORT bool IsSystemMenuEvent(const AppEvent& event, bool pressed = true);
+extern LIBRARIES_EXPORT bool IsSystemAltEvent(const AppEvent& event, bool pressed = true);
 
 #endif

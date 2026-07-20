@@ -131,12 +131,24 @@ bool IsSystemEnterEvent(const AppEvent& event, bool pressed)
 	return false;
 }
 
-bool IsSystemMenuEvent(const AppEvent &event, bool pressed)
+bool IsSystemMenuEvent(const AppEvent& event, bool pressed)
 {
 	switch (event.source)
 	{
 	case AE_Button:
 		return event.id == SYSTEM_BTN_MENU && ButtonEvent::IsPressed(event, pressed);
+	default:
+		break;
+	}
+	return false;
+}
+
+bool IsSystemAltEvent(const AppEvent& event, bool pressed)
+{
+	switch (event.source)
+	{
+	case AE_Button:
+		return event.id == SYSTEM_BTN_ALT && ButtonEvent::IsPressed(event, pressed);
 	default:
 		break;
 	}

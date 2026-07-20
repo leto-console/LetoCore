@@ -12,7 +12,10 @@
 
 #include <Graphics/IScreen.hpp>
 #include <Graphics/RGBColor.hpp>
-#include <Data/StaticTextView.hpp>
+#include <Data/StaticTextView.hpp> 
+
+#define TXT_COLOR_OPEN(txt) "{" txt "}"
+#define TXT_COLOR_CLOSE "{ # }"
 
 namespace DrawFunctions
 {

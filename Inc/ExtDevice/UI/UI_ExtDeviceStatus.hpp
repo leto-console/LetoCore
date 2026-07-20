@@ -17,7 +17,7 @@ class LIBRARIES_EXPORT UI_ExtDeviceStatus : public ISceneObject
 public:
     UI_ExtDeviceStatus(ExtDevice* device);
 
-    void SetFont(IFont* font);
+    void SetFont(const IFont* font);
 
     void Draw(IScreen& screen, Point2_i offset = {}) override;
     bool ProcessInput(const AppEvent& event) override;
@@ -25,6 +25,7 @@ public:
 private:
     ExtDevice* device;
     const IFont* font;
+    bool alt_mode{ false };
 };
 
 #endif
