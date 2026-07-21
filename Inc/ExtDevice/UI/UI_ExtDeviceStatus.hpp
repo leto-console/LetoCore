@@ -15,17 +15,21 @@
 class LIBRARIES_EXPORT UI_ExtDeviceStatus : public ISceneObject
 {
 public:
+    UI_ExtDeviceStatus() = default;
     UI_ExtDeviceStatus(ExtDevice* device);
 
+    void SetDevice(ExtDevice* device);
     void SetFont(const IFont* font);
 
     void Draw(IScreen& screen, Point2_i offset = {}) override;
     bool ProcessInput(const AppEvent& event) override;
 
 private:
-    ExtDevice* device;
-    const IFont* font;
-    bool alt_mode{ false };
+    ExtDevice* device{};
+    const IFont* font{};
+
+    enum { MODES_COUNT = 3 };
+    uint8_t mode{};
 };
 
 #endif

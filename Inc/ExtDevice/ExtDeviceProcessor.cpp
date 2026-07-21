@@ -7,7 +7,7 @@ ExtDeviceProcessor::ExtDeviceProcessor(const StaticText32 &name, uint32_t period
 {
 }
 
-void ExtDeviceProcessor::AddExtDevice(ExtDevice *ext_device)
+void ExtDeviceProcessor::AddExtDevice(ExtDevice* ext_device)
 {
     ext_devices.push_back(ext_device);
 }
@@ -16,7 +16,12 @@ bool ExtDeviceProcessor::Do()
 {
     // Add CPU time balancer (if the device takes longer than, for example, 15 ms to update, we add it to the blacklist)
     for (ExtDevice* device : ext_devices)
+    {
+        if (device->GetStatus() == ExtDeviceStatus::CONNECTED)
+            device->Init();
+
         device->MainLoop();
+    }
     return true;
 }
 

@@ -25,6 +25,9 @@ void TimeUtils::SetStartMs(uint32_t ms)
 
 #include <HAL_include/HAL.hpp>
 
+#define DWT_CONTROL *(volatile unsigned long *)0xE0001000
+#define SCB_DEMCR   *(volatile unsigned long *)0xE000EDFC
+
 #endif
 
 #if defined(__WIN__)
@@ -41,9 +44,14 @@ void TimeUtils::Init(uint32_t count_in_sec)
         return;
     }
 	TimeUtils::count_in_sec = count_in_sec;
+
 #ifdef USE_HAL_DRIVER
 	HAL_SYSTICK_Config( HAL_RCC_GetHCLKFreq() / count_in_sec );
+
+    SCB_DEMCR |= CoreDebug_DEMCR_TRCENA_Msk; // разрешаем использовать счётчик
+	DWT_CONTROL |= DWT_CTRL_CYCCNTENA_Msk;   // запускаем счётчик
 #endif
+
     inited = true;
 }
 
@@ -77,5 +85,9 @@ void TimeUtils::SleepMks(uint32_t mks)
 #if defined(WIN32)
     uint32_t cur_mks = GetCurrentMks();
     while (GetCurrentMks() - cur_mks < mks);
+#else
+    uint32_t us_count_tic =  mks * (HAL_RCC_GetHCLKFreq() / 1000000);
+    DWT->CYCCNT = 0U; // обнуляем счётчик
+    while (DWT->CYCCNT < us_count_tic);
 #endif
 }

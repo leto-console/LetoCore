@@ -11,29 +11,34 @@
 
  //using T = float;
 
-template <typename T, int Size>
+template <typename T, int BufferSize>
 class RingFIFO_Static
 {
 protected:
-	T data[Size]{};
+	T data[BufferSize]{};
 	uint32_t iRead{}, iWrite{};
-	uint32_t size{ Size };
+	uint32_t size{ BufferSize };
+	uint32_t count{};
 
 public:
-	RingFIFO_Static()
-	{
-	}
+	RingFIFO_Static() = default;
 
-	uint32_t Count() const
+	uint32_t Count() const { return count; }
+	uint32_t Size() const { return size; }
+
+	void Clear()
 	{
-		return (iWrite - iRead) % size;
+		count = iRead = iWrite = 0;
 	}
 
 	void Push(const T& value)
 	{
 		data[iWrite] = value;
 		++iWrite %= size;
-		if (iWrite == iRead)
+
+		if (count < size) 
+			++count;
+		if (count == size)
 			++iRead %= size;
 	}
 
@@ -48,6 +53,7 @@ public:
 	{
 		if (iRead == iWrite) return false;
 		++iRead %= size;
+		--count;
 		return true;
 	}
 
@@ -69,8 +75,8 @@ public:
 	// for-each support
 	T		*begin()		{ return data; }
 	T const	*begin() const	{ return data; }
-	T		*end()		 { return data + Size; }
-	T const	*end() const { return data + Size; }
+	T		*end()		 { return data + count; }
+	T const	*end() const { return data + count; }
 };
 
 #endif

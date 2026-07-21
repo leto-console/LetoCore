@@ -18,7 +18,7 @@ extern "C" {
 void SDCARD_Unselect();
 void SDCARD_Fresh();
 void SDCARD_SetSpeed(uint32_t baud_prescaler);
-int SDCARD_Ping();
+int SDCARD_Ping(uint8_t ready);
 
 // all procedures return 0 on success, < 0 on failure
 int SDCARD_Init();

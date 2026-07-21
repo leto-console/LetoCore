@@ -24,10 +24,7 @@ public:
 
 	float GetFloat() const
 	{
-		T sum{};
-		for (const T& value : ring_fifo)
-			sum += value;
-		return 1.0f * sum / WindowWidth;
+		return 1.0f * ring_fifo.Sum() / ring_fifo.Count();
 	}
 
 	T Get() const

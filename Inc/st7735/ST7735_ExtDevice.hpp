@@ -1,20 +1,20 @@
 /**
- * @file SDCard_ExtDevice.hpp
- * @date Jul 15, 2026
+ * @file ST7735_ExtDevice.hpp
+ * @date Jul 21, 2026
  * @author Rakhimov T.
  */
 
-#ifndef INC_SDCARD_SDCARD_EXT_DEVICE_HPP_
-#define INC_SDCARD_SDCARD_EXT_DEVICE_HPP_
+#ifndef INC_ST7735_ST7735_EXT_DEVICE_HPP_
+#define INC_ST7735_ST7735_EXT_DEVICE_HPP_
 
 #include "LibrariesExport.h"
 
 #include <ExtDevice/ExtDevice.hpp>
 
-struct LIBRARIES_EXPORT SDCard_ExtDevice : public ExtDevice
+struct LIBRARIES_EXPORT ST7735_ExtDevice : public ExtDevice
 {
 public:
-    SDCard_ExtDevice();
+    ST7735_ExtDevice();
 
     ExtDeviceFeatures GetFeatures() override { return ExtDeviceFeatures::NONE; }
 
@@ -30,6 +30,6 @@ protected:
     void DeviceTick() override;
 };
 
-extern LIBRARIES_EXPORT SDCard_ExtDevice* sdcard_extdev;
+extern LIBRARIES_EXPORT ST7735_ExtDevice* st7735_extdev;
 
 #endif

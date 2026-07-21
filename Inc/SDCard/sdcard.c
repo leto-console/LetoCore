@@ -6,6 +6,18 @@
 
 extern SPI_HandleTypeDef SDCARD_SPI_PORT;
 
+#define SDCARD_SPI_TIMEOUT 100
+
+#define DWT_CONTROL *(volatile unsigned long *)0xE0001000
+#define SCB_DEMCR   *(volatile unsigned long *)0xE000EDFC
+
+static void delay_us(uint32_t us) // DelayMicro
+{
+    uint32_t us_count_tic =  us * (HAL_RCC_GetHCLKFreq() / 1000000);
+    DWT->CYCCNT = 0U; // обнуляем счётчик
+    while (DWT->CYCCNT < us_count_tic);
+}
+
 static void SDCARD_Select() {
     HAL_GPIO_WritePin(SDCARD_CS_GPIO_Port, SDCARD_CS_Pin, GPIO_PIN_RESET);
 }
@@ -18,7 +30,7 @@ void SDCARD_Fresh()
 {
     SDCARD_Unselect();
     uint8_t sync_byte  = 0xFF;
-	HAL_SPI_Transmit(&SDCARD_SPI_PORT, &sync_byte , sizeof(sync_byte), HAL_MAX_DELAY);
+	HAL_SPI_Transmit(&SDCARD_SPI_PORT, &sync_byte , sizeof(sync_byte), SDCARD_SPI_TIMEOUT);
 }
 
 static uint8_t LastReadR1;
@@ -38,10 +50,10 @@ static uint8_t SDCARD_ReadR1() {
     //uint8_t r1;
     // make sure FF is transmitted during receive
     uint8_t tx = 0xFF;
-    uint32_t timeout = 10000;
-    while(timeout--)
+    uint32_t cnt = 10;
+    while(cnt--)
     {
-        HAL_SPI_TransmitReceive(&SDCARD_SPI_PORT, &tx, &LastReadR1, sizeof(LastReadR1), HAL_MAX_DELAY);
+        HAL_SPI_TransmitReceive(&SDCARD_SPI_PORT, &tx, &LastReadR1, sizeof(LastReadR1), 20);
         if((LastReadR1 & 0x80) == 0) return LastReadR1;
     }
     return 0xFF;
@@ -59,7 +71,7 @@ static int SDCARD_WaitDataToken(uint8_t token) {
     // make sure FF is transmitted during receive
     uint8_t tx = 0xFF;
     for(;;) {
-        HAL_SPI_TransmitReceive(&SDCARD_SPI_PORT, &tx, &fb, sizeof(fb), HAL_MAX_DELAY);
+        HAL_SPI_TransmitReceive(&SDCARD_SPI_PORT, &tx, &fb, sizeof(fb), SDCARD_SPI_TIMEOUT);
         if(fb == token)
             break;
 
@@ -73,7 +85,7 @@ static int SDCARD_ReadBytes(uint8_t* buff, size_t buff_size) {
     // make sure FF is transmitted during receive
     uint8_t tx = 0xFF;
     while(buff_size > 0) {
-        HAL_SPI_TransmitReceive(&SDCARD_SPI_PORT, &tx, buff, 1, HAL_MAX_DELAY);
+        HAL_SPI_TransmitReceive(&SDCARD_SPI_PORT, &tx, buff, 1, SDCARD_SPI_TIMEOUT);
         buff++;
         buff_size--;
     }
@@ -105,42 +117,41 @@ void SDCARD_SetSpeed(uint32_t baud_prescaler) {
     __HAL_SPI_ENABLE(&SDCARD_SPI_PORT);
 }
 
-/// TODO: Сократить время пинга SD-карты. Подключение лучше делать вручную через кнопку "обновить"
-
-int SDCARD_Ping()
+int SDCARD_Ping(uint8_t ready)
 {
     SDCARD_Unselect();
     SDCARD_SetSpeed(SPI_BAUDRATEPRESCALER_256);
-    HAL_Delay(5);
 
-    uint8_t high = 0xFF;
-    for(int i = 0; i < 10 /*15*/; i++) { // 80 clock pulses
-        HAL_SPI_Transmit(&SDCARD_SPI_PORT, &high, sizeof(high), HAL_MAX_DELAY);
+    uint8_t dummy[10] = { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
+    HAL_SPI_Transmit(&SDCARD_SPI_PORT, dummy, sizeof(dummy), 25);
+
+    HAL_Delay(3);
+    SDCARD_Select();
+    HAL_Delay(2);
+
+    // === Разная стратегия в зависимости от текущего состояния ===
+    if (ready)
+    {
+        // Для уже рабочей карты — используем лёгкий CMD13 (не ломает состояние)
+        uint8_t cmd13[] = {0x40 | 13, 0, 0, 0, 0, 0x01};
+        HAL_SPI_Transmit(&SDCARD_SPI_PORT, cmd13, sizeof(cmd13), 30);
+    }
+    else
+    {
+        // При hot-plug или в состоянии ABSENT — используем CMD0 (лучше будит)
+        uint8_t cmd0[] = {0x40, 0x00, 0x00, 0x00, 0x00, 0x95};
+        HAL_SPI_Transmit(&SDCARD_SPI_PORT, cmd0, sizeof(cmd0), 30);
     }
 
-    SDCARD_Select();
-    HAL_Delay(5);
-
-    // Отправляем CMD13 (SEND_STATUS) — запрашиваем внутреннее состояние
-    uint8_t cmd[] = { 0x40 | 13, 0, 0, 0, 0, 0x01 };
-    HAL_SPI_Transmit(&SDCARD_SPI_PORT, cmd, sizeof(cmd), 100); // Короткий таймаут 100мс
-
-    // Вычитываем ответ R2 (2 байта)
-    uint8_t r2[2] = {0xFF, 0xFF};
-    HAL_SPI_Receive(&SDCARD_SPI_PORT, r2, 2, 100);
-
+    uint8_t r1 = SDCARD_ReadR1();
     SDCARD_Unselect();
-
     SDCARD_SetSpeed(SPI_BAUDRATEPRESCALER_2);
 
-    // Если карты нет, по SPI прилетит чистый мусор (0xFF, 0xFF)
-    // Если карта на месте, первый байт ответа R1 должен быть равен 0x00 (или 0x01 в Idle)
-    if (r2[0] == 0xFF && r2[1] == 0xFF) {
-        return -1; // Карта не ответила, её вынули
+    if (r1 == 0x00 || r1 == 0x01) {
+        return 0;        // карта на месте
     }
 
-    return 0; // Карта ответила, всё отлично
-
+    return -1;
 }
 
 int SDCARD_Init() {
@@ -159,8 +170,9 @@ int SDCARD_Init() {
     HAL_Delay(50);
 
     uint8_t high = 0xFF;
-    for(int i = 0; i < 10; i++) { // 80 clock pulses
-        HAL_SPI_Transmit(&SDCARD_SPI_PORT, &high, sizeof(high), HAL_MAX_DELAY);
+    for(int i = 0; i < 10; i++) 
+    { // 80 clock pulses
+        HAL_SPI_Transmit(&SDCARD_SPI_PORT, &high, sizeof(high), SDCARD_SPI_TIMEOUT);
     }
 
     SDCARD_Select();
@@ -179,7 +191,7 @@ int SDCARD_Init() {
     {
         static const uint8_t cmd[] =
             { 0x40 | 0x00 /* CMD0 */, 0x00, 0x00, 0x00, 0x00 /* ARG = 0 */, (0x4A << 1) | 1 /* CRC7 + end bit */ };
-        HAL_SPI_Transmit(&SDCARD_SPI_PORT, (uint8_t*)cmd, sizeof(cmd), HAL_MAX_DELAY);
+        HAL_SPI_Transmit(&SDCARD_SPI_PORT, (uint8_t*)cmd, sizeof(cmd), SDCARD_SPI_TIMEOUT);
     }
 
     if(SDCARD_ReadR1() != 0x01) {
@@ -206,7 +218,7 @@ int SDCARD_Init() {
     {
         static const uint8_t cmd[] =
             { 0x40 | 0x08 /* CMD8 */, 0x00, 0x00, 0x01, 0xAA /* ARG */, (0x43 << 1) | 1 /* CRC7 + end bit */ };
-        HAL_SPI_Transmit(&SDCARD_SPI_PORT, (uint8_t*)cmd, sizeof(cmd), HAL_MAX_DELAY);
+        HAL_SPI_Transmit(&SDCARD_SPI_PORT, (uint8_t*)cmd, sizeof(cmd), SDCARD_SPI_TIMEOUT);
     }
 
     if(SDCARD_ReadR1() != 0x01) {
@@ -244,7 +256,7 @@ int SDCARD_Init() {
         // CMD55 (App Command prefix)
         {
             static const uint8_t cmd[] = { 0x40 | 0x37 /* CMD55 */, 0x00, 0x00, 0x00, 0x00, 0xFF }; // CRC для аргумента 0x00 не важен (0xFF сойдет)
-            HAL_SPI_Transmit(&SDCARD_SPI_PORT, (uint8_t*)cmd, sizeof(cmd), HAL_MAX_DELAY);
+            HAL_SPI_Transmit(&SDCARD_SPI_PORT, (uint8_t*)cmd, sizeof(cmd), SDCARD_SPI_TIMEOUT);
         }
         
         if(SDCARD_ReadR1() & 0xFE) { 
@@ -261,7 +273,7 @@ int SDCARD_Init() {
         {
             // 0x77 — это СТРОГИЙ и точный CRC7 + End bit для команды 0x29 с аргументом 0x40000000
             static const uint8_t cmd[] = { 0x40 | 0x29 /* ACMD41 */, 0x40, 0x00, 0x00, 0x00 /* ARG = HCS */, 0x77 }; 
-            HAL_SPI_Transmit(&SDCARD_SPI_PORT, (uint8_t*)cmd, sizeof(cmd), HAL_MAX_DELAY);
+            HAL_SPI_Transmit(&SDCARD_SPI_PORT, (uint8_t*)cmd, sizeof(cmd), SDCARD_SPI_TIMEOUT);
         }
         
         uint8_t r1 = SDCARD_ReadR1();
@@ -293,7 +305,7 @@ int SDCARD_Init() {
     {
         static const uint8_t cmd[] =
             { 0x40 | 0x3A /* CMD58 */, 0x00, 0x00, 0x00, 0x00 /* ARG */, (0x7F << 1) | 1 /* CRC7 + end bit */ };
-        HAL_SPI_Transmit(&SDCARD_SPI_PORT, (uint8_t*)cmd, sizeof(cmd), HAL_MAX_DELAY);
+        HAL_SPI_Transmit(&SDCARD_SPI_PORT, (uint8_t*)cmd, sizeof(cmd), SDCARD_SPI_TIMEOUT);
     }
 
     if(SDCARD_ReadR1() != 0x00) {
@@ -339,7 +351,7 @@ int SDCARD_GetBlocksNumber(uint32_t* num) {
     {
         static const uint8_t cmd[] =
             { 0x40 | 0x09 /* CMD9 */, 0x00, 0x00, 0x00, 0x00 /* ARG */, (0x7F << 1) | 1 /* CRC7 + end bit */ };
-        HAL_SPI_Transmit(&SDCARD_SPI_PORT, (uint8_t*)cmd, sizeof(cmd), HAL_MAX_DELAY);
+        HAL_SPI_Transmit(&SDCARD_SPI_PORT, (uint8_t*)cmd, sizeof(cmd), SDCARD_SPI_TIMEOUT);
     }
 
     if(SDCARD_ReadR1() != 0x00) {
@@ -399,7 +411,7 @@ int SDCARD_ReadSingleBlock(uint32_t blockNum, uint8_t* buff) {
         blockNum & 0xFF,
         (0x7F << 1) | 1 /* CRC7 + end bit */
     };
-    HAL_SPI_Transmit(&SDCARD_SPI_PORT, (uint8_t*)cmd, sizeof(cmd), HAL_MAX_DELAY);
+    HAL_SPI_Transmit(&SDCARD_SPI_PORT, (uint8_t*)cmd, sizeof(cmd), SDCARD_SPI_TIMEOUT);
 
     if(SDCARD_ReadR1() != 0x00) {
         SDCARD_Unselect();
@@ -443,7 +455,7 @@ int SDCARD_WriteSingleBlock(uint32_t blockNum, const uint8_t* buff) {
         blockNum & 0xFF,
         (0x7F << 1) | 1 /* CRC7 + end bit */
     };
-    HAL_SPI_Transmit(&SDCARD_SPI_PORT, (uint8_t*)cmd, sizeof(cmd), HAL_MAX_DELAY);
+    HAL_SPI_Transmit(&SDCARD_SPI_PORT, (uint8_t*)cmd, sizeof(cmd), SDCARD_SPI_TIMEOUT);
 
     if(SDCARD_ReadR1() != 0x00) {
         SDCARD_Unselect();
@@ -452,9 +464,9 @@ int SDCARD_WriteSingleBlock(uint32_t blockNum, const uint8_t* buff) {
 
     uint8_t dataToken = DATA_TOKEN_CMD24;
     uint8_t crc[2] = { 0xFF, 0xFF };
-    HAL_SPI_Transmit(&SDCARD_SPI_PORT, &dataToken, sizeof(dataToken), HAL_MAX_DELAY);
-    HAL_SPI_Transmit(&SDCARD_SPI_PORT, (uint8_t*)buff, 512, HAL_MAX_DELAY);
-    HAL_SPI_Transmit(&SDCARD_SPI_PORT, crc, sizeof(crc), HAL_MAX_DELAY);
+    HAL_SPI_Transmit(&SDCARD_SPI_PORT, &dataToken, sizeof(dataToken), SDCARD_SPI_TIMEOUT);
+    HAL_SPI_Transmit(&SDCARD_SPI_PORT, (uint8_t*)buff, 512, SDCARD_SPI_TIMEOUT);
+    HAL_SPI_Transmit(&SDCARD_SPI_PORT, crc, sizeof(crc), SDCARD_SPI_TIMEOUT);
 
     /*
         dataResp:
@@ -496,7 +508,7 @@ int SDCARD_ReadBegin(uint32_t blockNum) {
         blockNum & 0xFF,
         (0x7F << 1) | 1 /* CRC7 + end bit */
     };
-    HAL_SPI_Transmit(&SDCARD_SPI_PORT, (uint8_t*)cmd, sizeof(cmd), HAL_MAX_DELAY);
+    HAL_SPI_Transmit(&SDCARD_SPI_PORT, (uint8_t*)cmd, sizeof(cmd), SDCARD_SPI_TIMEOUT);
 
     if(SDCARD_ReadR1() != 0x00) {
         SDCARD_Unselect();
@@ -537,7 +549,7 @@ int SDCARD_ReadEnd() {
     /* CMD12 (STOP_TRANSMISSION) */
     {
         static const uint8_t cmd[] = { 0x40 | 0x0C /* CMD12 */, 0x00, 0x00, 0x00, 0x00 /* ARG */, (0x7F << 1) | 1 };
-        HAL_SPI_Transmit(&SDCARD_SPI_PORT, (uint8_t*)cmd, sizeof(cmd), HAL_MAX_DELAY);
+        HAL_SPI_Transmit(&SDCARD_SPI_PORT, (uint8_t*)cmd, sizeof(cmd), SDCARD_SPI_TIMEOUT);
     }
 
     /*
@@ -577,7 +589,7 @@ int SDCARD_WriteBegin(uint32_t blockNum) {
         blockNum & 0xFF,
         (0x7F << 1) | 1 /* CRC7 + end bit */
     };
-    HAL_SPI_Transmit(&SDCARD_SPI_PORT, (uint8_t*)cmd, sizeof(cmd), HAL_MAX_DELAY);
+    HAL_SPI_Transmit(&SDCARD_SPI_PORT, (uint8_t*)cmd, sizeof(cmd), SDCARD_SPI_TIMEOUT);
 
     if(SDCARD_ReadR1() != 0x00) {
         SDCARD_Unselect();
@@ -593,9 +605,9 @@ int SDCARD_WriteData(const uint8_t* buff) {
 
     uint8_t dataToken = DATA_TOKEN_CMD25;
     uint8_t crc[2] = { 0xFF, 0xFF };
-    HAL_SPI_Transmit(&SDCARD_SPI_PORT, &dataToken, sizeof(dataToken), HAL_MAX_DELAY);
-    HAL_SPI_Transmit(&SDCARD_SPI_PORT, (uint8_t*)buff, 512, HAL_MAX_DELAY);
-    HAL_SPI_Transmit(&SDCARD_SPI_PORT, crc, sizeof(crc), HAL_MAX_DELAY);
+    HAL_SPI_Transmit(&SDCARD_SPI_PORT, &dataToken, sizeof(dataToken), SDCARD_SPI_TIMEOUT);
+    HAL_SPI_Transmit(&SDCARD_SPI_PORT, (uint8_t*)buff, 512, SDCARD_SPI_TIMEOUT);
+    HAL_SPI_Transmit(&SDCARD_SPI_PORT, crc, sizeof(crc), SDCARD_SPI_TIMEOUT);
 
     /*
         dataResp:
@@ -624,7 +636,7 @@ int SDCARD_WriteEnd() {
     SDCARD_Select();
 
     uint8_t stopTran = 0xFD; // stop transaction token for CMD25
-    HAL_SPI_Transmit(&SDCARD_SPI_PORT, &stopTran, sizeof(stopTran), HAL_MAX_DELAY);
+    HAL_SPI_Transmit(&SDCARD_SPI_PORT, &stopTran, sizeof(stopTran), SDCARD_SPI_TIMEOUT);
 
     // skip one byte before readyng "busy"
     // this is required by the spec and is necessary for some real SD-cards!

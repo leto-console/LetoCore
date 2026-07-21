@@ -11,6 +11,7 @@
 
 #include <cstdint>
 #include <Data/MovingAverage.hpp>
+#include <Data/StaticList.hpp>
 
 /**
  * @brief External device status
@@ -18,11 +19,12 @@
 enum class ExtDeviceStatus : uint8_t
 {
     UNDEFINED,      ///< Initional status - device is undefined
-    READY,          ///< Device is ready for work
     BUSY,           ///< Device connected and busy
     DISCONNECTED,   ///< Device disconnected
     BAD_INIT,       ///< Problems on initialization
     INITIALIZING,   ///< Device is initializing
+    CONNECTED,      ///< Device is connected
+    READY,          ///< Device is ready for work
 };
 
 enum class ExtDeviceFeatures : uint32_t
@@ -81,6 +83,7 @@ public:
     virtual ExtDeviceFeatures GetFeatures() = 0;
 
     uint32_t GetAverageTimeInit() const { return time_init; }
+    uint32_t GetAverageTimePing() const { return time_ping.Get(); }
     uint32_t GetAverageTimeTick() const { return time_tick.Get(); }
 
 protected:
@@ -90,6 +93,11 @@ protected:
      * @brief Init external device
      */
     virtual bool DeviceInit() = 0;
+
+    /**
+     * @brief Ping external device
+     */
+    virtual bool DevicePing() = 0;
 
     /**
      * @brief Main processing loop for external device
@@ -103,7 +111,9 @@ private:
     bool init_allow{};
 
     uint32_t time_init;
-    MovingAverage<uint32_t, 8> time_tick;
+    MovingAverage<uint32_t, 8> time_ping, time_tick;
 };
+
+extern LIBRARIES_EXPORT StaticList<ExtDevice*, 32> ExtDevices;
 
 #endif

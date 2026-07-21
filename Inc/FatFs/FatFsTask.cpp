@@ -16,24 +16,24 @@ bool FatFsTask::RefreshHardware()
 #ifndef USE_HAL_DRIVER
     return true;
 #else
-    static int last_ping = 777;
-    int ping = SDCARD_Ping();
+    static int last_success = false;
+    bool success = sdcard && sdcard->GetStatus() == ExtDeviceStatus::READY;
 
-    if (last_ping != ping)
+    if (last_success != success)
     {
-    	if (ping == 0)
+    	if (success)
     	{
-            VC_Printf("ping 0!\r\n", GreenColor);
+            VC_Printf("ping success!\r\n", GreenColor);
     	}
     	else
     	{
-            VC_Printf("ping -1!\r\n", RedColor);
+            VC_Printf("ping suck!\r\n", RedColor);
     	}
 
-    	last_ping = ping;
+    	last_success = success;
     }
 
-    return ping == 0;
+    return success;
 #endif
 }
 
@@ -75,7 +75,7 @@ bool FatFsTask::Do()
     return true;
 }
 
-FatFsTask::FatFsTask(const StaticText32 &name, uint32_t period_ms, uint8_t priority)
-    : PriorityTask{ name, period_ms, priority }
+FatFsTask::FatFsTask(const StaticText32 &name, uint32_t period_ms, uint8_t priority, SDCard_ExtDevice* sdcard)
+    : PriorityTask{ name, period_ms, priority }, sdcard{ sdcard }
 {
 }
