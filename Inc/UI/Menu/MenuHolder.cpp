@@ -57,6 +57,14 @@ void MenuHolder::OnShow()
 		ResetCurrentID();
 }
 
+void MenuHolder::OnHide()
+{
+	enter_cather.Reset();
+	up_catcher.Reset();
+	down_catcher.Reset();
+	enc_catcher.Reset();
+}
+
 void MenuHolder::SetStyle(MenuStyle style, const IFont* font)
 {
 	this->style = style;

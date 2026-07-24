@@ -1,5 +1,9 @@
 #include "IEncoderCatcher.hpp"
 
+void IEncoderCatcher::Reset()
+{
+}
+
 void IEncoderCatcher::Catch(uint8_t _encoder_id, uint16_t _mode)
 { 
     this->encoder_id = _encoder_id;

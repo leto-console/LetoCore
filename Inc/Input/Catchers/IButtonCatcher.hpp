@@ -30,6 +30,8 @@ public:
 
     virtual void Callback() = 0;
 
+    void Reset();
+
     // Отловить вывод требуемого типа
     void Catch(uint8_t _button_id, uint16_t _mode);
 
@@ -45,13 +47,14 @@ public:
 private:
     uint8_t button_id{};
     uint16_t mode{};
-    bool pressed{};
-    bool holded{};
-    uint32_t last_click_ms{};
-    
+
     const uint32_t double_ms{ 100 };
     uint32_t hold_ms{}, multiply_ms{};
     Timer multiply_timer;
+
+    bool pressed{};
+    bool holded{};
+    uint32_t last_click_ms{};
 };
 
 #endif

@@ -69,6 +69,7 @@ public:
 	void EncoderCatch(uint8_t encoder_id);
 
 	void OnShow() override;
+	void OnHide() override;
 
 	virtual uint8_t Count() const = 0;
 	virtual const StaticText32& GetText(uint8_t idx) const = 0;

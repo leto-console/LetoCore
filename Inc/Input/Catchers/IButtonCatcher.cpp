@@ -3,6 +3,12 @@
 #include <Input/ButtonEvent.hpp>
 #include <Time/TimeUtils.hpp>
 
+void IButtonCatcher::Reset()
+{
+    pressed = holded = false;
+    last_click_ms = 0;
+}
+
 void IButtonCatcher::Catch(uint8_t _button_id, uint16_t _mode)
 { 
     this->button_id = _button_id;

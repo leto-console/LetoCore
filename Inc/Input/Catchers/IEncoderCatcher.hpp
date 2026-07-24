@@ -26,6 +26,8 @@ public:
 
     virtual void Callback(bool left) = 0;
 
+    void Reset();
+
     // Отловить вывод требуемого типа
     void Catch(uint8_t _encoder_id, uint16_t _mode);
 
