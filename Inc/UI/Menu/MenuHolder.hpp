@@ -14,7 +14,8 @@
 #include <SceneManager/ISceneObject.hpp>
 #include <Data/StaticText.hpp>
 #include <Data/StaticListView.hpp>
-#include <Input/InputCatcher.hpp>
+#include <Input/Catchers/ButtonCatcher.hpp>
+#include <Input/Catchers/EncoderCatcher.hpp>
 
 enum class MenuHorizonAlignment : uint8_t
 {
@@ -53,7 +54,8 @@ protected:
 	bool ready_logic = false;			/// Включение логики `IsResultReady`
 	bool ready = false;					/// В меню выбран элемент
 
-	InputCatcher<MenuHolder> up_catcher, down_catcher, enter_cather;
+	ButtonCatcher<MenuHolder> up_catcher, down_catcher, enter_cather;
+	EncoderCatcher<MenuHolder> enc_catcher;
 
 public:
 	MenuHolder(uint8_t visible_elements = 8, Point2_i position = {}, bool ready_logic = false);
@@ -61,9 +63,10 @@ public:
 	void InitBaseCatchers();
 	void EnableReadyLogic();	/// TODO: Сделать такую логику по умолчанию, пока что сохранено для обратной совместимости
 	
-	void RegUpEvent(IsEventFunc is_event);
-	void RegDownEvent(IsEventFunc is_event);
-	void RegEnterEvent(IsEventFunc is_event);
+	void ButtonCatchUp(uint8_t button_id);
+	void ButtonCatchDown(uint8_t button_id);
+	void ButtonCatchEnter(uint8_t button_id);
+	void EncoderCatch(uint8_t encoder_id);
 
 	void OnShow() override;
 
@@ -90,12 +93,14 @@ public:
 	bool IsResultReady(int& idx) const;
 	void SubmitReady();
 
+	void Rotate(bool left);
 	void Up();
 	void Down();
 	void Enter();
 
 	void Draw(IScreen& screen, Point2_i offset = {}) override;
 	bool ProcessInput(const AppEvent& event) override;
+	void Loop() override;
 };
 
 #endif

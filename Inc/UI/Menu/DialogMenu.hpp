@@ -13,7 +13,7 @@
 #include <Drawable/IDrawable.hpp>
 #include <SceneManager/ISceneObject.hpp>
 #include <Input/SystemInputID.hpp>
-#include <Input/InputCatcher.hpp>
+#include <Input/Catchers/ButtonCatcher.hpp>
 #include <Input/ButtonEvent.hpp>
 #include <DrawFunctions/DrawLine.hpp>
 #include <DrawFunctions/DrawRectangle.hpp>
@@ -33,7 +33,7 @@ protected:
 
 	uint32_t active_ms{};
 
-	InputCatcher<DialogParamMenu> enter_catcher;
+	ButtonCatcher<DialogParamMenu> enter_catcher;
 
 	const IFont* font;
 
@@ -49,9 +49,9 @@ public:
 
 	void InitBaseCatchers()
 	{
-		RegUpEvent(&IsSystemPrevEvent);
-		RegDownEvent(&IsSystemNextEvent);
-		RegEnterEvent(&IsSystemEnterEvent);
+		ButtonCatchUp(SYSTEM_BTN_UP);
+		ButtonCatchDown(SYSTEM_BTN_DOWN);
+		ButtonCatchEnter(SYSTEM_BTN_ENTER);
 	}
 
 	void OnShow() override
@@ -59,9 +59,9 @@ public:
 		ResetCurrentID();
 	}
 
-	void RegUpEvent(IsEventFunc is_event) 		{ menu.RegUpEvent(is_event); }
-	void RegDownEvent(IsEventFunc is_event) 	{ menu.RegDownEvent(is_event); }
-	void RegEnterEvent(IsEventFunc is_event) 	{ enter_catcher.Catch(is_event); }
+	void ButtonCatchUp(uint8_t button_id) 		{ menu.ButtonCatchUp(button_id); }
+	void ButtonCatchDown(uint8_t button_id)		{ menu.ButtonCatchDown(button_id); }
+	void ButtonCatchEnter(uint8_t button_id)	{ enter_catcher.Catch(button_id, BCM_SINGLE_PRESS); }
 
 	void SetText(int level, const StaticText32& text)
 	{

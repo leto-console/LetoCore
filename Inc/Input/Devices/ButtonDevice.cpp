@@ -16,7 +16,7 @@
 
 #include <string.h>
 
-const long long debounce_ms = 15;
+const long long DEBOUNCE_MS = 15;
 
 ButtonDevice::ButtonDevice()
 	: UserInputDevice{ AE_Button }
@@ -42,72 +42,51 @@ void ButtonDevice::Init(uint8_t id, uint64_t key)
 }
 #endif
 
-void ButtonDevice::Press()
-{
-	stable = true;
-	click_time = TimeUtils::GetCurrentMs();
-	PushEvent((uint32_t) ButtonEvent::PRESSED);
-}
-
-void ButtonDevice::Release()
-{
-	stable = false;
-	PushEvent((uint32_t)ButtonEvent::RELEASED);
-}
 
 void ButtonDevice::Tick()
 {
 	if (!initialized)
 		return;
 
-	long long current_time = TimeUtils::GetCurrentMs();
+	uint32_t now = TimeUtils::GetCurrentMs();
+
+	bool raw = current_state;
 
 #ifdef USE_HAL_DRIVER
 
-	current_state = !HAL_GPIO_ReadPin(gpio_port, gpio_pin);
-
-	if (!stable && current_state)
-	{
-		if (!check)
-		{
-			check = true;
-		}
-		else if (current_time - click_time > debounce_ms)
-		{
-			check = false;
-			Press();
-		}
-	}
-	else
-	{
-		check = false;
-	}
+	raw = !HAL_GPIO_ReadPin(gpio_port, gpio_pin);
 
 #elif defined (__WIN__)
-
-	int winAPIKeyEvent = 0;
 
 	if (WinAPIEventsMap.find(key) != WinAPIEventsMap.end() &&
 		!WinAPIEventsMap[key].empty())
 	{
 		WinAPIKeyEvent& event = WinAPIEventsMap[key].front();
-		winAPIKeyEvent = event.event;
+		int winAPIKeyEvent = event.event;
 		WinAPIEventsMap[key].pop_front();
-	}
 
-	if		(winAPIKeyEvent == WinAPIKeyEvent::PRESSED)		current_state = true;
-	else if (winAPIKeyEvent == WinAPIKeyEvent::RELEASED)	current_state = false;
-
-	if (current_state && !stable)
-	{
-		stable = true;
-		Press();
+		if		(winAPIKeyEvent == WinAPIKeyEvent::PRESSED)		raw = true;
+		else if (winAPIKeyEvent == WinAPIKeyEvent::RELEASED)	raw = false;
+		else 	return;
 	}
 
 #endif
 
-	if (!stable) return;
+	if (raw != current_state)
+    {
+        current_state = raw;
+        last_change_time = now;
+    }
 
-	if (!current_state)
-		Release();
+    // Debounce
+    if (current_state != stable_state && 
+        (now - last_change_time) >= DEBOUNCE_MS)
+    {
+        stable_state = current_state;
+
+        if (stable_state)
+            PushEvent(ButtonEvent::PRESSED);
+        else
+            PushEvent(ButtonEvent::RELEASED);
+    }
 }

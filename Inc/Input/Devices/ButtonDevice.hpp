@@ -23,10 +23,10 @@
 class LIBRARIES_EXPORT ButtonDevice : public UserInputDevice
 {
 protected:
-	bool current_state = false;
-	bool stable = false;
-	bool check = false;
-	long long click_time = 0;
+	bool current_state{};
+	bool stable_state{};
+
+	uint32_t last_change_time{};
 
 #ifdef USE_HAL_DRIVER
 	GPIO_TypeDef* gpio_port{};
@@ -44,9 +44,6 @@ public:
 	void	Init(uint8_t id, uint64_t key);
 	uint64_t GetKey() const { return key; }
 #endif
-
-	virtual void Press();
-	virtual void Release();
 
 	void Tick();
 };

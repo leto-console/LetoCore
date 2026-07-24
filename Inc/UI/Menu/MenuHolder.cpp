@@ -10,6 +10,7 @@ MenuHolder::MenuHolder(uint8_t visible_elements, Point2_i position, bool ready_l
 	up_catcher{ this, &MenuHolder::Up },
 	down_catcher{ this, &MenuHolder::Down },
 	enter_cather{ this, &MenuHolder::Enter },
+	enc_catcher{ this, &MenuHolder::Rotate },
 	ready_logic{ ready_logic }
 {
 	SetPosition(position);
@@ -17,9 +18,10 @@ MenuHolder::MenuHolder(uint8_t visible_elements, Point2_i position, bool ready_l
 
 void MenuHolder::InitBaseCatchers()
 {
-	RegUpEvent(&IsSystemPrevEvent);
-    RegDownEvent(&IsSystemNextEvent);
-	RegEnterEvent(&IsSystemEnterEvent);
+	ButtonCatchUp(SYSTEM_BTN_UP);
+	ButtonCatchDown(SYSTEM_BTN_DOWN);
+	ButtonCatchEnter(SYSTEM_BTN_ENTER);
+	EncoderCatch(SYSTEM_ENC_MAIN);
 }
 
 void MenuHolder::EnableReadyLogic()
@@ -27,19 +29,26 @@ void MenuHolder::EnableReadyLogic()
 	ready_logic = true;
 }
 
-void MenuHolder::RegUpEvent(IsEventFunc is_event)
+void MenuHolder::ButtonCatchUp(uint8_t button_id)
 {
-	up_catcher.Catch(is_event);
+	up_catcher.Catch(button_id, BCM_SINGLE_PRESS | BCM_MULTI_HOLD);
+	up_catcher.SetHoldTime(200, 100);
 }
 
-void MenuHolder::RegDownEvent(IsEventFunc is_event)
+void MenuHolder::ButtonCatchDown(uint8_t button_id)
 {
-	down_catcher.Catch(is_event);
+	down_catcher.Catch(button_id, BCM_SINGLE_PRESS | BCM_MULTI_HOLD);
+	down_catcher.SetHoldTime(200, 100);
 }
 
-void MenuHolder::RegEnterEvent(IsEventFunc is_event)
+void MenuHolder::ButtonCatchEnter(uint8_t button_id)
 {
-	enter_cather.Catch(is_event);
+	enter_cather.Catch(button_id, BCM_SINGLE_PRESS);
+}
+
+void MenuHolder::EncoderCatch(uint8_t encoder_id)
+{
+	enc_catcher.Catch(encoder_id, ECM_ROTATE);
 }
 
 void MenuHolder::OnShow()
@@ -98,6 +107,12 @@ bool MenuHolder::IsResultReady(int &idx) const
 void MenuHolder::SubmitReady()
 {
 	ready = false;
+}
+
+void MenuHolder::Rotate(bool left)
+{
+	if (left)	Up();
+	else		Down();
 }
 
 void MenuHolder::Up()
@@ -206,8 +221,17 @@ bool MenuHolder::ProcessInput(const AppEvent& event)
 
 	if (up_catcher.ProcessInput(event) ||
 		down_catcher.ProcessInput(event) ||
-		ready_logic && enter_cather.ProcessInput(event))
+		ready_logic && enter_cather.ProcessInput(event) ||
+		enc_catcher.ProcessInput(event))
 		return true;
 
 	return false;
+}
+
+void MenuHolder::Loop()
+{
+	up_catcher.Loop();
+	down_catcher.Loop();
+	enter_cather.Loop();
+	enc_catcher.Loop();
 }
