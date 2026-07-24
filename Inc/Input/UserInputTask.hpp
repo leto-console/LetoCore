@@ -41,17 +41,14 @@ protected:
 	{
 		AppEvent event;
 
-		for (UserInputDevice* user_input : user_inputs)
+		while (UserInputDevice::PopEvent(event))
 		{
-			while (user_input->PopEvent(event))
-			{
-//				printf("AppEvent:\n");
-//				printf("event.source=%d\n", event.source);
-//				printf("event.id=%d\n", event.id);
-//				printf("event.data=%d\n", event.data);
+//			printf("AppEvent:\n");
+//			printf("event.source=%d\n", event.source);
+//			printf("event.id=%d\n", event.id);
+//			printf("event.data=%d\n", event.data);
 
-				SceneManager::Instance().ProccessUserInput(event);
-			}
+			SceneManager::Instance().ProccessUserInput(event);
 		}
 		return true;
 	}

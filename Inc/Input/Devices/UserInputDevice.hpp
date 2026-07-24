@@ -33,7 +33,7 @@ protected:
 	bool KeyExists(uint64_t key);
 #endif
 
-	RingFIFO_Static<AppEvent, 16> events;	// Кольцевой буфер с событиями ввода
+	static RingFIFO_Static<AppEvent, 64> events;	// Кольцевой буфер с событиями ввода
 
 	const uint16_t source;				// Источник пользовательского ввода
 
@@ -56,14 +56,14 @@ public:
 	// Периодически вызываемая функция для обработки
 	virtual void Tick() = 0;
 
-	void Init(uint16_t id)
+	void Init(uint16_t _id)
 	{
-		this->id = id;
+		this->id = _id;
 		initialized = true;
 	}
 
 	// Функция получения события
-	bool PopEvent(AppEvent& event)
+	static bool PopEvent(AppEvent& event)
 	{
 		return events.Pop(event);
 	}

@@ -13,3 +13,5 @@ bool UserInputDevice::KeyExists(uint64_t key)
 }
 
 #endif
+
+RingFIFO_Static<AppEvent, 64> UserInputDevice::events;
