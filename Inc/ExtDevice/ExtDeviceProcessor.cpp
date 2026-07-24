@@ -14,18 +14,32 @@ void ExtDeviceProcessor::AddExtDevice(ExtDevice* ext_device)
 
 bool ExtDeviceProcessor::Do()
 {
-    // Add CPU time balancer (if the device takes longer than, for example, 15 ms to update, we add it to the blacklist)
-    for (ExtDevice* device : ext_devices)
+    /// TODO: Add CPU time balancer (if the device takes longer than, for example, 15 ms to update, we add it to the blacklist)
+    if (ext_devices.Count() == 0) return true;
+    if (proc_idx >= ext_devices.Count())
     {
-        if (device->GetStatus() == ExtDeviceStatus::CONNECTED)
-            device->Init();
-
-        device->MainLoop();
+        proc_idx = 0;
+        return true;
     }
-    return true;
+
+    // One device is processed per cycle
+    ExtDevice* device = ext_devices[proc_idx];
+
+    if (device->GetStatus() == ExtDeviceStatus::CONNECTED)
+        device->Init();
+
+    device->MainLoop();
+
+    if (++proc_idx == ext_devices.Count())
+    {
+        proc_idx = 0;
+        return true;
+    }
+
+    return false;
 }
 
-ExtDevice* ExtDeviceProcessor::Find(const char * name) const
+ExtDevice* ExtDeviceProcessor::Find(const char* name) const
 {
     for (ExtDevice* device : ext_devices)
     {

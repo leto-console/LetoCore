@@ -219,6 +219,7 @@ void toggle_features(void);
 void DWT_Init(void);
 void delay_us(uint32_t us);
 void NRF24_ini(void);
+uint8_t NRF24_Ping(uint8_t ready);
 
 #ifdef __cplusplus
 }

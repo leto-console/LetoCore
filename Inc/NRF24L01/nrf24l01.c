@@ -5,6 +5,7 @@
  *      Author: dima
  */
 #include <NRF24L01/nrf24l01.h>
+#include "nrf24l01.h"
 
 #ifdef USE_HAL_DRIVER
 
@@ -28,6 +29,32 @@ void DWT_Init(void)
 {
     SCB_DEMCR |= CoreDebug_DEMCR_TRCENA_Msk; // разрешаем использовать счётчик
 	DWT_CONTROL |= DWT_CTRL_CYCCNTENA_Msk;   // запускаем счётчик
+}
+
+uint8_t NRF24_Ping(uint8_t ready)
+{
+	// Если уже готовы — делаем супер-быстрый пинг
+    if (ready)
+	{
+        uint8_t setup = read_register(RF_SETUP);
+        return (setup != 0xFF && setup != 0x00);
+    }
+
+    // Для hot-plug делаем чуть более тщательную проверку
+    ce(LOW);
+    csn(HIGH);
+    delay_us(10);
+
+    uint8_t aw = read_register(SETUP_AW);     // основной тест
+
+    if (aw >= 1 && aw <= 3)
+    {
+        // Дополнительная проверка
+        uint8_t setup = read_register(RF_SETUP);
+        return (setup != 0xFF);
+    }
+
+    return false;
 }
 
 void delay_us(uint32_t us) // DelayMicro

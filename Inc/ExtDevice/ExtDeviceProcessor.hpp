@@ -29,6 +29,7 @@ public:
     ExtDevice* Find(const char* name) const;
 
 private:
+    uint8_t proc_idx{};
     StaticList<ExtDevice*, 16> ext_devices;
 };
 
