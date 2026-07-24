@@ -1,8 +1,7 @@
-/*
- * TextSettingUI.hpp
- *
- *  Created on: Dec 17, 2025
- *      Author: Timur
+/**
+ * @file TextSettingUI.hpp
+ * @date Dec 17, 2025
+ * @author Rakhimov T.
  */
 
 #ifndef INC_UI_TEXT_SETTING_UI_HPP_

@@ -1,8 +1,7 @@
-/*
- * ListSettingUI.hpp
- *
- *  Created on: Dec 17, 2025
- *      Author: Timur
+/**
+ * @file ListSettingUI.hpp
+ * @date Dec 17, 2025
+ * @author Rakhimov T.
  */
 
 #ifndef INC_UI_LIST_SETTING_UI_HPP_

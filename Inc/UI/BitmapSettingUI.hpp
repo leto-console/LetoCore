@@ -1,8 +1,7 @@
-/*
- * BitmapSettingUI.hpp
- *
- *  Created on: Dec 17, 2025
- *      Author: Timur
+/**
+ * @file BitmapSettingUI.hpp
+ * @date Dec 17, 2025
+ * @author Rakhimov T.
  */
 
 #ifndef INC_UI_BITMAP_SETTING_UI_HPP_
@@ -85,6 +84,8 @@ public:
 	/* Обновляет текущее поле */
 	void UpdateCurrentValue() override
 	{
+		if (IsCaptured()) return;
+
 		cur_idx = -1;
 		T get_ID = ID_cell->GetOrDefault();
 		for (int idx = 0; idx < list.Count(); ++idx)
@@ -172,6 +173,8 @@ public:
 	/* Обновляет текущее поле */
 	void UpdateCurrentValue() override
 	{
+		if (IsCaptured()) return;
+
 		BitmapSettingUI<T>::UpdateCurrentValue();
 		edit_idx = BitmapSettingUI<T>::cur_idx;
 		if (edit_idx < 0)

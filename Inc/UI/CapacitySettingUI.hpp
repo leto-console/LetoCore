@@ -1,8 +1,7 @@
-/*
- * CapacitySettingUI.hpp
- *
- *  Created on: Mar 08, 2026
- *      Author: Timur
+/**
+ * @file CapacitySettingUI.hpp
+ * @date Mar 08, 2026
+ * @author Rakhimov T.
  */
 
 #ifndef INC_UI_CAPACITY_SETTING_UI_HPP_

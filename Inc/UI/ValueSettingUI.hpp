@@ -1,8 +1,7 @@
-/*
- * ValueSettingUI.hpp
- *
- *  Created on: Dec 20, 2025
- *      Author: Timur
+/**
+ * @file ValueSettingUI.hpp
+ * @date Dec 20, 2025
+ * @author Rakhimov T.
  */
 
 #ifndef INC_UI_VALUE_SETTING_UI_HPP_
