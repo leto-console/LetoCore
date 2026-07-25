@@ -76,6 +76,7 @@ public:
 	virtual RGBColor GetColor(int idx) const;
 	virtual RGBColor GetAddColor(int idx) const;
 
+	void SetCurrentID(uint8_t idx);
 	uint8_t GetCurrentID() const { return currentID; }
 	StaticText32 GetCurrentText() const { return GetText(currentID); }
 
@@ -96,10 +97,10 @@ public:
 	bool IsResultReady(int& idx) const;
 	void SubmitReady();
 
-	void Rotate(bool left);
-	void Up();
-	void Down();
-	void Enter();
+	virtual void Rotate(bool left);
+	virtual void Up();
+	virtual void Down();
+	virtual void Enter();
 
 	void Draw(IScreen& screen, Point2_i offset = {}) override;
 	bool ProcessInput(const AppEvent& event) override;

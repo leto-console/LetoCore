@@ -11,6 +11,7 @@
 
 #include <cstdint>
 
+#include <Data/StaticList.hpp>
 #include <SceneManager/ISceneObject.hpp>
 #include <Time/Timer.hpp>
 
@@ -45,7 +46,7 @@ public:
     bool ProcessInput(const AppEvent& event) override;
 
 private:
-    uint8_t button_id{};
+    StaticList<uint8_t, 4> button_id;
     uint16_t mode{};
 
     const uint32_t double_ms{ 100 };

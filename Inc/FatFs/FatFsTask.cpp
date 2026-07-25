@@ -16,24 +16,7 @@ bool FatFsTask::RefreshHardware()
 #ifndef USE_HAL_DRIVER
     return true;
 #else
-    static int last_success = false;
-    bool success = sdcard && sdcard->GetStatus() == ExtDeviceStatus::READY;
-
-    if (last_success != success)
-    {
-    	if (success)
-    	{
-            VC_Printf("ping success!\r\n", GreenColor);
-    	}
-    	else
-    	{
-            VC_Printf("ping suck!\r\n", RedColor);
-    	}
-
-    	last_success = success;
-    }
-
-    return success;
+    return sdcard && sdcard->GetStatus() == ExtDeviceStatus::READY;
 #endif
 }
 

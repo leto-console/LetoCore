@@ -38,6 +38,15 @@ public:
 	StaticList(const StaticList& list) 				= delete;
 	void operator=(const StaticList& list) const 	= delete;
 
+	bool Contains(const Type& value)
+	{
+		for (const Type& item : *this)
+		{
+			if (value == item) return true;
+		}
+		return false;
+	}
+
 	void Push(const Type& value)
 	{
 		if (Full()) return;

@@ -21,6 +21,7 @@ void MenuHolder::InitBaseCatchers()
 	ButtonCatchUp(SYSTEM_BTN_UP);
 	ButtonCatchDown(SYSTEM_BTN_DOWN);
 	ButtonCatchEnter(SYSTEM_BTN_ENTER);
+	ButtonCatchEnter(SYSTEM_BTN_RIGHT);
 	EncoderCatch(SYSTEM_ENC_MAIN);
 }
 
@@ -73,6 +74,12 @@ RGBColor MenuHolder::GetColor(int idx) const
 RGBColor MenuHolder::GetAddColor(int idx) const
 {
     return GetColor(idx);
+}
+
+void MenuHolder::SetCurrentID(uint8_t idx)
+{
+	if (idx >= Count() - 1) idx = Count() - 1;
+	currentID = idx;
 }
 
 void MenuHolder::SetStyle(MenuStyle style, const IFont* font)

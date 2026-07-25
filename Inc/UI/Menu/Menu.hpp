@@ -37,6 +37,7 @@ public:
 	virtual void Clear()
 	{
 		texts.Clear();
+		ResetCurrentID();
 	}
 
 	uint8_t Count() const override 

@@ -11,7 +11,7 @@ void IButtonCatcher::Reset()
 
 void IButtonCatcher::Catch(uint8_t _button_id, uint16_t _mode)
 { 
-    this->button_id = _button_id;
+    button_id.Push(_button_id);
     this->mode = _mode;
 }
 
@@ -24,7 +24,6 @@ void IButtonCatcher::SetHoldTime(uint32_t _hold_ms, uint32_t _multiply_ms)
 void IButtonCatcher::Loop()
 {
     if (!pressed) return;
-    if (!(mode & BCM_MULTI_HOLD)) return;
 
     uint32_t now_ms = TimeUtils::GetCurrentMs();
 
@@ -47,7 +46,7 @@ void IButtonCatcher::Loop()
 
 bool IButtonCatcher::ProcessInput(const AppEvent &event)
 {
-    if (event.id != button_id)
+    if (!button_id.Contains(event.id))
         return false;
     
     uint32_t now_ms = TimeUtils::GetCurrentMs();
