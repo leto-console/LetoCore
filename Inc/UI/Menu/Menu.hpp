@@ -44,9 +44,11 @@ public:
 		return texts.Count();
 	}
 
-	const StaticText32& GetText(uint8_t ID) const override
+	const StaticText32& GetText(int ID) const override
 	{
-		if (ID >= texts.Count())
+		if (ID < 0) 
+			return texts.Front();
+		else if (ID >= texts.Count())
 			return texts.Back();
 		return texts[ID];
 	}

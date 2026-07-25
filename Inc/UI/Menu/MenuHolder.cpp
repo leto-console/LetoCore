@@ -65,6 +65,16 @@ void MenuHolder::OnHide()
 	enc_catcher.Reset();
 }
 
+RGBColor MenuHolder::GetColor(int idx) const
+{
+	return WhiteColor;
+}
+
+RGBColor MenuHolder::GetAddColor(int idx) const
+{
+    return GetColor(idx);
+}
+
 void MenuHolder::SetStyle(MenuStyle style, const IFont* font)
 {
 	this->style = style;
@@ -184,7 +194,7 @@ void MenuHolder::Draw(IScreen& screen, Point2_i offset)
 			screen,
 			{style == MenuStyle::STYLE_3 ? elem_offset_x : CharWidth + elem_offset_x, elem_offset_y},
 			GetText(i),
-			WhiteColor, BlackColor,
+			GetColor(i), BlackColor,
 			style == MenuStyle::STYLE_1 ? false : i == currentID, 
 			font);
 	}
@@ -199,7 +209,7 @@ void MenuHolder::Draw(IScreen& screen, Point2_i offset)
 				screen,
 				position + offset,
 				symbol,
-				WhiteColor, BlackColor,
+				GetAddColor(currentID), BlackColor,
 				false,
 				font);
 			return;
@@ -213,7 +223,7 @@ void MenuHolder::Draw(IScreen& screen, Point2_i offset)
 				screen,
 				position + offset + Point2_i{0, id*CharHeight},
 				symbol,
-				WhiteColor, BlackColor,
+				GetAddColor(currentID), BlackColor,
 				false,
 				font);
 		}

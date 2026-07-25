@@ -72,7 +72,9 @@ public:
 	void OnHide() override;
 
 	virtual uint8_t Count() const = 0;
-	virtual const StaticText32& GetText(uint8_t idx) const = 0;
+	virtual const StaticText32& GetText(int idx) const = 0;
+	virtual RGBColor GetColor(int idx) const;
+	virtual RGBColor GetAddColor(int idx) const;
 
 	uint8_t GetCurrentID() const { return currentID; }
 	StaticText32 GetCurrentText() const { return GetText(currentID); }
