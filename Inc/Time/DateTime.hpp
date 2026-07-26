@@ -1,11 +1,8 @@
-/*
- * DateTime.hpp
- *
- *  Created on: Mar 19, 2026
- *      Author: Timur
+/**
+ * @file DateTime.hpp
+ * @date Mar 19, 2026
+ * @author Rakhimov T.
  */
-
-#include <stdint.h>
 
 #ifndef INC_TIME_DATE_TIME_HPP_
 #define INC_TIME_DATE_TIME_HPP_
@@ -14,39 +11,28 @@
 
 #ifdef USE_HAL_DRIVER
 #include <HAL_include/HAL.hpp>
+#else
+#include <Time/Timer.hpp>
 #endif
 
-#include <TaskHandler/PriorityTask.hpp>
+#include <cstdint>
+
 #include <Data/IDataCell.hpp>
-
-struct TimeStruct
-{
-	uint8_t hours;
-	uint8_t minutes;
-	uint8_t seconds;
-};
-
-struct DateStruct
-{
-	uint8_t weekday;
-	uint8_t date;
-	uint8_t month;
-	uint8_t year;
-};
+#include <Time/DateTimeTypes.hpp>
 
 struct LIBRARIES_EXPORT DateTime
 {
 private:
 #ifdef USE_HAL_DRIVER
 	static RTC_HandleTypeDef* hrtc;
+#else
+	static Timer timer_1s;
 #endif
 
-	static TimeStruct time;
-	static DateStruct date;
+	static DateTimeStruct current;
 
-	static IDataCell<TimeStruct>* last_exact_time_cell;
-	static IDataCell<DateStruct>* last_exact_date_cell;
-	static IDataCell<int32_t>* smooth_calib_pulses_cell;
+	static IDataCell<DateTimeStruct>* last_exact_datetime;
+	static IDataCell<int32_t>* smooth_calib_pulses;
 
 public:
 #ifdef USE_HAL_DRIVER
@@ -56,11 +42,7 @@ public:
 	/**
 	 * Init cells
 	 */
-	static void InitCells(
-		IDataCell<TimeStruct>* last_exact_time,
-		IDataCell<DateStruct>* last_exact_date,
-		IDataCell<int32_t>* smooth_calib_pulses
-	);
+	static void InitCells(IDataCell<DateTimeStruct>* _last_exact_datetime, IDataCell<int32_t>* _smooth_calib_pulses);
 
 	/**
 	 * Set exact time (with auto-correction)
@@ -83,16 +65,6 @@ public:
     static void GetDate(uint8_t& day, uint8_t& month, uint8_t& year);
 
     static void Loop();
-};
-
-class LIBRARIES_EXPORT DateTimeServer : public PriorityTask
-{
-public:
-	DateTimeServer(const StaticText32& name, uint32_t period_ms, uint8_t priority)
-        : PriorityTask{ name, period_ms, priority }
-    { }
-
-	bool Do() override;
 };
 
 #endif
