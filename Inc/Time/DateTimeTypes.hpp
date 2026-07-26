@@ -33,6 +33,8 @@ struct LIBRARIES_EXPORT DateTimeStruct
 	TimeStruct time;
 	DateStruct date;
 
+    int32_t DiffSeconds(const DateTimeStruct& other) const;
+
     uint32_t ToUnixTime() const;
     //void FromUnixTime(uint32_t unix_time);
 };

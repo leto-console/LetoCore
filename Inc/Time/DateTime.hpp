@@ -32,7 +32,7 @@ private:
 	static DateTimeStruct current;
 
 	static IDataCell<DateTimeStruct>* last_exact_datetime;
-	static IDataCell<int32_t>* smooth_calib_pulses;
+	static IDataCell<int32_t>* ppm_cell;
 
 public:
 #ifdef USE_HAL_DRIVER
@@ -42,7 +42,7 @@ public:
 	/**
 	 * Init cells
 	 */
-	static void InitCells(IDataCell<DateTimeStruct>* _last_exact_datetime, IDataCell<int32_t>* _smooth_calib_pulses);
+	static void InitCells(IDataCell<DateTimeStruct>* _last_exact_datetime, IDataCell<int32_t>* _ppm_cell);
 
 	/**
 	 * Set exact time (with auto-correction)
@@ -53,7 +53,7 @@ public:
 	 * Set exact date
 	 */
     static void SetDate(uint8_t day, uint8_t month, uint8_t year);
-
+ 
 	/**
 	 * Get RTC time
 	 */

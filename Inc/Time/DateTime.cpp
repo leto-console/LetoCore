@@ -19,12 +19,12 @@ Timer DateTime::timer_1s{ 1000 };
 DateTimeStruct DateTime::current{};
 
 IDataCell<DateTimeStruct>* DateTime::last_exact_datetime = nullptr;
-IDataCell<int32_t>* DateTime::smooth_calib_pulses = nullptr;
+IDataCell<int32_t>* DateTime::ppm_cell = nullptr;
 
-void DateTime::InitCells(IDataCell<DateTimeStruct>* _last_exact_datetime, IDataCell<int32_t>* _smooth_calib_pulses)
+void DateTime::InitCells(IDataCell<DateTimeStruct>* _last_exact_datetime, IDataCell<int32_t>* _ppm_cell)
 {
 	last_exact_datetime = _last_exact_datetime;
-	smooth_calib_pulses = _smooth_calib_pulses;
+	ppm_cell = _ppm_cell;
 }
 
 void DateTime::SetTime(uint8_t hours, uint8_t minutes, uint8_t seconds)
@@ -33,6 +33,8 @@ void DateTime::SetTime(uint8_t hours, uint8_t minutes, uint8_t seconds)
 		minutes > 59 ||
 		seconds > 59)
 		return;
+	
+	DateTimeStruct before = current;
 
 	current.time.hours = hours;
 	current.time.minutes = minutes;
@@ -55,8 +57,19 @@ void DateTime::SetTime(uint8_t hours, uint8_t minutes, uint8_t seconds)
 	timer_1s.Start();
 #endif
 
-	if (last_exact_datetime) 
+	if (last_exact_datetime)
+	{
+		DateTimeStruct last_exact;
+		if (last_exact_datetime->Get(last_exact))
+		{
+			int32_t diff_rtc = before.DiffSeconds(last_exact);
+			int32_t diff_real = current.DiffSeconds(last_exact);
+
+			int32_t ppm = diff_real ? ((diff_rtc - diff_real) * 1'000'000) / (diff_real) : 0;
+			if (ppm_cell) ppm_cell->Set(ppm);
+		}
 		last_exact_datetime->Set(current);
+	}
 }
 
 void DateTime::SetDate(uint8_t day, uint8_t month, uint8_t year)

@@ -25,6 +25,11 @@ constexpr uint32_t MIN_SEC = 60;
 constexpr uint32_t HOUR_SEC = 60 * MIN_SEC;
 constexpr uint32_t DAY_SEC = 24 * HOUR_SEC;
 
+int32_t DateTimeStruct::DiffSeconds(const DateTimeStruct& other) const
+{
+    return static_cast<int32_t>((static_cast<int64_t>(ToUnixTime())  - static_cast<int64_t>(other.ToUnixTime())));
+}
+
 uint32_t DateTimeStruct::ToUnixTime() const
 {
 	uint32_t res = time.seconds;
