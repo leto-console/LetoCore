@@ -19,9 +19,9 @@ Timer DateTime::timer_1s{ 1000 };
 DateTimeStruct DateTime::current{};
 
 IDataCell<DateTimeStruct>* DateTime::last_exact_datetime = nullptr;
-IDataCell<int32_t>* DateTime::ppm_cell = nullptr;
+IDataCell<PPM_Info>* DateTime::ppm_cell = nullptr;
 
-void DateTime::InitCells(IDataCell<DateTimeStruct>* _last_exact_datetime, IDataCell<int32_t>* _ppm_cell)
+void DateTime::InitCells(IDataCell<DateTimeStruct>* _last_exact_datetime, IDataCell<PPM_Info>* _ppm_cell)
 {
 	last_exact_datetime = _last_exact_datetime;
 	ppm_cell = _ppm_cell;
@@ -66,7 +66,15 @@ void DateTime::SetTime(uint8_t hours, uint8_t minutes, uint8_t seconds)
 			int32_t diff_real = current.DiffSeconds(last_exact);
 
 			int32_t ppm = diff_real ? ((diff_rtc - diff_real) * 1'000'000) / (diff_real) : 0;
-			if (ppm_cell) ppm_cell->Set(ppm);
+			ppm += GetActivePPM();
+
+			PPM_Info info;
+			if (ppm_cell && ppm_cell->Get(info))
+			{
+				info.AddPPM(ppm, diff_real);
+				ppm_cell->Set(info);
+				ApplyPPM();
+			}
 		}
 		last_exact_datetime->Set(current);
 	}
@@ -117,6 +125,82 @@ void DateTime::GetDate(uint8_t& day, uint8_t& month, uint8_t& year)
 	day 	= current.date.date + 1;
 	month 	= current.date.month + 1;
 	year 	= current.date.year;
+}
+
+int32_t DateTime::GetActivePPM()
+{
+#ifdef USE_HAL_DRIVER
+	uint32_t calr = hrtc->Instance->CALR;
+	uint16_t calm = calr & RTC_CALR_CALM;
+	uint8_t  calp = (calr & RTC_CALR_CALP) ? 1 : 0;
+
+	if (calp) {
+        // Ускорение: реальное количество добавленных импульсов = 512 - CALM
+        int32_t steps = 512 - calm;
+        return (int32_t) roundf((float)steps * 0.953674f);           // положительный PPM (часы ускорены)
+    } else {
+        // Замедление
+        return (int32_t) roundf(-(float)calm * 0.953674f);           // отрицательный PPM (часы замедлены)
+    }
+#endif
+    return 0;
+}
+
+void DateTime::ResetActivePPM()
+{
+	PPM_Info info{};
+	if (ppm_cell) ppm_cell->Set(info);
+
+#ifdef USE_HAL_DRIVER
+	HAL_RTCEx_SetSmoothCalib(hrtc,
+		RTC_SMOOTHCALIB_PERIOD_32SEC,
+		RTC_SMOOTHCALIB_PLUSPULSES_RESET,
+		0);
+#endif
+}
+
+void DateTime::ApplyPPM()
+{
+	PPM_Info info;
+	if (!ppm_cell || !ppm_cell->Get(info))
+		return;
+
+#ifdef USE_HAL_DRIVER
+	int32_t ppm = info.GetPPM();
+	if (ppm < -500 || ppm > 500) return;
+
+	int32_t pulses = (int32_t) roundf((float) (-ppm) / 0.953674f);
+
+	if (pulses == 0) {
+        // Нет коррекции
+        HAL_RTCEx_SetSmoothCalib(hrtc,
+            RTC_SMOOTHCALIB_PERIOD_32SEC,
+            RTC_SMOOTHCALIB_PLUSPULSES_RESET,
+            0);
+    }
+    else if (pulses > 0) {
+        // Нужно ускорить часы (RTC отставал)
+        // CALP = 1, CALM = 512 - steps
+        uint32_t calm = 512 - pulses;
+        if (calm > 511) calm = 511;               // защита
+
+        HAL_RTCEx_SetSmoothCalib(hrtc,
+            RTC_SMOOTHCALIB_PERIOD_32SEC,
+            RTC_SMOOTHCALIB_PLUSPULSES_SET,
+            calm);
+    }
+    else {
+        // Нужно замедлить часы (RTC спешил)
+        // CALP = 0, CALM = |steps|
+        uint32_t calm = (uint32_t)(-pulses);
+        if (calm > 511) calm = 511;
+
+        HAL_RTCEx_SetSmoothCalib(hrtc,
+            RTC_SMOOTHCALIB_PERIOD_32SEC,
+            RTC_SMOOTHCALIB_PLUSPULSES_RESET,
+            calm);
+    }
+#endif
 }
 
 void DateTime::Loop()

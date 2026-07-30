@@ -11,6 +11,8 @@
 
 #include <cstdint>
 
+#include <Time/PPM_Info.hpp>
+
 struct TimeStruct
 {
 	uint8_t hours;
