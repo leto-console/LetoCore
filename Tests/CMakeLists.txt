@@ -7,6 +7,7 @@ FetchContent_Declare(
   GIT_TAG        v1.15.2 # Replace with the latest or preferred version
 )
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+set(INSTALL_GTEST OFF CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
 # Собираем файлы тестов
@@ -19,10 +20,8 @@ add_executable(${PROJECT_NAME}_tests ${TEST_SOURCES})
 
 target_compile_definitions(${PROJECT_NAME}_tests PRIVATE LETO_API_V1_USE=0)
 target_compile_features(${PROJECT_NAME}_tests PRIVATE cxx_std_17)
-install(TARGETS ${PROJECT_NAME}
+install(TARGETS ${PROJECT_NAME}_tests
     RUNTIME DESTINATION bin     # Для исполняемых файлов
-    ARCHIVE DESTINATION lib     # Для статических библиотек
-    LIBRARY DESTINATION lib     # Для динамических библиотек
 )
 
 # Подключаем заголовочные файлы основного проекта
