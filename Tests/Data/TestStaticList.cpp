@@ -198,7 +198,7 @@ TYPED_TEST(StaticListTest, InsertBeforeFirst)
 /*
     Проверка вставки элемента после последнего
 */
-TYPED_TEST(StaticListTest, InsertАfterLast) 
+TYPED_TEST(StaticListTest, InsertAfterLast) 
 {
     // Act
     this->list.Push(this->TestValue() + 0);
