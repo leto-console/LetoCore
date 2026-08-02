@@ -1,7 +1,7 @@
 #include "ST7735_ExtDevice.hpp"
 
 #ifdef USE_HAL_DRIVER
-#include <ST7735/low_level/st7735.h>
+#include <ST7735/low_level/ST7735.h>
 #endif
 
 ST7735_ExtDevice::ST7735_ExtDevice() : ExtDevice{ "ST7735" }

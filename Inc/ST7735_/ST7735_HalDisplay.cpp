@@ -4,7 +4,7 @@
 #include "ST7735/ST7735_Properties.hpp"
 #include <ST7735/ST7735_Screen.hpp>
 
-#include <ST7735/low_level/st7735.h>
+#include <ST7735/low_level/ST7735.h>
 
 
 ST7735_HalDisplay::ST7735_HalDisplay(SPI_HandleTypeDef* hspi)

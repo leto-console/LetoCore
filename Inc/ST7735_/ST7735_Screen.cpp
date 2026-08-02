@@ -11,7 +11,7 @@
 #include <stddef.h>
 #include <cstring>
 
-#include <ST7735/low_level/st7735.h>
+#include <ST7735/low_level/ST7735.h>
 
 
 static uint16_t RGBColor_to_U16Model(RGBColor color)
