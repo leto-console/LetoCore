@@ -7,6 +7,7 @@
 #include <Input/ButtonEvent.hpp>
 #include <SceneManager/SceneSettings.hpp>
 #include <VirtualConsole/VirtualConsole.hpp>
+#include <Input/SystemInputID.hpp>
 
 void SceneManager::EnableFPS(bool enable)
 {
@@ -38,6 +39,17 @@ void SceneManager::Return()
 	}
 }
 
+SceneManager::SceneManager() :
+	menu_hold_catcher{ this, &SceneManager::OnMenuHolded }
+{
+	menu_hold_catcher.Catch(SYSTEM_BTN_MENU, BCM_HOLD);
+	menu_hold_catcher.SetHoldTime(200);
+	menu_hold_catcher.Enable();
+
+	VirtualConsole::Instance().Disable();
+	VirtualConsole::Instance().ResetViewed();
+}
+
 IScene *SceneManager::GetScene(uint32_t ID)
 {
 	if (!GetBuilder(ID))
@@ -60,6 +72,12 @@ ISceneBuilder *SceneManager::GetBuilder(uint32_t ID)
 ISceneBuilder *SceneManager::GetCurrentBuilder()
 {
     return GetBuilder(currentSceneID);
+}
+
+void SceneManager::OnMenuHolded()
+{
+	EnableFPS_Setting.Set(false);
+	VirtualConsole::Instance().Enable();
 }
 
 void SceneManager::OnSceneSwitched()
@@ -117,18 +135,9 @@ bool SceneManager::Loop()
 
 	if (GetCurrentScene()) 	
 		scene_ok = GetCurrentScene()->MainLoop();
-
-	if (menu_holder.Holded(200, ButtonHoldHandler::OnHoldPolicy::KEEP))
-	{
-		EnableFPS_Setting.Set(false);
-		VirtualConsole::Instance().Enable();
-	}
-	else
-	{
-		VirtualConsole::Instance().Disable();
-		VirtualConsole::Instance().ResetViewed();
-	}
 	
+	menu_hold_catcher.MainLoop();
+
 	OnSceneSwitched();
 
 	return screen_ok && scene_ok;
@@ -182,21 +191,20 @@ void SceneManager::Draw(IScreen& screen)
     }
 }
 
-#include <Input/SystemInputID.hpp>
-#include "SceneManager.hpp"
-
 bool SceneManager::ProccessUserInput(const AppEvent& event)
 {
+	menu_hold_catcher.MainProcessInput(event);
+	
 	// Обработка системного меню
 	if (IsSystemMenuEvent(event))
 	{
 		EnableFPS_Setting.Set(!enable_fps);
-		menu_holder.Press();
 		return true;
 	}
 	else if (IsSystemMenuEvent(event, false))
 	{
-		menu_holder.Release();
+		VirtualConsole::Instance().Disable();
+		VirtualConsole::Instance().ResetViewed();
 		return true;
 	}
 

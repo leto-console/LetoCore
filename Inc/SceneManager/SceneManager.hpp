@@ -13,8 +13,8 @@
 #include <System/CommonAllocator.hpp>
 #include <System/EternalAllocator.hpp>
 #include <ABI/AppEvent.hpp>
-#include <UI/ButtonHoldHandler.hpp>
 #include <Time/Timer.hpp>
+#include <Input/Catchers/ButtonCatcher.hpp>
 
 #include <type_traits>
 #include <utility>
@@ -40,7 +40,7 @@ protected:
 
 	// ======================================== Singleton ========================================
 
-	SceneManager() = default;
+	SceneManager();
 	~SceneManager() = default;
 	SceneManager(const SceneManager&) = delete;
 	void operator=(const SceneManager&) = delete;
@@ -61,7 +61,7 @@ protected:
 	RingFIFO_Static<short, 10> average_fps;
 	short frames_count = 0;
 	bool enable_fps{};
-	ButtonHoldHandler menu_holder;	/// Обработчик зажатия системной клавиши Меню
+	ButtonCatcher<SceneManager> menu_hold_catcher;	/// Обработчик зажатия системной клавиши Меню
 
 	//===========================================================================================
 
@@ -74,6 +74,7 @@ protected:
 	uint32_t switch_id{};
 	bool switch_return{};
 
+	void OnMenuHolded();
 	void OnSceneSwitched();
 
 public:
