@@ -3,7 +3,7 @@
 #include <Input/ButtonEvent.hpp>
 #include <Input/SystemInputID.hpp>
 
-#include <LetoAPI_V1/LetoAPI_V1.hpp> 
+#include <LetoAPI_V1/LetoAPI_V1.h> 
 #include <Data/StaticText.hpp>
 #include <DrawFunctions/DrawText.hpp>
 

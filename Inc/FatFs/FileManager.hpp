@@ -12,7 +12,7 @@
 #include <Input/SystemInputID.hpp>
 #include <SceneManager/SceneManager.hpp>
 #include <UI/Text/UI_Label.hpp>
-#include <LetoAPI_V1/LetoAPI_V1.hpp>
+#include <LetoAPI_V1/LetoAPI_V1.h>
 #include <SDCard/SDCard_ExtDevice.hpp>
 
 class FileManager : public IScene

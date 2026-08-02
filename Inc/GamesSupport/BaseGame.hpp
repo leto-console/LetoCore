@@ -19,10 +19,10 @@
 #include <Data/IAllocator.hpp>
 #include <Data/StaticText.hpp>
 
-#include <ABI/AppBinHeader.hpp>
-#include <ABI/AppEvent.hpp>
+#include <LetoABI/AppBinHeader.h>
+#include <LetoABI/AppEvent.h>
 
-#include <LetoAPI_V1/LetoAPI_V1.hpp>
+#include <LetoAPI_V1/LetoAPI_V1.h>
 
  // Интерфейс базовой игры
 class LETO_CORE_EXPORT BaseGame

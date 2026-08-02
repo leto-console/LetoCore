@@ -7,7 +7,7 @@
 #ifndef INC_SCENE_MANAGER_I_CAPTURABLE_HPP_
 #define INC_SCENE_MANAGER_I_CAPTURABLE_HPP_
 
-#include <ABI/AppEvent.hpp>
+#include <LetoABI/AppEvent.h>
 
 /**
  * @brief Интерфейс элементов, которые могут захватить поток событий (ввод)

@@ -11,8 +11,8 @@
 
 #include <cstdint>
 
-#include <LetoAPI_V1/Web/WebConnection.hpp>
-#include <LetoAPI_V1/Web/WebDeviceInfo.hpp>
+#include <LetoAPI_V1/Web/WebConnection.h>
+#include <LetoAPI_V1/Web/WebDeviceInfo.h>
 
 #include <LetoAPI_V1_System/Web/WebPacket.hpp>
 

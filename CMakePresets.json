@@ -10,7 +10,8 @@
             "cacheVariables": {
 				"CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/bin/${presetName}",
 				"CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/lib/${presetName}",
-				"CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/lib/${presetName}"
+				"CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/lib/${presetName}",
+                "CMAKE_PRESET_NAME": "${presetName}"
             }
 		},
         {

@@ -16,10 +16,12 @@
 #include <Data/StaticTextView.hpp>
 #include <Data/Point2.hpp>
 
+#include <LetoAPI_V1/LetoAPI_V1_Def.h>
+
 /**
  * @brief Интерфейс отрисовки на экране
  */
-struct IScreen
+struct IScreen : public LetoHandleImpl<IScreen, LetoScreen_V1>
 {
 	virtual ~IScreen() = default;
 

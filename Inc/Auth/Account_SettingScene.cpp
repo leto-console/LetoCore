@@ -26,12 +26,11 @@ void Account_SettingScene::Draw(IScreen& screen)
 {
 	using namespace DrawFunctions;
 
-	BitmapData data;
-	if (GetAvatarByID(cur_account.avatar.GetOrDefault(), data))
-		DrawBitmap(screen, {12, 10}, data, WhiteColor);
+	const BitmapData* data = GetAvatarByID(cur_account.avatar.GetOrDefault());
+	if (data) DrawBitmap(screen, {12, 10}, *data, WhiteColor);
 
 	int text_y = 10;
-	text_y += (data.height / 2);
+	text_y += (data->height / 2);
 	text_y -= Default_Font_8x8.GetHeight() / 2;
 
 	DrawRectangle(

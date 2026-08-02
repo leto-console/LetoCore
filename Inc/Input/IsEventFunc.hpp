@@ -8,7 +8,7 @@
 #ifndef INC_INPUT_IS_EVENT_FUNC_HPP_
 #define INC_INPUT_IS_EVENT_FUNC_HPP_
 
-#include <ABI/AppEvent.hpp>
+#include <LetoABI/AppEvent.h>
 
 using IsEventFunc = bool(*)(const AppEvent& e, bool p);
 

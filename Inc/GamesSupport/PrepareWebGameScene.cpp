@@ -2,7 +2,7 @@
 
 // #include <cstring>
 
-// #include <LetoAPI_V1/LetoAPI_V1.hpp>
+// #include <LetoAPI_V1/LetoAPI_V1.h>
 
 // void PrepareWebGameScene::RefreshGamersList()
 // {

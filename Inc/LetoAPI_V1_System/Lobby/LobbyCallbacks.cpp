@@ -1,7 +1,7 @@
 #include "LobbyCallbacks.hpp"
 
-#include <LetoAPI_V1/Lobby/LobbyConnection.hpp>
-#include <LetoAPI_V1/Lobby/LobbyInfo.hpp>
+#include <LetoAPI_V1/Lobby/LobbyConnection.h>
+#include <LetoAPI_V1/Lobby/LobbyInfo.h>
 
 #include <LetoAPI_V1_System/Lobby/LobbyInfoPacket.hpp>
 #include <LetoAPI_V1_System/Lobby/LobbyGlobals.hpp>

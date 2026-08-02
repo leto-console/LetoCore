@@ -2,17 +2,16 @@
 
 #include "Emoji.hpp"
 
-bool GetAvatarByID(uint32_t ID, BitmapData& data)
+const BitmapData* GetAvatarByID(uint32_t ID)
 {
 	for (const BitmapData& bitmap : GetAvatars())
 	{
 		if (bitmap.ID == ID)
 		{
-			data = bitmap;
-			return true;
+			return &bitmap;
 		}
 	}
-	return false;
+	return nullptr;
 }
 
 #include <Data/StaticList.hpp>

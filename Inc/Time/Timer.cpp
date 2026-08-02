@@ -1,6 +1,6 @@
 #include "Time/Timer.hpp"
 
-#include <LetoAPI_V1/LetoAPI_V1.hpp>
+#include <LetoAPI_V1/LetoAPI_V1.h>
 
 Timer::Timer(uint32_t period_ms)
 	: period_ms{ period_ms }

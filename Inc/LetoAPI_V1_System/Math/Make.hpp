@@ -9,7 +9,7 @@
 
 #include "LibrariesExport.h"
 
-#include <LetoAPI_V1/Math/MathAPI.hpp>
+#include <LetoAPI_V1/Math/MathAPI.h>
 
 /**
  * @brief Create and initialize API

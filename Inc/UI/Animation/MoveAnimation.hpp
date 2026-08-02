@@ -11,7 +11,7 @@
 #include <UI/Animation/Animation.hpp>
 
 #include <Drawable/IDrawable.hpp>
-#include <LetoAPI_V1/LetoAPI_V1.hpp>
+#include <LetoAPI_V1/LetoAPI_V1.h>
 
 class MoveAnimation : public Animation
 {

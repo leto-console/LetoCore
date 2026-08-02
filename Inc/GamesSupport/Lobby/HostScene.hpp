@@ -14,7 +14,7 @@
 #include <UI/Geometry/UI_Circle.hpp>
 #include <UI/Text/UI_Label.hpp>
 #include <UI/Menu/ParamMenu.hpp>
-#include <LetoAPI_V1/LetoAPI_V1.hpp>
+#include <LetoAPI_V1/LetoAPI_V1.h>
 
 class LobbyScene;
 

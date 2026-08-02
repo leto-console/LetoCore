@@ -9,7 +9,7 @@
 
 #include "LibrariesExport.h"
 
-#include <LetoAPI_V1/User/UserAPI.hpp>
+#include <LetoAPI_V1/User/UserAPI.h>
 
 /**
  * @brief Create and initialize API

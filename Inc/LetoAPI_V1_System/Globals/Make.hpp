@@ -9,7 +9,7 @@
 
 #include "LibrariesExport.h"
 
-#include <LetoAPI_V1/Globals/GlobalsAPI.hpp>
+#include <LetoAPI_V1/Globals/GlobalsAPI.h>
 
 /**
  * @brief Create and initialize API

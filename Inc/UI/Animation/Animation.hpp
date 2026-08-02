@@ -12,7 +12,7 @@
 
 #include <Graphics/IScreen.hpp>
 
-#include <LetoAPI_V1/LetoAPI_V1.hpp> 
+#include <LetoAPI_V1/LetoAPI_V1.h> 
 
 #include <cstdint>
 

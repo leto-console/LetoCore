@@ -12,8 +12,10 @@
 
 #include <stdint.h>
 
+#include <LetoAPI_V1/LetoAPI_V1_Def.h>
+
  // Интерфейс экранного шрифта
-class LETO_CORE_EXPORT IFont
+class LETO_CORE_EXPORT IFont : public LetoHandleImpl<IFont, LetoFont_V1>
 {
 protected:
 	uint8_t width, height;

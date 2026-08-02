@@ -9,7 +9,7 @@
 #define INC_INPUT_ENCODER_EVENT_TYPES_HPP_
 
 #include <stdint.h>
-#include <ABI/AppEvent.hpp>
+#include <LetoABI/AppEvent.h>
 
 namespace EncoderEvent
 {

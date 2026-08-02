@@ -12,7 +12,7 @@
 
 #include <stdint.h>
 
-#include <ABI/AppEvent.hpp>
+#include <LetoABI/AppEvent.h>
 
 enum SYSTEM_INPUT_IDs : uint8_t
 {

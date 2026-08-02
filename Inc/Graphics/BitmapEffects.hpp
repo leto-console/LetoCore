@@ -14,7 +14,7 @@
 #include <Data/IAllocator.hpp>
 #include <Data/Point2.hpp>
 
-#include <LetoAPI_V1/LetoAPI_V1.hpp>
+#include <LetoAPI_V1/LetoAPI_V1.h>
 
 namespace BitmapEffects
 {

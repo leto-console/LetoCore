@@ -1,7 +1,7 @@
 #include "LobbyScene.hpp"
 
 #include <DrawFunctions/DrawText.hpp>
-#include <LetoAPI_V1/LetoAPI_V1.hpp>
+#include <LetoAPI_V1/LetoAPI_V1.h>
 
 #include <GamesSupport/BaseGame.hpp>
 #include <Input/SystemInputID.hpp>
@@ -15,7 +15,7 @@ LobbyScene::LobbyScene(BaseGame* game, uint8_t max_count,
     host_scene{ game, this, max_count, host_callback }, 
     member_scene{ game, this, max_count, member_callback }
 {
-    const IFont* font = leto_api_v1->Font->GetFont(7, 7, 1);
+    const IFont* font = IFont::FromHandle(leto_api_v1->Font->GetFont(7, 7, 1));
 
     select_label.SetText("ИГРОВАЯ КОМНАТА");
     select_label.SetPosition({0, 10});

@@ -9,7 +9,7 @@
 
 #include "LibrariesExport.h"
 
-#include <LetoAPI_V1/Font/FontAPI.hpp>
+#include <LetoAPI_V1/Font/FontAPI.h>
 
 /**
  * @brief Create and initialize API

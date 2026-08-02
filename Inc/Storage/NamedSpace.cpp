@@ -109,7 +109,7 @@ bool NamedSpace::Free(const StaticText32& name)
 
 // ----------------------------------------------------------------------------------------------------
 
-#include <LetoAPI_V1/LetoAPI_V1.hpp>
+#include <LetoAPI_V1/LetoAPI_V1.h>
 
 bool NamedSpace::Create(const StaticText32& name, const void* data, uint16_t data_size)
 {

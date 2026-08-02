@@ -1,7 +1,7 @@
 #include "GameLoader.hpp"
 
 #include <System/CommonAllocator.hpp>
-#include <LetoAPI_V1/Application/LetoApplication.hpp>
+#include <LetoAPI_V1/Application/LetoApplication_V1.h>
 #include <LetoAPI_V1_System/Make.hpp>
 #include <VirtualConsole/VirtualConsole.hpp>
 

@@ -13,7 +13,7 @@
 #include <cstdint>
 
 #include <Data/RingFIFO_Static.hpp>
-#include <ABI/AppEvent.hpp>
+#include <LetoABI/AppEvent.h>
 
 #ifndef USE_HAL_DRIVER
 #include <list>

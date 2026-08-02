@@ -7,22 +7,28 @@
 #include <Time/TimeUtils.hpp>
 #include <System/DeviceID.hpp>
 
-void* Alloc(uint32_t size)
+static void* Alloc(uint32_t size)
 {
     return CommonAllocator.Alloc(size);
 }
 
-void Free(const void* ptr)
+static void Free(const void* ptr)
 {
     CommonAllocator.Free(ptr);
 }
 
-IAllocator* GetAllocator()
+static const LetoAllocator_V1* GetAllocator()
 {
-    return &CommonAllocator;
+    static const LetoAllocator_V1 allocator
+    {
+        &Alloc,
+        &Free
+    };
+
+    return &allocator;
 }
 
-uint32_t GetCurrentMs()
+static uint32_t GetCurrentMs()
 {
     return TimeUtils::GetCurrentMs();
 }
@@ -33,8 +39,6 @@ const GlobalsAPI_V1* Make_GlobalsAPI()
 {
     static const GlobalsAPI_V1 api
     {
-        &Alloc,
-        &Free,
         &GetAllocator,
         &GetDebugMode,
         &GetCurrentMs,

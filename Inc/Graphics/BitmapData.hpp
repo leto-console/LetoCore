@@ -13,6 +13,7 @@
 #include <stdint.h>
 #include <cstring>
 #include <Data/IAllocator.hpp>
+#include <LetoAPI_V1/LetoAPI_V1_Def.h>
 
 /**
  * @brief Флаг битмапа
@@ -28,7 +29,7 @@ enum BitmapFlags
  * 
  * Используется для хранения и передачи битовых карт - битмапов
  */
-struct LETO_CORE_EXPORT BitmapData
+struct LETO_CORE_EXPORT BitmapData : public LetoHandleImpl<BitmapData, LetoBitmap_V1>
 {
 	uint8_t width{};	///< Ширина битмапа
 	uint8_t height{};	///< Высота битмапа
@@ -38,6 +39,15 @@ struct LETO_CORE_EXPORT BitmapData
 
 	uint32_t ID{};		///< Идентификатор для поиска
 	uint32_t flags{};	///< Флаги битмапа
+
+	BitmapData(
+		uint8_t width = 0, uint8_t height = 0, 
+		const uint8_t* bitmap = nullptr, const uint8_t* background = nullptr, 
+		uint32_t ID = 0, uint32_t flags = 0)
+		: width{ width }, height{ height }, 
+		bitmap{ bitmap }, background{ background },
+		ID{ ID }, flags{ flags }
+	{ }
 
 	/**
 	 * @brief Инициализация фонового изображения

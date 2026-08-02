@@ -8,7 +8,7 @@
 #ifndef INC_UI_DIALOG_MENU_HPP_
 #define INC_UI_DIALOG_MENU_HPP_
 
-#include <LetoAPI_V1/LetoAPI_V1.hpp>
+#include <LetoAPI_V1/LetoAPI_V1.h>
 
 #include <Drawable/IDrawable.hpp>
 #include <SceneManager/ISceneObject.hpp>
@@ -40,9 +40,9 @@ protected:
 public:
 	DialogParamMenu() : menu{ 3 }
 	{
-		font = leto_api_v1->Font->GetFont(7, 7, 0);
+		font = IFont::FromHandle(leto_api_v1->Font->GetFont(7, 7, 0));
 		menu.InitBaseCatchers();
-		menu.SetStyle(MenuStyle::STYLE_3, leto_api_v1->Font->GetFont(7, 7, 1));
+		menu.SetStyle(MenuStyle::STYLE_3, font);
 		menu.SetHorizonAlignment(MenuHorizonAlignment::CENTER);
 		Disable();
 	}

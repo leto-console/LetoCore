@@ -9,9 +9,6 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
-set(COMMON_BIN_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../bin/${PRESET_NAME})
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY  ${COMMON_BIN_DIR})
-
 # Собираем файлы тестов
 file(GLOB TEST_SOURCES 
     "*/*.cpp"
@@ -20,7 +17,13 @@ file(GLOB TEST_SOURCES
 # Создаём исполняемый файл с тестами
 add_executable(${PROJECT_NAME}_tests ${TEST_SOURCES})
 
+target_compile_definitions(${PROJECT_NAME}_tests PRIVATE LETO_API_V1_USE=0)
 target_compile_features(${PROJECT_NAME}_tests PRIVATE cxx_std_17)
+install(TARGETS ${PROJECT_NAME}
+    RUNTIME DESTINATION bin     # Для исполняемых файлов
+    ARCHIVE DESTINATION lib     # Для статических библиотек
+    LIBRARY DESTINATION lib     # Для динамических библиотек
+)
 
 # Подключаем заголовочные файлы основного проекта
 target_include_directories(${PROJECT_NAME}_tests PRIVATE 
@@ -32,6 +35,18 @@ target_include_directories(${PROJECT_NAME}_tests PRIVATE
 target_link_libraries(${PROJECT_NAME}_tests PRIVATE 
     ${PROJECT_NAME}  # Твоя основная библиотека
     GTest::gtest_main
+)
+
+# 2. Копируем LetoAPI.dll (обрабатываем оба сценария: и сервер, и локально)
+# Выражение $<TARGET_EXISTS:LetoAPI> само поймет, есть ли таргет в текущей сборке (сервер)
+# Если да — возьмет его путь динамически. Если нет (локально) — возьмет путь из вашего LETO_PATH.
+set(API_DLL_SOURCE_PATH "$<IF:$<TARGET_EXISTS:LetoAPI>,$<TARGET_FILE:LetoAPI>,${LETO_PATH}/LetoAPI/bin/${CMAKE_PRESET_NAME}/LetoAPI.dll>")
+
+add_custom_command(TARGET LetoCore_tests POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+    "${API_DLL_SOURCE_PATH}"
+    $<TARGET_FILE_DIR:LetoCore_tests>
+    COMMENT "[LetoTests] Копирование LetoAPI.dll в папку тестов..."
 )
 
 ## Для Windows: настройки линковщика (если нужно)

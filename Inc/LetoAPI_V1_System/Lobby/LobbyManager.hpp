@@ -11,11 +11,11 @@
 
 #include <cstdint>
 
-#include <LetoAPI_V1/Lobby/LobbyConnection.hpp>
-#include <LetoAPI_V1/Lobby/LobbyInfo.hpp>
+#include <LetoAPI_V1/Lobby/LobbyConnection.h>
+#include <LetoAPI_V1/Lobby/LobbyInfo.h>
 
-#include <LetoAPI_V1/Web/WebConnection.hpp>
-#include <LetoAPI_V1/Web/WebDeviceInfo.hpp>
+#include <LetoAPI_V1/Web/WebConnection.h>
+#include <LetoAPI_V1/Web/WebDeviceInfo.h>
 
 #include <LetoAPI_V1_System/Web/WebPacket.hpp>
 #include <LetoAPI_V1_System/Lobby/LobbyGlobals.hpp>

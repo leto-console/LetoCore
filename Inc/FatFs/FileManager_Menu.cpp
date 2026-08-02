@@ -2,7 +2,7 @@
 
 #include <FatFs/low_level/ff.h>
 #include <GamesSupport/GameLoader.hpp>
-#include <LetoAPI_V1/LetoAPI_V1.hpp>
+#include <LetoAPI_V1/LetoAPI_V1.h>
 #include <Input/SystemInputID.hpp>
 
 FileManager_Menu::FileManager_Menu(Point2_i position)
@@ -10,7 +10,7 @@ FileManager_Menu::FileManager_Menu(Point2_i position)
     left_level_up{ this, &FileManager_Menu::LevelUp },
     left_close{ this, &FileManager_Menu::Close }
 {
-    SetStyle(MenuStyle::STYLE_2, leto_api_v1->Font->GetFont(7, 7, 1));
+    SetStyle(MenuStyle::STYLE_2, IFont::FromHandle(leto_api_v1->Font->GetFont(7, 7, 1)));
 
     left_level_up.Catch(SYSTEM_BTN_LEFT, BCM_SINGLE_PRESS);
     left_level_up.Enable();

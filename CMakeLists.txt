@@ -1,7 +1,7 @@
 add_compile_definitions(${PRESET_DEFINE_MACRO})
 
 cmake_minimum_required(VERSION 3.10)
-project("LetoCore")
+project("LetoCore" C CXX ASM)
 
 file(
 	GLOB C_CPP_COURCES 
@@ -15,15 +15,27 @@ if(MSVC)
     add_compile_options(/wd4251)
 endif()
 
-if (${PRESET_DEFINE_MACRO} STREQUAL "__STM32__")
-	project("LetoCore" C CXX ASM)
-
-	file(GLOB HW_COURCES
-		"Src/*.cpp" "Src/*.c"
-	)
-
+if("${PRESET_DEFINE_MACRO}" STREQUAL "__STM32__")
+	file(GLOB HW_COURCES "Src/*.cpp" "Src/*.c" )
 	add_library(${PROJECT_NAME} STATIC "${C_CPP_COURCES}" "${HW_COURCES}")
+else()
+	add_library("${PROJECT_NAME}" SHARED "${C_CPP_COURCES}")
+endif()
 
+target_include_directories(${PROJECT_NAME} PUBLIC 
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/Inc>
+    $<INSTALL_INTERFACE:Inc>
+)
+install(TARGETS ${PROJECT_NAME}
+    RUNTIME DESTINATION bin     # Для исполняемых файлов
+    ARCHIVE DESTINATION lib     # Для статических библиотек
+    LIBRARY DESTINATION lib     # Для динамических библиотек
+)
+target_compile_definitions(${PROJECT_NAME} PRIVATE LETOCORE_EXPORT_LIBRARY)
+
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+if (${PRESET_DEFINE_MACRO} STREQUAL "__STM32__")
 	target_compile_definitions(${PROJECT_NAME} PRIVATE
 		USE_HAL_DRIVER
 		${MCU_CHIP}
@@ -55,8 +67,6 @@ if (${PRESET_DEFINE_MACRO} STREQUAL "__STM32__")
 
 elseif (${PRESET_DEFINE_MACRO} STREQUAL "__WIN__")
 
-	add_library("${PROJECT_NAME}" SHARED "${C_CPP_COURCES}")
-
 	# Включаем предупреждения только для вашей цели
 	target_compile_options("${PROJECT_NAME}" PRIVATE
 		$<$<CXX_COMPILER_ID:GNU,Clang,AppleClang>:-Wall -Wextra -Wunused>
@@ -80,7 +90,6 @@ elseif (${PRESET_DEFINE_MACRO} STREQUAL "__TERMUX__")
 	)
 	FetchContent_MakeAvailable(cpp-httplib)
 
-	add_library("${PROJECT_NAME}" SHARED "${C_CPP_COURCES}")
 	set_target_properties("${PROJECT_NAME}" PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
 	target_link_libraries(${PROJECT_NAME} PRIVATE httplib::httplib)
@@ -90,23 +99,17 @@ endif ()
 
 target_compile_definitions("${PROJECT_NAME}" PRIVATE LETOCORE_EXPORT_LIBRARY)
 
-# === Подключение подсистемы тестов ===
-# Тесты собираются только если это не целевая платформа STM32
-if (NOT ${PRESET_DEFINE_MACRO} STREQUAL "__STM32__")
-	enable_testing()
-    add_subdirectory(Tests)
-endif()
-
 # ============================================= LetoAPI dependency ============================================
 
 if(LETO_PATH)
     message(STATUS "[LetoCore] Найдена переменная LETO_PATH. Подключаем готовые артефакты...")
 
-	target_link_directories(${PROJECT_NAME} PRIVATE "${LETO_PATH}/LetoAPI/lib/${CMAKE_PRESET_NAME}")
-	target_include_directories(${PROJECT_NAME} PRIVATE "${LETO_PATH}/LetoAPI/include")
+	target_link_directories(${PROJECT_NAME} PUBLIC "${LETO_PATH}/LetoAPI/lib/${CMAKE_PRESET_NAME}")
+	target_include_directories(${PROJECT_NAME} PUBLIC "${LETO_PATH}/LetoAPI/include")
 else()
     message(STATUS "[LetoCore] Переменная LETO_PATH не найдена. Серверная сборка через FetchContent...")
 
+	include(FetchContent)
     FetchContent_Declare(
         LetoAPI
 		# SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../LetoAPI"
@@ -116,9 +119,12 @@ else()
     FetchContent_MakeAvailable(LetoAPI)
 endif()
 
-target_link_libraries(${PROJECT_NAME} PRIVATE LetoAPI)
+target_link_libraries(${PROJECT_NAME} PUBLIC LetoAPI)
 # ==============================================================================================================
 
-target_include_directories(${PROJECT_NAME} PUBLIC "Inc")
-
-target_compile_definitions(${PROJECT_NAME} PRIVATE LETOCORE_EXPORT_LIBRARY)
+# === Подключение подсистемы тестов ===
+# Тесты собираются только если это не целевая платформа STM32
+if (NOT ${PRESET_DEFINE_MACRO} STREQUAL "__STM32__")
+	enable_testing()
+    add_subdirectory(Tests)
+endif()

@@ -8,7 +8,7 @@
 #ifndef INC_UI_BUTTON_MULTI_PRESS_HANDLER_HPP_
 #define INC_UI_BUTTON_MULTI_PRESS_HANDLER_HPP_
 
-#include <LetoAPI_V1/LetoAPI_V1.hpp> 
+#include <LetoAPI_V1/LetoAPI_V1.h> 
 
 // Обработчик одновременного нажатия нескольких клавиш
 class ButtonMultiPressHandler

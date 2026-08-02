@@ -9,7 +9,7 @@
 
 #include <cstdint>
 
-#include <LetoAPI_V1/Lobby/LobbyInfo.hpp>
+#include <LetoAPI_V1/Lobby/LobbyInfo.h>
 
 #pragma pack(push, 1)
 

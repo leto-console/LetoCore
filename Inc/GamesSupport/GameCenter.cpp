@@ -7,7 +7,7 @@
 #include <DrawFunctions/DrawText.hpp>
 
 #include <LetoAPI_V1_System/Make.hpp>
-#include <LetoAPI_V1/Application/LetoApplication.hpp>
+#include <LetoAPI_V1/Application/LetoApplication_V1.h>
 
 GameCenter* SystemGameCenter = nullptr;
 
@@ -45,7 +45,7 @@ void GameCenter::RefreshGamesList()
 
 GameCenter::GameCenter() : games_menu{ 7, {0, 8} }, games_list_count{ 16 }
 {
-	games_list = static_cast<GameInfo*>( leto_api_v1->Globals->Alloc(sizeof(GameInfo) * games_list_count) );
+	games_list = static_cast<GameInfo*>( leto_api_v1->Globals->GetAllocator()->Alloc(sizeof(GameInfo) * games_list_count) );
 
 	refresh_timer.Start(1000);
 	SystemGameCenter = this;
@@ -74,7 +74,7 @@ void GameCenter::Draw(IScreen& screen)
 	if (CurrentLoadedGame)
 	{
 		if (CurrentLoadedGame->api_version == 1)
-			reinterpret_cast<LetoApplication_V1*>(CurrentLoadedGame)->Draw(&screen);
+			reinterpret_cast<LetoApplication_V1*>(CurrentLoadedGame)->Draw(IScreen::ToHandle(&screen));
 	}
 	else
 	{

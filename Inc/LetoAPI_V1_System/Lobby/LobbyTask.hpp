@@ -14,7 +14,7 @@
 #include <Auth/Account.hpp>
 #include <Data/StaticText.hpp>
 
-#include <LetoAPI_V1/Web/WebConnection.hpp>
+#include <LetoAPI_V1/Web/WebConnection.h>
 
 class LETO_CORE_EXPORT LobbyTask : public PriorityTask
 {

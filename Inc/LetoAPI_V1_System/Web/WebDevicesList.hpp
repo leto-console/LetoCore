@@ -10,7 +10,7 @@
 #include "LibrariesExport.h"
 
 #include <Data/StaticList.hpp>
-#include <LetoAPI_V1/Web/WebDeviceInfo.hpp>
+#include <LetoAPI_V1/Web/WebDeviceInfo.h>
 
 const uint32_t MaxWebDevices = 8;
 

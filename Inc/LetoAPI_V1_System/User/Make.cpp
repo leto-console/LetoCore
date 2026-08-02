@@ -8,18 +8,17 @@
 #include <Auth/AuthHandler.hpp>
 #include <Bitmaps/Avatars.hpp>
 
-NamedSpace* _GetUserSpace()
+const LetoBitmap_V1* _GetAvatarByID(uint32_t ID)
 {
-    NamedSpace* space{};
-    AuthHandler::Instance().GetCurrentSpace(space);
-    return space;
+    return BitmapData::ToHandle(GetAvatarByID(ID));
 }
 
-bool _GetAvatarByID(uint32_t ID, BitmapData* data)
-{
-    if (!data) return false;
-    return GetAvatarByID(ID, *data);
-}
+//NamedSpace* _GetUserSpace()
+//{
+//    NamedSpace* space{};
+//    AuthHandler::Instance().GetCurrentSpace(space);
+//    return space;
+//}
 
 // ====================================================================================================
 
@@ -27,8 +26,8 @@ const UserAPI_V1* Make_UserAPI()
 {
     static const UserAPI_V1 api
     {
-        &_GetUserSpace,
         &_GetAvatarByID
+        //&_GetUserSpace,
     };
     
     return &api;

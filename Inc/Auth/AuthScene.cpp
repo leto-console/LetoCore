@@ -92,9 +92,8 @@ void AuthScene::Draw(IScreen& screen)
 		Account account;
 		AuthHandler::Instance().GetAccount(menu.GetCurrentParam() - _USER_START, account);
 		
-		BitmapData data;
-		if (GetAvatarByID(account.Avatar, data))
-			DrawBitmap(screen, icon_point, data, WhiteColor);
+		const BitmapData* data = GetAvatarByID(account.Avatar);
+		if (data) DrawBitmap(screen, icon_point, *data, WhiteColor);
 	}
 	else if (menu.GetCurrentParam() == _ADMIN)
 	{

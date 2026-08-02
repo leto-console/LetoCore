@@ -9,7 +9,7 @@
 
 #include "LibrariesExport.h"
 
-#include <ABI/AppBinHeader.hpp>
+#include <LetoABI/AppBinHeader.h>
 
 #include <GamesSupport/BaseGame.hpp>
 #include <GamesSupport/GameInfo.hpp>
