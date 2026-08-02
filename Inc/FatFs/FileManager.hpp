@@ -26,7 +26,7 @@ public:
 	{
         path.SetPosition({80, 0});
         path.SetHorizonAlignment(LabelHorizonAlignment::CENTER);
-        path.SetFont(leto_api_v1->Font->GetFont(7, 7, 1));
+        path.SetFont(IFont::FromHandle(leto_api_v1->Font->GetFont(7, 7, 1)));
         path.Enable();
         AddObject(&path);
 
