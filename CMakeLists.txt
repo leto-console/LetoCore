@@ -1,7 +1,6 @@
 add_compile_definitions(${PRESET_DEFINE_MACRO})
 
 cmake_minimum_required(VERSION 3.10)
-project("LetoCore" C CXX ASM)
 
 file(
 	GLOB C_CPP_COURCES 
@@ -16,9 +15,11 @@ if(MSVC)
 endif()
 
 if("${PRESET_DEFINE_MACRO}" STREQUAL "__STM32__")
+	project("LetoCore" C CXX ASM)
 	file(GLOB HW_COURCES "Src/*.cpp" "Src/*.c" )
 	add_library(${PROJECT_NAME} STATIC "${C_CPP_COURCES}" "${HW_COURCES}")
 else()
+	project("LetoCore" C CXX)
 	add_library("${PROJECT_NAME}" SHARED "${C_CPP_COURCES}")
 endif()
 
