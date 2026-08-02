@@ -24,7 +24,7 @@
 #endif
 
 // Интерфейс устройства пользовательского ввода
-class LIBRARIES_EXPORT UserInputDevice
+class LETO_CORE_EXPORT UserInputDevice
 {
 protected:
 #ifndef USE_HAL_DRIVER

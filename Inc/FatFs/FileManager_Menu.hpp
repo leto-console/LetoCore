@@ -13,7 +13,7 @@
 #include <UI/Menu/ParamMenu.hpp>
 #include <SDCard/SDCard_ExtDevice.hpp>
 
-class LIBRARIES_EXPORT FileManager_Menu : public ParamMenu<uint8_t, 8>
+class LETO_CORE_EXPORT FileManager_Menu : public ParamMenu<uint8_t, 8>
 {
 	// param - flags
 	enum : uint8_t

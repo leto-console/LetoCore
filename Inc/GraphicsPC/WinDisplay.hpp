@@ -21,16 +21,16 @@
 LRESULT CALLBACK	WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 void				DrawImage(HDC hdc);
 
-struct LIBRARIES_EXPORT WinAPIKeyEvent
+struct LETO_CORE_EXPORT WinAPIKeyEvent
 {
 	enum { IDLE, PRESSED, RELEASED };
 	uint64_t key;
 	int event;
 };
 
-extern LIBRARIES_EXPORT std::map<uint64_t, std::deque<WinAPIKeyEvent>> WinAPIEventsMap;
+extern LETO_CORE_EXPORT std::map<uint64_t, std::deque<WinAPIKeyEvent>> WinAPIEventsMap;
 
-class LIBRARIES_EXPORT WinDisplay : public IDisplay
+class LETO_CORE_EXPORT WinDisplay : public IDisplay
 {
 	friend class SSD1306;
 	const wchar_t*	CLASS_NAME = L"STM32_GAMES";

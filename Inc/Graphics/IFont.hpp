@@ -13,7 +13,7 @@
 #include <stdint.h>
 
  // Интерфейс экранного шрифта
-class LIBRARIES_EXPORT IFont
+class LETO_CORE_EXPORT IFont
 {
 protected:
 	uint8_t width, height;

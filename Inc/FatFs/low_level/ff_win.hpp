@@ -9,7 +9,7 @@
 #include <string>
 
 // Инициализирует FatFS с авто-форматированием
-extern LIBRARIES_EXPORT FATFS* fatfs_image_initialize(const char* image_path = "disk.img");
+extern LETO_CORE_EXPORT FATFS* fatfs_image_initialize(const char* image_path = "disk.img");
 
 #endif
 

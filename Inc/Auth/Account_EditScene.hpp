@@ -20,7 +20,7 @@
 #include <Data/DataCell.hpp>
 #include <Data/StaticText.hpp>
 
-class LIBRARIES_EXPORT Account_EditScene : public IScene
+class LETO_CORE_EXPORT Account_EditScene : public IScene
 {
 protected:
 	AccountSettingsCells edit_account;

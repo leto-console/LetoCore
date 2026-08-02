@@ -1,43 +1,52 @@
 add_compile_definitions(${PRESET_DEFINE_MACRO})
 
 cmake_minimum_required(VERSION 3.10)
-project("STM32F4_Libraries")
-
-set(COMMON_BIN_DIR ${CMAKE_CURRENT_SOURCE_DIR}/bin/${PRESET_NAME})
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${COMMON_BIN_DIR})
+project("LetoCore")
 
 file(
-	GLOB CPP_COURCES 
+	GLOB C_CPP_COURCES 
 	"Src/*/*.cpp" "Src/*/*.c"
 	"Inc/*/*.cpp" "Inc/*/*.c"
 	"Src/*/*/*.cpp" "Src/*/*/*/*.c"
 	"Inc/*/*/*.cpp" "Inc/*/*/*.c"
 )
-include_directories("Inc")
 
 if(MSVC)
     add_compile_options(/wd4251)
 endif()
 
-if (${PRESET_DEFINE_MACRO} STREQUAL "USE_HAL_DRIVER")
-	project("STM32F4_Libraries" C CXX ASM)
+if (${PRESET_DEFINE_MACRO} STREQUAL "__STM32__")
+	project("LetoCore" C CXX ASM)
 
 	file(GLOB HW_COURCES
 		"Src/*.cpp" "Src/*.c"
 	)
 
-	add_library(${PROJECT_NAME} STATIC "${CPP_COURCES}" "${HW_COURCES}")
+	add_library(${PROJECT_NAME} STATIC "${C_CPP_COURCES}" "${HW_COURCES}")
 
 	target_compile_definitions(${PROJECT_NAME} PRIVATE
 		USE_HAL_DRIVER
-		STM32F411xE
+		${MCU_CHIP}
 	)
+	
+	# ------------------------------------------------------------------------------
+	# Настройки архитектуры из .cproject (STM32F401CCUx)
+	# ------------------------------------------------------------------------------
+	set(OBJECT_GEN_FLAGS "-mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb")
+	set(COMPILER_FLAGS "-Os -ffunction-sections -fdata-sections -Wall -fstack-usage")
+	# -fcyclomatic-complexity - Используется только в STM32CubeIDE
+
+	# Флаги компиляции для C / C++ / ASM
+	set(CMAKE_C_FLAGS   "${OBJECT_GEN_FLAGS} ${COMPILER_FLAGS}" CACHE INTERNAL "C Compiler Flags")
+	set(CMAKE_CXX_FLAGS "${OBJECT_GEN_FLAGS} ${COMPILER_FLAGS} -fno-exceptions -fno-rtti -fno-use-cxa-atexit" CACHE INTERNAL "C++ Compiler Flags")
+	set(CMAKE_ASM_FLAGS "${OBJECT_GEN_FLAGS} -x assembler-with-cpp" CACHE INTERNAL "ASM Compiler Flags")
+
+	#set(CMAKE_EXE_LINKER_FLAGS "-Wl,--gc-sections --specs=nano.specs --specs=nosys.specs -mthumb -mabi=aapcs -Wl,-Map=${CMAKE_PROJECT_NAME}.map" CACHE INTERNAL "Linker options")
 
 	# ------------------------------------------------------------------------------
 	# Пути к заголовочным файлам (-I)
 	# ------------------------------------------------------------------------------
 	target_include_directories(${PROJECT_NAME} PUBLIC
-		Inc
 		Drivers/CMSIS/Device/ST/STM32F4xx/Include
 		Drivers/CMSIS/Include
 		Drivers/STM32F4xx_HAL_Driver/Inc
@@ -46,7 +55,7 @@ if (${PRESET_DEFINE_MACRO} STREQUAL "USE_HAL_DRIVER")
 
 elseif (${PRESET_DEFINE_MACRO} STREQUAL "__WIN__")
 
-	add_library("${PROJECT_NAME}" SHARED "${CPP_COURCES}")
+	add_library("${PROJECT_NAME}" SHARED "${C_CPP_COURCES}")
 
 	# Включаем предупреждения только для вашей цели
 	target_compile_options("${PROJECT_NAME}" PRIVATE
@@ -54,18 +63,12 @@ elseif (${PRESET_DEFINE_MACRO} STREQUAL "__WIN__")
 		$<$<CXX_COMPILER_ID:MSVC>:/W4 /wd4251>
 	)
 
-	#target_compile_options("${PROJECT_NAME}" PRIVATE
-	#	$<$<CXX_COMPILER_ID:MSVC>:/WX>
-	#	$<$<CXX_COMPILER_ID:GNU,Clang,AppleClang>:-Werror>
-	#)
-	## add_executable ("${PROJECT_NAME}" WIN32 "Core/Main/App.cpp" "${CPP_COURCES}")
-
 elseif (${PRESET_DEFINE_MACRO} STREQUAL "__LINUX__")
 
-	find_package(Qt6 COMPONENTS Widgets REQUIRED Core)
-	qt_standard_project_setup()
-	add_executable ("${PROJECT_NAME}" "Main/App.cpp" "${CPP_COURCES}")
-	target_link_libraries("${PROJECT_NAME}" PRIVATE Qt6::Core Qt6::Widgets)
+	#find_package(Qt6 COMPONENTS Widgets REQUIRED Core)
+	#qt_standard_project_setup()
+	#add_executable ("${PROJECT_NAME}" "Main/App.cpp" "${C_CPP_COURCES}")
+	#target_link_libraries("${PROJECT_NAME}" PRIVATE Qt6::Core Qt6::Widgets)
 
 elseif (${PRESET_DEFINE_MACRO} STREQUAL "__TERMUX__")
 
@@ -77,7 +80,7 @@ elseif (${PRESET_DEFINE_MACRO} STREQUAL "__TERMUX__")
 	)
 	FetchContent_MakeAvailable(cpp-httplib)
 
-	add_library("${PROJECT_NAME}" SHARED "${CPP_COURCES}")
+	add_library("${PROJECT_NAME}" SHARED "${C_CPP_COURCES}")
 	set_target_properties("${PROJECT_NAME}" PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
 	target_link_libraries(${PROJECT_NAME} PRIVATE httplib::httplib)
@@ -85,11 +88,37 @@ elseif (${PRESET_DEFINE_MACRO} STREQUAL "__TERMUX__")
 
 endif ()
 
-target_compile_definitions("${PROJECT_NAME}" PRIVATE STM32F4_LIBRARIES_EXPORT)
+target_compile_definitions("${PROJECT_NAME}" PRIVATE LETOCORE_EXPORT_LIBRARY)
 
 # === Подключение подсистемы тестов ===
 # Тесты собираются только если это не целевая платформа STM32
-if (NOT ${PRESET_DEFINE_MACRO} STREQUAL "USE_HAL_DRIVER")
+if (NOT ${PRESET_DEFINE_MACRO} STREQUAL "__STM32__")
 	enable_testing()
     add_subdirectory(Tests)
 endif()
+
+# ============================================= LetoAPI dependency ============================================
+
+if(LETO_PATH)
+    message(STATUS "[LetoCore] Найдена переменная LETO_PATH. Подключаем готовые артефакты...")
+
+	target_link_directories(${PROJECT_NAME} PRIVATE "${LETO_PATH}/LetoAPI/lib/${CMAKE_PRESET_NAME}")
+	target_include_directories(${PROJECT_NAME} PRIVATE "${LETO_PATH}/LetoAPI/include")
+else()
+    message(STATUS "[LetoCore] Переменная LETO_PATH не найдена. Серверная сборка через FetchContent...")
+
+    FetchContent_Declare(
+        LetoAPI
+		# SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../LetoAPI"
+        GIT_REPOSITORY https://github.com/leto-console/LetoAPI
+        GIT_TAG        main
+    )
+    FetchContent_MakeAvailable(LetoAPI)
+endif()
+
+target_link_libraries(${PROJECT_NAME} PRIVATE LetoAPI)
+# ==============================================================================================================
+
+target_include_directories(${PROJECT_NAME} PUBLIC "Inc")
+
+target_compile_definitions(${PROJECT_NAME} PRIVATE LETOCORE_EXPORT_LIBRARY)

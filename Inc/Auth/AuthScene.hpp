@@ -16,7 +16,7 @@
 #include <UI/Text/UI_Label.hpp>
 #include <Auth/Account_CreateScene.hpp>
 
-class LIBRARIES_EXPORT AuthScene : public IScene
+class LETO_CORE_EXPORT AuthScene : public IScene
 {
 protected:
 	IScene* current_subscene{};

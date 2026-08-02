@@ -14,23 +14,23 @@
 #include "Data/SourceData.hpp"
 
 // Проекция на ось X кажущегося ускорения в базисе связной СК
-extern LIBRARIES_EXPORT FloatSourceData Linked_Nx;
+extern LETO_CORE_EXPORT FloatSourceData Linked_Nx;
 // Проекция на ось Y кажущегося ускорения в базисе связной СК
-extern LIBRARIES_EXPORT FloatSourceData Linked_Ny;
+extern LETO_CORE_EXPORT FloatSourceData Linked_Ny;
 // Проекция на ось Z кажущегося ускорения в базисе связной СК
-extern LIBRARIES_EXPORT FloatSourceData Linked_Nz;
+extern LETO_CORE_EXPORT FloatSourceData Linked_Nz;
 
 // Проекция на ось X абсолютной угловой скорости связной СК
-extern LIBRARIES_EXPORT FloatSourceData Linked_Wx;
+extern LETO_CORE_EXPORT FloatSourceData Linked_Wx;
 // Проекция на ось Y абсолютной угловой скорости связной СК
-extern LIBRARIES_EXPORT FloatSourceData Linked_Wy;
+extern LETO_CORE_EXPORT FloatSourceData Linked_Wy;
 // Проекция на ось Z абсолютной угловой скорости связной СК
-extern LIBRARIES_EXPORT FloatSourceData Linked_Wz;
+extern LETO_CORE_EXPORT FloatSourceData Linked_Wz;
 
 // Температура
-extern LIBRARIES_EXPORT FloatSourceData Temperature;
+extern LETO_CORE_EXPORT FloatSourceData Temperature;
 
 // Статус получения данных MPU6050 по I2C
-extern LIBRARIES_EXPORT U8SourceData MPU6050_I2CState;
+extern LETO_CORE_EXPORT U8SourceData MPU6050_I2CState;
 
 #endif

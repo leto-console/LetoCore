@@ -13,7 +13,7 @@
 #include <UI/ISettingUI.hpp>
 #include <Data/StaticText.hpp>
 
-class LIBRARIES_EXPORT ButtonSettingUI : public ISettingUI
+class LETO_CORE_EXPORT ButtonSettingUI : public ISettingUI
 {
 public:
 	using OnPressFunc = void(*)();

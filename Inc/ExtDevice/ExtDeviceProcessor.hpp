@@ -18,7 +18,7 @@
 /**
  * Обработчик внешних устройств
  */
-class LIBRARIES_EXPORT ExtDeviceProcessor : public PriorityTask
+class LETO_CORE_EXPORT ExtDeviceProcessor : public PriorityTask
 {
 public:
     ExtDeviceProcessor(const StaticText32& name, uint32_t period_ms, uint8_t priority);

@@ -16,6 +16,6 @@
 #endif
 
 /// @brief Системный аллокатор (для билдеров объектов, задач и прочего)
-extern LIBRARIES_EXPORT ArenaAllocator<SYSTEM_ALLOCATOR_SIZE> SystemAllocator;
+extern LETO_CORE_EXPORT ArenaAllocator<SYSTEM_ALLOCATOR_SIZE> SystemAllocator;
 
 #endif

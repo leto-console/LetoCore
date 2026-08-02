@@ -16,12 +16,12 @@
 #include <Time/Timer.hpp>
 
 /// @brief Available lobbies nearby
-extern LIBRARIES_EXPORT StaticList<LobbyInfo_V1, 8> lobbies_near;
+extern LETO_CORE_EXPORT StaticList<LobbyInfo_V1, 8> lobbies_near;
 
 /// @brief Current lobby connection instance
-extern LIBRARIES_EXPORT LobbyConnection_V1 global_lobby;
+extern LETO_CORE_EXPORT LobbyConnection_V1 global_lobby;
 
 /// @brief Connection timer
-extern LIBRARIES_EXPORT Timer join_timer;
+extern LETO_CORE_EXPORT Timer join_timer;
 
 #endif

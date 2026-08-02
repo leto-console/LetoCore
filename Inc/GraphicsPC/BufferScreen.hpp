@@ -14,7 +14,7 @@
 #include <Graphics/IFont.hpp>
 #include <Graphics/IScreen.hpp>
 
-struct LIBRARIES_EXPORT BufferScreen : public IScreen
+struct LETO_CORE_EXPORT BufferScreen : public IScreen
 {
 public:
     int width{}, height{};

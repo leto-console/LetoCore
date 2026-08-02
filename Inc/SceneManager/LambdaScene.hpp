@@ -13,7 +13,7 @@
 #include <Graphics/IScreen.hpp>
 
  // Интерфейс экранной сцены, поведение которой задается с помощью лябмды
-class LIBRARIES_EXPORT LambdaScene : public IScene
+class LETO_CORE_EXPORT LambdaScene : public IScene
 {
 public:
 	using LambdaSceneDrawCallback = void(*)(IScreen&);

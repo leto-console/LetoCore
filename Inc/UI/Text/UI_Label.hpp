@@ -28,7 +28,7 @@ enum class LabelVerticalAlignment : uint8_t
 };
 
 /// @brief Text label UI element
-class LIBRARIES_EXPORT UI_Label : public ISceneObject
+class LETO_CORE_EXPORT UI_Label : public ISceneObject
 {
 public:
 	UI_Label() = default;

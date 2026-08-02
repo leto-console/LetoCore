@@ -14,7 +14,7 @@
 
 #include <Time/Timer.hpp>
 
-class LIBRARIES_EXPORT LobbyData
+class LETO_CORE_EXPORT LobbyData
 {
 public:
     LobbyData(uint8_t data_id, uint32_t period_ms);

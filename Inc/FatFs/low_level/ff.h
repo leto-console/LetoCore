@@ -325,40 +325,40 @@ typedef enum {
 /* FatFs Module Application Interface                           */
 /*--------------------------------------------------------------*/
 
-LIBRARIES_EXPORT FRESULT f_open (FIL* fp, const TCHAR* path, BYTE mode);				/* Open or create a file */
-LIBRARIES_EXPORT FRESULT f_close (FIL* fp);											/* Close an open file object */
-LIBRARIES_EXPORT FRESULT f_read (FIL* fp, void* buff, UINT btr, UINT* br);			/* Read data from the file */
-LIBRARIES_EXPORT FRESULT f_write (FIL* fp, const void* buff, UINT btw, UINT* bw);	/* Write data to the file */
-LIBRARIES_EXPORT FRESULT f_lseek (FIL* fp, FSIZE_t ofs);								/* Move file pointer of the file object */
-LIBRARIES_EXPORT FRESULT f_truncate (FIL* fp);										/* Truncate the file */
-LIBRARIES_EXPORT FRESULT f_sync (FIL* fp);											/* Flush cached data of the writing file */
-LIBRARIES_EXPORT FRESULT f_opendir (DIR* dp, const TCHAR* path);						/* Open a directory */
-LIBRARIES_EXPORT FRESULT f_closedir (DIR* dp);										/* Close an open directory */
-LIBRARIES_EXPORT FRESULT f_readdir (DIR* dp, FILINFO* fno);							/* Read a directory item */
-LIBRARIES_EXPORT FRESULT f_findfirst (DIR* dp, FILINFO* fno, const TCHAR* path, const TCHAR* pattern);	/* Find first file */
-LIBRARIES_EXPORT FRESULT f_findnext (DIR* dp, FILINFO* fno);							/* Find next file */
-LIBRARIES_EXPORT FRESULT f_mkdir (const TCHAR* path);								/* Create a sub directory */
-LIBRARIES_EXPORT FRESULT f_unlink (const TCHAR* path);								/* Delete an existing file or directory */
-LIBRARIES_EXPORT FRESULT f_rename (const TCHAR* path_old, const TCHAR* path_new);	/* Rename/Move a file or directory */
-LIBRARIES_EXPORT FRESULT f_stat (const TCHAR* path, FILINFO* fno);					/* Get file status */
-LIBRARIES_EXPORT FRESULT f_chmod (const TCHAR* path, BYTE attr, BYTE mask);			/* Change attribute of a file/dir */
-LIBRARIES_EXPORT FRESULT f_utime (const TCHAR* path, const FILINFO* fno);			/* Change timestamp of a file/dir */
-LIBRARIES_EXPORT FRESULT f_chdir (const TCHAR* path);								/* Change current directory */
-LIBRARIES_EXPORT FRESULT f_chdrive (const TCHAR* path);								/* Change current drive */
-LIBRARIES_EXPORT FRESULT f_getcwd (TCHAR* buff, UINT len);							/* Get current directory */
-LIBRARIES_EXPORT FRESULT f_getfree (const TCHAR* path, DWORD* nclst, FATFS** fatfs);	/* Get number of free clusters on the drive */
-LIBRARIES_EXPORT FRESULT f_getlabel (const TCHAR* path, TCHAR* label, DWORD* vsn);	/* Get volume label */
-LIBRARIES_EXPORT FRESULT f_setlabel (const TCHAR* label);							/* Set volume label */
-LIBRARIES_EXPORT FRESULT f_forward (FIL* fp, UINT(*func)(const BYTE*,UINT), UINT btf, UINT* bf);	/* Forward data to the stream */
-LIBRARIES_EXPORT FRESULT f_expand (FIL* fp, FSIZE_t fsz, BYTE opt);					/* Allocate a contiguous block to the file */
-LIBRARIES_EXPORT FRESULT f_mount (FATFS* fs, const TCHAR* path, BYTE opt);			/* Mount/Unmount a logical drive */
-LIBRARIES_EXPORT FRESULT f_mkfs (const TCHAR* path, const MKFS_PARM* opt, void* work, UINT len);	/* Create a FAT volume */
-LIBRARIES_EXPORT FRESULT f_fdisk (BYTE pdrv, const LBA_t ptbl[], void* work);		/* Divide a physical drive into some partitions */
-LIBRARIES_EXPORT FRESULT f_setcp (WORD cp);											/* Set current code page */
-LIBRARIES_EXPORT int f_putc (TCHAR c, FIL* fp);										/* Put a character to the file */
-LIBRARIES_EXPORT int f_puts (const TCHAR* str, FIL* cp);								/* Put a string to the file */
-LIBRARIES_EXPORT int f_printf (FIL* fp, const TCHAR* str, ...);						/* Put a formatted string to the file */
-LIBRARIES_EXPORT TCHAR* f_gets (TCHAR* buff, int len, FIL* fp);						/* Get a string from the file */
+LETO_CORE_EXPORT FRESULT f_open (FIL* fp, const TCHAR* path, BYTE mode);				/* Open or create a file */
+LETO_CORE_EXPORT FRESULT f_close (FIL* fp);											/* Close an open file object */
+LETO_CORE_EXPORT FRESULT f_read (FIL* fp, void* buff, UINT btr, UINT* br);			/* Read data from the file */
+LETO_CORE_EXPORT FRESULT f_write (FIL* fp, const void* buff, UINT btw, UINT* bw);	/* Write data to the file */
+LETO_CORE_EXPORT FRESULT f_lseek (FIL* fp, FSIZE_t ofs);								/* Move file pointer of the file object */
+LETO_CORE_EXPORT FRESULT f_truncate (FIL* fp);										/* Truncate the file */
+LETO_CORE_EXPORT FRESULT f_sync (FIL* fp);											/* Flush cached data of the writing file */
+LETO_CORE_EXPORT FRESULT f_opendir (DIR* dp, const TCHAR* path);						/* Open a directory */
+LETO_CORE_EXPORT FRESULT f_closedir (DIR* dp);										/* Close an open directory */
+LETO_CORE_EXPORT FRESULT f_readdir (DIR* dp, FILINFO* fno);							/* Read a directory item */
+LETO_CORE_EXPORT FRESULT f_findfirst (DIR* dp, FILINFO* fno, const TCHAR* path, const TCHAR* pattern);	/* Find first file */
+LETO_CORE_EXPORT FRESULT f_findnext (DIR* dp, FILINFO* fno);							/* Find next file */
+LETO_CORE_EXPORT FRESULT f_mkdir (const TCHAR* path);								/* Create a sub directory */
+LETO_CORE_EXPORT FRESULT f_unlink (const TCHAR* path);								/* Delete an existing file or directory */
+LETO_CORE_EXPORT FRESULT f_rename (const TCHAR* path_old, const TCHAR* path_new);	/* Rename/Move a file or directory */
+LETO_CORE_EXPORT FRESULT f_stat (const TCHAR* path, FILINFO* fno);					/* Get file status */
+LETO_CORE_EXPORT FRESULT f_chmod (const TCHAR* path, BYTE attr, BYTE mask);			/* Change attribute of a file/dir */
+LETO_CORE_EXPORT FRESULT f_utime (const TCHAR* path, const FILINFO* fno);			/* Change timestamp of a file/dir */
+LETO_CORE_EXPORT FRESULT f_chdir (const TCHAR* path);								/* Change current directory */
+LETO_CORE_EXPORT FRESULT f_chdrive (const TCHAR* path);								/* Change current drive */
+LETO_CORE_EXPORT FRESULT f_getcwd (TCHAR* buff, UINT len);							/* Get current directory */
+LETO_CORE_EXPORT FRESULT f_getfree (const TCHAR* path, DWORD* nclst, FATFS** fatfs);	/* Get number of free clusters on the drive */
+LETO_CORE_EXPORT FRESULT f_getlabel (const TCHAR* path, TCHAR* label, DWORD* vsn);	/* Get volume label */
+LETO_CORE_EXPORT FRESULT f_setlabel (const TCHAR* label);							/* Set volume label */
+LETO_CORE_EXPORT FRESULT f_forward (FIL* fp, UINT(*func)(const BYTE*,UINT), UINT btf, UINT* bf);	/* Forward data to the stream */
+LETO_CORE_EXPORT FRESULT f_expand (FIL* fp, FSIZE_t fsz, BYTE opt);					/* Allocate a contiguous block to the file */
+LETO_CORE_EXPORT FRESULT f_mount (FATFS* fs, const TCHAR* path, BYTE opt);			/* Mount/Unmount a logical drive */
+LETO_CORE_EXPORT FRESULT f_mkfs (const TCHAR* path, const MKFS_PARM* opt, void* work, UINT len);	/* Create a FAT volume */
+LETO_CORE_EXPORT FRESULT f_fdisk (BYTE pdrv, const LBA_t ptbl[], void* work);		/* Divide a physical drive into some partitions */
+LETO_CORE_EXPORT FRESULT f_setcp (WORD cp);											/* Set current code page */
+LETO_CORE_EXPORT int f_putc (TCHAR c, FIL* fp);										/* Put a character to the file */
+LETO_CORE_EXPORT int f_puts (const TCHAR* str, FIL* cp);								/* Put a string to the file */
+LETO_CORE_EXPORT int f_printf (FIL* fp, const TCHAR* str, ...);						/* Put a formatted string to the file */
+LETO_CORE_EXPORT TCHAR* f_gets (TCHAR* buff, int len, FIL* fp);						/* Get a string from the file */
 
 /* Some API fucntions are implemented as macro */
 
@@ -380,30 +380,30 @@ LIBRARIES_EXPORT TCHAR* f_gets (TCHAR* buff, int len, FIL* fp);						/* Get a st
 
 /* RTC function (provided by user) */
 #if !FF_FS_READONLY && !FF_FS_NORTC
-LIBRARIES_EXPORT DWORD get_fattime (void);	/* Get current time */
+LETO_CORE_EXPORT DWORD get_fattime (void);	/* Get current time */
 #endif
 
 
 /* LFN support functions (defined in ffunicode.c) */
 
 #if FF_USE_LFN >= 1
-LIBRARIES_EXPORT WCHAR ff_oem2uni (WCHAR oem, WORD cp);	/* OEM code to Unicode conversion */
-LIBRARIES_EXPORT WCHAR ff_uni2oem (DWORD uni, WORD cp);	/* Unicode to OEM code conversion */
-LIBRARIES_EXPORT DWORD ff_wtoupper (DWORD uni);			/* Unicode upper-case conversion */
+LETO_CORE_EXPORT WCHAR ff_oem2uni (WCHAR oem, WORD cp);	/* OEM code to Unicode conversion */
+LETO_CORE_EXPORT WCHAR ff_uni2oem (DWORD uni, WORD cp);	/* Unicode to OEM code conversion */
+LETO_CORE_EXPORT DWORD ff_wtoupper (DWORD uni);			/* Unicode upper-case conversion */
 #endif
 
 
 /* O/S dependent functions (samples available in ffsystem.c) */
 
 #if FF_USE_LFN == 3		/* Dynamic memory allocation */
-LIBRARIES_EXPORT void* ff_memalloc (UINT msize);		/* Allocate memory block */
-LIBRARIES_EXPORT void ff_memfree (void* mblock);		/* Free memory block */
+LETO_CORE_EXPORT void* ff_memalloc (UINT msize);		/* Allocate memory block */
+LETO_CORE_EXPORT void ff_memfree (void* mblock);		/* Free memory block */
 #endif
 #if FF_FS_REENTRANT		/* Sync functions */
-LIBRARIES_EXPORT int ff_mutex_create (int vol);		/* Create a sync object */
-LIBRARIES_EXPORT void ff_mutex_delete (int vol);		/* Delete a sync object */
-LIBRARIES_EXPORT int ff_mutex_take (int vol);		/* Lock sync object */
-LIBRARIES_EXPORT void ff_mutex_give (int vol);		/* Unlock sync object */
+LETO_CORE_EXPORT int ff_mutex_create (int vol);		/* Create a sync object */
+LETO_CORE_EXPORT void ff_mutex_delete (int vol);		/* Delete a sync object */
+LETO_CORE_EXPORT int ff_mutex_take (int vol);		/* Lock sync object */
+LETO_CORE_EXPORT void ff_mutex_give (int vol);		/* Unlock sync object */
 #endif
 
 

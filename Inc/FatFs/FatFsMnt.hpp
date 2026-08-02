@@ -12,12 +12,12 @@
 #include <FatFs/low_level/ff.h>
 
 /// Примонтированная файловая система
-extern LIBRARIES_EXPORT FATFS fatfs;
+extern LETO_CORE_EXPORT FATFS fatfs;
 
 /// Флаг примонтированности файловой системы
-extern LIBRARIES_EXPORT bool fatfs_mounted; 
+extern LETO_CORE_EXPORT bool fatfs_mounted; 
 
 /// Флаг первой проверки файловой системы
-extern LIBRARIES_EXPORT bool fatfs_first_check;
+extern LETO_CORE_EXPORT bool fatfs_first_check;
 
 #endif

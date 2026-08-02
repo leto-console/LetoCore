@@ -20,7 +20,7 @@
 #include <Data/StaticText.hpp>
 #include <UI/Menu/ParamMenu.hpp>
 
-class LIBRARIES_EXPORT Account_SettingScene : public IScene
+class LETO_CORE_EXPORT Account_SettingScene : public IScene
 {
 protected:
 	AccountSettingsCells cur_account;

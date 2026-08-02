@@ -14,7 +14,7 @@
 
 #include <Graphics/IDisplay.hpp>
 
-class LIBRARIES_EXPORT HttpDisplay : public IDisplay
+class LETO_CORE_EXPORT HttpDisplay : public IDisplay
 {
 protected:
 	std::thread http_server_thread;

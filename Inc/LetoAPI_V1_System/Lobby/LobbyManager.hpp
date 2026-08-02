@@ -30,7 +30,7 @@
  * 
  * @warning Available only at OS level. Creation within an application results in UB (Undefined Behavior).
  */
-class LIBRARIES_EXPORT LobbyManager_V1
+class LETO_CORE_EXPORT LobbyManager_V1
 {
 protected:
     // ======================================== Singleton ========================================

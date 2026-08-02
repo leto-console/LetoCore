@@ -23,7 +23,7 @@
 
 #include <DrawFunctions/DrawLine.hpp>
 
-class LIBRARIES_EXPORT nRF24L01P_Scanner : public IDrawable
+class LETO_CORE_EXPORT nRF24L01P_Scanner : public IDrawable
 {
 protected:
 	int				ChannelScan = 0;

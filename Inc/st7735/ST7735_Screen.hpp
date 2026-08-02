@@ -19,7 +19,7 @@
 #include <Graphics/IFont.hpp>
 #include <Graphics/IScreen.hpp>
 
-struct LIBRARIES_EXPORT ST7735_Screen : public IScreen
+struct LETO_CORE_EXPORT ST7735_Screen : public IScreen
 {
 protected:
 	int area_x{}, area_y{};

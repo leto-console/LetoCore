@@ -30,7 +30,7 @@ struct DateStruct
 
 #pragma pack(push, 1)
 
-struct LIBRARIES_EXPORT DateTimeStruct
+struct LETO_CORE_EXPORT DateTimeStruct
 {
 	TimeStruct time;
 	DateStruct date;

@@ -19,7 +19,7 @@
 class BaseGame;
 
 // Интерфейс базовой игровой сцены
-class LIBRARIES_EXPORT BaseGameScene
+class LETO_CORE_EXPORT BaseGameScene
 {
 protected:
 	BaseGame* game{ nullptr };

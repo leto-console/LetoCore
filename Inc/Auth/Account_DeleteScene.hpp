@@ -14,7 +14,7 @@
 #include <SceneManager/ISceneBuilder.hpp>
 #include <UI/Menu/DialogMenu.hpp>
 
-class LIBRARIES_EXPORT Account_DeleteScene : public IScene
+class LETO_CORE_EXPORT Account_DeleteScene : public IScene
 {
 protected:
 	DialogParamMenu<bool, 4> delete_question;

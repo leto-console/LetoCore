@@ -20,7 +20,7 @@
 #include <Data/IDataCell.hpp>
 #include <Time/DateTimeTypes.hpp>
 
-struct LIBRARIES_EXPORT DateTime
+struct LETO_CORE_EXPORT DateTime
 {
 private:
 #ifdef USE_HAL_DRIVER

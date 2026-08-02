@@ -12,7 +12,7 @@
 #include <SceneManager/ISceneObject.hpp>
 #include <ExtDevice/ExtDevice.hpp>
 
-class LIBRARIES_EXPORT UI_ExtDeviceStatus : public ISceneObject
+class LETO_CORE_EXPORT UI_ExtDeviceStatus : public ISceneObject
 {
 public:
     UI_ExtDeviceStatus() = default;

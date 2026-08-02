@@ -11,7 +11,7 @@
 
 #include <stdint.h>
 
-struct LIBRARIES_EXPORT TimeUtils
+struct LETO_CORE_EXPORT TimeUtils
 {
 	static uint32_t count_in_sec;
 

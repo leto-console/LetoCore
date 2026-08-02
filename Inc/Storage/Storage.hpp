@@ -13,7 +13,7 @@
 
 #include <EEPROM/EEPROM_24C.hpp>
 
-class LIBRARIES_EXPORT Storage : public IBinaryStorage
+class LETO_CORE_EXPORT Storage : public IBinaryStorage
 {
 protected:
 	EEPROM_24C* eeprom{ nullptr };

@@ -17,18 +17,18 @@
 
 namespace NRF24L01
 {
-	extern LIBRARIES_EXPORT nRF24L01P_Scanner Scanner;
+	extern LETO_CORE_EXPORT nRF24L01P_Scanner Scanner;
 
-	extern LIBRARIES_EXPORT DataCell<uint8_t> Config;
-	extern LIBRARIES_EXPORT DataCell<uint8_t> Status;
-	extern LIBRARIES_EXPORT DataCell<uint8_t> Setup;
-	extern LIBRARIES_EXPORT DataCell<uint8_t> FifoStatus;
+	extern LETO_CORE_EXPORT DataCell<uint8_t> Config;
+	extern LETO_CORE_EXPORT DataCell<uint8_t> Status;
+	extern LETO_CORE_EXPORT DataCell<uint8_t> Setup;
+	extern LETO_CORE_EXPORT DataCell<uint8_t> FifoStatus;
 
 	// REG: 0x04
-	extern LIBRARIES_EXPORT DataCell<uint8_t> SetupRetr;
+	extern LETO_CORE_EXPORT DataCell<uint8_t> SetupRetr;
 
 	// nRF24L01+ version - true, nRF24L01 version - false
-	extern LIBRARIES_EXPORT DataCell<bool> PVariant;
+	extern LETO_CORE_EXPORT DataCell<bool> PVariant;
 
 	const uint32_t PipeAddress[]
 	{

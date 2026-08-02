@@ -18,7 +18,7 @@
 
 class LobbyScene;
 
-class LIBRARIES_EXPORT MemberScene : public HostScene
+class LETO_CORE_EXPORT MemberScene : public HostScene
 {
 public:
     MemberScene(BaseGame* game, LobbyScene* main_scene, uint8_t max_count, LobbyConnection_V1_Callback callback);

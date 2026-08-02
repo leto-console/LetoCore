@@ -11,7 +11,7 @@
 
 #include <ExtDevice/ExtDevice.hpp>
 
-struct LIBRARIES_EXPORT SDCard_ExtDevice : public ExtDevice
+struct LETO_CORE_EXPORT SDCard_ExtDevice : public ExtDevice
 {
 public:
     SDCard_ExtDevice();
@@ -30,6 +30,6 @@ protected:
     void DeviceTick() override;
 };
 
-extern LIBRARIES_EXPORT SDCard_ExtDevice* sdcard_extdev;
+extern LETO_CORE_EXPORT SDCard_ExtDevice* sdcard_extdev;
 
 #endif

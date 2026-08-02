@@ -11,7 +11,7 @@
 
 #include <cstdint>
 
-class LIBRARIES_EXPORT Timer
+class LETO_CORE_EXPORT Timer
 {
 public:
 	Timer(uint32_t period_ms = 0);

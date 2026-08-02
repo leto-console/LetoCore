@@ -14,6 +14,6 @@
 /**
  * @brief Create and initialize API
  */
-extern LIBRARIES_EXPORT const LobbyAPI_V1* Make_LobbyAPI();
+extern LETO_CORE_EXPORT const LobbyAPI_V1* Make_LobbyAPI();
 
 #endif

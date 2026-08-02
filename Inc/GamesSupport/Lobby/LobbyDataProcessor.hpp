@@ -11,7 +11,7 @@
 
 #include <GamesSupport/Lobby/LobbyData.hpp>
 
-class LIBRARIES_EXPORT LobbyDataProcessor
+class LETO_CORE_EXPORT LobbyDataProcessor
 {
 public:
     LobbyDataProcessor() = default;

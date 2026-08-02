@@ -20,7 +20,7 @@ constexpr uint16_t DATA_NAME_SIZE = 8;
 
 #define NAMED_DATA_HEADER_SIGNATURE { '\xC1', '\xA0' }
 
-struct LIBRARIES_EXPORT NamedDataHeader
+struct LETO_CORE_EXPORT NamedDataHeader
 {
 	const char SIGNATURE[2] = NAMED_DATA_HEADER_SIGNATURE;
 
@@ -32,7 +32,7 @@ struct LIBRARIES_EXPORT NamedDataHeader
 };
 
 // Область памяти, хранящая именованные настройки
-class LIBRARIES_EXPORT NamedSpace : public ICapacity
+class LETO_CORE_EXPORT NamedSpace : public ICapacity
 {
 protected:
 	struct ScanRecord

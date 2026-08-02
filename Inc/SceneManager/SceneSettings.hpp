@@ -31,6 +31,6 @@ public:
 	}
 };
 
-extern LIBRARIES_EXPORT FPSSetting EnableFPS_Setting;
+extern LETO_CORE_EXPORT FPSSetting EnableFPS_Setting;
 
 #endif

@@ -15,6 +15,6 @@
 #include <Data/StaticListView.hpp>
 
 /// Получить анимацию "глазок"
-extern LIBRARIES_EXPORT StaticListView<BitmapData*> GetEyeAnim(bool left);
+extern LETO_CORE_EXPORT StaticListView<BitmapData*> GetEyeAnim(bool left);
 
 #endif

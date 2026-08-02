@@ -9,6 +9,6 @@
 
 #include "LibrariesExport.h"
 
-extern LIBRARIES_EXPORT void SystemRestart();
+extern LETO_CORE_EXPORT void SystemRestart();
 
 #endif

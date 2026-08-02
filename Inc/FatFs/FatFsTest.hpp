@@ -9,6 +9,6 @@
 
 #include "LibrariesExport.h"
 
-extern LIBRARIES_EXPORT void fatfs_test();
+extern LETO_CORE_EXPORT void fatfs_test();
 
 #endif

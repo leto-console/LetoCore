@@ -28,7 +28,7 @@
 
 #include <cstdint>
 
-class LIBRARIES_EXPORT EEPROM_24C
+class LETO_CORE_EXPORT EEPROM_24C
 {
 protected:
 #ifdef USE_HAL_DRIVER

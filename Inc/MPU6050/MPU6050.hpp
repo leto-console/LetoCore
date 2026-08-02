@@ -19,7 +19,7 @@
 
 #endif
 
-class LIBRARIES_EXPORT MPU6050
+class LETO_CORE_EXPORT MPU6050
 {
 public:
 	enum AFS_SEL

@@ -16,7 +16,7 @@
 #include <Data/StaticList.hpp>
 
 // Графический элемент-помощник ввода
-class LIBRARIES_EXPORT InputHelperUI : public IDrawable
+class LETO_CORE_EXPORT InputHelperUI : public IDrawable
 {
 public:
 	enum class HelperButton : char

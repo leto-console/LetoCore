@@ -25,7 +25,7 @@
 #include <LetoAPI_V1/LetoAPI_V1.hpp>
 
  // Интерфейс базовой игры
-class LIBRARIES_EXPORT BaseGame
+class LETO_CORE_EXPORT BaseGame
 {
 protected:
 	// Текущая игровая сцена

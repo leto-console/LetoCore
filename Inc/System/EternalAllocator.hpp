@@ -16,6 +16,6 @@
 #endif
 
 /// @brief Вечный аллокатор (без возможности удаления, только для аллокации)
-extern LIBRARIES_EXPORT ArenaAllocator<ETERNAL_ALLOCATOR_SIZE, false> EternalAllocator;
+extern LETO_CORE_EXPORT ArenaAllocator<ETERNAL_ALLOCATOR_SIZE, false> EternalAllocator;
 
 #endif

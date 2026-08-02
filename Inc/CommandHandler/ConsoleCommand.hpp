@@ -13,7 +13,7 @@
 #include <Data/StaticText.hpp>
 #include <Data/StaticListView.hpp>
 
-class LIBRARIES_EXPORT ConsoleCommand
+class LETO_CORE_EXPORT ConsoleCommand
 {
 protected:
     StaticText32 name;	// Наименование команды в формате CLI (без пробелов)

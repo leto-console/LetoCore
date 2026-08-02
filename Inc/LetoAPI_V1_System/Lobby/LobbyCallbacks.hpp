@@ -9,7 +9,7 @@
 
 #include <cstdint>
 
-//#ifdef STM32F4_LIBRARIES_EXPORT     ///< These functions can only be used within Libraries
+//#ifdef STM32F4_LETO_CORE_EXPORT     ///< These functions can only be used within Libraries
 
 
 /**
@@ -23,6 +23,6 @@ extern void LobbyInfoCallback(uint8_t /*channel*/, uint8_t /*port*/, uint32_t id
 extern void LobbyMainCallback(uint8_t /*channel*/, uint8_t /*port*/, uint32_t id, const void* data, uint32_t size);
 
 
-//#endif /* STM32F4_LIBRARIES_EXPORT */
+//#endif /* STM32F4_LETO_CORE_EXPORT */
 
 #endif /* INC_LETO_API_V1_LOBBY_LOBBY_CALLBACKS_HPP_ */

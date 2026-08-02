@@ -20,7 +20,7 @@
 #include <Graphics/IFont.hpp>
 #include <Graphics/IDisplay.hpp>
 
-struct LIBRARIES_EXPORT ST7735_HalDisplay : public IDisplay
+struct LETO_CORE_EXPORT ST7735_HalDisplay : public IDisplay
 {
 protected:
 	uint8_t render_part{}, render_column{};

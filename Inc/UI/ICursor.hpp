@@ -14,7 +14,7 @@
 
 #include <stdint.h>
 
-class LIBRARIES_EXPORT ICursor : public IDrawable
+class LETO_CORE_EXPORT ICursor : public IDrawable
 {
 protected:
 	int min_row{}, max_row{};

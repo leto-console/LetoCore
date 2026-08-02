@@ -14,11 +14,11 @@
 /**
  * @brief Установить идентификатор устройства
  */
-extern LIBRARIES_EXPORT void SetDeviceID(uint32_t id);
+extern LETO_CORE_EXPORT void SetDeviceID(uint32_t id);
 
 /**
  * @brief Получить идентификатор устройства
  */
-extern LIBRARIES_EXPORT uint32_t GetDeviceID();
+extern LETO_CORE_EXPORT uint32_t GetDeviceID();
 
 #endif

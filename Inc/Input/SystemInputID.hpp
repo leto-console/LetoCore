@@ -31,17 +31,17 @@ enum SYSTEM_INPUT_IDs : uint8_t
 
 //....
 
-extern LIBRARIES_EXPORT bool IsSystemLeftEvent(const AppEvent& event, bool pressed = true);
-extern LIBRARIES_EXPORT bool IsSystemRightEvent(const AppEvent& event, bool pressed = true);
-extern LIBRARIES_EXPORT bool IsSystemTurnLeftEvent(const AppEvent& event, bool pressed = true);
-extern LIBRARIES_EXPORT bool IsSystemTurnRightEvent(const AppEvent& event, bool pressed = true);
-extern LIBRARIES_EXPORT bool IsSystemUpEvent(const AppEvent& event, bool pressed = true);
-extern LIBRARIES_EXPORT bool IsSystemDownEvent(const AppEvent& event, bool pressed = true);
-extern LIBRARIES_EXPORT bool IsSystemPrevEvent(const AppEvent& event, bool pressed = true);
-extern LIBRARIES_EXPORT bool IsSystemNextEvent(const AppEvent& event, bool pressed = true);
-extern LIBRARIES_EXPORT bool IsSystemReturnEvent(const AppEvent& event, bool pressed = true);
-extern LIBRARIES_EXPORT bool IsSystemEnterEvent(const AppEvent& event, bool pressed = true);
-extern LIBRARIES_EXPORT bool IsSystemMenuEvent(const AppEvent& event, bool pressed = true);
-extern LIBRARIES_EXPORT bool IsSystemAltEvent(const AppEvent& event, bool pressed = true);
+extern LETO_CORE_EXPORT bool IsSystemLeftEvent(const AppEvent& event, bool pressed = true);
+extern LETO_CORE_EXPORT bool IsSystemRightEvent(const AppEvent& event, bool pressed = true);
+extern LETO_CORE_EXPORT bool IsSystemTurnLeftEvent(const AppEvent& event, bool pressed = true);
+extern LETO_CORE_EXPORT bool IsSystemTurnRightEvent(const AppEvent& event, bool pressed = true);
+extern LETO_CORE_EXPORT bool IsSystemUpEvent(const AppEvent& event, bool pressed = true);
+extern LETO_CORE_EXPORT bool IsSystemDownEvent(const AppEvent& event, bool pressed = true);
+extern LETO_CORE_EXPORT bool IsSystemPrevEvent(const AppEvent& event, bool pressed = true);
+extern LETO_CORE_EXPORT bool IsSystemNextEvent(const AppEvent& event, bool pressed = true);
+extern LETO_CORE_EXPORT bool IsSystemReturnEvent(const AppEvent& event, bool pressed = true);
+extern LETO_CORE_EXPORT bool IsSystemEnterEvent(const AppEvent& event, bool pressed = true);
+extern LETO_CORE_EXPORT bool IsSystemMenuEvent(const AppEvent& event, bool pressed = true);
+extern LETO_CORE_EXPORT bool IsSystemAltEvent(const AppEvent& event, bool pressed = true);
 
 #endif

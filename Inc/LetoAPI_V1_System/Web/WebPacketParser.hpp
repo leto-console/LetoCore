@@ -14,7 +14,7 @@
 
 struct WebPacketParser
 {
-	static LIBRARIES_EXPORT void CallbackByte(uint8_t channel, uint8_t byte);
+	static LETO_CORE_EXPORT void CallbackByte(uint8_t channel, uint8_t byte);
 };
 
 #endif /* INC_LETO_API_V1_WEB_WEB_PACKET_PARSER_HPP_ */

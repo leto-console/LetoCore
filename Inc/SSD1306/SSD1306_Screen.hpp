@@ -17,7 +17,7 @@
 #include <Graphics/IFont.hpp>
 #include <Graphics/IScreen.hpp>
 
-struct LIBRARIES_EXPORT SSD1306_Screen : public IScreen
+struct LETO_CORE_EXPORT SSD1306_Screen : public IScreen
 {
 protected:
 	uint8_t render_part{}, render_column{};

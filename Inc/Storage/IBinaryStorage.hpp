@@ -12,7 +12,7 @@
 
 #include <stdint.h>
 
-class LIBRARIES_EXPORT IBinaryStorage
+class LETO_CORE_EXPORT IBinaryStorage
 {
 public:
 	virtual ~IBinaryStorage() = default;

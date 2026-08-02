@@ -60,7 +60,7 @@ struct LetoAPI_V1
 #pragma pack(pop)
 
 /// @brief LetoAPI_V1 instance pointer
-extern LIBRARIES_EXPORT const LetoAPI_V1* leto_api_v1;
+extern LETO_CORE_EXPORT const LetoAPI_V1* leto_api_v1;
 
 static_assert(std::is_standard_layout<LetoAPI_V1>::value, "LetoAPI_V1 must be a standard layout type");
 

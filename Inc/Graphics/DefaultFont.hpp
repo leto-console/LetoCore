@@ -20,7 +20,7 @@ struct DefaultCharacter
 };
 
 // Шрифт
-class LIBRARIES_EXPORT DefaultFont : public IFont
+class LETO_CORE_EXPORT DefaultFont : public IFont
 {
 protected:
 	const DefaultCharacter* EmptyCharacter{};
@@ -102,8 +102,8 @@ public:
 	}
 };
 
-extern LIBRARIES_EXPORT const DefaultFont Default_Font_8x8;
-extern LIBRARIES_EXPORT const DefaultFont Default_Font_7x7;
-extern LIBRARIES_EXPORT const DefaultFont Default_Font_7x7_small;
+extern LETO_CORE_EXPORT const DefaultFont Default_Font_8x8;
+extern LETO_CORE_EXPORT const DefaultFont Default_Font_7x7;
+extern LETO_CORE_EXPORT const DefaultFont Default_Font_7x7_small;
 
 #endif /* INC_SSD1306_CHARACTERS_HPP_ */

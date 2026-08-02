@@ -18,9 +18,9 @@
  * 
  * @warning Calling this function in application causes UB
  */
-extern LIBRARIES_EXPORT const LetoAPI_V1* Make_LetoAPI_V1();
+extern LETO_CORE_EXPORT const LetoAPI_V1* Make_LetoAPI_V1();
 
-struct LIBRARIES_EXPORT LetoAPI_V1_StaticMaker
+struct LETO_CORE_EXPORT LetoAPI_V1_StaticMaker
 {
     LetoAPI_V1_StaticMaker();
 };

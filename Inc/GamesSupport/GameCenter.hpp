@@ -21,7 +21,7 @@
 #include <GamesSupport/GameInfo.hpp>
 
 // Сцены выбора игры + обработки текущей запущенной игры
-class LIBRARIES_EXPORT GameCenter : public IScene
+class LETO_CORE_EXPORT GameCenter : public IScene
 {
 protected:
 	GameInfo* games_list;
@@ -50,6 +50,6 @@ public:
 };
 
 // Системный игровой центр
-extern LIBRARIES_EXPORT GameCenter* SystemGameCenter;
+extern LETO_CORE_EXPORT GameCenter* SystemGameCenter;
 
 #endif

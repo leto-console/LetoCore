@@ -15,8 +15,8 @@
 
 #include <Data/StaticListView.hpp>
 
-extern LIBRARIES_EXPORT bool GetAvatarByID(uint32_t ID, BitmapData& data);
+extern LETO_CORE_EXPORT bool GetAvatarByID(uint32_t ID, BitmapData& data);
 
-extern LIBRARIES_EXPORT StaticListView<BitmapData> GetAvatars();
+extern LETO_CORE_EXPORT StaticListView<BitmapData> GetAvatars();
 
 #endif

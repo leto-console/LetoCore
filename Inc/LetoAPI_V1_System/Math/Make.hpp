@@ -14,6 +14,6 @@
 /**
  * @brief Create and initialize API
  */
-extern LIBRARIES_EXPORT const MathAPI_V1* Make_MathAPI();
+extern LETO_CORE_EXPORT const MathAPI_V1* Make_MathAPI();
 
 #endif

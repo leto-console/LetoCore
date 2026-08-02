@@ -14,6 +14,6 @@
 /**
  * @brief Create and initialize API
  */
-extern LIBRARIES_EXPORT const UserAPI_V1* Make_UserAPI();
+extern LETO_CORE_EXPORT const UserAPI_V1* Make_UserAPI();
 
 #endif

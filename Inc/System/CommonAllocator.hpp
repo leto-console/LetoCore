@@ -16,6 +16,6 @@
 #endif
 
 /// @brief Аллокатор общего назначения (для сцен, игр и т.д.)
-extern LIBRARIES_EXPORT ArenaAllocator<COMMON_ALLOCATOR_SIZE> CommonAllocator;
+extern LETO_CORE_EXPORT ArenaAllocator<COMMON_ALLOCATOR_SIZE> CommonAllocator;
 
 #endif

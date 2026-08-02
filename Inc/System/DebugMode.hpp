@@ -14,12 +14,12 @@
 /**
  * @brief Проинициализировать ячейку с флагом отладочного режима
  */
-extern LIBRARIES_EXPORT void InitDebugModeCell(IDataCell<bool>* cell);
+extern LETO_CORE_EXPORT void InitDebugModeCell(IDataCell<bool>* cell);
 
 /**
  * @brief Получить отладочный режим работы системы
  * @return `true` - включен, `false` - выключен
  */
-extern LIBRARIES_EXPORT bool GetDebugMode();
+extern LETO_CORE_EXPORT bool GetDebugMode();
 
 #endif

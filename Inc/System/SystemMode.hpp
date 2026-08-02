@@ -22,16 +22,16 @@ enum class SystemMode : unsigned int
 /**
  * @brief Установить режим работы системы
  */
-extern LIBRARIES_EXPORT void SetSystemMode(SystemMode mode);
+extern LETO_CORE_EXPORT void SetSystemMode(SystemMode mode);
 
 /**
  * @brief Получить режим работы системы
  */
-extern LIBRARIES_EXPORT SystemMode GetSystemMode();
+extern LETO_CORE_EXPORT SystemMode GetSystemMode();
 
 /**
  * @brief Признак изменения режима работы системы
  */
-extern LIBRARIES_EXPORT bool SystemModeChanged();
+extern LETO_CORE_EXPORT bool SystemModeChanged();
 
 #endif

@@ -15,6 +15,6 @@
 /**
  * @brief Global initialization function for binary application
  */
-extern LIBRARIES_EXPORT LetoResult_V1 LetoAppSetup(const LetoAPI_V1* api);
+extern LETO_CORE_EXPORT LetoResult_V1 LetoAppSetup(const LetoAPI_V1* api);
 
 #endif

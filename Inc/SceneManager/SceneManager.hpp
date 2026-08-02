@@ -26,7 +26,7 @@
 #include <GamesSupport/GameCenter.hpp>
 #include <TaskHandler/PriorityTaskSheduler.hpp>
 
-class LIBRARIES_EXPORT SceneManager : public IDrawer
+class LETO_CORE_EXPORT SceneManager : public IDrawer
 {
 protected:
 

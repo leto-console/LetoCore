@@ -24,7 +24,7 @@ enum ButtonCatcherMode : uint16_t
     BCM_MULTI_HOLD       = (1 << 4),    ///< Callback on hold multiply 
 };
 
-class LIBRARIES_EXPORT IButtonCatcher : public ISceneObject
+class LETO_CORE_EXPORT IButtonCatcher : public ISceneObject
 {    
 public:
     IButtonCatcher() = default;

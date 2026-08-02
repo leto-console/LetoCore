@@ -15,6 +15,6 @@
 #include <Graphics/BitmapData.hpp>
 #include <Data/StaticListView.hpp>
 
-extern LIBRARIES_EXPORT StaticListView<BitmapData> GetEmojis();
+extern LETO_CORE_EXPORT StaticListView<BitmapData> GetEmojis();
 
 #endif

@@ -15,7 +15,7 @@
 
 namespace DrawFunctions
 {
-    extern LIBRARIES_EXPORT void DrawCircle(IScreen& screen, Point2_i center, int radius, RGBColor color);
+    extern LETO_CORE_EXPORT void DrawCircle(IScreen& screen, Point2_i center, int radius, RGBColor color);
 }
 
 #endif

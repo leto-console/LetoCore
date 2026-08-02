@@ -11,7 +11,7 @@
 
 #include <SceneManager/ISceneObject.hpp>
 
-class LIBRARIES_EXPORT UI_Circle : public ISceneObject
+class LETO_CORE_EXPORT UI_Circle : public ISceneObject
 {
 protected:
 	int radius{}, outline{};

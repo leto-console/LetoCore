@@ -11,7 +11,7 @@
 
 #include <cstdint>
 
-class LIBRARIES_EXPORT Stopwatch
+class LETO_CORE_EXPORT Stopwatch
 {
 public:
 	Stopwatch(bool auto_start = false);

@@ -36,7 +36,7 @@ enum class ExtDeviceFeatures : uint32_t
 /**
  * @brief Interface of external device
  */
-class LIBRARIES_EXPORT ExtDevice
+class LETO_CORE_EXPORT ExtDevice
 {
 public:
     ExtDevice(const char* device_name);
@@ -114,6 +114,6 @@ private:
     MovingAverage<uint32_t, 8> time_ping, time_tick;
 };
 
-extern LIBRARIES_EXPORT StaticList<ExtDevice*, 32> ExtDevices;
+extern LETO_CORE_EXPORT StaticList<ExtDevice*, 32> ExtDevices;
 
 #endif

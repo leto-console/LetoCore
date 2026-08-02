@@ -15,7 +15,7 @@
 
 namespace Drawable
 {
-	class LIBRARIES_EXPORT DrawableBitmap : public IDrawable
+	class LETO_CORE_EXPORT DrawableBitmap : public IDrawable
 	{
 	protected:
 		BitmapData& data;

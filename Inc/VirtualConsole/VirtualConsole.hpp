@@ -36,7 +36,7 @@ struct VC_Message
     mutable bool set_viewed = false;
 };
 
-class LIBRARIES_EXPORT VirtualConsole : public ISceneObject
+class LETO_CORE_EXPORT VirtualConsole : public ISceneObject
 {
 protected:
     StaticList<VC_Message, VC_MSGS_COUNT> msgs;

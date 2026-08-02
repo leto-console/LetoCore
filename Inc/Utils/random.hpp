@@ -6,7 +6,7 @@
 #include <cstdlib>
 
 // Generate a random float number [0.0 to 1.0]
-extern LIBRARIES_EXPORT float RandomFloat();
+extern LETO_CORE_EXPORT float RandomFloat();
 
 // Generate a random number [a to b)
 template <typename Type>

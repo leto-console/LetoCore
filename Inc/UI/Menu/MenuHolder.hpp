@@ -36,7 +36,7 @@ enum class MenuStyle : uint8_t
 	STYLE_3,	// Стиль "Элемент" с обводкой текста
 };
 
-class LIBRARIES_EXPORT MenuHolder : public ISceneObject
+class LETO_CORE_EXPORT MenuHolder : public ISceneObject
 {
 protected:
 	int CharWidth = 8, CharHeight = 8;

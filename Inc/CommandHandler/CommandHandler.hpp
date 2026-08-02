@@ -13,7 +13,7 @@
 #include <string>
 #include <Data/StaticList.hpp>
 
-class LIBRARIES_EXPORT CommandHandler
+class LETO_CORE_EXPORT CommandHandler
 {
 protected:
 	// Список зарегистрированных команд

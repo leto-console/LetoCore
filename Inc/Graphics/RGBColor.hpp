@@ -24,7 +24,7 @@ constexpr uint8_t HexCharToValue(char c) {
 constexpr uint8_t GetColor(const char* txt, uint8_t order) { return HexCharToValue(txt[1 + 2 * order]) << 0x4 | HexCharToValue(txt[1 + 2 * order + 1]); }
 
 // Цвет в формате RGB
-struct LIBRARIES_EXPORT RGBColor
+struct LETO_CORE_EXPORT RGBColor
 {    
     uint8_t R, G, B;
 

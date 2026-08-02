@@ -27,7 +27,7 @@
 /*
 	Класс, реализующий доступ к конфигурационным файлам, блокам и данным
 */
-class LIBRARIES_EXPORT FileConfig
+class LETO_CORE_EXPORT FileConfig
 {
 protected:
 	FileConfig() {};

@@ -11,7 +11,7 @@
 #include "LibrariesExport.h"
 
 // Класс для элементов, которые могут быть выбраны (например, из списка подряд идущих строк)
-class LIBRARIES_EXPORT ISelectable
+class LETO_CORE_EXPORT ISelectable
 {
 protected:
 	// Выделен ли объект

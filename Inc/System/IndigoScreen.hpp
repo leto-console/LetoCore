@@ -12,7 +12,7 @@
 #include <Graphics/IDrawer.hpp>
 #include <DrawFunctions/DrawText.hpp>
 
-class LIBRARIES_EXPORT IndigoScreenDrawer : public IDrawer
+class LETO_CORE_EXPORT IndigoScreenDrawer : public IDrawer
 {
 public:
     IndigoScreenDrawer()
@@ -41,6 +41,6 @@ protected:
     StaticText32 data;
 };
 
-extern LIBRARIES_EXPORT void CrashIndigoScreen(const StaticText32& message, const StaticText32& data = {});
+extern LETO_CORE_EXPORT void CrashIndigoScreen(const StaticText32& message, const StaticText32& data = {});
 
 #endif

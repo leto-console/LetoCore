@@ -18,7 +18,7 @@
 
 #include <Input/Devices/UserInputDevice.hpp>
 
-class LIBRARIES_EXPORT EncoderDevice : public UserInputDevice
+class LETO_CORE_EXPORT EncoderDevice : public UserInputDevice
 {
 protected:
 	bool reverse = false;

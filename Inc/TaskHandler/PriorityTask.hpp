@@ -17,7 +17,7 @@
 /**
  * @brief Периодически выполняемая задача с приоритетом
  */
-class LIBRARIES_EXPORT PriorityTask
+class LETO_CORE_EXPORT PriorityTask
 {
 protected:
 	StaticText32 name;		///< Название задачи

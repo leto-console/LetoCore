@@ -15,7 +15,7 @@
 #include <GamesSupport/GameInfo.hpp>
 
 /// @brief Текущая запущенная игра
-extern LIBRARIES_EXPORT AppBinHeader* CurrentLoadedGame;
+extern LETO_CORE_EXPORT AppBinHeader* CurrentLoadedGame;
 
 /**
  * @brief Получить содержимое исполняемого файла в бинарном виде
@@ -25,7 +25,7 @@ extern LIBRARIES_EXPORT AppBinHeader* CurrentLoadedGame;
  * @param[out] info_size Размер буфера
  * @param[in] load_in_memory Загружать ли бинарный файл в исполняемую часть памяти
  */
-extern LIBRARIES_EXPORT bool GetBinary(const char *path, void* bin_info, uint32_t info_size, bool load_in_memory = false);
+extern LETO_CORE_EXPORT bool GetBinary(const char *path, void* bin_info, uint32_t info_size, bool load_in_memory = false);
 
 /**
  * @brief Просканировать файловую систему на наличие игр
@@ -34,7 +34,7 @@ extern LIBRARIES_EXPORT bool GetBinary(const char *path, void* bin_info, uint32_
  * @param[in] available Размер буфера
  * @return Количество найденных игр
  */
-extern LIBRARIES_EXPORT uint32_t ScanGames(GameInfo* buffer, uint32_t available);
+extern LETO_CORE_EXPORT uint32_t ScanGames(GameInfo* buffer, uint32_t available);
 
 /**
  * @brief Проверить файл на соответствие исполняемому файлу игры
@@ -42,18 +42,18 @@ extern LIBRARIES_EXPORT uint32_t ScanGames(GameInfo* buffer, uint32_t available)
  * @param[in] path Путь до проверяемого файла
  * @param[out] info Информация об игре, в случае соответствия
  */
-extern LIBRARIES_EXPORT bool CheckGame(const char* path, GameInfo& info);
+extern LETO_CORE_EXPORT bool CheckGame(const char* path, GameInfo& info);
 
 /**
  * @brief Загрузить игру
  * 
  * @param[in] path Путь до исполнямого файла для загрузки 
  */
-extern LIBRARIES_EXPORT bool LoadGame(const char* path);
+extern LETO_CORE_EXPORT bool LoadGame(const char* path);
 
 /**
  * @brief Выгрузить игру
  */
-extern LIBRARIES_EXPORT void UnloadGame();
+extern LETO_CORE_EXPORT void UnloadGame();
 
 #endif

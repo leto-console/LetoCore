@@ -20,7 +20,7 @@
 
 class AuthScene;
 
-class LIBRARIES_EXPORT Account_CreateScene : public IScene
+class LETO_CORE_EXPORT Account_CreateScene : public IScene
 {
 protected:
 	AccountSettingsCells account;

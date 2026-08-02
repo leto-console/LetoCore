@@ -20,7 +20,7 @@
 #include <Data/StaticTextView.hpp>
 #include <Input/Devices/UserInputDevice.hpp>
 
-class LIBRARIES_EXPORT DiscreteSignalDevice : public UserInputDevice
+class LETO_CORE_EXPORT DiscreteSignalDevice : public UserInputDevice
 {
 protected:
 	StaticText32 name;

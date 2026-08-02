@@ -16,7 +16,7 @@
 
 #include <LetoAPI_V1/Web/WebConnection.hpp>
 
-class LIBRARIES_EXPORT LobbyTask : public PriorityTask
+class LETO_CORE_EXPORT LobbyTask : public PriorityTask
 {
 protected:
 	bool Do() override;

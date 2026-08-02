@@ -15,7 +15,7 @@
 #include <LetoAPI_V1_System/Web/WebPacket.hpp>
 
 // Объект, отвечающий за отправку запросов и формирование ответов на запросы
-class LIBRARIES_EXPORT WebRequest
+class LETO_CORE_EXPORT WebRequest
 {
 protected:
 	// Тип запроса

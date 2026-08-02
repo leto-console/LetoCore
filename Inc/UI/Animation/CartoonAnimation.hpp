@@ -16,7 +16,7 @@
 #include <Data/StaticListView.hpp>
 
 // Анимация с проигрывания кадров
-class LIBRARIES_EXPORT CartoonAnimation : public Animation
+class LETO_CORE_EXPORT CartoonAnimation : public Animation
 {
 protected:
 	StaticListView<BitmapData*> bitmaps;

@@ -30,7 +30,7 @@
  */
 
 
-class LIBRARIES_EXPORT StackGuard
+class LETO_CORE_EXPORT StackGuard
 {
 public:
     /// 512 byte guard
@@ -45,13 +45,13 @@ private:
     volatile uint32_t pattern[PATTERN_SIZE];
 };
 
-extern LIBRARIES_EXPORT StackGuard* SystemStackGuard;   ///< Разрушение его лишает возможности использовать переменные из heap/bss до дисплея
+extern LETO_CORE_EXPORT StackGuard* SystemStackGuard;   ///< Разрушение его лишает возможности использовать переменные из heap/bss до дисплея
 
-extern LIBRARIES_EXPORT void SystemStackGuardLoop();
+extern LETO_CORE_EXPORT void SystemStackGuardLoop();
 
 //#ifdef USE_HAL_DRIVER
 //__attribute__((section("..."), used, aligned(4)))
 //#endif
-//extern LIBRARIES_EXPORT StackGuard MainStackGuard;
+//extern LETO_CORE_EXPORT StackGuard MainStackGuard;
 
 #endif

@@ -15,10 +15,10 @@
 
 namespace DrawFunctions
 {    
-    extern LIBRARIES_EXPORT void DrawRectangle(IScreen& screen, Point2_i a, Point2_i b, RGBColor color);
+    extern LETO_CORE_EXPORT void DrawRectangle(IScreen& screen, Point2_i a, Point2_i b, RGBColor color);
 
     // Нарисовать обведенный прямоугольник
-    extern LIBRARIES_EXPORT void DrawOutlinedRectangle(IScreen& screen, Point2_i a, Point2_i b, RGBColor color, RGBColor outline_color);
+    extern LETO_CORE_EXPORT void DrawOutlinedRectangle(IScreen& screen, Point2_i a, Point2_i b, RGBColor color, RGBColor outline_color);
 }
 
 #endif

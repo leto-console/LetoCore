@@ -14,7 +14,7 @@
 
 namespace Drawable
 {
-	class LIBRARIES_EXPORT Circle : public IDrawable
+	class LETO_CORE_EXPORT Circle : public IDrawable
 	{
 	protected:
 		int radius{}, outline{};

@@ -49,7 +49,7 @@ struct WebConnection_PoolItem
  * 
  * @warning Available only at OS level; creating in application causes UB
  */
-class LIBRARIES_EXPORT WebManager_V1
+class LETO_CORE_EXPORT WebManager_V1
 {
 private:
     // ======================================== Singleton ========================================

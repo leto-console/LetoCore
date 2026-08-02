@@ -20,7 +20,7 @@
 
 #include <Input/Devices/UserInputDevice.hpp>
 
-class LIBRARIES_EXPORT ButtonDevice : public UserInputDevice
+class LETO_CORE_EXPORT ButtonDevice : public UserInputDevice
 {
 protected:
 	bool current_state{};

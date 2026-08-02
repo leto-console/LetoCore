@@ -22,7 +22,7 @@
 #include <utility>
 
 /// @brief Планировщик задач по приоритетам и периодам выполнения
-class LIBRARIES_EXPORT PriorityTaskSheduler
+class LETO_CORE_EXPORT PriorityTaskSheduler
 {
 protected:
 	/// @brief Добавить задачу

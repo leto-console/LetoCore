@@ -1,18 +1,28 @@
 {
     "version": 3,
     "configurePresets": [
-        {
-            "name": "stm32-base",
+		{
+			"name": "base",
             "hidden": true,
             "generator": "Ninja",
-            "binaryDir": "${sourceDir}/Lib/${presetName}",
+            "binaryDir": "${sourceDir}/build/${presetName}",
             "installDir": "${sourceDir}/out/install/${presetName}",
+            "cacheVariables": {
+				"CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/bin/${presetName}",
+				"CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/lib/${presetName}",
+				"CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/lib/${presetName}"
+            }
+		},
+        {
+            "name": "stm32-base",
+			"inherits": "base",
+			"hidden": true,
             "cacheVariables": {
                 "CMAKE_TOOLCHAIN_FILE": {
                     "type": "FILEPATH",
                     "value": "${sourceDir}/cmake/toolchain-arm-none-eabi.cmake"
                 },
-                "PRESET_DEFINE_MACRO": "USE_HAL_DRIVER"
+				"PRESET_DEFINE_MACRO": "__STM32__"
             },
             "architecture": {
                 "value": "unspecified",
@@ -21,10 +31,8 @@
         },
         {
             "name": "windows-base",
-            "hidden": true,
-            "generator": "Ninja",
-            "binaryDir": "${sourceDir}/Lib/${presetName}",
-            "installDir": "${sourceDir}/out/install/${presetName}",
+			"inherits": "base",
+			"hidden": true,
             "architecture": {
                 "value": "x64",
                 "strategy": "external"
@@ -42,10 +50,8 @@
         },
         {
             "name": "ubuntu-base",
-            "hidden": true,
-            "generator": "Ninja",
-            "binaryDir": "${sourceDir}/Lib/${presetName}",
-            "installDir": "${sourceDir}/out/install/${presetName}",
+			"inherits": "base",
+			"hidden": true,
             "cacheVariables": {
                 "CMAKE_C_COMPILER": "gcc",
                 "CMAKE_CXX_COMPILER": "g++",
@@ -54,29 +60,28 @@
         },
         {
             "name": "termux-base",
-            "hidden": true,
-            "binaryDir": "${sourceDir}/Lib/${presetName}",
-            "installDir": "${sourceDir}/out/install/${presetName}",
+			"inherits": "base",
+			"hidden": true,
             "cacheVariables": {
                 "CMAKE_C_COMPILER": "gcc",
                 "CMAKE_CXX_COMPILER": "g++",
                 "PRESET_DEFINE_MACRO": "__TERMUX__"
             }
         },
-        {
-            "name": "stm32-debug",
+		{
+            "name": "stm32f401xc-debug",
             "inherits": "stm32-base",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug",
-                "PRESET_NAME": "debug"
+				"MCU_CHIP": "STM32F401xC"
             }
         },
-        {
-            "name": "stm32-release",
+		{
+            "name": "stm32f411xe-debug",
             "inherits": "stm32-base",
             "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Release",
-                "PRESET_NAME": "release"
+                "CMAKE_BUILD_TYPE": "Debug",
+				"MCU_CHIP": "STM32F411xE"
             }
         },
         {
@@ -84,8 +89,7 @@
             "displayName": "win-debug",
             "inherits": "windows-base",
             "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Debug",
-                "PRESET_NAME": "win-debug"
+                "CMAKE_BUILD_TYPE": "Debug"
             }
         },
         {
@@ -131,12 +135,12 @@
     ],
     "buildPresets": [
         {
-            "name": "stm32-debug",
-            "configurePreset": "stm32-debug"
+            "name": "stm32f401xc-debug",
+            "configurePreset": "stm32f401xc-debug"
         },
         {
-            "name": "stm32-release",
-            "configurePreset": "stm32-release"
+            "name": "stm32f411xe-debug",
+            "configurePreset": "stm32f411xe-debug"
         },
         {
             "name": "win-debug",

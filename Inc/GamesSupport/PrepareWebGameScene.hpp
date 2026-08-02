@@ -23,7 +23,7 @@
 // #include <LetoAPI_V1/Web/WebConnection.hpp>
 
 //  // Сцена, предназначенная для подготовки к сетевой игре
-// class LIBRARIES_EXPORT PrepareWebGameScene : public BaseGameScene
+// class LETO_CORE_EXPORT PrepareWebGameScene : public BaseGameScene
 // {
 // protected:
 // 	WebConnection_V1 connection;

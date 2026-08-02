@@ -17,7 +17,7 @@
 #include <cstdint>
 
 // Интерфейс анимации
-class LIBRARIES_EXPORT Animation
+class LETO_CORE_EXPORT Animation
 {
 protected:
 	enum class State { PLAY, PAUSE, STOP };

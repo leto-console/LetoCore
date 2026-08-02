@@ -11,7 +11,7 @@
 
 #include <ExtDevice/ExtDevice.hpp>
 
-struct LIBRARIES_EXPORT ST7735_ExtDevice : public ExtDevice
+struct LETO_CORE_EXPORT ST7735_ExtDevice : public ExtDevice
 {
 public:
     ST7735_ExtDevice();
@@ -30,6 +30,6 @@ protected:
     void DeviceTick() override;
 };
 
-extern LIBRARIES_EXPORT ST7735_ExtDevice* st7735_extdev;
+extern LETO_CORE_EXPORT ST7735_ExtDevice* st7735_extdev;
 
 #endif

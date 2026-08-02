@@ -14,6 +14,6 @@
 /**
  * @brief Create and initialize API
  */
-extern LIBRARIES_EXPORT const GlobalsAPI_V1* Make_GlobalsAPI();
+extern LETO_CORE_EXPORT const GlobalsAPI_V1* Make_GlobalsAPI();
 
 #endif

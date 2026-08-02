@@ -26,11 +26,11 @@ namespace DrawFunctions
 	*/
 
     // Отрисовать Bitmap определенным цветом (позиции битов = 1)
-    extern LIBRARIES_EXPORT void DrawBitmap(IScreen& screen, Point2_i point, const uint8_t* bitmap, uint8_t width, uint8_t height, RGBColor bitmap_color, bool inverse = false);
+    extern LETO_CORE_EXPORT void DrawBitmap(IScreen& screen, Point2_i point, const uint8_t* bitmap, uint8_t width, uint8_t height, RGBColor bitmap_color, bool inverse = false);
 
-	extern LIBRARIES_EXPORT void DrawBitmap(IScreen& screen, Point2_i point, const uint8_t* bitmap, uint8_t width, uint8_t height, RGBColor bitmap_color, RGBColor background_color, bool inverse = false);
+	extern LETO_CORE_EXPORT void DrawBitmap(IScreen& screen, Point2_i point, const uint8_t* bitmap, uint8_t width, uint8_t height, RGBColor bitmap_color, RGBColor background_color, bool inverse = false);
 
-    inline LIBRARIES_EXPORT void DrawBitmap(IScreen& screen, Point2_i point, const BitmapData& data, RGBColor bitmap_color, bool inverse = false)
+    inline LETO_CORE_EXPORT void DrawBitmap(IScreen& screen, Point2_i point, const BitmapData& data, RGBColor bitmap_color, bool inverse = false)
 	{
 		DrawBitmap(screen, point, data.bitmap, data.width, data.height, bitmap_color, inverse);
 	}

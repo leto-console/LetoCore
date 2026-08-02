@@ -15,7 +15,7 @@
 
 namespace DrawFunctions
 {
-    extern LIBRARIES_EXPORT void DrawLine(IScreen& screen, Point2_i a, Point2_i b, RGBColor color);
+    extern LETO_CORE_EXPORT void DrawLine(IScreen& screen, Point2_i a, Point2_i b, RGBColor color);
 }
 
 #endif

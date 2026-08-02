@@ -24,7 +24,7 @@ class AuthAccessor;
 /*
 	Обработчик пользовательской логики
 */
-class LIBRARIES_EXPORT AuthHandler
+class LETO_CORE_EXPORT AuthHandler
 {
 protected:
 	// Ячейка с индексом текущего пользователя

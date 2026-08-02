@@ -15,7 +15,7 @@
 /**
  * @brief Задача контроля файловой системы FatFS
  */
-class LIBRARIES_EXPORT FatFsTask : public PriorityTask
+class LETO_CORE_EXPORT FatFsTask : public PriorityTask
 {
 protected:
     SDCard_ExtDevice* sdcard;

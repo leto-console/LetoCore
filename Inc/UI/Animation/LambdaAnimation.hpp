@@ -12,7 +12,7 @@
 #include <UI/Animation/Animation.hpp>
 
 template <typename Object>
-class LIBRARIES_EXPORT LambdaAnimation : public Animation
+class LETO_CORE_EXPORT LambdaAnimation : public Animation
 {
 public:
 	// Функция должна принимать 2 аргумента: Object& и float - 0.0...1.0 - прогресс выполнения анимации

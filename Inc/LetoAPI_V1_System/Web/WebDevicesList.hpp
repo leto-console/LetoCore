@@ -26,6 +26,6 @@ struct WebDeviceInfo_ListItem
 };
 
 // List of currently active devices
-extern LIBRARIES_EXPORT StaticList<WebDeviceInfo_ListItem, MaxWebDevices> WebDevicesList;
+extern LETO_CORE_EXPORT StaticList<WebDeviceInfo_ListItem, MaxWebDevices> WebDevicesList;
 
 #endif /* INC_LETO_API_V1_WEB_WEB_DEVICES_LIST_HPP_ */

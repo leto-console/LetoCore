@@ -11,7 +11,7 @@
 
 #include <TaskHandler/PriorityTask.hpp>
 
-class LIBRARIES_EXPORT DateTimeServer : public PriorityTask
+class LETO_CORE_EXPORT DateTimeServer : public PriorityTask
 {
 public:
 	DateTimeServer(const StaticText32& name, uint32_t period_ms, uint8_t priority)

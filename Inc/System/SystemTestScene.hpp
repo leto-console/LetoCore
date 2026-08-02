@@ -12,7 +12,7 @@
 #include <SceneManager/IScene.hpp>
 #include <SceneManager/ISceneBuilder.hpp>
 
-class LIBRARIES_EXPORT SystemTestScene : public IScene
+class LETO_CORE_EXPORT SystemTestScene : public IScene
 {
 public:
     SystemTestScene();

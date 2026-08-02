@@ -18,7 +18,7 @@
 #include <LetoAPI_V1/Web/WebConnection.hpp>
 #include <LetoAPI_V1/Web/WebDeviceInfo.hpp>
 
-class LIBRARIES_EXPORT WebDevicesTask : public PriorityTask
+class LETO_CORE_EXPORT WebDevicesTask : public PriorityTask
 {
 protected:
 	WebDeviceInfo_V1 self_info;

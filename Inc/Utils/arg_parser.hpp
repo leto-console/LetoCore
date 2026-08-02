@@ -11,7 +11,7 @@
 	Парсер аргументов командной строки формата:
 	--arg value -a value
 */
-class LIBRARIES_EXPORT ArgParser
+class LETO_CORE_EXPORT ArgParser
 {
 protected:
 	std::unordered_map<std::string, std::string> key_value;

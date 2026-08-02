@@ -18,8 +18,8 @@
 
 namespace GameButtonHandlerMiddleware
 {
-	extern LIBRARIES_EXPORT void HandleEvent(const AppEvent& event, IsEventFunc is_event, ButtonHoldHandler& handler);
-	extern LIBRARIES_EXPORT void HandleEvent(const AppEvent& event, IsEventFunc is_event, ButtonMultiPressHandler& handler, int button);
+	extern LETO_CORE_EXPORT void HandleEvent(const AppEvent& event, IsEventFunc is_event, ButtonHoldHandler& handler);
+	extern LETO_CORE_EXPORT void HandleEvent(const AppEvent& event, IsEventFunc is_event, ButtonMultiPressHandler& handler, int button);
 };
 
 #endif

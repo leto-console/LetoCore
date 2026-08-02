@@ -12,7 +12,7 @@
 
 #include "stdint.h"
 
-struct LIBRARIES_EXPORT Quaternion
+struct LETO_CORE_EXPORT Quaternion
 {
 	float q0;
 	float q1;

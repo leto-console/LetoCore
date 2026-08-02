@@ -28,7 +28,7 @@ enum BitmapFlags
  * 
  * Используется для хранения и передачи битовых карт - битмапов
  */
-struct LIBRARIES_EXPORT BitmapData
+struct LETO_CORE_EXPORT BitmapData
 {
 	uint8_t width{};	///< Ширина битмапа
 	uint8_t height{};	///< Высота битмапа
@@ -121,7 +121,7 @@ struct LIBRARIES_EXPORT BitmapData
  * @param height Высота битмапа
  * @param x,y Координаты пикселя
  */
-inline LIBRARIES_EXPORT void SetPixel(uint8_t* data, uint8_t width, uint8_t height, int x, int y)
+inline LETO_CORE_EXPORT void SetPixel(uint8_t* data, uint8_t width, uint8_t height, int x, int y)
 {
 	if (x < 0 || x >= width || y < 0 || y >= height)
 	{
@@ -144,7 +144,7 @@ inline LIBRARIES_EXPORT void SetPixel(uint8_t* data, uint8_t width, uint8_t heig
  * 
  * @return Состояние пикселя (1/0)
  */
-inline LIBRARIES_EXPORT bool GetPixel(const uint8_t* data, uint8_t width, uint8_t height, int x, int y)
+inline LETO_CORE_EXPORT bool GetPixel(const uint8_t* data, uint8_t width, uint8_t height, int x, int y)
 {
 	if (x < 0 || x >= width || y < 0 || y >= height)
 	{

@@ -20,7 +20,7 @@
 #include <UI/ButtonHoldHandler.hpp>
 #include <Graphics/IFont.hpp>
 
-class LIBRARIES_EXPORT ISettingUI : public IDrawable, public ISelectable, public ICapturable
+class LETO_CORE_EXPORT ISettingUI : public IDrawable, public ISelectable, public ICapturable
 {
 protected:
 	const StaticText32 N_A = "N/A";
@@ -57,7 +57,7 @@ public:
 };
 
  // Интерфейс графического элемента настроек 
-class LIBRARIES_EXPORT IEditableSettingUI : public virtual ISettingUI
+class LETO_CORE_EXPORT IEditableSettingUI : public virtual ISettingUI
 {
 protected:
 	// TODO: add blink

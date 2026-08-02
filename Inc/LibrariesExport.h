@@ -1,10 +1,10 @@
 
 #ifdef _WIN32
-    #ifdef STM32F4_LIBRARIES_EXPORT
-        #define LIBRARIES_EXPORT __declspec(dllexport)
+    #ifdef LETOCORE_EXPORT_LIBRARY
+        #define LETO_CORE_EXPORT __declspec(dllexport)
     #else
-        #define LIBRARIES_EXPORT __declspec(dllimport)
+        #define LETO_CORE_EXPORT __declspec(dllimport)
     #endif
 #else
-    #define LIBRARIES_EXPORT //__attribute__((visibility("default")))
+    #define LETO_CORE_EXPORT //__attribute__((visibility("default")))
 #endif

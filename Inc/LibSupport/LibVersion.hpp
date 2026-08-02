@@ -14,7 +14,7 @@
 #include <cstdint>
 
 // Заголовой библиотеки (версия)
-struct LIBRARIES_EXPORT LibVersion
+struct LETO_CORE_EXPORT LibVersion
 {
 	// Уникальное значение для идентификации библиотеки
 	const uint8_t unique[4] = { 0xC1, 0xA0, 0xBA, 0xBE };

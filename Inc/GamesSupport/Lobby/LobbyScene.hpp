@@ -16,7 +16,7 @@
 #include <UI/Menu/ParamMenu.hpp>
 #include <UI/Text/UI_Label.hpp>
 
-class LIBRARIES_EXPORT LobbyScene : public BaseGameScene
+class LETO_CORE_EXPORT LobbyScene : public BaseGameScene
 {
 public:
     enum LobbyMode { NONE, SELECT, HOST, MEMBER };
