@@ -46,7 +46,7 @@ add_custom_command(TARGET LetoCore_tests POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
     "${API_DLL_SOURCE_PATH}"
     $<TARGET_FILE_DIR:LetoCore_tests>
-    COMMENT "[LetoTests] Копирование LetoAPI.dll в папку тестов..."
+    COMMENT "[${PROJECT_NAME}] Копирование LetoAPI.dll в папку тестов..."
 )
 
 ## Для Windows: настройки линковщика (если нужно)

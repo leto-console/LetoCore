@@ -102,12 +102,12 @@ target_compile_definitions("${PROJECT_NAME}" PRIVATE LETOCORE_EXPORT_LIBRARY)
 # ============================================= LetoAPI dependency ============================================
 
 if(LETO_PATH)
-    message(STATUS "[LetoCore] Найдена переменная LETO_PATH. Подключаем готовые артефакты...")
+    message(STATUS "[${PROJECT_NAME}] Найдена переменная LETO_PATH. Подключаем готовые артефакты...")
 
 	target_link_directories(${PROJECT_NAME} PUBLIC "${LETO_PATH}/LetoAPI/lib/${CMAKE_PRESET_NAME}")
 	target_include_directories(${PROJECT_NAME} PUBLIC "${LETO_PATH}/LetoAPI/include")
 else()
-    message(STATUS "[LetoCore] Переменная LETO_PATH не найдена. Серверная сборка через FetchContent...")
+    message(STATUS "[${PROJECT_NAME}] Переменная LETO_PATH не найдена. Серверная сборка через FetchContent...")
 
 	include(FetchContent)
     FetchContent_Declare(
