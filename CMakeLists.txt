@@ -9,10 +9,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 file(
 	GLOB C_CPP_COURCES 
-	"Src/*/*.cpp" "Src/*/*.c"
-	"Inc/*/*.cpp" "Inc/*/*.c"
-	"Src/*/*/*.cpp" "Src/*/*/*/*.c"
-	"Inc/*/*/*.cpp" "Inc/*/*/*.c"
+	"src/*/*.cpp" "src/*/*.c"
+	"include/*/*.cpp" "include/*/*.c"
+	"src/*/*/*.cpp" "src/*/*/*/*.c"
+	"include/*/*/*.cpp" "include/*/*/*.c"
 )
 
 if(MSVC)
@@ -21,7 +21,7 @@ endif()
 
 if("${PRESET_DEFINE_MACRO}" STREQUAL "__STM32__")
 	project("LetoCore" C CXX ASM)
-	file(GLOB HW_COURCES "Src/*.cpp" "Src/*.c" )
+	file(GLOB HW_COURCES "src/*.cpp" "src/*.c" )
 	add_library(${PROJECT_NAME} STATIC "${C_CPP_COURCES}" "${HW_COURCES}")
 else()
 	project("LetoCore" C CXX)
@@ -29,8 +29,8 @@ else()
 endif()
 
 target_include_directories(${PROJECT_NAME} PUBLIC 
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/Inc>
-    $<INSTALL_INTERFACE:Inc>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
 )
 install(TARGETS ${PROJECT_NAME}
     RUNTIME DESTINATION bin     # Для исполняемых файлов
