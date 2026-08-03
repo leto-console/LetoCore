@@ -94,6 +94,14 @@
             }
         },
         {
+            "name": "win-release",
+            "displayName": "win-release",
+            "inherits": "windows-base",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release"
+            }
+        },
+        {
             "name": "ubuntu-debug",
             "displayName": "ubuntu-debug",
             "inherits": "ubuntu-base",
@@ -146,6 +154,10 @@
         {
             "name": "win-debug",
             "configurePreset": "win-debug"
+        },
+        {
+            "name": "win-release",
+            "configurePreset": "win-release"
         },
         {
             "name": "ubuntu-debug",
