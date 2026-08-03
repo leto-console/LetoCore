@@ -18,6 +18,8 @@ jobs:
             os: ubuntu-latest
           - preset: "win-debug"
             os: windows-latest
+          - preset: "win-release"
+            os: windows-latest
     runs-on: ${{ matrix.os }}
 
     steps:
