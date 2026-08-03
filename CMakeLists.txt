@@ -25,7 +25,12 @@ if("${PRESET_DEFINE_MACRO}" STREQUAL "__STM32__")
 	add_library(${PROJECT_NAME} STATIC "${C_CPP_COURCES}" "${HW_COURCES}")
 else()
 	project("LetoCore" C CXX)
-	add_library("${PROJECT_NAME}" SHARED "${C_CPP_COURCES}")
+	if(LETO_PATH)
+		add_library("${PROJECT_NAME}" SHARED "${C_CPP_COURCES}")
+		target_compile_definitions(${PROJECT_NAME} PRIVATE LETOCORE_SHARED)
+	else()
+		add_library("${PROJECT_NAME}" STATIC "${C_CPP_COURCES}")
+	endif()
 endif()
 
 target_include_directories(${PROJECT_NAME} PUBLIC 
