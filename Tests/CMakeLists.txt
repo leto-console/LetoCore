@@ -36,18 +36,6 @@ target_link_libraries(${PROJECT_NAME}_tests PRIVATE
     GTest::gtest_main
 )
 
-# 2. Копируем LetoAPI.dll (обрабатываем оба сценария: и сервер, и локально)
-# Выражение $<TARGET_EXISTS:LetoAPI> само поймет, есть ли таргет в текущей сборке (сервер)
-# Если да — возьмет его путь динамически. Если нет (локально) — возьмет путь из вашего LETO_PATH.
-set(API_DLL_SOURCE_PATH "$<IF:$<TARGET_EXISTS:LetoAPI>,$<TARGET_FILE:LetoAPI>,${LETO_PATH}/LetoAPI/bin/${CMAKE_PRESET_NAME}/LetoAPI.dll>")
-
-add_custom_command(TARGET LetoCore_tests POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-    "${API_DLL_SOURCE_PATH}"
-    $<TARGET_FILE_DIR:LetoCore_tests>
-    COMMENT "[${PROJECT_NAME}] Копирование LetoAPI.dll в папку тестов..."
-)
-
 ## Для Windows: настройки линковщика (если нужно)
 #if (${PRESET_DEFINE_MACRO} STREQUAL "__WIN__")
 #    target_compile_definitions(${PROJECT_NAME}_tests PRIVATE __WIN__)
