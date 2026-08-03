@@ -28,9 +28,14 @@ uint32_t ScanGames(GameInfo *buffer, uint32_t available)
 {
     WIN32_FIND_DATAA file_data;
     uint32_t count = 0;
-    
-    const char* base_path = "../../apps/win-debug/";
-    const char* search_mask = "../../apps/win-debug/*.dll";
+
+#ifdef LETOCORE_SHARED
+    const char* base_path = "../../apps/";
+    const char* search_mask = "../../apps/*.dll";
+#else
+    const char* base_path = "apps/";
+    const char* search_mask = "apps/*.dll";
+#endif
 
     HANDLE hFind = FindFirstFileA(search_mask, &file_data);
     
