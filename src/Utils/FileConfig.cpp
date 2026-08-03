@@ -19,9 +19,8 @@ void FileConfig::SetConfigRootPath(std::string rootPath)
 	filesystem_m::path potentialPath = rootPath;
 	if (rootPath.empty())
 	{
-		// Инициализация папки с конфигами в Core/Src/Utils/ConfigIO
-		filesystem_m::path p (__FILE__);
-		potentialPath = p.parent_path() / "ConfigIO";
+		// Инициализация папки с конфигами
+		potentialPath = filesystem_m::current_path() / "ConfigIO";
 	}
     if (!filesystem_m::exists(potentialPath))
     {
