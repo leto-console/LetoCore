@@ -10,9 +10,8 @@
 
 #include "LibrariesExport.h"
 
-#include <stdint.h>
+#include <cstdint>
 #include <cstring>
-#include <Data/IAllocator.hpp>
 #include <LetoAPI_V1/LetoAPI_V1_Def.h>
 
 /**
@@ -56,7 +55,8 @@ struct LETO_CORE_EXPORT BitmapData : public LetoHandleImpl<BitmapData, LetoBitma
 	 * 
 	 * @param allocator Аллокатор, из которого будет запрашиваться память
 	 */
-	void MakeBackground(IAllocator* allocator)
+	template <typename TAllocator>
+	void MakeBackground(TAllocator* allocator)
 	{
 		background = (uint8_t*) allocator->Alloc(Size());
 		memset(const_cast<uint8_t*>(background), 0, Size());
@@ -71,7 +71,8 @@ struct LETO_CORE_EXPORT BitmapData : public LetoHandleImpl<BitmapData, LetoBitma
 	 * @param b_bitmap Нужно ли копировать основное изображение
 	 * @param b_background Нужно ли копировать фоновое изображение
 	 */
-	void CopyFrom(IAllocator* allocator, BitmapData& from_data)
+	template <typename TAllocator>
+	void CopyFrom(TAllocator* allocator, BitmapData& from_data)
 	{
 		height = from_data.height;
 		width = from_data.width;
@@ -98,7 +99,8 @@ struct LETO_CORE_EXPORT BitmapData : public LetoHandleImpl<BitmapData, LetoBitma
 	 * @param b_bitmap Нужно ли копировать основное изображение
 	 * @param b_background Нужно ли копировать фоновое изображение
 	 */
-	BitmapData CopyTo(IAllocator* allocator, bool b_bitmap = true, bool b_background = false)
+	template <typename TAllocator>
+	BitmapData CopyTo(TAllocator* allocator, bool b_bitmap = true, bool b_background = false)
 	{
 		uint8_t *copy_bitmap{}, *copy_background{};
 		if (b_bitmap && bitmap)

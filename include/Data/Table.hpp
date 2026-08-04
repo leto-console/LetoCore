@@ -7,20 +7,18 @@
 #ifndef INC_DATA_TABLE_HPP_
 #define INC_DATA_TABLE_HPP_
 
-#include <stdint.h>
-#include <string.h>
-
-#include <Data/IAllocator.hpp>
+#include <cstdint>
+#include <cstring>
 
 //using T = float;
 
-template <typename Cell>
+template <typename Cell, typename TAllocator>
 class Table
 {
 protected:
 	Cell* data{};
 	int rows_count, cols_count;
-	IAllocator* allocator{};
+	TAllocator* allocator{};
 
 	bool CheckRange(int row, int col) const
 	{
@@ -28,7 +26,7 @@ protected:
 	}
 
 public:
-	Table(int rows_count, int cols_count, IAllocator* allocator = nullptr)
+	Table(int rows_count, int cols_count, TAllocator* allocator = nullptr)
 		: rows_count{ rows_count }, cols_count{ cols_count }, allocator{ allocator }
 	{
 		if (!allocator)
@@ -48,7 +46,7 @@ public:
 	int Rows() const { return rows_count; }
 	int Cols() const { return cols_count; }
 
-	void CopyFrom(const Table<Cell>& table)
+	void CopyFrom(const Table<Cell, TAllocator>& table)
 	{
 		if (table.rows_count != rows_count ||
 			table.cols_count != cols_count)
@@ -87,14 +85,14 @@ public:
 	}
 };
 
-template <>
-class Table<bool>
+template <typename TAllocator>
+class Table<bool, TAllocator>
 {
 	using Cell = bool;
 protected:
 	uint8_t* data{};
 	int rows_count, cols_count;
-	IAllocator* allocator{};
+	TAllocator* allocator{};
 
 	bool CheckRange(int row, int col) const
 	{
@@ -102,7 +100,7 @@ protected:
 	}
 
 public:
-	Table(int rows_count, int cols_count, IAllocator* allocator = nullptr)
+	Table(int rows_count, int cols_count, TAllocator* allocator = nullptr)
 		: rows_count{ rows_count }, cols_count{ cols_count }, allocator{ allocator }
 	{
 		if (!allocator)
@@ -123,7 +121,7 @@ public:
 	int Rows() const { return rows_count; }
 	int Cols() const { return cols_count; }
 
-	void CopyFrom(const Table<Cell>& table)
+	void CopyFrom(const Table<Cell, TAllocator>& table)
 	{
 		if (table.rows_count != rows_count ||
 			table.cols_count != cols_count)

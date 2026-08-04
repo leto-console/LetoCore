@@ -61,8 +61,7 @@ public:
 	GameScene* AddGameScene(ID id, Args... arg)
 	{
 		static_assert(std::is_base_of<BaseGameScene, GameScene>::value);
-		IAllocator* allocator = leto_api_v1->Globals->GetAllocator();
-		GameScene* scene = allocator->Make<GameScene>(arg...);
+		GameScene* scene = leto_new GameScene(arg...);
 		AddGameScene((uint32_t)id, scene);
 		return scene;
 	}
