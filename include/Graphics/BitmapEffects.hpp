@@ -11,14 +11,14 @@
 #include "BitmapData.hpp"
 #include <stdint.h>
 #include <cstring>
-#include <Data/IAllocator.hpp>
 #include <Data/Point2.hpp>
 
 #include <LetoAPI_V1/LetoAPI_V1.h>
 
 namespace BitmapEffects
 {
-    inline void MakeOutlined(BitmapData& data, IAllocator* allocator, int radius = 1)
+    template <typename TAllocator>
+    inline void MakeOutlined(BitmapData& data, TAllocator* allocator, int radius = 1)
     {
         data.MakeBackground(allocator);
         
@@ -49,7 +49,8 @@ namespace BitmapEffects
         }
     }
 
-    inline void MakeSticker(BitmapData& data, IAllocator* allocator, int radius = 1)
+    template <typename TAllocator>
+    inline void MakeSticker(BitmapData& data, TAllocator* allocator, int radius = 1)
     {
         MakeOutlined(data, allocator, radius);
 
@@ -208,7 +209,8 @@ namespace BitmapEffects
      * @note Если есть фон (background), он обрабатывается аналогично основному слою
      * @note Ответственность за освобождение памяти лежит на вызывающем коде
      */
-    inline BitmapData ResizeCopy(const BitmapData& src, IAllocator* allocator, Point2_i target_size)
+    template <typename TAllocator>
+    inline BitmapData ResizeCopy(const BitmapData& src, TAllocator* allocator, Point2_i target_size)
     {
         BitmapData result;
         
