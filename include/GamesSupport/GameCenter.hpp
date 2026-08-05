@@ -36,7 +36,7 @@ protected:
 	void RefreshGamesList();
 
 public:
-	GameCenter();
+	GameCenter(ISceneManager* scene_manager);
 	~GameCenter();
 
 	void OnShow() override;

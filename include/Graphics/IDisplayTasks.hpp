@@ -8,7 +8,7 @@
 
 #include <TaskHandler/PriorityTask.hpp>
 
-#include <SceneManager/SceneManager.hpp>
+#include <SceneManager/SystemSceneManager.hpp>
 #include <Data/StaticText.hpp>
 #include <Graphics/IDisplay.hpp>
 
@@ -24,7 +24,7 @@ protected:
 
 	bool Do() override
     {
-		return display->Render(&SceneManager::Instance());
+		return display->Render(&SystemSceneManager::Instance());
     }
 
 public:
@@ -43,7 +43,7 @@ protected:
 	bool Do() override
     {
 		display->Loop();
-        SceneManager::Instance().Loop();
+        SystemSceneManager::Instance().Loop();
         return true;
     }
 

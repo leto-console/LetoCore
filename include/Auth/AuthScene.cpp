@@ -17,9 +17,10 @@ enum
 	_USER_START
 };
 
-AuthScene::AuthScene() :
+AuthScene::AuthScene(ISceneManager* scene_manager) :
+	IScene{scene_manager},
 	menu{ 5, {40, 30} },
-	create_scene{ *this }
+	create_scene{ scene_manager, *this }
 {
 	menu.InitBaseCatchers();
 	menu.SetStyle(MenuStyle::STYLE_2, &Default_Font_7x7);

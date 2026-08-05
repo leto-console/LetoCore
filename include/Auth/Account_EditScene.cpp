@@ -1,7 +1,7 @@
 #include "Account_EditScene.hpp"
 
 #include <Auth/AuthHandler.hpp>
-#include <SceneManager/SceneManager.hpp>
+#include <SceneManager/ISceneManager.hpp>
 
 void Account_EditScene::OnApply()
 {
@@ -11,12 +11,12 @@ void Account_EditScene::OnApply()
 	edit_account.name.Get(account.Name);
 
 	AuthHandler::Instance().SetCurrentAccount(account);
-	SceneManager::Instance().Return();
+	scene_manager->Return();
 }
 
 void Account_EditScene::OnCancel()
 {
-	SceneManager::Instance().Return();
+	scene_manager->Return();
 }
 
 #include <Bitmaps/Avatars.hpp>
@@ -29,8 +29,8 @@ void Account_EditScene::OnCancel()
 #include <Graphics/DefaultFont.hpp>
 
 
-Account_EditScene::Account_EditScene()
-	: settings{ "", &CommonAllocator }
+Account_EditScene::Account_EditScene(ISceneManager* scene_manager)
+	: IScene{scene_manager}, settings{ "", &CommonAllocator }
 {
 	settings.AddSetting<BitmapEditableSettingUI<uint32_t>>("Аватар", Point2_i{16, 12}, &edit_account.avatar, GetAvatars());
 	settings.AddSetting<TextEditableSettingUI<10>>("Имя", Point2_i{16, 32}, &edit_account.name, true);
@@ -46,7 +46,7 @@ bool Account_EditScene::ProcessInput(const AppEvent& event)
 {
 	if (IsSystemReturnEvent(event))
 	{
-		SceneManager::Instance().Return();
+		scene_manager->Return();
 		return true;
 	}
 

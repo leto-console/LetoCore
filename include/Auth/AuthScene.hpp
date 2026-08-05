@@ -26,7 +26,7 @@ protected:
 	ParamMenu<int, 16> menu;
 
 public:
-	AuthScene();
+	AuthScene(ISceneManager* scene_manager);
 
 	// Отображать сцену с выбором аккаунтов
 	void ShowSelectScene();

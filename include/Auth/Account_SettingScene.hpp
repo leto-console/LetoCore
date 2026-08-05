@@ -34,7 +34,7 @@ protected:
 	uint32_t deleteID;
 
 public:
-	Account_SettingScene(uint32_t editID, uint32_t deleteID);
+	Account_SettingScene(ISceneManager* scene_manager, uint32_t editID, uint32_t deleteID);
 
 	void Draw(IScreen& screen) override;
 	bool ProcessInput(const AppEvent& event) override;
@@ -44,7 +44,8 @@ public:
 	class Builder : public ISceneBuilder
 	{
 	public:
-		Builder(uint32_t editID, uint32_t deleteID) : editID{ editID }, deleteID{ deleteID } { }
+		Builder(ISceneManager* scene_manager, uint32_t editID, uint32_t deleteID) 
+			: ISceneBuilder{ scene_manager }, editID{ editID }, deleteID{ deleteID } { }
 	protected:
 		// ID сцены с редактированием аккаунта
 		uint32_t editID;
@@ -54,7 +55,7 @@ public:
 
 		IScene* Create(IAllocator& allocator) override
 		{
-			return allocator.Make<Account_SettingScene>(editID, deleteID);
+			return allocator.Make<Account_SettingScene>(scene_manager, editID, deleteID);
 		}
 	};
 

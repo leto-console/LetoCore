@@ -15,7 +15,7 @@
 
 #include <Graphics/DefaultFont.hpp>
 #include "Account_EditScene.hpp"
-#include <SceneManager/SceneManager.hpp>
+#include <SceneManager/ISceneManager.hpp>
 
 void Account_CreateScene::OnCreateAccount()
 {
@@ -35,8 +35,8 @@ void Account_CreateScene::OnCancel()
 	auth_scene.ShowSelectScene();
 }
 
-Account_CreateScene::Account_CreateScene(AuthScene& auth_scene)
-	: auth_scene{ auth_scene }, settings{ "", &CommonAllocator }
+Account_CreateScene::Account_CreateScene(ISceneManager* scene_manager, AuthScene& auth_scene)
+	: IScene{ scene_manager }, auth_scene{ auth_scene }, settings{ "", &CommonAllocator }
 {
 	settings.AddSetting<BitmapEditableSettingUI<uint32_t>>("Аватар", Point2_i{16, 12}, &account.avatar, GetAvatars());
 	settings.AddSetting<TextEditableSettingUI<10>>("Имя", Point2_i{16, 32}, &account.name, true);
