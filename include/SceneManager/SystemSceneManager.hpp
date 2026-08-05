@@ -32,12 +32,6 @@ class LETO_CORE_EXPORT SystemSceneManager : public SceneManager<32, 1024>
 {
 protected:
 
-	// (TEMP) Отрисовка занятости аллокаторов
-	CapacityIndicatorUI capacity1{{}, {20, 5}, &SystemAllocator};
-	CapacityIndicatorUI capacity2{{}, {20, 5}, &CommonAllocator};
-	CapacityIndicatorUI capacity3{{}, {20, 5}, &EternalAllocator};
-	//CapacityIndicatorUI capacity4{{}, {20, 5}, &builder_allocator};
-
 	// ======================================== Singleton ========================================
 
 	SystemSceneManager();

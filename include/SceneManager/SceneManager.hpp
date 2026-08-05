@@ -32,7 +32,7 @@ class LETO_CORE_EXPORT SceneManager : public ISceneManager
 {
 protected:
 	// ======================================== Main part ========================================
-    ArenaAllocator<TBuilderAllocSize, false> builder_allocator;
+    ArenaAllocator<TBuilderAllocSize> builder_allocator;
 
     const uint32_t scenesMaxCount = TScenesMaxCount;
     ISceneBuilder* sceneBuilders[TScenesMaxCount]{};
@@ -148,6 +148,7 @@ public:
         }
 
         currentSceneID = 0;
+        builder_allocator.Clear();
     }
 
 	bool Loop() override
