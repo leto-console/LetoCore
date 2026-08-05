@@ -30,7 +30,7 @@ protected:
 	void OnCancel();
 
 public:
-	Account_EditScene();
+	Account_EditScene(ISceneManager* scene_manager);
 
 	void OnShow() override;
 	bool ProcessInput(const AppEvent& event) override;

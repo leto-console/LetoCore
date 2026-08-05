@@ -12,7 +12,7 @@
 #include <mutex>
 
 #include <LetoABI/AppEvent.h>
-#include <SceneManager/SceneManager.hpp>
+#include <SceneManager/SystemSceneManager.hpp>
 
 static std::mutex g_mutex;
 static BufferScreen buffer;
@@ -69,7 +69,7 @@ static void Handle_Input(const httplib::Request& req, httplib::Response& res)
 		AppEvent evt = ParseInputEvent(req.body);
 		if (evt.source != UserInputSource::NONE) {
 			std::lock_guard<std::mutex> lock(g_mutex);
-			SceneManager::Instance().ProccessUserInput(evt);
+			SystemSceneManager::Instance().ProccessUserInput(evt);
 		}
 	}
 

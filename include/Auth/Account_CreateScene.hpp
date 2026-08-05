@@ -31,7 +31,7 @@ protected:
 	void OnCancel();
 
 public:
-	Account_CreateScene(AuthScene& auth_scene);
+	Account_CreateScene(ISceneManager* scene_manager, AuthScene& auth_scene);
 
 	void OnShow() override;
 };

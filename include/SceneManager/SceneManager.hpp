@@ -1,7 +1,7 @@
 /*
  * SceneManager.hpp
  *
- *  Created on: Oct 19, 2025
+ *  Created on: Aug 05, 2026
  *      Author: Timur
  */
 
@@ -10,6 +10,7 @@
 
 #include <SceneManager/IScene.hpp>
 #include <SceneManager/ISceneBuilder.hpp>
+#include <SceneManager/ISceneManager.hpp>
 #include <System/CommonAllocator.hpp>
 #include <System/EternalAllocator.hpp>
 #include <LetoABI/AppEvent.h>
@@ -26,100 +27,153 @@
 #include <GamesSupport/GameCenter.hpp>
 #include <TaskHandler/PriorityTaskSheduler.hpp>
 
-class LETO_CORE_EXPORT SceneManager : public IDrawer
+template <uint32_t TScenesMaxCount, uint32_t TBuilderAllocSize>
+class LETO_CORE_EXPORT SceneManager : public ISceneManager
 {
 protected:
-
-	// Антидребезг энкодера
-	Timer last_encoder_timer{};
-
-	// (TEMP) Отрисовка занятости аллокаторов
-	CapacityIndicatorUI capacity1{{}, {20, 5}, &SystemAllocator};
-	CapacityIndicatorUI capacity2{{}, {20, 5}, &CommonAllocator};
-	CapacityIndicatorUI capacity3{{}, {20, 5}, &EternalAllocator};
-
-	// ======================================== Singleton ========================================
-
-	SceneManager();
-	~SceneManager() = default;
-	SceneManager(const SceneManager&) = delete;
-	void operator=(const SceneManager&) = delete;
-
-	// ===========================================================================================
-
 	// ======================================== Main part ========================================
+    ArenaAllocator<TBuilderAllocSize, false> builder_allocator;
+
+    const uint32_t scenesMaxCount = TScenesMaxCount;
+    ISceneBuilder* sceneBuilders[TScenesMaxCount]{};
 
 	uint32_t currentSceneID{};
-	enum { MAIN_COUNT = 32 };
-	ISceneBuilder* sceneBuilders[MAIN_COUNT]{};
 
 	//===========================================================================================
 
-	// ======================================== FPS part ========================================
+    IAllocator& GetSceneAllocator() override { return builder_allocator; }
 
-	Timer fps_timer{};
-	RingFIFO_Static<short, 10> average_fps;
-	short frames_count = 0;
-	bool enable_fps{};
-	ButtonCatcher<SceneManager> menu_hold_catcher;	/// Обработчик зажатия системной клавиши Меню
+	IScene* GetScene(uint32_t ID)
+    {
+        if (!GetBuilder(ID))
+            return nullptr;
+        return GetBuilder(ID)->GetObject();
+    }
+	IScene* GetCurrentScene() {	return GetScene(currentSceneID); }
 
-	//===========================================================================================
-
-	IScene* GetScene(uint32_t ID);
-	IScene* GetCurrentScene();
-
-	ISceneBuilder* GetBuilder(uint32_t ID);
-	ISceneBuilder* GetCurrentBuilder();
+	ISceneBuilder* GetBuilder(uint32_t ID)
+    {
+        if (!ID || ID >= scenesMaxCount)
+            return nullptr;
+        return sceneBuilders[ID];
+    }
+	ISceneBuilder* GetCurrentBuilder() { return GetBuilder(currentSceneID); }
 
 	uint32_t switch_id{};
 	bool switch_return{};
 
-	void OnMenuHolded();
-	void OnSceneSwitched();
+	void OnSceneSwitched()
+    {
+        if (!switch_id)
+            return;
+
+        printf("OnSceneSwitched: %lu, %s\n", switch_id, switch_return ? "return" : "");
+
+        if (GetBuilder(switch_id))
+        {
+            if (GetCurrentScene()) 
+            {
+                GetCurrentScene()->MainOnHide();
+                GetCurrentBuilder()->MainDestroy(CommonAllocator);
+            }
+            GetBuilder(switch_id)->MainCreate(CommonAllocator)->MainOnShow();
+            if (!switch_return)
+                GetBuilder(switch_id)->SetPrevScene(currentSceneID);
+            currentSceneID = switch_id;
+
+            printf("Scene %lu switched to %lu\n", currentSceneID, switch_id);
+        }
+        else
+        {
+            printf("Scene %lu not fount\n", switch_id);
+        }
+
+        switch_id = 0;
+        switch_return = false;
+    }
 
 public:
-	static inline SceneManager& Instance()
-	{
-		static SceneManager instance;
-		return instance;
-	}
+	using ISceneManager::AddSceneBuilder;
+	using ISceneManager::SwitchScene;
 
-	void EnableFPS(bool enable = true);
+    //ISceneManager();
+	~SceneManager() = default;
 
-	void AddSceneBuilder(uint32_t ID, ISceneBuilder* builder);
+	void AddSceneBuilder(uint32_t ID, ISceneBuilder* builder) override
+    {
+        if (!ID || ID >= scenesMaxCount)
+            return;
+        sceneBuilders[ID] = builder;
+    }
 
-	template <typename Scene, typename ID, typename... Args>
-	void AddSceneBuilder(ID id, Args... args)
-	{
-		static_assert(std::is_base_of<ISceneBuilder, typename Scene::Builder>::value);
-		ISceneBuilder* builder =  SystemAllocator.Make<typename Scene::Builder>(std::forward<Args>(args)...);
-		AddSceneBuilder((uint32_t) id, builder);
-	}
-
-	template <typename ID>
-	void SwitchScene(ID id)
-	{
-		SwitchScene((uint32_t)id);
-	}
-	void SwitchScene(uint32_t ID);
+	void SwitchScene(uint32_t ID) override
+    {
+        switch_id = ID;
+        switch_return = false;
+    }
 
 	/**
 	 * @brief Возврат на предыдущую сцену
 	 */
-	void Return();
+	void Return() override
+    {
+        uint32_t prev_id{};
+        
+        if (GetCurrentScene() && GetCurrentBuilder()->GetPrevScene(prev_id) && prev_id < scenesMaxCount)
+        {
+            switch_id = prev_id;
+            switch_return = true;
+        }
+    }
 
 	/// @brief Проверить, существует ли сцена с заданным идентификатор
 	/// @param ID Идентификатор проверяемой сцены
 	/// @return 
-	bool IsExists(uint32_t ID) const;
+	bool IsExists(uint32_t ID) const override
+    {
+        if (!ID || ID >= scenesMaxCount)
+            return false;
+        return sceneBuilders[ID];
+    }
 
-	uint32_t GetCurrentSceneID() const { return currentSceneID; }
+	uint32_t GetCurrentSceneID() const override { return currentSceneID; }
 
-	void ClearScenes();
+	void ClearScenes() override
+    {
+        for (ISceneBuilder*& _builder : sceneBuilders)
+        {
+            if (!_builder) continue;
+            _builder->MainDestroy(CommonAllocator);
+            _builder = nullptr;
+        }
 
-	bool Loop() override;
-	void Draw(IScreen& screen) override;
-	bool ProccessUserInput(const AppEvent& event);
+        currentSceneID = 0;
+    }
+
+	bool Loop() override
+    {
+        bool screen_ok{}, scene_ok{};
+
+        if (GetCurrentScene()) 	
+            scene_ok = GetCurrentScene()->MainLoop();
+        
+        OnSceneSwitched();
+
+        return screen_ok && scene_ok;
+    }
+
+	void Draw(IScreen& screen) override
+    {
+        screen.ClearScreen();
+
+        if (GetCurrentScene()) 
+            GetCurrentScene()->MainDraw(screen);
+    }
+
+	bool ProccessUserInput(const AppEvent& event) override
+    {
+        return GetCurrentScene() && GetCurrentScene()->MainProcessInput(event);
+    }
 };
 
 #endif

@@ -2,15 +2,15 @@
 
 #include <Graphics/DefaultFont.hpp>
 #include <Input/SystemInputID.hpp>
-#include <SceneManager/SceneManager.hpp>
+#include <SceneManager/ISceneManager.hpp>
 #include <Auth/AuthHandler.hpp>
 #include <Bitmaps/Avatars.hpp>
 #include <DrawFunctions/DrawRectangle.hpp>
 #include <DrawFunctions/DrawBitmap.hpp>
 #include <DrawFunctions/DrawText.hpp>
 
-Account_SettingScene::Account_SettingScene(uint32_t editID, uint32_t deleteID)
-	: editID{ editID }, deleteID{ deleteID }
+Account_SettingScene::Account_SettingScene(ISceneManager* scene_manager, uint32_t editID, uint32_t deleteID)
+	: IScene{scene_manager}, editID{ editID }, deleteID{ deleteID }
 {
 	menu.InitBaseCatchers();
 	menu.AppendMenuItem("ИЗМЕНИТЬ", editID);
@@ -47,12 +47,12 @@ bool Account_SettingScene::ProcessInput(const AppEvent& event)
 {
 	if (IsSystemEnterEvent(event))
 	{
-		SceneManager::Instance().SwitchScene(menu.GetCurrentParam());
+		scene_manager->SwitchScene(menu.GetCurrentParam());
 	}
 
 	if (IsSystemReturnEvent(event))
 	{
-		SceneManager::Instance().Return();
+		scene_manager->Return();
 		return true;
 	}
 
@@ -69,7 +69,7 @@ void Account_SettingScene::OnShow()
 	}
 	else
 	{
-		SceneManager::Instance().Return();
+		scene_manager->Return();
 	}
 }
 

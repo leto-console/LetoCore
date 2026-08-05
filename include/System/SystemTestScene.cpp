@@ -1,8 +1,8 @@
 #include "SystemTestScene.hpp"
 
 #include <Input/ButtonEvent.hpp>
-#include <SceneManager/SceneManager.hpp>
 #include <DrawFunctions/DrawLine.hpp>
+#include <SceneManager/ISceneManager.hpp>
 
 static void DrawPallete(IScreen& screen)
 {
@@ -82,7 +82,7 @@ static void DrawGray(IScreen& screen)
     }      
 }
 
-SystemTestScene::SystemTestScene()
+SystemTestScene::SystemTestScene(ISceneManager* scene_manager) : IScene{scene_manager}
 {
     stage = STAGE_COLOR_R;
 }
@@ -115,7 +115,7 @@ void SystemTestScene::Draw(IScreen &screen)
 bool SystemTestScene::Loop()
 {
     if (stage == STAGE_DONE)
-        SceneManager::Instance().Return();
+        scene_manager->Return();
 
     return true;
 }

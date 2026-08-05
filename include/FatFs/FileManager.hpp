@@ -10,7 +10,7 @@
 #include <SceneManager/ISceneBuilder.hpp>
 #include <FatFs/FileManager_Menu.hpp>
 #include <Input/SystemInputID.hpp>
-#include <SceneManager/SceneManager.hpp>
+#include <SceneManager/ISceneManager.hpp>
 #include <UI/Text/UI_Label.hpp>
 #include <LetoAPI_V1/LetoAPI_V1.h>
 #include <SDCard/SDCard_ExtDevice.hpp>
@@ -22,7 +22,8 @@ protected:
 	FileManager_Menu menu;
 
 public:
-	FileManager() : menu{ Point2_i{ 0, 8 } }
+	FileManager(ISceneManager* scene_manager) 
+        : IScene{scene_manager}, menu{ Point2_i{ 0, 8 } }
 	{
         path.SetPosition({80, 0});
         path.SetHorizonAlignment(LabelHorizonAlignment::CENTER);
@@ -60,7 +61,7 @@ public:
         }
 
         if (!menu.IsActive())
-            SceneManager::Instance().Return();
+            scene_manager->Return();
         return true;
     }
 	

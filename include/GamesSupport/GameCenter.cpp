@@ -1,7 +1,7 @@
 #include "GameCenter.hpp"
 #include "GameLoader.hpp"
 
-#include <SceneManager/SceneManager.hpp>
+#include <SceneManager/ISceneManager.hpp>
 
 #include <Input/SystemInputID.hpp>
 #include <DrawFunctions/DrawText.hpp>
@@ -43,7 +43,8 @@ void GameCenter::RefreshGamesList()
 		games_menu.AppendMenuItem(games_list[i].en_name, &games_list[i]);
 }
 
-GameCenter::GameCenter() : games_menu{ 7, {0, 8} }, games_list_count{ 16 }
+GameCenter::GameCenter(ISceneManager* scene_manager) 
+	: IScene{scene_manager}, games_menu{ 7, {0, 8} }, games_list_count{ 16 }
 {
 	games_list = static_cast<GameInfo*>( leto_api_v1->Globals->GetAllocator()->Alloc(sizeof(GameInfo) * games_list_count) );
 
@@ -131,7 +132,7 @@ bool GameCenter::ProcessInput(const AppEvent& event)
 
 	if (IsSystemReturnEvent(event))
 	{
-		SceneManager::Instance().Return();
+		scene_manager->Return();
 		return true;
 	}
 	else if (IsSystemEnterEvent(event) && games_menu.Count())

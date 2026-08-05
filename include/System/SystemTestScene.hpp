@@ -15,7 +15,7 @@
 class LETO_CORE_EXPORT SystemTestScene : public IScene
 {
 public:
-    SystemTestScene();
+    SystemTestScene(ISceneManager* scene_manager);
 
     void Draw(IScreen& screen) override;
 

@@ -12,12 +12,15 @@
 
 #include <stdint.h>
 
+class ISceneManager;
+
 /**
  * @brief Строитель-синглтон сцен (в перспективе и других объектов)
  */
 class ISceneBuilder
 {
 public:
+    ISceneBuilder(ISceneManager* scene_manager) : scene_manager{ scene_manager } { }
     virtual ~ISceneBuilder() = default;
     
     /**
@@ -61,6 +64,8 @@ public:
     bool GetPrevScene(uint32_t& prev) { prev = prev_scene; return prev_scene; }
 
 protected:
+    ISceneManager* const scene_manager;
+
     /**
      * @brief Создать объект
      */
@@ -96,10 +101,14 @@ template <typename Scene>
 class ISceneNoArgBuilder : public ISceneBuilder
 {
     static_assert(std::is_base_of<IScene, Scene>::value);
+public:
+    ISceneNoArgBuilder(ISceneManager* manager) : ISceneBuilder(manager)
+    { }
+
 protected:
     IScene* Create(IAllocator& allocator) override
     {
-        return allocator.Make<Scene>();
+        return allocator.Make<Scene>(this->scene_manager);
     }
 };
 

@@ -9,9 +9,11 @@
 #define INC_INPUT_USER_INPUT_TASK_HPP_
 
 #include <TaskHandler/PriorityTask.hpp>
-#include <SceneManager/SceneManager.hpp>
+#include <SceneManager/SystemSceneManager.hpp>
 #include <Data/StaticListView.hpp>
 #include <Input/Devices/UserInputDevice.hpp>
+#include <Input/ButtonEvent.hpp>
+#include <Time/Timer.hpp>
 
 class UserInputTickTask : public PriorityTask
 {
@@ -36,6 +38,7 @@ class UserInputPopEventTask : public PriorityTask
 {
 protected:
 	StaticListView<UserInputDevice*> user_inputs;
+	Timer last_encoder_timer{};	// Антидребезг энкодера
 
 	bool Do() override
 	{
@@ -48,7 +51,12 @@ protected:
 //			printf("event.id=%d\n", event.id);
 //			printf("event.data=%d\n", event.data);
 
-			SceneManager::Instance().ProccessUserInput(event);
+			if (event.source == AE_Encoder)
+				last_encoder_timer.Start(100);
+			else if (!last_encoder_timer.Expired(false) && !ButtonEvent::IsReleased(event))
+				return false;
+
+			SystemSceneManager::Instance().ProccessUserInput(event);
 		}
 		return true;
 	}

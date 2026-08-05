@@ -20,7 +20,7 @@ protected:
 	DialogParamMenu<bool, 4> delete_question;
 
 public:
-	Account_DeleteScene();
+	Account_DeleteScene(ISceneManager* scene_manager);
 
 	bool ProcessInput(const AppEvent& event) override;
 	void Draw(IScreen& screen) override;

@@ -1,7 +1,7 @@
 #include "Account_DeleteScene.hpp"
 
 #include <Auth/AuthHandler.hpp>
-#include <SceneManager/SceneManager.hpp>
+#include <SceneManager/ISceneManager.hpp>
 
 #include <Bitmaps/Avatars.hpp>
 #include <Auth/AuthScene.hpp>
@@ -14,7 +14,7 @@
 #include <Input/SystemInputID.hpp>
 
 
-Account_DeleteScene::Account_DeleteScene()
+Account_DeleteScene::Account_DeleteScene(ISceneManager* scene_manager) : IScene{ scene_manager }
 {
 	delete_question.SetText(0, "ВНИМАНИЕ!");
 	delete_question.SetText(1, "УДАЛИТЬ АККАУНТ");
@@ -30,7 +30,7 @@ bool Account_DeleteScene::ProcessInput(const AppEvent& event)
 
 	if (IsSystemReturnEvent(event))
 	{
-		SceneManager::Instance().Return();
+		scene_manager->Return();
 		return true;
 	}
 
@@ -55,7 +55,7 @@ bool Account_DeleteScene::Loop()
 		}
 		else
 		{
-			SceneManager::Instance().Return();
+			scene_manager->Return();
 		}
 		delete_question.Disable();
 	}
@@ -77,6 +77,6 @@ void Account_DeleteScene::OnShow()
 	else
 	{
 		// TODO: или переключиться в режим авторизации?
-		SceneManager::Instance().Return();
+		scene_manager->Return();
 	}
 }

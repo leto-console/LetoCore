@@ -15,6 +15,8 @@
 #include <SceneManager/ISceneObject.hpp>
 #include <System/CommonAllocator.hpp>
 
+class ISceneManager;
+
 /**
  * @brief Интерфейс экранной сцены
  * @headerfile IScene.hpp <SceneManager/IScene.hpp>
@@ -22,13 +24,15 @@
 class IScene
 {
 protected:
-	friend class SceneManager;
+	ISceneManager* scene_manager;
 
 	/// TODO: Сделать двунаправленный связанный список, чтобы не привязываться к количеству объектов
 	/// Объекты экранной сцены
 	StaticList<ISceneObject*, 16> objects{};
 
 public:
+    IScene(ISceneManager* scene_manager) : scene_manager{ scene_manager } { }
+
 	virtual ~IScene() = default;
 
 	virtual void Draw(IScreen& screen) { };
