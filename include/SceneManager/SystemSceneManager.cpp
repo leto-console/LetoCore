@@ -77,10 +77,34 @@ void SystemSceneManager::Draw(IScreen& screen)
 
 		Point2_i p = { 20, 64-8 };
 
-		DrawCapacity(screen, p, "S", capacity1, SystemAllocator);
-		DrawCapacity(screen, p, "C", capacity2, CommonAllocator);
-		DrawCapacity(screen, p, "E", capacity3, EternalAllocator);
-		//DrawCapacity(screen, p, "M", capacity3, builder_allocator);
+		{
+			IAllocator* allocator = &SystemAllocator;
+			StaticText8 letter = "S";
+
+			static CapacityIndicatorUI capacity{{}, {20, 5}, allocator};
+			DrawCapacity(screen, p, letter, capacity, *allocator);
+		}
+		{
+			IAllocator* allocator = &CommonAllocator;
+			StaticText8 letter = "C";
+
+			static CapacityIndicatorUI capacity{{}, {20, 5}, allocator};
+			DrawCapacity(screen, p, letter, capacity, *allocator);
+		}
+		{
+			IAllocator* allocator = &EternalAllocator;
+			StaticText8 letter = "E";
+
+			static CapacityIndicatorUI capacity{{}, {20, 5}, allocator};
+			DrawCapacity(screen, p, letter, capacity, *allocator);
+		}
+		{
+			IAllocator* allocator = &builder_allocator;
+			StaticText8 letter = "B";
+
+			static CapacityIndicatorUI capacity{{}, {20, 5}, allocator};
+			DrawCapacity(screen, p, letter, capacity, *allocator);
+		}
     }
 }
 
