@@ -9,27 +9,28 @@
 
 #include "LibrariesExport.h"
 
-#include <GamesSupport/BaseGameScene.hpp>
-
 #include <UI/Geometry/UI_Circle.hpp>
 #include <UI/Text/UI_Label.hpp>
 #include <UI/Menu/ParamMenu.hpp>
 #include <LetoAPI_V1/LetoAPI_V1.h>
 
+#include <SceneManager/IScene.hpp>
+#include <SceneManager/ISceneBuilder.hpp>
+
 class LobbyScene;
 
-class LETO_CORE_EXPORT HostScene : public BaseGameScene
+class LETO_CORE_EXPORT HostScene : public IScene
 {
 public:
-    HostScene(BaseGame* game, LobbyScene* lobby, uint8_t max_count, LobbyConnection_V1_Callback callback);
+    HostScene(ISceneManager* game, LobbyScene* lobby, uint8_t max_count, LobbyConnection_V1_Callback callback);
 
     void OnShow() override;
 
-    void ProcessGameInput(const AppEvent& event) override;
+    bool ProcessInput(const AppEvent& event) override;
 
     void Draw(IScreen& screen) override;
 
-    void Loop() override;
+    bool Loop() override;
 
 protected:
     UI_Label label_text, status_text;

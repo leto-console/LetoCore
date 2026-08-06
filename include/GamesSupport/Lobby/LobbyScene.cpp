@@ -9,9 +9,9 @@
 
 using namespace DrawFunctions;
 
-LobbyScene::LobbyScene(BaseGame* game, uint8_t max_count, 
+LobbyScene::LobbyScene(ISceneManager* game, uint8_t max_count, 
     LobbyConnection_V1_Callback host_callback, LobbyConnection_V1_Callback member_callback) 
-    : BaseGameScene{ game }, scene_mode{ NONE }, 
+    : IScene{ game }, scene_mode{ NONE }, 
     host_scene{ game, this, max_count, host_callback }, 
     member_scene{ game, this, max_count, member_callback }
 {
@@ -36,8 +36,6 @@ LobbyScene::LobbyScene(BaseGame* game, uint8_t max_count,
 
 void LobbyScene::OnShow()
 {
-    prevID = game->GetGameSceneID();
-
     LobbyConnection_V1 connection;
     if (leto_api_v1->Lobby->GetActiveLobby(&connection))
     {
@@ -52,7 +50,7 @@ void LobbyScene::OnShow()
     select_menu.AppendMenuItem("НАЙТИ", MEMBER);
 }
 
-void LobbyScene::ProcessGameInput(const AppEvent &event)
+bool LobbyScene::ProcessInput(const AppEvent &event)
 {
     bool _return = IsSystemLeftEvent(event, true);
 
@@ -60,13 +58,13 @@ void LobbyScene::ProcessGameInput(const AppEvent &event)
     {
     case HOST:
     {
-        host_scene.ProcessGameInput(event);
-        return;
+        host_scene.ProcessInput(event);
+        return true;
     }
     case MEMBER:
     {
-        member_scene.ProcessGameInput(event);
-        return;
+        member_scene.ProcessInput(event);
+        return true;
     }
     case SELECT:
     default:
@@ -75,8 +73,8 @@ void LobbyScene::ProcessGameInput(const AppEvent &event)
     
     if (_return) 
     {
-        game->SwitchGameScene(prevID);
-        return;
+        scene_manager->Return();
+        return true;
     }
     select_menu.MainProcessInput(event);
 
@@ -86,6 +84,8 @@ void LobbyScene::ProcessGameInput(const AppEvent &event)
         select_menu.SubmitReady();
         SwitchMode(mode);
     }
+
+    return false;
 }
 
 void LobbyScene::Draw(IScreen &screen)
@@ -114,7 +114,7 @@ void LobbyScene::Draw(IScreen &screen)
     }
 }
 
-void LobbyScene::Loop()
+bool LobbyScene::Loop()
 {
     switch (scene_mode)
     {
@@ -132,6 +132,7 @@ void LobbyScene::Loop()
     default:
         break;
     }
+    return true;
 }
 
 void LobbyScene::SwitchMode(LobbyMode mode)

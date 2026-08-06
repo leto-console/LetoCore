@@ -5,8 +5,8 @@
 #include <GamesSupport/BaseGame.hpp>
 #include <GamesSupport/Lobby/LobbyScene.hpp>
 
-HostScene::HostScene(BaseGame* game, LobbyScene* main_scene, uint8_t max_count, LobbyConnection_V1_Callback callback) 
-    : BaseGameScene{ game }, main_scene{ main_scene }, max_count{ max_count }, callback{ callback }
+HostScene::HostScene(ISceneManager* game, LobbyScene* main_scene, uint8_t max_count, LobbyConnection_V1_Callback callback) 
+    : IScene{ game }, main_scene{ main_scene }, max_count{ max_count }, callback{ callback }
 {
     const IFont* font = IFont::FromHandle(leto_api_v1->Font->GetFont(7, 7, 1));
 
@@ -59,19 +59,21 @@ HostScene::HostScene(BaseGame* game, LobbyScene* main_scene, uint8_t max_count, 
 
 void HostScene::OnShow()
 {
-    opened = leto_api_v1->Lobby->CreateLobby(&lobby, game->GetID(), max_count, callback);
+    // ??????????
+    /// !!!!!!!!!!!!!!! TODO: Добавить GAME ID - можно через запрос в Leto о деталях текущей запущенной игры
+    //opened = leto_api_v1->Lobby->CreateLobby(&lobby, game->GetID(), max_count, callback);
     menu.ResetCurrentID();
 }
 
-void HostScene::ProcessGameInput(const AppEvent &event)
+bool HostScene::ProcessInput(const AppEvent &event)
 {
     if (!opened)
     {
         Quit();
-        return;
+        return true;
     }
 
-    if (menu.ProcessInput(event)) return;
+    return menu.ProcessInput(event);
 }
 
 void HostScene::Draw(IScreen &screen)
@@ -90,7 +92,7 @@ void HostScene::Draw(IScreen &screen)
     }
 }
 
-void HostScene::Loop()
+bool HostScene::Loop()
 {
     label_text.MainLoop();
     status_text.MainLoop();
@@ -108,7 +110,7 @@ void HostScene::Loop()
         {
             //.... Logic of start the game
         }
-        return;
+        return true;
     }
     
     RefreshLobby();
@@ -124,6 +126,8 @@ void HostScene::Loop()
     }
 
     RefreshMenu();
+
+    return true;
 }
 
 void HostScene::RefreshMembers()

@@ -9,14 +9,15 @@
 
 #include "LibrariesExport.h"
 
-#include <GamesSupport/BaseGameScene.hpp>
 #include <GamesSupport/Lobby/HostScene.hpp>
 #include <GamesSupport/Lobby/MemberScene.hpp>
 
 #include <UI/Menu/ParamMenu.hpp>
 #include <UI/Text/UI_Label.hpp>
 
-class LETO_CORE_EXPORT LobbyScene : public BaseGameScene
+#include <SceneManager/IScene.hpp>
+
+class LETO_CORE_EXPORT LobbyScene : public IScene
 {
 public:
     enum LobbyMode { NONE, SELECT, HOST, MEMBER };
@@ -24,17 +25,17 @@ public:
     void SwitchMode(LobbyMode mode);
 
 public:
-    LobbyScene(BaseGame* game, uint8_t max_count, 
+    LobbyScene(ISceneManager* game, uint8_t max_count, 
         LobbyConnection_V1_Callback host_callback,
         LobbyConnection_V1_Callback member_callback);
 
     void OnShow() override;
 
-    void ProcessGameInput(const AppEvent& event) override;
+    bool ProcessInput(const AppEvent& event) override;
 
     void Draw(IScreen& screen) override;
 
-    void Loop() override;
+    bool Loop() override;
 
 protected:
     /// Выбор режима сцены
@@ -46,7 +47,7 @@ protected:
     ParamMenu<LobbyMode, 2> select_menu;
     UI_Label select_label;
 
-    uint32_t prevID{}, successID{};
+    uint32_t successID{};
 };
 
 #endif

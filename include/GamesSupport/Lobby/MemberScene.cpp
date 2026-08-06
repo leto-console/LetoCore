@@ -9,7 +9,7 @@ static const StaticText32 ST_AVAILABLE_HOSTS{ "ДОСТУПНЫЕ ХОСТЫ:" }
 static const StaticText32 ST_CONNECTED{ "ВЫ ПОДКЛЮЧЕНЫ!" };         ///< ВЫ ПОДКЛЮЧЕНЫ
 static const StaticText32 ST_WAITING{ "ОЖИДАЕМ" };                  ///< ОЖИДАЕМ
 
-MemberScene::MemberScene(BaseGame* game, LobbyScene* main_scene, uint8_t max_count, LobbyConnection_V1_Callback callback) 
+MemberScene::MemberScene(ISceneManager* game, LobbyScene* main_scene, uint8_t max_count, LobbyConnection_V1_Callback callback) 
     : HostScene{ game, main_scene, max_count, callback }
 {
     status_text.SetText(ST_AVAILABLE_HOSTS);
@@ -21,18 +21,18 @@ void MemberScene::OnShow()
     menu.ResetCurrentID();
 }
 
-void MemberScene::ProcessGameInput(const AppEvent &event)
+bool MemberScene::ProcessInput(const AppEvent &event)
 {
     if (!opened && IsSystemLeftEvent(event))
     {
         Quit();
-        return;
+        return true;
     }
 
-    if (menu.ProcessInput(event)) return;
+    return menu.ProcessInput(event);
 }
 
-void MemberScene::Loop()
+bool MemberScene::Loop()
 {
     label_text.MainLoop();
     status_text.MainLoop();
@@ -55,7 +55,7 @@ void MemberScene::Loop()
         {
             leto_api_v1->Lobby->SetReady(true);
         }
-        return;
+        return true;
     }
 
     for (UI_Label& label : members_text)
@@ -81,6 +81,8 @@ void MemberScene::Loop()
     }
 
     RefreshMenu();
+
+    return true;
 }
 
 void MemberScene::RefreshLobby()

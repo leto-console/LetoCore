@@ -10,11 +10,6 @@
 
 #include "LibrariesExport.h"
 
-#include <Graphics/IScreen.hpp>
-#include <Utils/crc16.hpp>
-
-#include <GamesSupport/BaseGameScene.hpp>
-
 #include <Data/RingFIFO_Static.hpp>
 #include <Data/IAllocator.hpp>
 #include <Data/StaticText.hpp>
@@ -23,72 +18,45 @@
 #include <LetoABI/AppEvent.h>
 
 #include <LetoAPI_V1/LetoAPI_V1.h>
+#include <SceneManager/SceneManager.hpp>
 
  // Интерфейс базовой игры
-class LETO_CORE_EXPORT BaseGame
+template <uint32_t TScenesMaxCount = 32, uint32_t TBuilderAllocSize = 512>
+class LETO_CORE_EXPORT BaseGame : public SceneManager<TScenesMaxCount, TBuilderAllocSize>
 {
 protected:
-	// Текущая игровая сцена
-	enum { GAME_SCENES = 32 };
-	BaseGameScene* game_scenes[GAME_SCENES]{};
-	uint32_t current_scene_id{};
-
 	/// Заголовок игры с общей информацией
 	AppBinHeader header;
 
 	// Флаг, что игра закрыта
 	bool close_flag = false;
 
-	BaseGameScene* CurrentScene() const;
-
-	// Добавление игровых сцен (вызывается в Init)
-	BaseGameScene* AddGameScene(uint32_t ID, BaseGameScene* scene);
-
-	template <typename ID>
-	BaseGameScene* AddGameScene(ID id, BaseGameScene* scene)
-	{
-		return AddGameScene((uint32_t)id, scene);
-	}
+	virtual bool CustomInit() {};
+	virtual void CustomClose() {};
 
 public:
-	BaseGame(const AppBinHeader& header);
-	virtual ~BaseGame();
+	BaseGame(const AppBinHeader& header) : header{ header } { }
+	virtual ~BaseGame() { Close(); }
 
-	uint32_t GetGameSceneID() const { return current_scene_id; };
 	uint16_t GetID() const { return header.id; }
-
-	template <typename GameScene, typename ID, typename... Args>
-	GameScene* AddGameScene(ID id, Args... arg)
-	{
-		static_assert(std::is_base_of<BaseGameScene, GameScene>::value);
-		GameScene* scene = leto_new GameScene(arg...);
-		AddGameScene((uint32_t)id, scene);
-		return scene;
-	}
-
-	// Очистка игровых сцен (вызывается в Close)
-	void ClearGameScenes();
-
-	// Переключение на сцену номер 0 означает выход из игры
-	void SwitchGameScene(uint32_t ID);
 
 	// Признак завершения игры
 	bool IsClosed() const { return close_flag; };
 
 	// Инициализация игры
-	virtual bool Init() = 0;
+	bool Init()
+	{
+		close_flag = false;
+		CustomInit();
+	}
 
 	// Функция завершения игры
-	virtual void Close() = 0;
-
-	// Пользовательский ввод в игру
-	virtual void ProcessGameInput(const AppEvent& event);
-
-	// Игровая отрисовка
-	virtual void Draw(IScreen& screen);
-
-	// Фоновая обработка данных
-	virtual void Loop();
+	void Close()
+	{
+		close_flag = true;
+		SceneManager<TScenesMaxCount, TBuilderAllocSize>::ClearScenes();
+		CustomClose();
+	}
 };
 
 #endif
