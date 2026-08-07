@@ -13,9 +13,7 @@
 #include <LetoABI/AppEvent.h>
 #include <Data/StaticList.hpp>
 #include <SceneManager/ISceneObject.hpp>
-#include <System/CommonAllocator.hpp>
-
-class ISceneManager;
+#include <SceneManager/ISceneManager.hpp>
 
 /**
  * @brief Интерфейс экранной сцены
@@ -36,7 +34,7 @@ public:
 	virtual ~IScene() = default;
 
 	virtual void Draw(IScreen& screen) { };
-	virtual bool Loop() { return true; };
+	virtual void Loop() { };
 	virtual bool ProcessInput(const AppEvent& event) { return false; };
 
 	void AddObject(ISceneObject* object)
@@ -51,7 +49,7 @@ public:
 		Object* object{};
 		if (!objects.Full())
 		{
-			object = CommonAllocator.Make<Object>(std::forward<Args>(args)...);
+			object = scene_manager->GetCommonAllocator().Make<Object>(std::forward<Args>(args)...);
 			objects.Push(object);
 		}
 		return object;
@@ -100,11 +98,11 @@ public:
 	/**
 	 * @brief Главная функция фоновой обработки
 	 */
-	bool MainLoop()
+	void MainLoop()
 	{
 		for (ISceneObject*& obj : objects)
 			obj->MainLoop();
-		return Loop();
+		Loop();
 	}
 
 	/**

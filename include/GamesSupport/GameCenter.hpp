@@ -43,7 +43,7 @@ public:
 	void OnHide() override;
 
 	void Draw(IScreen& screen) override;
-	bool Loop() override;
+	void Loop() override;
 	bool ProcessInput(const AppEvent& event) override;
 
 	SCENE_NO_ARGS_BUILDER(GameCenter)

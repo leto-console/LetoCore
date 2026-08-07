@@ -32,10 +32,10 @@ void SystemSceneManager::OnMenuHolded()
 	VirtualConsole::Instance().Enable();
 }
 
-bool SystemSceneManager::Loop()
+void SystemSceneManager::Loop()
 {
 	menu_hold_catcher.MainLoop();
-	return SceneManager::Loop();
+	SceneManager::Loop();
 }
 
 #include <Graphics/DefaultFont.hpp>
@@ -85,7 +85,7 @@ void SystemSceneManager::Draw(IScreen& screen)
 			DrawCapacity(screen, p, letter, capacity, *allocator);
 		}
 		{
-			IAllocator* allocator = &CommonAllocator;
+			IAllocator* allocator = &common_allocator;
 			StaticText8 letter = "C";
 
 			static CapacityIndicatorUI capacity{{}, {20, 5}, allocator};
@@ -108,7 +108,7 @@ void SystemSceneManager::Draw(IScreen& screen)
     }
 }
 
-bool SystemSceneManager::ProccessUserInput(const AppEvent& event)
+bool SystemSceneManager::ProcessEvent(const AppEvent& event)
 {
 	menu_hold_catcher.MainProcessInput(event);
 	
@@ -128,5 +128,5 @@ bool SystemSceneManager::ProccessUserInput(const AppEvent& event)
 	if (VirtualConsole::Instance().MainProcessInput(event))
 		return true;
 
-	return SceneManager::ProccessUserInput(event);
+	return SceneManager::ProcessEvent(event);
 }

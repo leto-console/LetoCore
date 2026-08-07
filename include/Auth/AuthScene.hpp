@@ -38,7 +38,7 @@ public:
 
 	void Draw(IScreen& screen) override;
 	bool ProcessInput(const AppEvent& event) override;
-	bool Loop() override;
+	void Loop() override;
 
 	SCENE_NO_ARGS_BUILDER(AuthScene)
 };

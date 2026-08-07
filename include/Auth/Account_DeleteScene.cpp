@@ -42,7 +42,7 @@ void Account_DeleteScene::Draw(IScreen& screen)
 	delete_question.Draw(screen, {64, 0});
 }
 
-bool Account_DeleteScene::Loop()
+void Account_DeleteScene::Loop()
 {
 	bool answer;
 	if (delete_question.IsResultReady(answer))
@@ -59,7 +59,6 @@ bool Account_DeleteScene::Loop()
 		}
 		delete_question.Disable();
 	}
-	return true;
 }
 
 void Account_DeleteScene::OnShow()

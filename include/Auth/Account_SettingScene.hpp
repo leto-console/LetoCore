@@ -39,7 +39,7 @@ public:
 	void Draw(IScreen& screen) override;
 	bool ProcessInput(const AppEvent& event) override;
 	void OnShow() override;
-	bool Loop() override;
+	void Loop() override;
 
 	class Builder : public ISceneBuilder
 	{

@@ -46,7 +46,7 @@ void GameCenter::RefreshGamesList()
 GameCenter::GameCenter(ISceneManager* scene_manager) 
 	: IScene{scene_manager}, games_menu{ 7, {0, 8} }, games_list_count{ 16 }
 {
-	games_list = static_cast<GameInfo*>( leto_api_v1->Globals->GetAllocator()->Alloc(sizeof(GameInfo) * games_list_count) );
+	games_list = static_cast<GameInfo*>( scene_manager->GetCommonAllocator().Alloc(sizeof(GameInfo) * games_list_count) );
 
 	refresh_timer.Start(1000);
 	SystemGameCenter = this;
@@ -65,7 +65,7 @@ void GameCenter::OnShow()
 
 void GameCenter::OnHide()
 {
-	UnloadGame();
+	UnloadGame(scene_manager->GetCommonAllocator());
 }
 
 void GameCenter::Draw(IScreen& screen)
@@ -84,7 +84,7 @@ void GameCenter::Draw(IScreen& screen)
 	}
 }
 
-bool GameCenter::Loop()
+void GameCenter::Loop()
 {
 	if (CurrentLoadedGame)
 	{
@@ -95,7 +95,7 @@ bool GameCenter::Loop()
 			if (app->GetStatus() != LETO_V1_WORK_STATUS)
 			{
 				// ... + некоторые действия при завершении игры
-				UnloadGame();
+				UnloadGame(scene_manager->GetCommonAllocator());
 				OnShow();
 			}
 		}
@@ -110,7 +110,6 @@ bool GameCenter::Loop()
 
 		games_menu.Loop();
 	}
-	return true;
 }
 
 bool GameCenter::ProcessInput(const AppEvent& event)
@@ -137,7 +136,7 @@ bool GameCenter::ProcessInput(const AppEvent& event)
 	}
 	else if (IsSystemEnterEvent(event) && games_menu.Count())
 	{
-		LoadGame(games_menu.GetCurrentParam()->path);
+		LoadGame(games_menu.GetCurrentParam()->path, scene_manager->GetCommonAllocator());
 		return true;
 	}
 

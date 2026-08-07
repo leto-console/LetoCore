@@ -131,9 +131,8 @@ bool AuthScene::ProcessInput(const AppEvent& event)
 	return false;
 }
 
-bool AuthScene::Loop()
+void AuthScene::Loop()
 {
 	if (current_subscene)
-		return current_subscene->MainLoop();
-	return false;
+		current_subscene->MainLoop();
 }

@@ -30,7 +30,7 @@ void Account_EditScene::OnCancel()
 
 
 Account_EditScene::Account_EditScene(ISceneManager* scene_manager)
-	: IScene{scene_manager}, settings{ "", &CommonAllocator }
+	: IScene{scene_manager}, settings{ "", &scene_manager->GetCommonAllocator() }
 {
 	settings.AddSetting<BitmapEditableSettingUI<uint32_t>>("Аватар", Point2_i{16, 12}, &edit_account.avatar, GetAvatars());
 	settings.AddSetting<TextEditableSettingUI<10>>("Имя", Point2_i{16, 32}, &edit_account.name, true);

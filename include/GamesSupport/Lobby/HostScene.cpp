@@ -92,7 +92,7 @@ void HostScene::Draw(IScreen &screen)
     }
 }
 
-bool HostScene::Loop()
+void HostScene::Loop()
 {
     label_text.MainLoop();
     status_text.MainLoop();
@@ -110,7 +110,7 @@ bool HostScene::Loop()
         {
             //.... Logic of start the game
         }
-        return true;
+        return;
     }
     
     RefreshLobby();
@@ -126,8 +126,6 @@ bool HostScene::Loop()
     }
 
     RefreshMenu();
-
-    return true;
 }
 
 void HostScene::RefreshMembers()

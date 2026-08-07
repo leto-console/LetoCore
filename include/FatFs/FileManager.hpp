@@ -44,7 +44,7 @@ public:
         path.SetText(menu.GetCharPath());
     }
 
-    bool Loop() override
+    void Loop() override
     {
         if (sdcard_extdev && 
             sdcard_extdev->GetStatus() == ExtDeviceStatus::READY)
@@ -62,7 +62,6 @@ public:
 
         if (!menu.IsActive())
             scene_manager->Return();
-        return true;
     }
 	
 	SCENE_NO_ARGS_BUILDER(FileManager)
