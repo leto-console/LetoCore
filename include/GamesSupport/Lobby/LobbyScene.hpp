@@ -37,6 +37,27 @@ public:
 
     void Loop() override;
 
+    class Builder : public ISceneBuilder
+	{
+	public:
+		Builder(ISceneManager* scene_manager, uint8_t max_count, 
+            LobbyConnection_V1_Callback host_callback,
+            LobbyConnection_V1_Callback member_callback) 
+			: ISceneBuilder{ scene_manager }, 
+            max_count{ max_count },
+            host_callback{ host_callback }, 
+            member_callback{ member_callback } { }
+	protected:
+		uint8_t max_count;
+        LobbyConnection_V1_Callback host_callback;
+        LobbyConnection_V1_Callback member_callback;
+
+		IScene* Create(IAllocator& allocator) override
+		{
+			return allocator.Make<LobbyScene>(scene_manager, max_count, host_callback, member_callback);
+		}
+	};
+
 protected:
     /// Выбор режима сцены
     LobbyMode scene_mode;

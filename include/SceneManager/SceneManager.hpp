@@ -67,7 +67,7 @@ protected:
         if (!switch_id)
             return;
 
-        printf("OnSceneSwitched: %lu, %s\n", switch_id, switch_return ? "return" : "");
+        //printf("OnSceneSwitched: %lu, %s\n", switch_id, switch_return ? "return" : "");
 
         if (GetBuilder(switch_id))
         {
@@ -81,11 +81,11 @@ protected:
                 GetBuilder(switch_id)->SetPrevScene(currentSceneID);
             currentSceneID = switch_id;
 
-            printf("Scene %lu switched to %lu\n", currentSceneID, switch_id);
+            //printf("Scene %lu switched to %lu\n", currentSceneID, switch_id);
         }
         else
         {
-            printf("Scene %lu not fount\n", switch_id);
+            //printf("Scene %lu not fount\n", switch_id);
         }
 
         switch_id = 0;
