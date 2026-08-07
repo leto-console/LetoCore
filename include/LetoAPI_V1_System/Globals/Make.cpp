@@ -5,6 +5,7 @@
 #include <System/DebugMode.hpp>
 #include <Time/TimeUtils.hpp>
 #include <System/DeviceID.hpp>
+#include <Utils/crc16.hpp>
 
 #include <SceneManager/SystemSceneManager.hpp>
 
@@ -43,7 +44,8 @@ const GlobalsAPI_V1* Make_GlobalsAPI()
         &GetAllocator,
         &GetDebugMode,
         &GetCurrentMs,
-        &GetDeviceID
+        &GetDeviceID,
+        &calc_crc16
     };
 	
     return &api;

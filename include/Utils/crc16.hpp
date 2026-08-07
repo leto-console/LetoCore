@@ -6,6 +6,6 @@
 #include <stdint.h>
 #include <stddef.h>
 
-LETO_CORE_EXPORT uint16_t calc_crc16(const void* buf, size_t len);
+LETO_CORE_EXPORT uint16_t calc_crc16(const void* buf, uint32_t len);
 
 #endif 
