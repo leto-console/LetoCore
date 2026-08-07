@@ -1,6 +1,5 @@
 #include "GameLoader.hpp"
 
-#include <System/CommonAllocator.hpp>
 #include <LetoAPI_V1/Application/LetoApplication_V1.h>
 #include <LetoAPI_V1_System/Make.hpp>
 #include <VirtualConsole/VirtualConsole.hpp>
@@ -184,7 +183,7 @@ bool CheckGame(const char *path, GameInfo &info)
 	return true;
 }
 
-bool LoadGame(const char *path)
+bool LoadGame(const char *path, IAllocator& allocator)
 {
 	VC_Printf("LoadGame\r\n", BlueColor);
 
@@ -200,7 +199,7 @@ bool LoadGame(const char *path)
 
     if (bin_info.api_version == 1)
     {
-        LetoApplication_V1* app = CommonAllocator.Make<LetoApplication_V1>();
+        LetoApplication_V1* app = allocator.Make<LetoApplication_V1>();
         if (!GetBinary(path, app, sizeof(LetoApplication_V1), true))
         {
         	VC_Printf("Get App_V1 fail \r\n", RedColor);
@@ -218,7 +217,7 @@ bool LoadGame(const char *path)
         {
         	VC_Printf("App_V1 Init fail\r\n", RedColor);
         	VC_Printf("%res=%d\r\n", RedColor, res);
-            UnloadGame();
+            UnloadGame(allocator);
             return false;
         }
     	VC_Printf("App_V1 Init success!\r\n", GreenColor);
@@ -228,12 +227,12 @@ bool LoadGame(const char *path)
     }
 
 	VC_Printf("App_V%d not supported! \r\n", RedColor, bin_info.api_version);
-    UnloadGame();
+    UnloadGame(allocator);
     return false;
 }
 
 
-void UnloadGame()
+void UnloadGame(IAllocator& allocator)
 {
     if (CurrentLoadedGame)
     {
@@ -241,7 +240,7 @@ void UnloadGame()
         {
             reinterpret_cast<LetoApplication_V1*>(CurrentLoadedGame)->Clean();
         }
-        CommonAllocator.Clear(CurrentLoadedGame);
+        allocator.Clear(CurrentLoadedGame);
         CurrentLoadedGame = nullptr;
     }
 

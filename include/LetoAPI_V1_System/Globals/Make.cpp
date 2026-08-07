@@ -2,19 +2,20 @@
 
 // ====================================================================================================
 
-#include <System/CommonAllocator.hpp>
 #include <System/DebugMode.hpp>
 #include <Time/TimeUtils.hpp>
 #include <System/DeviceID.hpp>
 
+#include <SceneManager/SystemSceneManager.hpp>
+
 static void* Alloc(uint32_t size)
 {
-    return CommonAllocator.Alloc(size);
+    return SystemSceneManager::Instance().GetCommonAllocator().Alloc(size);
 }
 
 static void Free(const void* ptr)
 {
-    CommonAllocator.Free(ptr);
+    SystemSceneManager::Instance().GetCommonAllocator().Free(ptr);
 }
 
 static const LetoAllocator_V1* GetAllocator()

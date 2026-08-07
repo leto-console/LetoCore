@@ -32,7 +32,7 @@ struct IDrawer
     /**
      * @brief Выполнить действия, напрямую не связанные с отрисовкой изображения
      */
-	virtual bool Loop() = 0;
+	virtual void Loop() = 0;
 };
 
 #endif

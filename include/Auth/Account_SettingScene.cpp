@@ -73,7 +73,6 @@ void Account_SettingScene::OnShow()
 	}
 }
 
-bool Account_SettingScene::Loop()
+void Account_SettingScene::Loop()
 {
-	return true;
 }

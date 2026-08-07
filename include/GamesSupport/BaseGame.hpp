@@ -21,8 +21,8 @@
 #include <SceneManager/SceneManager.hpp>
 
  // Интерфейс базовой игры
-template <uint32_t TScenesMaxCount = 32, uint32_t TBuilderAllocSize = 512>
-class LETO_CORE_EXPORT BaseGame : public SceneManager<TScenesMaxCount, TBuilderAllocSize>
+template <uint32_t TScenesMaxCount = 32, uint32_t TBuilderAllocSize = 512, uint32_t TCommonAllocSize = 14 * 1024>
+class BaseGame : public SceneManager<TScenesMaxCount, TBuilderAllocSize, TCommonAllocSize>
 {
 protected:
 	/// Заголовок игры с общей информацией
@@ -31,7 +31,7 @@ protected:
 	// Флаг, что игра закрыта
 	bool close_flag = false;
 
-	virtual bool CustomInit() {};
+	virtual bool CustomInit() { return true; };
 	virtual void CustomClose() {};
 
 public:
@@ -47,14 +47,14 @@ public:
 	bool Init()
 	{
 		close_flag = false;
-		CustomInit();
+		return CustomInit();
 	}
 
 	// Функция завершения игры
 	void Close()
 	{
 		close_flag = true;
-		SceneManager<TScenesMaxCount, TBuilderAllocSize>::ClearScenes();
+		SceneManager<TScenesMaxCount, TBuilderAllocSize, TCommonAllocSize>::ClearScenes();
 		CustomClose();
 	}
 };

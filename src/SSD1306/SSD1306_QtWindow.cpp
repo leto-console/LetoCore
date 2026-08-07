@@ -55,10 +55,10 @@ bool SSD1306_QtWindow::Init()
 	return true;
 }
 
-bool SSD1306_QtWindow::Loop()
+void SSD1306_QtWindow::Loop()
 {
     update();
-    return isOpen;
+    //return isOpen;
 }
 
 #define __GET_BIT(n, b) ((n >> b) & 1)

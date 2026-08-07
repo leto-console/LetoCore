@@ -112,12 +112,10 @@ void SystemTestScene::Draw(IScreen &screen)
     }
 }
 
-bool SystemTestScene::Loop()
+void SystemTestScene::Loop()
 {
     if (stage == STAGE_DONE)
         scene_manager->Return();
-
-    return true;
 }
 
 bool SystemTestScene::ProcessInput(const AppEvent &event)

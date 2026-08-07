@@ -23,7 +23,7 @@
 // #include <LetoAPI_V1/Web/WebConnection.hpp>
 
 //  // Сцена, предназначенная для подготовки к сетевой игре
-// class LETO_CORE_EXPORT PrepareWebGameScene : public BaseGameScene
+// class LETO_CORE_EXPORT PrepareWebGameScene : public IScene
 // {
 // protected:
 // 	WebConnection_V1 connection;
@@ -73,7 +73,7 @@
 // 	void RefreshGamersList();
 
 // public:
-// 	PrepareWebGameScene(BaseGame* game, 
+// 	PrepareWebGameScene(ISceneManager* game, 
 // 		StaticText32* opp_name, uint32_t* opp_avatar, uint8_t* opp_channel,
 // 		uint32_t successID);
 // 	~PrepareWebGameScene();
@@ -83,7 +83,7 @@
 // 	void OnShow() override;
 
 // 	// Пользовательский ввод в игру
-// 	void ProcessGameInput(const AppEvent& event) override;
+// 	bool ProcessInput(const AppEvent& event) override;
 
 // 	// Игровая отрисовка
 // 	void Draw(IScreen& screen) override;

@@ -19,7 +19,7 @@ public:
 
     void Draw(IScreen& screen) override;
 
-    bool Loop() override;
+    void Loop() override;
 
     bool ProcessInput(const AppEvent& event) override;
 

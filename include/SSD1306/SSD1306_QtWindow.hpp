@@ -41,7 +41,7 @@ public:
 
     bool IsOpen() override;
     bool Init() override;
-    bool Loop() override;
+    void Loop() override;
     void Update(SSD1306_Screen& screen, uint8_t page, uint8_t column = 0, uint8_t count = SSD1306_Width) override;
 };
 

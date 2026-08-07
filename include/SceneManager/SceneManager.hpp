@@ -11,7 +11,6 @@
 #include <SceneManager/IScene.hpp>
 #include <SceneManager/ISceneBuilder.hpp>
 #include <SceneManager/ISceneManager.hpp>
-#include <System/CommonAllocator.hpp>
 #include <System/EternalAllocator.hpp>
 #include <LetoABI/AppEvent.h>
 #include <Time/Timer.hpp>
@@ -27,12 +26,13 @@
 #include <GamesSupport/GameCenter.hpp>
 #include <TaskHandler/PriorityTaskSheduler.hpp>
 
-template <uint32_t TScenesMaxCount, uint32_t TBuilderAllocSize>
-class LETO_CORE_EXPORT SceneManager : public ISceneManager
+template <uint32_t TScenesMaxCount, uint32_t TBuilderAllocSize, uint32_t TCommonAllocSize>
+class SceneManager : public ISceneManager
 {
 protected:
 	// ======================================== Main part ========================================
     ArenaAllocator<TBuilderAllocSize> builder_allocator;
+    ArenaAllocator<TCommonAllocSize> common_allocator;
 
     const uint32_t scenesMaxCount = TScenesMaxCount;
     ISceneBuilder* sceneBuilders[TScenesMaxCount]{};
@@ -74,9 +74,9 @@ protected:
             if (GetCurrentScene()) 
             {
                 GetCurrentScene()->MainOnHide();
-                GetCurrentBuilder()->MainDestroy(CommonAllocator);
+                GetCurrentBuilder()->MainDestroy(common_allocator);
             }
-            GetBuilder(switch_id)->MainCreate(CommonAllocator)->MainOnShow();
+            GetBuilder(switch_id)->MainCreate(common_allocator)->MainOnShow();
             if (!switch_return)
                 GetBuilder(switch_id)->SetPrevScene(currentSceneID);
             currentSceneID = switch_id;
@@ -98,6 +98,8 @@ public:
 
     //ISceneManager();
 	~SceneManager() = default;
+
+    IAllocator& GetCommonAllocator() override { return common_allocator; }
 
 	void AddSceneBuilder(uint32_t ID, ISceneBuilder* builder) override
     {
@@ -143,24 +145,21 @@ public:
         for (ISceneBuilder*& _builder : sceneBuilders)
         {
             if (!_builder) continue;
-            _builder->MainDestroy(CommonAllocator);
+            _builder->MainDestroy(common_allocator);
             _builder = nullptr;
         }
 
         currentSceneID = 0;
         builder_allocator.Clear();
+        common_allocator.Clear();
     }
 
-	bool Loop() override
+	void Loop() override
     {
-        bool screen_ok{}, scene_ok{};
-
         if (GetCurrentScene()) 	
-            scene_ok = GetCurrentScene()->MainLoop();
+            GetCurrentScene()->MainLoop();
         
         OnSceneSwitched();
-
-        return screen_ok && scene_ok;
     }
 
 	void Draw(IScreen& screen) override
@@ -171,7 +170,7 @@ public:
             GetCurrentScene()->MainDraw(screen);
     }
 
-	bool ProccessUserInput(const AppEvent& event) override
+	bool ProcessEvent(const AppEvent& event) override
     {
         return GetCurrentScene() && GetCurrentScene()->MainProcessInput(event);
     }

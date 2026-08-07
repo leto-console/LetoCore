@@ -32,7 +32,7 @@ bool MemberScene::ProcessInput(const AppEvent &event)
     return menu.ProcessInput(event);
 }
 
-bool MemberScene::Loop()
+void MemberScene::Loop()
 {
     label_text.MainLoop();
     status_text.MainLoop();
@@ -55,7 +55,7 @@ bool MemberScene::Loop()
         {
             leto_api_v1->Lobby->SetReady(true);
         }
-        return true;
+        return;
     }
 
     for (UI_Label& label : members_text)
@@ -81,8 +81,6 @@ bool MemberScene::Loop()
     }
 
     RefreshMenu();
-
-    return true;
 }
 
 void MemberScene::RefreshLobby()

@@ -30,7 +30,7 @@ public:
 
     // void Draw(IScreen& screen) override;
 
-    bool Loop() override;
+    void Loop() override;
 
 protected:
 

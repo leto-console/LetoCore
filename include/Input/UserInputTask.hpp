@@ -56,7 +56,7 @@ protected:
 			else if (!last_encoder_timer.Expired(false) && !ButtonEvent::IsReleased(event))
 				return false;
 
-			SystemSceneManager::Instance().ProccessUserInput(event);
+			SystemSceneManager::Instance().ProcessEvent(event);
 		}
 		return true;
 	}

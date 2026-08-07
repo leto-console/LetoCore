@@ -118,12 +118,14 @@ if(LETO_PATH)
 	target_link_directories(${PROJECT_NAME} PUBLIC "${LETO_PATH}/LetoAPI/lib/${CMAKE_PRESET_NAME}")
 	target_include_directories(${PROJECT_NAME} PUBLIC "${LETO_PATH}/LetoAPI/include")
 
-	add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-		COMMAND ${CMAKE_COMMAND} -E copy_if_different
-		"$<IF:$<TARGET_EXISTS:LetoAPI>,$<TARGET_FILE:LetoAPI>,${LETO_PATH}/LetoAPI/bin/${CMAKE_PRESET_NAME}/LetoAPI.dll>"
-		$<TARGET_FILE_DIR:${PROJECT_NAME}>
-		COMMENT "[${PROJECT_NAME}] Копирование LetoAPI.dll в папку тестов..."
-	)
+	if (${PRESET_DEFINE_MACRO} STREQUAL "__WIN__")
+		add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+			COMMAND ${CMAKE_COMMAND} -E copy_if_different
+			"$<IF:$<TARGET_EXISTS:LetoAPI>,$<TARGET_FILE:LetoAPI>,${LETO_PATH}/LetoAPI/bin/${CMAKE_PRESET_NAME}/LetoAPI.dll>"
+			$<TARGET_FILE_DIR:${PROJECT_NAME}>
+			COMMENT "[${PROJECT_NAME}] Копирование LetoAPI.dll в папку тестов..."
+		)
+	endif()
 else()
     message(STATUS "[${PROJECT_NAME}] Переменная LETO_PATH не найдена. Серверная сборка через FetchContent...")
 

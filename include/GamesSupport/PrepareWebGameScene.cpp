@@ -64,7 +64,7 @@
 // 	//		if (ext_my_move) *ext_my_move = true;
 // 	//		if (ext_web_mode) *ext_web_mode = true;
 // //
-// 	//		game->SwitchGameScene(successID);
+// 	//		scene_manager->SwitchScene(successID);
 // 	//	}
 // 	//	// Ответ: отказ
 // 	//	else if (msg_in.data[3] == 0x02)
@@ -76,8 +76,8 @@
 // 	//}
 // }
 
-// PrepareWebGameScene::PrepareWebGameScene(BaseGame* game, StaticText32* opp_name,  uint32_t* opp_avatar, uint8_t* opp_channel, uint32_t successID)
-// 	: BaseGameScene{ game }, gamers_list{ 4 }, request_menu{ 2 },
+// PrepareWebGameScene::PrepareWebGameScene(ISceneManager* game, StaticText32* opp_name,  uint32_t* opp_avatar, uint8_t* opp_channel, uint32_t successID)
+// 	: IScene{ game }, gamers_list{ 4 }, request_menu{ 2 },
 // 	opp_name{ *opp_name }, opp_avatar{ *opp_avatar }, opp_channel{ *opp_channel }, successID { successID }
 // {
 // 	leto_api_v1->Support->Import("");
@@ -121,7 +121,7 @@
 // #include <DrawFunctions/DrawBitmap.hpp>
 // #include <DrawFunctions/DrawText.hpp>
 
-// void PrepareWebGameScene::ProcessGameInput(const AppEvent& event)
+// void PrepareWebGameScene::ProcessInput(const AppEvent& event)
 // {
 // 	if (web_state == WAIT_RESPONSE)
 // 		return;
@@ -138,7 +138,7 @@
 // 		{
 // 			if (web_state == SELECT)
 // 			{
-// 				game->SwitchGameScene(prevID);
+// 				scene_manager->SwitchScene(prevID);
 // 			}
 // 		}
 // 		else if (ButtonEvent::Compare(event, GameRightEvent()) || 
@@ -186,7 +186,7 @@
 // //
 // 				//	// Подтверждение
 // 				//	msg.data[3] = 0x01;
-// 				//	game->SwitchGameScene(successID);
+// 				//	scene_manager->SwitchScene(successID);
 // 				//}
 // 				// НЕТ
 // 				//else
@@ -195,7 +195,7 @@
 // //
 // 				//	// Отказ
 // 				//	msg.data[3] = 0x02;
-// 				//	game->SwitchGameScene(prevID);
+// 				//	scene_manager->SwitchScene(prevID);
 // 				//}
 // 				//game->WebAckOut(msg);
 // 			}

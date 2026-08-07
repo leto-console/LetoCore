@@ -24,7 +24,7 @@ public:
 
 	bool ProcessInput(const AppEvent& event) override;
 	void Draw(IScreen& screen) override;
-	bool Loop() override;
+	void Loop() override;
 	void OnShow() override;
 
 	SCENE_NO_ARGS_BUILDER(Account_DeleteScene)

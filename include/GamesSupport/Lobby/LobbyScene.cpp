@@ -114,7 +114,7 @@ void LobbyScene::Draw(IScreen &screen)
     }
 }
 
-bool LobbyScene::Loop()
+void LobbyScene::Loop()
 {
     switch (scene_mode)
     {
@@ -132,7 +132,6 @@ bool LobbyScene::Loop()
     default:
         break;
     }
-    return true;
 }
 
 void LobbyScene::SwitchMode(LobbyMode mode)

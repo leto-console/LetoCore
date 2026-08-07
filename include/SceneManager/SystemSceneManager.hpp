@@ -10,7 +10,6 @@
 
 #include <SceneManager/IScene.hpp>
 #include <SceneManager/ISceneBuilder.hpp>
-#include <System/CommonAllocator.hpp>
 #include <System/EternalAllocator.hpp>
 #include <LetoABI/AppEvent.h>
 #include <Time/Timer.hpp>
@@ -28,7 +27,7 @@
 
 #include <SceneManager/SceneManager.hpp>
 
-class LETO_CORE_EXPORT SystemSceneManager : public SceneManager<32, 1024>
+class LETO_CORE_EXPORT SystemSceneManager : public SceneManager<32, 1024, 20 * 1024>
 {
 protected:
 
@@ -61,9 +60,9 @@ public:
 
 	void EnableFPS(bool enable = true);
 
-	bool Loop() override;
+	void Loop() override;
 	void Draw(IScreen& screen) override;
-	bool ProccessUserInput(const AppEvent& event);
+	bool ProcessEvent(const AppEvent& event) override;
 };
 
 #endif

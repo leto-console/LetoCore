@@ -13,6 +13,7 @@
 
 #include <GamesSupport/BaseGame.hpp>
 #include <GamesSupport/GameInfo.hpp>
+#include <Data/IAllocator.hpp>
 
 /// @brief Текущая запущенная игра
 extern LETO_CORE_EXPORT AppBinHeader* CurrentLoadedGame;
@@ -49,11 +50,11 @@ extern LETO_CORE_EXPORT bool CheckGame(const char* path, GameInfo& info);
  * 
  * @param[in] path Путь до исполнямого файла для загрузки 
  */
-extern LETO_CORE_EXPORT bool LoadGame(const char* path);
+extern LETO_CORE_EXPORT bool LoadGame(const char* path, IAllocator& allocator);
 
 /**
  * @brief Выгрузить игру
  */
-extern LETO_CORE_EXPORT void UnloadGame();
+extern LETO_CORE_EXPORT void UnloadGame(IAllocator& allocator);
 
 #endif

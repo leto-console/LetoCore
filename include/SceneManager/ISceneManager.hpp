@@ -23,6 +23,8 @@ protected:
 public:
 	~ISceneManager() = default;
 
+	virtual IAllocator& GetCommonAllocator() = 0;
+
 	virtual void AddSceneBuilder(uint32_t ID, ISceneBuilder* builder) = 0;
 	virtual void SwitchScene(uint32_t ID) = 0;
 
@@ -39,11 +41,11 @@ public:
     virtual uint32_t GetCurrentSceneID() const = 0;
 
     virtual void ClearScenes() = 0;
-	virtual bool Loop() override = 0;
+	virtual void Loop() override = 0;
 
 	virtual void Draw(IScreen& screen) override = 0;
 
-	virtual bool ProccessUserInput(const AppEvent& event) = 0;
+	virtual bool ProcessEvent(const AppEvent& event) = 0;
 
 	template <typename Scene, typename ID, typename... Args>
 	void AddSceneBuilder(ID id, Args... args)

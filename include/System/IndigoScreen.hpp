@@ -33,7 +33,7 @@ public:
         DrawFunctions::DrawText(screen, { 30, 80 }, data, WhiteColor, BlackColor, true);
     }
 
-    bool Loop() { return true; }
+    void Loop() { }
 
 protected:
     StaticText32 restart[2];

@@ -7,20 +7,22 @@
 #ifndef INC_SCENE_MANAGER_I_SCENE_BUILDER_HPP_
 #define INC_SCENE_MANAGER_I_SCENE_BUILDER_HPP_
 
-#include <SceneManager/IScene.hpp>
+#include "LibrariesExport.h"
+
 #include <Data/IAllocator.hpp>
 
-#include <stdint.h>
+#include <cstdint>
 
 class ISceneManager;
+class IScene;
 
 /**
  * @brief Строитель-синглтон сцен (в перспективе и других объектов)
  */
-class ISceneBuilder
+class LETO_CORE_EXPORT ISceneBuilder
 {
 public:
-    ISceneBuilder(ISceneManager* scene_manager) : scene_manager{ scene_manager } { }
+    ISceneBuilder(ISceneManager* scene_manager);
     virtual ~ISceneBuilder() = default;
     
     /**
@@ -34,24 +36,12 @@ public:
      * При многократном вызове будет создан лишь один объект, в остальных случаях 
      * будет возвращена ссылка на первый созданный объект
      */
-    IScene* MainCreate(IAllocator& allocator)
-    {
-        if (!scene) scene = Create(allocator);
-        return scene;
-    }
+    IScene* MainCreate(IAllocator& allocator);
     
     /**
      * @brief Очистить память после уничтожения объекта
      */
-    void MainDestroy(IAllocator& allocator)
-    {
-        if (scene)
-        {
-            scene->~IScene();
-            Destroy(allocator);
-        }
-        scene = nullptr;
-    }
+    void MainDestroy(IAllocator& allocator);
 
     /**
      * @brief Установить ID на предыдущей сцены
@@ -76,10 +66,7 @@ protected:
      * 
      * Используется, например, для очистки статического аллокатора
      */
-    virtual void Destroy(IAllocator& allocator)
-    {
-        allocator.Clear();
-    }
+    virtual void Destroy(IAllocator& allocator);
 
 private:
     IScene* scene{};
