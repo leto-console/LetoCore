@@ -91,8 +91,6 @@ protected:
 
 	void SetEditingValue() override
 	{	
-		if (IsCaptured()) return;
-
 		if (ValueSettingUI<T>::cell)
 		{
 			ValueSettingUI<T>::cell->Set(edit_value);
