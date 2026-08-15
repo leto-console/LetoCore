@@ -79,6 +79,8 @@ public:
 	{
 	}
 
+	int GetCurrentSettingIdx() const { return cur_setting; }
+
 	void AddSetting(ISettingUI* setting)
 	{
 		settings.Push(setting);

@@ -34,6 +34,19 @@ public:
 		Setup.Set(read_register(RF_SETUP));
 		Status.Set(read_register(NRF_STATUS));
 		FifoStatus.Set(read_register(FIFO_STATUS));
+
+		Reg_00.Set(read_register(0x00));
+		Reg_01.Set(read_register(0x01));
+		Reg_02.Set(read_register(0x02));
+		Reg_03.Set(read_register(0x03));
+		Reg_04.Set(read_register(0x04));
+		Reg_05.Set(read_register(0x05));
+		Reg_06.Set(read_register(0x06));
+		Reg_07.Set(read_register(0x07));
+		Reg_08.Set(read_register(0x08));
+		Reg_09.Set(read_register(0x09));
+
+		Reg_17.Set(read_register(0x17));
 #endif
 		return true;
 	}
