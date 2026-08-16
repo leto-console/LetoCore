@@ -18,6 +18,8 @@ namespace NRF24L01
 	DataCell<uint8_t> Reg_09;
 
 	DataCell<uint8_t> Reg_17;
+	DataCell<uint8_t> Reg_1C;
+	DataCell<uint8_t> Reg_1D;
 
 
 	DataCell<bool> PVariant;

@@ -39,6 +39,8 @@ namespace NRF24L01
 	extern LETO_CORE_EXPORT DataCell<uint8_t> Reg_09;
 
 	extern LETO_CORE_EXPORT DataCell<uint8_t> Reg_17;
+	extern LETO_CORE_EXPORT DataCell<uint8_t> Reg_1C;
+	extern LETO_CORE_EXPORT DataCell<uint8_t> Reg_1D;
 
 	// nRF24L01+ version - true, nRF24L01 version - false
 	extern LETO_CORE_EXPORT DataCell<bool> PVariant;

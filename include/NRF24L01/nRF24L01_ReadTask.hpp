@@ -47,6 +47,8 @@ public:
 		Reg_09.Set(read_register(0x09));
 
 		Reg_17.Set(read_register(0x17));
+		Reg_1C.Set(read_register(0x1C));
+		Reg_1D.Set(read_register(0x1D));
 #endif
 		return true;
 	}
