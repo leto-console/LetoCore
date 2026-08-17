@@ -46,6 +46,16 @@ public:
 		Reg_08.Set(read_register(0x08));
 		Reg_09.Set(read_register(0x09));
 
+		Reg_0A.Set(read_wide_register(0x0A));
+		Reg_0B.Set(read_wide_register(0x0B));
+		
+		Reg_0C.Set(read_register(0x0C));
+		Reg_0D.Set(read_register(0x0D));
+		Reg_0E.Set(read_register(0x0E));
+		Reg_0F.Set(read_register(0x0F));
+
+		Reg_10.Set(read_wide_register(0x10));
+
 		Reg_17.Set(read_register(0x17));
 		Reg_1C.Set(read_register(0x1C));
 		Reg_1D.Set(read_register(0x1D));

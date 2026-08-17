@@ -17,6 +17,16 @@ namespace NRF24L01
 	DataCell<uint8_t> Reg_08;
 	DataCell<uint8_t> Reg_09;
 
+	DataCell<uint64_t> Reg_0A;
+	DataCell<uint64_t> Reg_0B;
+	
+	DataCell<uint8_t> Reg_0C;
+	DataCell<uint8_t> Reg_0D;
+	DataCell<uint8_t> Reg_0E;
+	DataCell<uint8_t> Reg_0F;
+
+	DataCell<uint64_t> Reg_10;
+
 	DataCell<uint8_t> Reg_17;
 	DataCell<uint8_t> Reg_1C;
 	DataCell<uint8_t> Reg_1D;
