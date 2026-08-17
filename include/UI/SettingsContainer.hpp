@@ -17,6 +17,8 @@
 #include <Data/IAllocator.hpp>
 
 #include <DrawFunctions/DrawText.hpp>
+#include <Input/Catchers/ButtonCatcher.hpp>
+#include <Input/Catchers/EncoderCatcher.hpp>
 
 /**
  * @brief Контейнер настроек
@@ -33,6 +35,9 @@ protected:
 
 	bool auto_alignment = false;
 	int cur_setting{};
+
+	ButtonCatcher<SettingsContainer> up_catcher, down_catcher, enter_catcher;
+	EncoderCatcher<SettingsContainer> enc_catcher;
 
 	void NextSetting()
 	{
@@ -73,10 +78,54 @@ protected:
 		return;
 	}
 
+	void Enter() {  }
+
+	void Rotate(bool left)
+	{
+		if (left) PrevSetting();
+		else      NextSetting();
+	}
+
 public:
 	SettingsContainer(const StaticText32& title, IAllocator* allocator)
-		: title{ title }, allocator{ allocator }
+		: title{ title }, allocator{ allocator },
+		up_catcher{ this, &SettingsContainer::PrevSetting },
+		down_catcher{ this, &SettingsContainer::NextSetting },
+		enter_catcher{ this, &SettingsContainer::Enter },
+		enc_catcher{ this, &SettingsContainer::Rotate }
 	{
+		InitBaseCatchers();
+	}
+
+	void ButtonCatchUp(uint8_t button_id)
+	{
+		up_catcher.Catch(button_id, BCM_SINGLE_PRESS | BCM_MULTI_HOLD);
+		up_catcher.SetHoldTime(200, 100);
+	}
+
+	void ButtonCatchDown(uint8_t button_id)
+	{
+		down_catcher.Catch(button_id, BCM_SINGLE_PRESS | BCM_MULTI_HOLD);
+		down_catcher.SetHoldTime(200, 100);
+	}
+
+	void ButtonCatchEnter(uint8_t button_id)
+	{
+		enter_catcher.Catch(button_id, BCM_SINGLE_PRESS);
+	}
+
+	void EncoderCatch(uint8_t encoder_id)
+	{
+		enc_catcher.Catch(encoder_id, ECM_ROTATE);
+	}
+
+	void InitBaseCatchers()
+	{
+		ButtonCatchUp(SYSTEM_BTN_UP);
+		ButtonCatchDown(SYSTEM_BTN_DOWN);
+		ButtonCatchEnter(SYSTEM_BTN_ENTER);
+		ButtonCatchEnter(SYSTEM_BTN_RIGHT);
+		EncoderCatch(SYSTEM_ENC_MAIN);
 	}
 
 	int GetCurrentSettingIdx() const { return cur_setting; }
@@ -163,26 +212,22 @@ public:
 				return true;
 		}
 
-		if (IsSystemNextEvent(event, true))
-		{
-			NextSetting();
+		if (up_catcher.ProcessInput(event) ||
+			down_catcher.ProcessInput(event) ||
+			enter_catcher.ProcessInput(event) ||
+			enc_catcher.ProcessInput(event))
 			return true;
-		}
-		else if (IsSystemPrevEvent(event, true))
-		{
-			PrevSetting();
-			return true;
-		}
-		else if (IsSystemEnterEvent(event, true))
-		{
-			return true;
-		}
 
 		return false;
 	}
 
 	void Loop() override 
 	{ 
+		up_catcher.Loop();
+		down_catcher.Loop();
+		enter_catcher.Loop();
+		enc_catcher.Loop();
+
 		RefreshPosition();
 		for (ISettingUI* setting : settings)
 			setting->Loop();
