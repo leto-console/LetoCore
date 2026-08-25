@@ -1,7 +1,7 @@
 #include "FileManager_Menu.hpp"
 
 #include <FatFs/low_level/ff.h>
-#include <GamesSupport/GameLoader.hpp>
+#include <AppLoader/AppLoader.hpp>
 #include <LetoAPI_V1/LetoAPI_V1.h>
 #include <Input/SystemInputID.hpp>
 
@@ -63,7 +63,7 @@ void FileManager_Menu::RefreshLoop()
     }
 
     FILINFO fileInfo;
-    GameInfo dummy;
+    AppInfo dummy;
     for(;;)
     {
         res = f_readdir(&dir, &fileInfo);
@@ -127,7 +127,7 @@ void FileManager_Menu::Enter()
         //Short view of the file
         break;
     case FLAG_GAME:
-        //LoadGame or ShowInfo
+        //LoadApplication or ShowInfo
         break;
     case FLAG_CLOSE:
         Close();

@@ -1,4 +1,4 @@
-#include "GameLoader.hpp"
+#include "AppLoader.hpp"
 
 #include <LetoAPI_V1/Application/LetoApplication_V1.h>
 #include <LetoAPI_V1_System/Make.hpp>
@@ -8,7 +8,7 @@
 //                    Независимый от платформы код
 // ======================================================================
 
-AppBinHeader* CurrentLoadedGame = nullptr;
+AppBinHeader* CurrentLoadedApp = nullptr;
 
 // ======================================================================
 
@@ -23,7 +23,7 @@ AppBinHeader* CurrentLoadedGame = nullptr;
 
 static HMODULE hLoadedDll;
 
-uint32_t ScanGames(GameInfo *buffer, uint32_t available)
+uint32_t ScanApps(AppInfo* array, uint32_t available)
 {
     WIN32_FIND_DATAA file_data;
     uint32_t count = 0;
@@ -51,7 +51,7 @@ uint32_t ScanGames(GameInfo *buffer, uint32_t available)
             char rel_path[64];
             snprintf(rel_path, sizeof(rel_path), "%s%s", base_path, file_data.cFileName);
 
-            if (CheckGame(rel_path, buffer[count]))
+            if (CheckGame(rel_path, array[count]))
                 count++;
         }
     } 
@@ -102,7 +102,7 @@ bool GetBinary(const char *path, void* bin_info, uint32_t info_size, bool load_i
 
 extern SPI_HandleTypeDef hspi1;
 
-uint32_t ScanGames(GameInfo *buffer, uint32_t available)
+uint32_t ScanApps(AppInfo* array, uint32_t available)
 {
 	FRESULT res;
     uint32_t count = 0;
@@ -124,9 +124,9 @@ uint32_t ScanGames(GameInfo *buffer, uint32_t available)
             break;
         }
 
-        if(!(fileInfo.fattrib & AM_DIR) && CheckGame(fileInfo.fname, buffer[count]))
+        if(!(fileInfo.fattrib & AM_DIR) && CheckGame(fileInfo.fname, array[count]))
         {
-			VC_Printf("[SG] %s\r\n", BlueColor, buffer[count].en_name);
+			VC_Printf("[SG] %s\r\n", BlueColor, array[count].en_name);
 			count++;
         }
     }
@@ -168,7 +168,7 @@ bool GetBinary(const char *path, void* bin_info, uint32_t info_size, bool load_i
 
 #endif
 
-bool CheckGame(const char *path, GameInfo &info)
+bool CheckGame(const char *path, AppInfo& info)
 {
 	AppBinHeader bin_info{};
 
@@ -183,11 +183,11 @@ bool CheckGame(const char *path, GameInfo &info)
 	return true;
 }
 
-bool LoadGame(const char *path, IAllocator& allocator)
+bool LoadApplication(const char *path)
 {
-	VC_Printf("LoadGame\r\n", BlueColor);
+	VC_Printf("LoadApplication\r\n", BlueColor);
 
-    if (CurrentLoadedGame) return false;
+    if (CurrentLoadedApp) return false;
 
     AppBinHeader bin_info{};
     if (!GetBinary(path, &bin_info, sizeof(AppBinHeader))) 
@@ -199,8 +199,8 @@ bool LoadGame(const char *path, IAllocator& allocator)
 
     if (bin_info.api_version == 1)
     {
-        LetoApplication_V1* app = allocator.Make<LetoApplication_V1>();
-        if (!GetBinary(path, app, sizeof(LetoApplication_V1), true))
+        static LetoApplication_V1 app;
+        if (!GetBinary(path, &app, sizeof(LetoApplication_V1), true))
         {
         	VC_Printf("Get App_V1 fail \r\n", RedColor);
             return false;
@@ -212,36 +212,35 @@ bool LoadGame(const char *path, IAllocator& allocator)
     	__ISB(); // Очищаем конвейер, чтобы процессор гарантированно читал новые инструкции
 #endif
 
-        LetoResult_V1 res = app->Init(leto_api_v1);
+        LetoResult_V1 res = app.Init(leto_api_v1);
         if (res != LETO_V1_SUCCESS)
         {
         	VC_Printf("App_V1 Init fail\r\n", RedColor);
         	VC_Printf("%res=%d\r\n", RedColor, res);
-            UnloadGame(allocator);
+            UnloadApplication();
             return false;
         }
     	VC_Printf("App_V1 Init success!\r\n", GreenColor);
 
-        CurrentLoadedGame = reinterpret_cast<AppBinHeader*>(app);
+        CurrentLoadedApp = reinterpret_cast<AppBinHeader*>(&app);
         return true;
     }
 
 	VC_Printf("App_V%d not supported! \r\n", RedColor, bin_info.api_version);
-    UnloadGame(allocator);
+    UnloadApplication();
     return false;
 }
 
 
-void UnloadGame(IAllocator& allocator)
+void UnloadApplication()
 {
-    if (CurrentLoadedGame)
+    if (CurrentLoadedApp)
     {
-        if (CurrentLoadedGame->api_version == 1)
+        if (CurrentLoadedApp->api_version == 1)
         {
-            reinterpret_cast<LetoApplication_V1*>(CurrentLoadedGame)->Clean();
+            reinterpret_cast<LetoApplication_V1*>(CurrentLoadedApp)->Clean();
         }
-        allocator.Clear(CurrentLoadedGame);
-        CurrentLoadedGame = nullptr;
+        CurrentLoadedApp = nullptr;
     }
 
 #ifdef _WIN32

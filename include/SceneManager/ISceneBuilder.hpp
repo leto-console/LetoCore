@@ -84,6 +84,8 @@ private:
 //    return scene;
 //}
 
+// ==========================================================================================
+
 template <typename Scene>
 class ISceneNoArgBuilder : public ISceneBuilder
 {
@@ -100,5 +102,75 @@ protected:
 };
 
 #define SCENE_NO_ARGS_BUILDER(Class) using Builder = ISceneNoArgBuilder<Class>;
+
+// ==========================================================================================
+
+template <typename Scene, typename ArgType>
+class ISceneOneArgBuilder : public ISceneBuilder
+{
+    static_assert(std::is_base_of<IScene, Scene>::value);
+public:
+    ISceneOneArgBuilder(ISceneManager* manager, ArgType arg) : ISceneBuilder(manager), arg{ arg }
+    { }
+
+protected:
+    ArgType arg;
+
+    IScene* Create(IAllocator& allocator) override
+    {
+        return allocator.Make<Scene>(this->scene_manager, arg);
+    }
+};
+
+#define SCENE_ONE_ARG_BUILDER(Class, ArgType) using Builder = ISceneOneArgBuilder<Class, ArgType>;
+
+// ==========================================================================================
+
+template <typename Scene, typename Arg1Type, typename Arg2Type>
+class ISceneTwoArgsBuilder : public ISceneBuilder
+{
+    static_assert(std::is_base_of<IScene, Scene>::value);
+public:
+    ISceneTwoArgsBuilder(ISceneManager* manager, Arg1Type arg1, Arg2Type arg2) 
+        : ISceneBuilder(manager), arg1{ arg1 }, arg2{ arg2 }
+    { }
+
+protected:
+    Arg1Type arg1;
+    Arg2Type arg2;
+
+    IScene* Create(IAllocator& allocator) override
+    {
+        return allocator.Make<Scene>(this->scene_manager, arg1, arg2);
+    }
+};
+
+#define SCENE_TWO_ARGS_BUILDER(Class, Arg1Type, Arg2Type) using Builder = ISceneTwoArgsBuilder<Class, Arg1Type, Arg2Type>;
+
+// ==========================================================================================
+
+template <typename Scene, typename Arg1Type, typename Arg2Type, typename Arg3Type>
+class ISceneThreeArgsBuilder : public ISceneBuilder
+{
+    static_assert(std::is_base_of<IScene, Scene>::value);
+public:
+    ISceneThreeArgsBuilder(ISceneManager* manager, Arg1Type arg1, Arg2Type arg2, Arg3Type arg3) 
+        : ISceneBuilder(manager), arg1{ arg1 }, arg2{ arg2 }, arg3{ arg3 }
+    { }
+
+protected:
+    Arg1Type arg1;
+    Arg2Type arg2;
+    Arg3Type arg3;
+
+    IScene* Create(IAllocator& allocator) override
+    {
+        return allocator.Make<Scene>(this->scene_manager, arg1, arg2, arg3);
+    }
+};
+
+#define SCENE_THREE_ARGS_BUILDER(Class, Arg1Type, Arg2Type, Arg3Type) using Builder = ISceneThreeArgsBuilder<Class, Arg1Type, Arg2Type, Arg3Type>;
+
+// ==========================================================================================
 
 #endif
