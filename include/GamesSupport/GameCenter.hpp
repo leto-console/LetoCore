@@ -18,26 +18,24 @@
 #include <Data/StaticList.hpp>
 
 #include <GamesSupport/BaseGame.hpp>
-#include <GamesSupport/GameInfo.hpp>
+#include <AppLoader/AppInfo.hpp>
 
 // Сцены выбора игры + обработки текущей запущенной игры
 class LETO_CORE_EXPORT GameCenter : public IScene
 {
 protected:
-	GameInfo* games_list;
+	AppInfo* games_list;
 	const uint32_t games_list_count;
 
-	ParamMenu<GameInfo*, 16> games_menu;
+	ParamMenu<AppInfo*, 16> games_menu;
 
-	/// Проверить, что событие пользовательского ввода нужно отправлять в игру
-	bool IsInputForGame(const AppEvent& event);
+	uint32_t app_scene_id;
 
 	Timer refresh_timer;
 	void RefreshGamesList();
 
 public:
-	GameCenter(ISceneManager* scene_manager);
-	~GameCenter();
+	GameCenter(ISceneManager* scene_manager, uint32_t app_scene_id);
 
 	void OnShow() override;
 	void OnHide() override;
@@ -46,10 +44,7 @@ public:
 	void Loop() override;
 	bool ProcessInput(const AppEvent& event) override;
 
-	SCENE_NO_ARGS_BUILDER(GameCenter)
+	SCENE_ONE_ARG_BUILDER(GameCenter, uint32_t)
 };
-
-// Системный игровой центр
-extern LETO_CORE_EXPORT GameCenter* SystemGameCenter;
 
 #endif

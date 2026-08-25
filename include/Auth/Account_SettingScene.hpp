@@ -41,26 +41,7 @@ public:
 	void OnShow() override;
 	void Loop() override;
 
-	class Builder : public ISceneBuilder
-	{
-	public:
-		Builder(ISceneManager* scene_manager, uint32_t editID, uint32_t deleteID) 
-			: ISceneBuilder{ scene_manager }, editID{ editID }, deleteID{ deleteID } { }
-	protected:
-		// ID сцены с редактированием аккаунта
-		uint32_t editID;
-		
-		// ID сцены с удалением аккаунта
-		uint32_t deleteID;
-
-		IScene* Create(IAllocator& allocator) override
-		{
-			return allocator.Make<Account_SettingScene>(scene_manager, editID, deleteID);
-		}
-	};
-
+	SCENE_TWO_ARGS_BUILDER(Account_SettingScene, uint32_t, uint32_t)
 };
-
-
 
 #endif

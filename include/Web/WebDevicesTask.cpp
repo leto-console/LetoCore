@@ -1,6 +1,6 @@
 #include "WebDevicesTask.hpp"
 
-#include <GamesSupport/GameLoader.hpp>
+#include <AppLoader/AppLoader.hpp>
 #include <Auth/AuthHandler.hpp>
 #include <Time/TimeUtils.hpp>
 
@@ -87,7 +87,7 @@ void WebDevicesTask::SendAccountMsg()
 
 void WebDevicesTask::SendAppMsg()
 {
-	if (!CurrentLoadedGame)
+	if (!CurrentLoadedApp)
 		return;
 	
 	uint8_t u_data[8]{};
@@ -95,7 +95,7 @@ void WebDevicesTask::SendAppMsg()
 	// Уведомление, что устройство активно и находится в приложении
 	u_data[0] = 0x03;
 
-	uint16_t id = CurrentLoadedGame->id;
+	uint16_t id = CurrentLoadedApp->id;
 	u_data[1] = id & 0xFF;
 	u_data[2] = (id >> 8) & 0xFF;
 
