@@ -7,6 +7,8 @@
 #ifndef INC_INPUT_CATCHER_I_ENCODER_CATCHER_HPP_
 #define INC_INPUT_CATCHER_I_ENCODER_CATCHER_HPP_
 
+#include "LibrariesExport.h"
+
 #include <cstdint>
 
 #include <Input/EncoderEvent.hpp>
@@ -19,7 +21,7 @@ enum EncoderCatcherMode : uint16_t
     ECM_STEP_HOLD       = (1 << 1),    ///< Callback on deviation from zero
 };
 
-class IEncoderCatcher : public ISceneObject
+class LETO_CORE_EXPORT IEncoderCatcher : public ISceneObject
 {    
 public:
     IEncoderCatcher() = default;
