@@ -18,6 +18,7 @@
 #include <LetoAPI_V1/Web/WebConnection.h>
 #include <LetoAPI_V1/Web/WebDeviceInfo.h>
 
+
 class LETO_CORE_EXPORT WebDevicesTask : public PriorityTask
 {
 protected:

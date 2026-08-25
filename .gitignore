@@ -377,7 +377,7 @@ Release/
 Core/Src/Utils/ConfigIO
 
 # Lib
-Lib/
+[Ll]ib/
 
 # Doxygen docs
 DocsHelp/doxygen/

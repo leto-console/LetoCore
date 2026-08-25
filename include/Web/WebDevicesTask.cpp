@@ -151,9 +151,12 @@ bool WebDevicesTask::Do()
 	return true;
 }
 
+#include <VirtualConsole/VirtualConsole.hpp>
+
 static void WebDevTask_Callback(uint8_t channel, uint8_t port, uint32_t id, const void* data, uint32_t size)
 {
 	if (size < 10) return;
+	VC_Print("WebDevTask_Callback", BlueColor);
 
 	const uint8_t* u_data = static_cast<const uint8_t*>(data);
 

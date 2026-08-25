@@ -27,6 +27,31 @@ namespace NRF24L01
 	// REG: 0x04
 	extern LETO_CORE_EXPORT DataCell<uint8_t> SetupRetr;
 
+	extern LETO_CORE_EXPORT DataCell<uint8_t> Reg_00;
+	extern LETO_CORE_EXPORT DataCell<uint8_t> Reg_01;
+	extern LETO_CORE_EXPORT DataCell<uint8_t> Reg_02;
+	extern LETO_CORE_EXPORT DataCell<uint8_t> Reg_03;
+	extern LETO_CORE_EXPORT DataCell<uint8_t> Reg_04;
+	extern LETO_CORE_EXPORT DataCell<uint8_t> Reg_05;
+	extern LETO_CORE_EXPORT DataCell<uint8_t> Reg_06;
+	extern LETO_CORE_EXPORT DataCell<uint8_t> Reg_07;
+	extern LETO_CORE_EXPORT DataCell<uint8_t> Reg_08;
+	extern LETO_CORE_EXPORT DataCell<uint8_t> Reg_09;
+	
+	extern LETO_CORE_EXPORT DataCell<uint64_t> Reg_0A;
+	extern LETO_CORE_EXPORT DataCell<uint64_t> Reg_0B;
+	
+	extern LETO_CORE_EXPORT DataCell<uint8_t> Reg_0C;
+	extern LETO_CORE_EXPORT DataCell<uint8_t> Reg_0D;
+	extern LETO_CORE_EXPORT DataCell<uint8_t> Reg_0E;
+	extern LETO_CORE_EXPORT DataCell<uint8_t> Reg_0F;
+
+	extern LETO_CORE_EXPORT DataCell<uint64_t> Reg_10;
+
+	extern LETO_CORE_EXPORT DataCell<uint8_t> Reg_17;
+	extern LETO_CORE_EXPORT DataCell<uint8_t> Reg_1C;
+	extern LETO_CORE_EXPORT DataCell<uint8_t> Reg_1D;
+
 	// nRF24L01+ version - true, nRF24L01 version - false
 	extern LETO_CORE_EXPORT DataCell<bool> PVariant;
 

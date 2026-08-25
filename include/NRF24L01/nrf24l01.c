@@ -87,6 +87,19 @@ uint8_t read_register(uint8_t reg)
 	return dt;
 }
 
+uint64_t read_wide_register(uint8_t reg)
+{
+	uint8_t addr = R_REGISTER | (REGISTER_MASK & reg);
+	uint64_t dt = 0;
+	uint64_t empty = 0xFFFFFFFFFFFFFFFF;
+
+	csn(LOW);
+	HAL_SPI_TransmitReceive(&hspi3, &addr, &dt, 1, 1000);
+	HAL_SPI_TransmitReceive(&hspi3, &empty, &dt, 5, 1000);
+	csn(HIGH);
+	return dt;
+}
+
 uint8_t write_registerMy(uint8_t reg, const uint8_t* buf, uint8_t len)
 {
 	uint8_t status = 0;

@@ -208,6 +208,7 @@ uint8_t flush_rx(void);
 void csn(uint8_t mode);
 void ce(uint8_t level);
 uint8_t read_register(uint8_t reg);
+uint64_t read_wide_register(uint8_t reg);
 uint8_t write_registerMy(uint8_t reg, const uint8_t* buf, uint8_t len);
 uint8_t write_register(uint8_t reg, uint8_t value);
 uint8_t write_payload(const void* buf, uint8_t len, const uint8_t writeType);
