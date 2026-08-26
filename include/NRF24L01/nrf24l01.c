@@ -94,8 +94,8 @@ uint64_t read_wide_register(uint8_t reg)
 	uint64_t empty = 0xFFFFFFFFFFFFFFFF;
 
 	csn(LOW);
-	HAL_SPI_TransmitReceive(&hspi3, &addr, &dt, 1, 1000);
-	HAL_SPI_TransmitReceive(&hspi3, &empty, &dt, 5, 1000);
+	HAL_SPI_TransmitReceive(&hspi3, &addr, (uint8_t*) &dt, 1, 1000);
+	HAL_SPI_TransmitReceive(&hspi3, (uint8_t*) &empty, (uint8_t*) &dt, 5, 1000);
 	csn(HIGH);
 	return dt;
 }

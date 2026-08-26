@@ -25,7 +25,7 @@ if("${PRESET_DEFINE_MACRO}" STREQUAL "__STM32__")
 	add_library(${PROJECT_NAME} STATIC "${C_CPP_COURCES}" "${HW_COURCES}")
 else()
 	project("LetoCore" C CXX)
-	if(LETO_PATH)
+	if(DEFINED ENV{LETO_PATH})
 		add_library("${PROJECT_NAME}" SHARED "${C_CPP_COURCES}")
 		target_compile_definitions(${PROJECT_NAME} PRIVATE LETOCORE_SHARED)
 	else()
@@ -112,22 +112,22 @@ target_compile_definitions("${PROJECT_NAME}" PRIVATE LETOCORE_EXPORT_LIBRARY)
 
 # ============================================= LetoAPI dependency ============================================
 
-if(LETO_PATH)
-    message(STATUS "[${PROJECT_NAME}] Найдена переменная LETO_PATH. Подключаем готовые артефакты...")
+if(DEFINED ENV{LETO_PATH})
+    message(STATUS "[${PROJECT_NAME}] Найдена переменная окружения LETO_PATH. Подключаем готовые артефакты...")
 
-	target_link_directories(${PROJECT_NAME} PUBLIC "${LETO_PATH}/LetoAPI/lib/${CMAKE_PRESET_NAME}")
-	target_include_directories(${PROJECT_NAME} PUBLIC "${LETO_PATH}/LetoAPI/include")
+	target_link_directories(${PROJECT_NAME} PUBLIC "$ENV{LETO_PATH}/LetoAPI/lib/${CMAKE_PRESET_NAME}")
+	target_include_directories(${PROJECT_NAME} PUBLIC "$ENV{LETO_PATH}/LetoAPI/include")
 
 	if (${PRESET_DEFINE_MACRO} STREQUAL "__WIN__")
 		add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 			COMMAND ${CMAKE_COMMAND} -E copy_if_different
-			"$<IF:$<TARGET_EXISTS:LetoAPI>,$<TARGET_FILE:LetoAPI>,${LETO_PATH}/LetoAPI/bin/${CMAKE_PRESET_NAME}/LetoAPI.dll>"
+			"$<IF:$<TARGET_EXISTS:LetoAPI>,$<TARGET_FILE:LetoAPI>,$ENV{LETO_PATH}/LetoAPI/bin/${CMAKE_PRESET_NAME}/LetoAPI.dll>"
 			$<TARGET_FILE_DIR:${PROJECT_NAME}>
 			COMMENT "[${PROJECT_NAME}] Копирование LetoAPI.dll в папку тестов..."
 		)
 	endif()
 else()
-    message(STATUS "[${PROJECT_NAME}] Переменная LETO_PATH не найдена. Серверная сборка через FetchContent...")
+    message(STATUS "[${PROJECT_NAME}] Переменная окружения LETO_PATH не найдена. Серверная сборка через FetchContent...")
 
 	include(FetchContent)
     FetchContent_Declare(
