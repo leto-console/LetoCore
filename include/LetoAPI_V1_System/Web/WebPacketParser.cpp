@@ -5,21 +5,21 @@
 
 #include <cstring>
 
-static uint8_t buffer[WC_CHANNEL_MAX][sizeof(WebPacket_V1) * 2]{};
-static uint8_t current_byte[WC_CHANNEL_MAX]{};
+static uint8_t buffer[WC_CHANNEL_MAX + 1][sizeof(WebPacket_V1) * 2]{};
+static uint8_t current_byte[WC_CHANNEL_MAX + 1]{};
 
 static void Reset(uint8_t channel)
 {
-	// if (channel >= WC_CHANNEL_MAX) return;
+	// if (channel > WC_CHANNEL_MAX) return;
 	current_byte[channel] = 0;
 }
 
 void WebPacketParser::CallbackByte(uint8_t channel, uint8_t byte)
 {
-	static WebPacket_V1 example_command;
-	static uint8_t* example_command_raw = (uint8_t*)&example_command;
+	static const WebPacket_V1 example_command{};
+	static const uint8_t* example_command_raw = (const uint8_t*)&example_command;
 
-	if (channel >= WC_CHANNEL_MAX)
+	if (channel > WC_CHANNEL_MAX)
 		return;
 
 	// First 2 bytes are magic number
