@@ -8,7 +8,6 @@
 #ifndef INC_SETTINGS_NAMED_DATA_CELL_HPP_
 #define INC_SETTINGS_NAMED_DATA_CELL_HPP_
 
-#include <Storage/Storage.hpp>
 #include <Storage/NamedSpace.hpp>
 
 #include <Data/IDataCell.hpp>
