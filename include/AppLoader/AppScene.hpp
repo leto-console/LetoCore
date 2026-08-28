@@ -15,6 +15,9 @@
 #include <GamesSupport/BaseGame.hpp>
 #include <AppLoader/AppInfo.hpp>
 
+// Путь до папки с игрой
+extern StaticText<128> AppPath;
+
 // Сцены выбора игры + обработки текущей запущенной игры
 class LETO_CORE_EXPORT AppScene : public IScene
 {
@@ -25,7 +28,7 @@ protected:
 public:
 	AppScene(ISceneManager* scene_manager);
 
-	//void OnShow() override;
+	void OnShow() override;
 	void OnHide() override;
 
 	void Draw(IScreen& screen) override;

@@ -46,10 +46,12 @@ protected:
 	RingFIFO_Static<short, 10> average_fps;
 	short frames_count = 0;
 	bool enable_fps{};
-	ButtonCatcher<SystemSceneManager> menu_hold_catcher;	/// Обработчик зажатия системной клавиши Меню
+	ButtonCatcher<SystemSceneManager> menu_hold_catcher;			/// Обработчик зажатия системной клавиши Меню
+	ButtonCatcher<SystemSceneManager> menu_double_click_catcher;	/// Обработчик двойного нажатия системной клавиши Меню
 
 	//===========================================================================================
 	void OnMenuHolded();
+	void OnMenuDoubleClick();
 
 public:
 	static inline SystemSceneManager& Instance()

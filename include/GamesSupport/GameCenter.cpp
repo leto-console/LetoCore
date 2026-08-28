@@ -5,6 +5,7 @@
 
 #include <Input/SystemInputID.hpp>
 #include <DrawFunctions/DrawText.hpp>
+#include <AppLoader/AppScene.hpp>
 
 void GameCenter::RefreshGamesList()
 {
@@ -21,6 +22,7 @@ GameCenter::GameCenter(ISceneManager* scene_manager, uint32_t app_scene_id)
 	games_list = static_cast<AppInfo*>( scene_manager->GetCommonAllocator().Alloc(sizeof(AppInfo) * games_list_count) );
 
 	refresh_timer.Start(1000);
+	games_menu.InitBaseCatchers();
 	games_menu.Enable();
 }
 
@@ -64,7 +66,7 @@ bool GameCenter::ProcessInput(const AppEvent& event)
 	}
 	else if (IsSystemEnterEvent(event) && games_menu.Count())
 	{
-		LoadApplication(games_menu.GetCurrentParam()->path);
+		AppPath = games_menu.GetCurrentParam()->path;
 		scene_manager->SwitchScene(app_scene_id);
 		return true;
 	}

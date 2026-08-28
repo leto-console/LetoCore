@@ -16,11 +16,15 @@ void SystemSceneManager::EnableFPS(bool enable)
 }
 
 SystemSceneManager::SystemSceneManager() :
-	menu_hold_catcher{ this, &SystemSceneManager::OnMenuHolded }
+	menu_hold_catcher{ this, &SystemSceneManager::OnMenuHolded },
+	menu_double_click_catcher{ this, &SystemSceneManager::OnMenuDoubleClick }
 {
 	menu_hold_catcher.Catch(SYSTEM_BTN_MENU, BCM_HOLD);
 	menu_hold_catcher.SetHoldTime(200);
 	menu_hold_catcher.Enable();
+
+	menu_double_click_catcher.Catch(SYSTEM_BTN_MENU, BCM_DOUBLE_CLICK);
+	menu_double_click_catcher.Enable();
 
 	VirtualConsole::Instance().Disable();
 	VirtualConsole::Instance().ResetViewed();
@@ -32,9 +36,17 @@ void SystemSceneManager::OnMenuHolded()
 	VirtualConsole::Instance().Enable();
 }
 
+#include <AppLoader/AppLoader.hpp>
+
+void SystemSceneManager::OnMenuDoubleClick()
+{
+	UnloadApplication();
+}
+
 void SystemSceneManager::Loop()
 {
 	menu_hold_catcher.MainLoop();
+	menu_double_click_catcher.MainLoop();
 	SceneManager::Loop();
 }
 
@@ -111,6 +123,7 @@ void SystemSceneManager::Draw(IScreen& screen)
 bool SystemSceneManager::ProcessEvent(const AppEvent& event)
 {
 	menu_hold_catcher.MainProcessInput(event);
+	menu_double_click_catcher.MainProcessInput(event);
 	
 	// Обработка системного меню
 	if (IsSystemMenuEvent(event))

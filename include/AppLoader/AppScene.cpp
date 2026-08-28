@@ -7,6 +7,8 @@
 
 #include <LetoAPI_V1/Application/LetoApplication_V1.h>
 
+StaticText<128> AppPath;
+
 static uint8_t GameButtonIds[] = {
     SYSTEM_BTN_UP, SYSTEM_BTN_DOWN, SYSTEM_BTN_LEFT, SYSTEM_BTN_RIGHT, SYSTEM_BTN_ENTER
 };
@@ -33,6 +35,11 @@ bool AppScene::IsInputForGame(const AppEvent &event)
 AppScene::AppScene(ISceneManager* scene_manager)
     : IScene{ scene_manager }
 {
+}
+
+void AppScene::OnShow()
+{
+    LoadApplication(AppPath);
 }
 
 void AppScene::OnHide()
