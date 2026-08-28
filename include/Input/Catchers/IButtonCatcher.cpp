@@ -1,7 +1,7 @@
 #include "IButtonCatcher.hpp"
 
 #include <Input/ButtonEvent.hpp>
-#include <Time/TimeUtils.hpp>
+#include <LetoAPI_V1/LetoAPI_V1.h>
 
 void IButtonCatcher::Reset()
 {
@@ -25,7 +25,7 @@ void IButtonCatcher::Loop()
 {
     if (!pressed) return;
 
-    uint32_t now_ms = TimeUtils::GetCurrentMs();
+    uint32_t now_ms = leto_api_v1->Globals->GetCurrentMs();
 
     if (now_ms - last_click_ms > hold_ms)
     {
@@ -49,7 +49,7 @@ bool IButtonCatcher::ProcessInput(const AppEvent &event)
     if (!button_id.Contains(event.id))
         return false;
     
-    uint32_t now_ms = TimeUtils::GetCurrentMs();
+    uint32_t now_ms = leto_api_v1->Globals->GetCurrentMs();
 
     if (ButtonEvent::IsPressed(event))
     {
@@ -62,7 +62,7 @@ bool IButtonCatcher::ProcessInput(const AppEvent &event)
             }
             pressed = true;
             holded = false;
-            last_click_ms = TimeUtils::GetCurrentMs();
+            last_click_ms = leto_api_v1->Globals->GetCurrentMs();
         }
         return true;
     }
