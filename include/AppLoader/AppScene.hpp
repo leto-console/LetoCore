@@ -16,7 +16,7 @@
 #include <AppLoader/AppInfo.hpp>
 
 // Путь до папки с игрой
-extern StaticText<128> AppPath;
+extern LETO_CORE_EXPORT StaticText<128> AppPath;
 
 // Сцены выбора игры + обработки текущей запущенной игры
 class LETO_CORE_EXPORT AppScene : public IScene
