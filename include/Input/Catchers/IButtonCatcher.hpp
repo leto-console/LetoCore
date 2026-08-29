@@ -49,7 +49,7 @@ private:
     StaticList<uint8_t, 4> button_id;
     uint16_t mode{};
 
-    const uint32_t double_ms{ 100 };
+    const uint32_t double_ms{ 200 };
     uint32_t hold_ms{}, multiply_ms{};
     Timer multiply_timer;
 

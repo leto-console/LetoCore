@@ -74,10 +74,15 @@ void FileManager_Menu::RefreshLoop()
         
         if (fileInfo.fattrib & AM_DIR)
             AppendDir(fileInfo.fname);
-        else if (CheckGame(fileInfo.fname, dummy))
-            AppendGame(fileInfo.fname);
         else
-            AppendFile(fileInfo.fname);
+        {
+            char path[sizeof(char_path) + sizeof(fileInfo.fname)];
+            snprintf(path, sizeof(path), "%s/%s", char_path, fileInfo.fname);
+            if (CheckGame(path, dummy))
+                AppendGame(fileInfo.fname);
+            else
+                AppendFile(fileInfo.fname);
+        }
     }
 
     SetCurrentID(1);
