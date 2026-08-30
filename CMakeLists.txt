@@ -115,7 +115,7 @@ target_compile_definitions("${PROJECT_NAME}" PRIVATE LETOCORE_EXPORT_LIBRARY)
 if(DEFINED ENV{LETO_PATH})
     message(STATUS "[${PROJECT_NAME}] Найдена переменная окружения LETO_PATH. Подключаем готовые артефакты...")
 
-	target_link_directories(${PROJECT_NAME} PUBLIC "$ENV{LETO_PATH}/LetoAPI/lib/${CMAKE_PRESET_NAME}")
+	target_link_directories(${PROJECT_NAME} PUBLIC "$ENV{LETO_PATH}/Common/${CMAKE_PRESET_NAME}/lib")
 	target_include_directories(${PROJECT_NAME} PUBLIC "$ENV{LETO_PATH}/LetoAPI/include")
 
 	if (${PRESET_DEFINE_MACRO} STREQUAL "__WIN__")
