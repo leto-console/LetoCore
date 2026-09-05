@@ -84,6 +84,12 @@ elseif (${PRESET_DEFINE_MACRO} STREQUAL "__WIN__")
 		$<$<CXX_COMPILER_ID:MSVC>:/W4 /wd4251>
 	)
 
+	if(DEFINED ENV{LETO_PATH})
+		install(FILES $<TARGET_PDB_FILE:${PROJECT_NAME}> 
+				DESTINATION bin
+				OPTIONAL)
+	endif()
+
 elseif (${PRESET_DEFINE_MACRO} STREQUAL "__LINUX__")
 
 	#find_package(Qt6 COMPONENTS Widgets REQUIRED Core)
