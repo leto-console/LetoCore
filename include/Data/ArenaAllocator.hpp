@@ -65,7 +65,7 @@ public:
 		
 		// Если освобождается только что выделенная память, функционал аналогичен стеку
 		if (&data[_inner_idx - size] == ptr)
-			_inner_idx -= size;
+			_inner_idx -= (size + sizeof(uint32_t));
 	}
 
 	void Clear(const void* ptr)

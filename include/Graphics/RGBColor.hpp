@@ -13,6 +13,8 @@
 #include <cstdint>
 #include <cstring>
 
+#include <LetoAPI_V1/Graphics/LetoColor_V1.hpp>
+
 // Вспомогательная функция для одного символа (C++11 style: один return)
 constexpr uint8_t HexCharToValue(char c) {
     return (c >= '0' && c <= '9') ? static_cast<uint8_t>(c - '0') :
@@ -38,8 +40,14 @@ struct LETO_CORE_EXPORT RGBColor
         : R { GetColor(txt, 0) }, G { GetColor(txt, 1) }, B{ GetColor(txt, 2) }
     {}
 
-    bool operator==(const RGBColor& color) const { return memcmp(this, &color, sizeof(RGBColor)) == 0; }
-    bool operator!=(const RGBColor& color) const { return !operator==(color); }
+    constexpr RGBColor(LetoColor_V1 color)
+        : R{ color.R }, G{ color.G }, B{ color.B }
+    { }
+
+    bool operator==(const RGBColor& other) const { return R == other.R && G == other.G && B == other.B; }
+    bool operator!=(const RGBColor& other) const { return !operator==(other); }
+
+    operator LetoColor_V1() const { return {R, G, B}; }
 };
 
 constexpr RGBColor WhiteColor 		{ "#ffffff" };

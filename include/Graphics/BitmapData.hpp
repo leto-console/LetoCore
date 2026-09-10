@@ -30,143 +30,83 @@ enum BitmapFlags
  */
 struct LETO_CORE_EXPORT BitmapData : public LetoHandleImpl<BitmapData, LetoBitmap_V1>
 {
-	uint8_t width{};	///< Ширина битмапа
-	uint8_t height{};	///< Высота битмапа
+protected:
+	bool editable{};	///< Можно ли менять битмап (должен быть расположен в изменяемой области памяти)
 
-	const uint8_t* bitmap{};		///< Основное изображение
-	const uint8_t* background{};	///< Фоновое изображение
+public:
+	uint16_t width{};	///< Ширина битмапа
+	uint16_t height{};	///< Высота битмапа
+
+	uint8_t* bitmap{};		///< Основное изображение
 
 	uint32_t ID{};		///< Идентификатор для поиска
 	uint32_t flags{};	///< Флаги битмапа
 
 	BitmapData(
-		uint8_t width = 0, uint8_t height = 0, 
-		const uint8_t* bitmap = nullptr, const uint8_t* background = nullptr, 
+		uint16_t width = 0, uint16_t height = 0, 
+		const uint8_t* bitmap = nullptr, 
 		uint32_t ID = 0, uint32_t flags = 0)
+
 		: width{ width }, height{ height }, 
-		bitmap{ bitmap }, background{ background },
-		ID{ ID }, flags{ flags }
+		bitmap{ const_cast<uint8_t*>(bitmap) }, //background{ const_cast<uint8_t*>(background) },
+		ID{ ID }, flags{ flags },
+		editable{ false }
 	{ }
 
-	/**
-	 * @brief Инициализация фонового изображения
-	 * 
-	 * @warning Функция затирает существующее фоновое изображение
-	 * 
-	 * @param allocator Аллокатор, из которого будет запрашиваться память
-	 */
-	template <typename TAllocator>
-	void MakeBackground(TAllocator* allocator)
-	{
-		background = (uint8_t*) allocator->Alloc(Size());
-		memset(const_cast<uint8_t*>(background), 0, Size());
-	}
+	BitmapData(
+		uint16_t width, uint16_t height, 
+		uint8_t* bitmap, 
+		uint32_t ID = 0, uint32_t flags = 0)
 
-	/**
-	 * @brief Глубокая копия одного битмапа из другого
-	 * 
-	 * Запрашивает новые блоки памяти под требуемые изображение и копирует их
-	 * 
-	 * @param allocator Аллокатор, из которого будет запрашиваться память
-	 * @param b_bitmap Нужно ли копировать основное изображение
-	 * @param b_background Нужно ли копировать фоновое изображение
-	 */
-	template <typename TAllocator>
-	void CopyFrom(TAllocator* allocator, BitmapData& from_data)
-	{
-		height = from_data.height;
-		width = from_data.width;
-		ID = from_data.ID;
-		flags = from_data.flags;
-		if (from_data.bitmap)
-		{
-			bitmap = (uint8_t*) allocator->Alloc(from_data.Size());
-			memcpy(const_cast<uint8_t*>(bitmap), from_data.bitmap, Size());
-		}
-		if (from_data.background)
-		{
-			background = (uint8_t*) allocator->Alloc(from_data.Size());
-			memcpy(const_cast<uint8_t*>(background), from_data.background, Size());
-		}
-	}
-
-	/**
-	 * @brief Глубокая копия битмапа
-	 * 
-	 * Запрашивает новые блоки памяти под требуемые изображение и копирует их в новый битмап
-	 * 
-	 * @param allocator Аллокатор, из которого будет запрашиваться память
-	 * @param b_bitmap Нужно ли копировать основное изображение
-	 * @param b_background Нужно ли копировать фоновое изображение
-	 */
-	template <typename TAllocator>
-	BitmapData CopyTo(TAllocator* allocator, bool b_bitmap = true, bool b_background = false)
-	{
-		uint8_t *copy_bitmap{}, *copy_background{};
-		if (b_bitmap && bitmap)
-		{
-			copy_bitmap = (uint8_t*) allocator->Alloc(Size());
-			memcpy(copy_bitmap, bitmap, Size());
-		}
-		if (b_background && background)
-		{
-			copy_background = (uint8_t*) allocator->Alloc(Size());
-			memcpy(copy_background, bitmap, Size());
-		}
-		return { width, height, copy_bitmap, copy_background, ID, flags };
-	}
+		: width{ width }, height{ height }, 
+		bitmap{ bitmap }, //background{ background },
+		ID{ ID }, flags{ flags },
+		editable{ true }
+	{ }
 
 	/**
 	 * @brief Размер битмапа в памяти
 	 */
 	uint32_t Size() const
 	{
+		return Size(width, height);
+	}
+
+	static uint32_t Size(uint16_t width, uint16_t height)
+	{
 		return ((height + 7) >> 3) * width;
 	}
+
+	void SetPixel(int x, int y, bool state)
+	{
+		if (!editable || !bitmap)
+			return;
+
+		if (x < 0 || x >= width || y < 0 || y >= height)
+			return;
+
+		const int bytes_per_column = (height + 7) >> 3;
+		const int idx = ((bytes_per_column * x) + (y >> 3));
+
+		if (state)
+			bitmap[idx] |= 1 << (y & 0x7);
+		else
+			bitmap[idx] &= ~(1 << (y & 0x7));
+	}
+
+	bool GetPixel(int x, int y) const
+	{
+		if (!bitmap)
+			return false;
+
+		if (x < 0 || x >= width || y < 0 || y >= height)
+			return false;
+		
+		const int bytes_per_column = (height + 7) >> 3;
+		const int idx = ((bytes_per_column * x) + (y >> 3));
+
+		return (bitmap[idx] >> (y & 0x7)) & 1;
+	}
 };
-
-/**
- * @brief Установить пиксель
- * 
- * @param data Указатель на битмап
- * @param width Ширина битмапа
- * @param height Высота битмапа
- * @param x,y Координаты пикселя
- */
-inline LETO_CORE_EXPORT void SetPixel(uint8_t* data, uint8_t width, uint8_t height, int x, int y)
-{
-	if (x < 0 || x >= width || y < 0 || y >= height)
-	{
-		return;
-	}
-
-	const int width_bytes = (height + 7) >> 3;
-	const int idx = ((width_bytes * x) + (y >> 3));
-
-	data[idx] |= 1 << (y & 0x7);
-}
-
-/**
- * @brief Получить состояние пикселя
- * 
- * @param data Указатель на битмап
- * @param width Ширина битмапа
- * @param height Высота битмапа
- * @param x,y Координаты пикселя
- * 
- * @return Состояние пикселя (1/0)
- */
-inline LETO_CORE_EXPORT bool GetPixel(const uint8_t* data, uint8_t width, uint8_t height, int x, int y)
-{
-	if (x < 0 || x >= width || y < 0 || y >= height)
-	{
-		return false;
-	}
-	
-	const int width_bytes = (height + 7) >> 3;
-	const int idx = ((width_bytes * x) + (y >> 3));
-
-	return (data[idx] >> (y & 0x7)) & 1;
-}
 
 #endif

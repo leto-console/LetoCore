@@ -8,11 +8,13 @@
 #include <SceneManager/SystemSceneSettings.hpp>
 #include <VirtualConsole/VirtualConsole.hpp>
 #include <Input/SystemInputID.hpp>
+#include <System/DebugMode.hpp>
 
 void SystemSceneManager::EnableFPS(bool enable)
 {
 	enable_fps = enable;
 	fps_timer.Start(100);
+	SetDebugMode(enable);
 }
 
 SystemSceneManager::SystemSceneManager() :
@@ -53,20 +55,6 @@ void SystemSceneManager::Loop()
 #include <Graphics/DefaultFont.hpp>
 #include <DrawFunctions/DrawText.hpp>
 
-/// TODO: Оформить в более приятный объекты
-
-static void DrawCapacity(IScreen& screen, Point2_i& p, StaticText8 letter, CapacityIndicatorUI& ind, IAllocator& allocator)
-{
-	static StaticText32 text{};
-	DrawFunctions::DrawText(screen, p, letter, WhiteColor, BlackColor, false, &Default_Font_7x7_small);
-	p.x += 8;
-	ind.SetPosition(p + Point2_i{0, 1});
-	snprintf(text.CharPtr(), text.Capacity(), "%d", static_cast<int>(allocator.GetPercentage() * 100));
-	DrawFunctions::DrawText(screen, p - Point2_i{0, 7}, text, WhiteColor, BlackColor, false, &Default_Font_7x7_small);
-	p.x += (ind.GetWidth() + 2);
-	ind.Draw(screen);
-}
-
 void SystemSceneManager::Draw(IScreen& screen)
 {
 	SceneManager::Draw(screen);
@@ -83,39 +71,38 @@ void SystemSceneManager::Draw(IScreen& screen)
 			fps_timer.Start();
 		}
 
+		// TODO:: support for SSD1306
+		Point2_i p = { 0, 128-8 };
+
 		static StaticText32 text{};
 		snprintf(text.CharPtr(), text.Capacity(), "%d", average_fps.Sum());
-		DrawFunctions::DrawText(screen, {0, 64 - 8}, text, WhiteColor, BlackColor, false, &Default_Font_7x7_small);
+		DrawFunctions::DrawText(screen, p, text, WhiteColor, BlackColor, false, &Default_Font_7x7_small);
 
-		Point2_i p = { 20, 64-8 };
+		p.x += 24;
+
+		Point2_i offsets[4]
+		{
+			{0,0},
+			{30,0},
+			{60,0},
+			{90,0},
+		};
 
 		{
-			IAllocator* allocator = &SystemAllocator;
-			StaticText8 letter = "S";
-
-			static CapacityIndicatorUI capacity{{}, {20, 5}, allocator};
-			DrawCapacity(screen, p, letter, capacity, *allocator);
+			static CapacityIndicatorUI capacity{p + offsets[0], {20, 5}, &SystemAllocator, "S"};
+			capacity.Draw(screen);
 		}
 		{
-			IAllocator* allocator = &common_allocator;
-			StaticText8 letter = "C";
-
-			static CapacityIndicatorUI capacity{{}, {20, 5}, allocator};
-			DrawCapacity(screen, p, letter, capacity, *allocator);
+			static CapacityIndicatorUI capacity{p + offsets[1], {20, 5}, &common_allocator, "C"};
+			capacity.Draw(screen);
 		}
 		{
-			IAllocator* allocator = &EternalAllocator;
-			StaticText8 letter = "E";
-
-			static CapacityIndicatorUI capacity{{}, {20, 5}, allocator};
-			DrawCapacity(screen, p, letter, capacity, *allocator);
+			static CapacityIndicatorUI capacity{p + offsets[2], {20, 5}, &EternalAllocator, "E"};
+			capacity.Draw(screen);
 		}
 		{
-			IAllocator* allocator = &builder_allocator;
-			StaticText8 letter = "B";
-
-			static CapacityIndicatorUI capacity{{}, {20, 5}, allocator};
-			DrawCapacity(screen, p, letter, capacity, *allocator);
+			static CapacityIndicatorUI capacity{p + offsets[3], {20, 5}, &builder_allocator, "B"};
+			capacity.Draw(screen);
 		}
     }
 }

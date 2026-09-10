@@ -37,11 +37,6 @@ namespace DrawFunctions
 
     inline void DrawBitmap(IScreen& screen, Point2_i point, const BitmapData& data, RGBColor bitmap_color, RGBColor background_color, bool inverse = false)
 	{
-		if (data.background)
-			DrawBitmap(screen, point, data.background, 	data.width, data.height, background_color, inverse);
-		else
-			DrawBitmap(screen, point, data.bitmap, 		data.width, data.height, background_color, !inverse);
-		
 		DrawBitmap(screen, point, data.bitmap, data.width, data.height, bitmap_color, inverse);
 	}
 }

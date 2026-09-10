@@ -50,6 +50,7 @@ public:
 	UI_Label& SetVerticalAlignment(LabelVerticalAlignment align);
 
 	UI_Label& SetFont(const IFont* font);
+	const IFont* GetFont() const;
 
 	UI_Label& SetTextColor(RGBColor color);
 	RGBColor GetTextColor() const;
