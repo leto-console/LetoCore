@@ -7,6 +7,8 @@
 #include "Font/Make.hpp"
 #include "Math/Make.hpp"
 #include "Lobby/Make.hpp"
+#include "Bitmap/Make.hpp"
+#include "Graphics/Make.hpp"
 
 const LetoAPI_V1* Make_LetoAPI_V1()
 {
@@ -25,7 +27,9 @@ const LetoAPI_V1* Make_LetoAPI_V1()
         Make_UserAPI(),
         Make_FontAPI(),
         Make_MathAPI(),
-        Make_LobbyAPI()
+        Make_LobbyAPI(),
+        Make_BitmapAPI(),
+        Make_GraphicsAPI()
     };
 
     leto_api_v1 = &api;

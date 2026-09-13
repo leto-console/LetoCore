@@ -10,7 +10,7 @@
 StaticText<128> AppPath;
 
 static uint8_t GameButtonIds[] = {
-    SYSTEM_BTN_UP, SYSTEM_BTN_DOWN, SYSTEM_BTN_LEFT, SYSTEM_BTN_RIGHT, SYSTEM_BTN_ENTER
+    SYSTEM_BTN_UP, SYSTEM_BTN_DOWN, SYSTEM_BTN_LEFT, SYSTEM_BTN_RIGHT, SYSTEM_BTN_ENTER, SYSTEM_BTN_ALT
 };
 
 bool AppScene::IsInputForGame(const AppEvent &event)

@@ -77,6 +77,11 @@ UI_Label& UI_Label::SetFont(const IFont *font)
     return *this;
 }
 
+const IFont *UI_Label::GetFont() const
+{
+    return label_font;
+}
+
 UI_Label& UI_Label::SetTextColor(RGBColor color)
 {
     if (label_text_color != color)

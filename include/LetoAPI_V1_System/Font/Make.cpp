@@ -7,7 +7,7 @@
 
 #include <Graphics/DefaultFont.hpp>
 
-const LetoFont_V1* GetFont(uint32_t width, uint32_t height, uint32_t type)
+static const LetoFont_V1* GetFont(uint32_t width, uint32_t height, uint32_t type)
 {
     if (width == 8 && height == 8) return IFont::ToHandle(&Default_Font_8x8);
     if (width == 7 && height == 7) return IFont::ToHandle(type == 1 ? &Default_Font_7x7_small : &Default_Font_7x7);
