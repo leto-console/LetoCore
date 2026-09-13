@@ -40,12 +40,12 @@ public:
 		ResetCurrentID();
 	}
 
-	uint8_t Count() const override 
+	uint8_t Count() const override final
 	{
 		return texts.Count();
 	}
 
-	const StaticText32& GetText(int ID) const override
+	const StaticText32& GetText(int ID) const override final
 	{
 		if (ID < 0) 
 			return texts.Front();

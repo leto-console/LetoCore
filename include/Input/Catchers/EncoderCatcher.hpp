@@ -33,7 +33,7 @@ protected:
     Class* instance;
     OnCatchFunc callback{};
 
-    void Callback(bool left) override
+    void Callback(bool left) override final
     {
         if (instance && callback)
             (instance->*callback)(left);
