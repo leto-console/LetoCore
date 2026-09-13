@@ -41,7 +41,7 @@ protected:
 
 	//===========================================================================================
 
-    IAllocator& GetSceneAllocator() override { return builder_allocator; }
+    IAllocator& GetSceneAllocator() override final { return builder_allocator; }
 
 	IScene* GetScene(uint32_t ID)
     {
@@ -99,16 +99,16 @@ public:
     //ISceneManager();
 	~SceneManager() = default;
 
-    IAllocator& GetCommonAllocator() override { return common_allocator; }
+    IAllocator& GetCommonAllocator() override final { return common_allocator; }
 
-	void AddSceneBuilder(uint32_t ID, ISceneBuilder* builder) override
+	void AddSceneBuilder(uint32_t ID, ISceneBuilder* builder) override final
     {
         if (!ID || ID >= scenesMaxCount)
             return;
         sceneBuilders[ID] = builder;
     }
 
-	void SwitchScene(uint32_t ID) override
+	void SwitchScene(uint32_t ID) override final
     {
         switch_id = ID;
         switch_return = false;
@@ -117,7 +117,7 @@ public:
 	/**
 	 * @brief Возврат на предыдущую сцену
 	 */
-	void Return() override
+	void Return() override final
     {
         uint32_t prev_id{};
         
@@ -131,14 +131,14 @@ public:
 	/// @brief Проверить, существует ли сцена с заданным идентификатор
 	/// @param ID Идентификатор проверяемой сцены
 	/// @return 
-	bool IsExists(uint32_t ID) const override
+	bool IsExists(uint32_t ID) const override final
     {
         if (!ID || ID >= scenesMaxCount)
             return false;
         return sceneBuilders[ID];
     }
 
-	uint32_t GetCurrentSceneID() const override { return currentSceneID; }
+	uint32_t GetCurrentSceneID() const override final { return currentSceneID; }
 
 	void ClearScenes() override
     {
