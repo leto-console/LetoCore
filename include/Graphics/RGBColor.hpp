@@ -13,7 +13,7 @@
 #include <cstdint>
 #include <cstring>
 
-#include <LetoAPI_V1/Graphics/LetoColor_V1.hpp>
+#include <LetoAPI_V1/Graphics/LetoColor_V1.h>
 
 // Вспомогательная функция для одного символа (C++11 style: один return)
 constexpr uint8_t HexCharToValue(char c) {
