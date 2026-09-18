@@ -14,7 +14,7 @@
 
 #include <Data/StaticText.hpp>
 
-StaticList<ConsoleCommand*, 32> CommandHandler::commands;
+StaticList<const ConsoleCommand*, 32> CommandHandler::commands;
 std::string CommandHandler::line;
 
 void CommandHandler::HandleCurrentCommand()
@@ -46,7 +46,7 @@ void CommandHandler::HandleCurrentCommand()
 		return;
 
 	bool handled = false;
-	for (ConsoleCommand* command : commands)
+	for (const ConsoleCommand* command : commands)
 	{
 		if (command->CanHandle(args[0]))
 		{
@@ -62,7 +62,7 @@ void CommandHandler::HandleCurrentCommand()
 	args.clear();
 }
 
-void CommandHandler::RegConsoleCommand(ConsoleCommand* command)
+void CommandHandler::RegConsoleCommand(const ConsoleCommand* command)
 {
 	commands.push_back(command);
 }

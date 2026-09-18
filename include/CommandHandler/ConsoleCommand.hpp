@@ -16,21 +16,20 @@
 class LETO_CORE_EXPORT ConsoleCommand
 {
 protected:
-    StaticText32 name;	// Наименование команды в формате CLI (без пробелов)
-    StaticText32 descr;	// Описание команды
+    const StaticText32 name;	// Наименование команды в формате CLI (без пробелов)
+    const StaticText32 descr;	// Описание команды
 public:
     ConsoleCommand(const StaticText32& name, const StaticText32& descr)
         : name{ name }, descr{ descr }
-    {
-    }
+    { }
     virtual ~ConsoleCommand() = default;
 
     bool CanHandle(const StaticText32& command) const { return command == name; }
-    StaticText32 GetName() const { return name; }
-    StaticText32 GetDescription() const { return descr; }
+    const StaticText32& GetName() const { return name; }
+    const StaticText32& GetDescription() const { return descr; }
 
     // Аргументы вместе с названием команды
-    virtual void Handle(const StaticListView<StaticText32>& args) = 0;
+    virtual void Handle(const StaticListView<StaticText32>& args) const = 0;
 };
 
 #endif /* INC_COMMANDHANDLER_COMMANDHANDLER_HPP_ */
