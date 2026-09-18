@@ -17,13 +17,13 @@ class LETO_CORE_EXPORT CommandHandler
 {
 protected:
 	// Список зарегистрированных команд
-	static StaticList<ConsoleCommand*, 32> commands;
+	static StaticList<const ConsoleCommand*, 32> commands;
 	static std::string line;
 
 	static void HandleCurrentCommand();
 
 public:
-	static void RegConsoleCommand(ConsoleCommand* command);
+	static void RegConsoleCommand(const ConsoleCommand* command);
 	static void Callback(char ch);
 };
 
