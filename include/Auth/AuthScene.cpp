@@ -23,6 +23,7 @@ AuthScene::AuthScene(ISceneManager* scene_manager) :
 	create_scene{ scene_manager, *this }
 {
 	menu.InitBaseCatchers();
+	menu.EnableReadyLogic();
 	menu.SetStyle(MenuStyle::STYLE_2, &Default_Font_7x7);
 	menu.SetVerticalAlignment(MenuVerticalAlignment::CENTER);
 	menu.Enable();
@@ -111,23 +112,6 @@ bool AuthScene::ProcessInput(const AppEvent& event)
 	if (current_subscene)
 		return current_subscene->MainProcessInput(event);
 
-	if (IsSystemEnterEvent(event))
-	{
-		if (menu.GetCurrentParam() > _USER_START)
-		{
-			AuthHandler::Instance().Login(menu.GetCurrentParam() - _USER_START);
-			SetSystemMode(SystemMode::USER);
-		}
-		else if (menu.GetCurrentParam() == _ADMIN)
-		{
-			SetSystemMode(SystemMode::ADMIN);
-		}
-		else if (menu.GetCurrentParam() == _CREATE)
-		{
-			ShowCreateScene();
-		}
-		return true;
-	}
 	return false;
 }
 
@@ -135,4 +119,23 @@ void AuthScene::Loop()
 {
 	if (current_subscene)
 		current_subscene->MainLoop();
+	
+	int param;
+	if (menu.IsResultParamReady(param))
+	{
+		if (param > _USER_START)
+		{
+			AuthHandler::Instance().Login(param - _USER_START);
+			SetSystemMode(SystemMode::USER);
+		}
+		else if (param == _ADMIN)
+		{
+			SetSystemMode(SystemMode::ADMIN);
+		}
+		else if (param == _CREATE)
+		{
+			ShowCreateScene();
+		}
+		menu.SubmitReady();
+	}
 }

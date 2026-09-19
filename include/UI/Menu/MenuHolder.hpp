@@ -57,6 +57,8 @@ protected:
 	ButtonCatcher<MenuHolder> up_catcher, down_catcher, enter_cather;
 	EncoderCatcher<MenuHolder> enc_catcher;
 
+	void SubmitCatchers();
+	
 public:
 	MenuHolder(uint8_t visible_elements = 8, Point2_i position = {}, bool ready_logic = false);
 

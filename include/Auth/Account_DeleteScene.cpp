@@ -16,6 +16,7 @@
 
 Account_DeleteScene::Account_DeleteScene(ISceneManager* scene_manager) : IScene{ scene_manager }
 {
+	delete_question.InitBaseCatchers();
 	delete_question.SetText(0, "ВНИМАНИЕ!");
 	delete_question.SetText(1, "УДАЛИТЬ АККАУНТ");
 

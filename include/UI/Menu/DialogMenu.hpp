@@ -41,17 +41,17 @@ public:
 	DialogParamMenu() : menu{ 3 }
 	{
 		font = IFont::FromHandle(leto_api_v1->Font->GetFont(7, 7, 0));
-		menu.InitBaseCatchers();
 		menu.SetStyle(MenuStyle::STYLE_3, font);
 		menu.SetHorizonAlignment(MenuHorizonAlignment::CENTER);
+		menu.Enable();
 		Disable();
 	}
 
 	void InitBaseCatchers()
 	{
-		ButtonCatchUp(SYSTEM_BTN_UP);
-		ButtonCatchDown(SYSTEM_BTN_DOWN);
+		menu.InitBaseCatchers();
 		ButtonCatchEnter(SYSTEM_BTN_ENTER);
+		ButtonCatchEnter(SYSTEM_BTN_RIGHT);
 	}
 
 	void OnShow() override
@@ -144,7 +144,9 @@ public:
 		right += 4;
 
 		// Меню с рамками
-		DrawOutlinedRectangle(screen, { left, up }, { right, down }, BlackColor, WhiteColor);
+		constexpr int margin = 2;
+		leto_api_v1->Graphics->DrawRoundRect(IScreen::ToHandle(&screen), left-margin, up-margin, right-left+2*margin, down-up+2*margin, 6, 0, BlackColor);
+		leto_api_v1->Graphics->DrawRoundRect(IScreen::ToHandle(&screen), left, up, right-left, down-up, 6, 1, WhiteColor);
 
 		// TODO: offset's
 		for (int i = 0; i < TEXT_SIZE; ++i)
@@ -162,10 +164,15 @@ public:
 	{
 		if (menu.ProcessInput(input))
 			return true;
-		else if ((enter_catcher.ProcessInput(input) || IsSystemEnterEvent(input)) && leto_api_v1->Globals->GetCurrentMs() - active_ms > 200)
+		else if ((enter_catcher.ProcessInput(input)) && leto_api_v1->Globals->GetCurrentMs() - active_ms > 200)
 			ready = true;
 
 		return true;
+	}
+
+	void Loop() override
+	{
+		menu.MainLoop();
 	}
 };
 

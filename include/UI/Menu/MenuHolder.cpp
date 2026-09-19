@@ -132,6 +132,15 @@ bool MenuHolder::IsResultReady(int &idx) const
 void MenuHolder::SubmitReady()
 {
 	ready = false;
+	SubmitCatchers();
+}
+
+void MenuHolder::SubmitCatchers()
+{
+	enter_cather.Reset();
+	up_catcher.Reset();
+	down_catcher.Reset();
+	enc_catcher.Reset();
 }
 
 void MenuHolder::Rotate(bool left)
