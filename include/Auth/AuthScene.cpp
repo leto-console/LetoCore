@@ -3,6 +3,7 @@
 #include <Graphics/DefaultFont.hpp>
 #include <Input/SystemInputID.hpp>
 #include <System/SystemMode.hpp>
+#include <System/DeviceID.hpp>
 
 #include <Auth/AuthHandler.hpp>
 #include <Bitmaps/Avatars.hpp>
@@ -17,10 +18,10 @@ enum
 	_USER_START
 };
 
-AuthScene::AuthScene(ISceneManager* scene_manager) :
-	IScene{scene_manager},
-	menu{ 5, {40, 30} },
-	create_scene{ scene_manager, *this }
+AuthScene::AuthScene(ISceneManager *scene_manager, IDataCell<uint32_t>* SerialNumber) 
+	: IScene{scene_manager}, menu{5, {40, 30}},
+	create_scene{scene_manager, *this},
+	device_id_scene{scene_manager, *this, SerialNumber}
 {
 	menu.InitBaseCatchers();
 	menu.EnableReadyLogic();
@@ -37,11 +38,23 @@ AuthScene::AuthScene(ISceneManager* scene_manager) :
 	AddObject(&label_input);
 }
 
+void AuthScene::ShowDeviceID_Scene()
+{
+	if (current_subscene)
+		current_subscene->OnHide();
+	current_subscene = &device_id_scene;
+	menu.Disable();
+	label_input.SetText("ВВЕДИТЕ DEVICE ID:");
+	if (current_subscene)
+		current_subscene->MainOnShow();
+}
+
 void AuthScene::ShowSelectScene()
 {
 	if (current_subscene)
 		current_subscene->OnHide();
 	current_subscene = nullptr;
+	label_input.SetText("ВОЙТИ:");
 	menu.Enable();
 	if (current_subscene)
 		current_subscene->MainOnShow();
@@ -71,6 +84,9 @@ void AuthScene::OnShow()
 	{
 		menu.AppendMenuItem("СОЗДАТЬ", _CREATE);
 	}
+
+	if (GetDeviceID() == 0)
+		ShowDeviceID_Scene();
 }
 
 void AuthScene::Draw(IScreen& screen)

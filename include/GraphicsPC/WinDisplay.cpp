@@ -92,13 +92,13 @@ WinDisplay::WinDisplay(int width, int height, int scale) :
 	HEIGHT = height;
 
 	imageData = new uint32_t[WIDTH * HEIGHT]{};
-
 }
 
 WinDisplay::~WinDisplay()
 {
 	DestroyWindow(m_hWnd);
 	UnregisterClass(CLASS_NAME, m_hInstance);
+	delete imageData;
 }
 
 int WinDisplay::Width() const
