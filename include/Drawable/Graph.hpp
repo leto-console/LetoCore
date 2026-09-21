@@ -33,26 +33,26 @@ public:
 	{ 
 	}
 
-	virtual void AddValue(SingleData<T> data)
+	void AddValue(SingleData<T> data)
 	{
 		T val; data.Get(val);
 		AddValue(val);
 	}
-	virtual void AddValue(SourceData<T> data)
+	void AddValue(SourceData<T> data)
 	{
 		T val; data.Get(val);
 		AddValue(val);
 	}
-	virtual void AddValue(T val)
+	void AddValue(T val)
 	{
 		if (counter++ % scale != 0) return;
 		memcpy(data, data + 1, (Width - 1) * sizeof(T));
 		data[Width - 1] = val;
 		if (ptr < Width) ptr++;
 	}
-	virtual void Clear() { ptr = 0; }
-	virtual void SetScale(int scale) { Clear(); this->scale = scale; }
-	virtual int GetScale() { return scale; }
+	void Clear() { ptr = 0; }
+	void SetScale(int scale) { Clear(); this->scale = scale; }
+	int GetScale() { return scale; }
 
 	void Draw(IScreen& screen, Point2_i offset = {}) override
 	{

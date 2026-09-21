@@ -20,8 +20,8 @@ protected:
 public:
 	virtual ~ISelectable() = default;
 
-	virtual bool IsSelected() const { return selected; }
-	virtual void Select(bool select = true) { selected = select; }
+	bool IsSelected() const { return selected; }
+	void Select(bool select = true) { selected = select; }
 };
 
 #endif

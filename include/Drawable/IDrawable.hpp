@@ -68,35 +68,35 @@ public:
 	}
 
 	// Настройка отображения объекта
-	virtual IDrawable& SetActive(bool active = true)
+	IDrawable& SetActive(bool active = true)
 	{
 		is_active = active;
 		Invalidate();
 		return *this;
 	}
 
-	virtual bool IsActive() const
+	bool IsActive() const
 	{
 		return is_active;
 	}
 
-	virtual void Validate()
+	void Validate()
 	{
 		is_valid = true;
 	}
 
-	virtual void Invalidate()
+	void Invalidate()
 	{
 		is_valid = false;
 		/// TODO: Добавить логику отправки областей, которые нужно отрендерить
 	}
 
-	virtual bool IsValid() const
+	bool IsValid() const
 	{
 		return is_valid;
 	}
 
-	virtual IDrawable& SetPosition(Point2_i pos)
+	IDrawable& SetPosition(Point2_i pos)
 	{
 		Invalidate();
 		this->position = pos;
@@ -104,7 +104,7 @@ public:
 		return *this;
 	}
 
-	virtual Point2_i GetPosition() const
+	Point2_i GetPosition() const
 	{
 		return position;
 	}
