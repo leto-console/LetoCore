@@ -74,7 +74,7 @@ public:
 	}
 
 	/* Обновляет текущее значение */
-	virtual void UpdateCurrentValue() override
+	void UpdateCurrentValue() override
 	{
         DateTime::GetTime(current.hours,    current.minutes,    current.seconds);
         DateTime::GetDate(current.date,     current.month,      current.year);
@@ -208,7 +208,7 @@ protected:
 		}
 	}
 
-	virtual void DrawValue(IScreen& screen) override
+	void DrawValue(IScreen& screen) override
 	{
 		using namespace DrawFunctions;
 

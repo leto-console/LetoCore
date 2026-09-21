@@ -23,10 +23,10 @@ public:
 	virtual ~ICapturable() = default;
 
 	/// Захвачен ли поток событий
-	virtual bool IsCaptured() const { return captured; }
+	bool IsCaptured() const { return captured; }
 
 	/// Захватить поток событий
-	virtual void Capture(bool capture = true) { captured = capture; }
+	void Capture(bool capture = true) { captured = capture; }
 
 	/**
 	 * @brief Функция для обработки входящих событий
