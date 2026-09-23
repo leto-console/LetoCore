@@ -53,6 +53,8 @@ struct LETO_CORE_EXPORT RGBColor
 constexpr RGBColor WhiteColor 		{ "#ffffff" };
 constexpr RGBColor BlackColor 		{ "#000000" };
 
+constexpr RGBColor BrownColor 		{ "#614111" };
+
 constexpr RGBColor CyanColor        { "#00ffff" };
 constexpr RGBColor aRedColor        { "#ff0000" };
 constexpr RGBColor aGreenColor      { "#00ff00" };
