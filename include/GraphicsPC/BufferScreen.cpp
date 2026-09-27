@@ -40,7 +40,7 @@ void BufferScreen::SetSize(int width, int height)
 
 void BufferScreen::PixelSet(int x, int y, RGBColor color)
 {
-	if (x >= width || y >= height ||
+	if (color.skip || x >= width || y >= height ||
 		x < 0 || y < 0)
 		return;
 	image[y * width + x] = RGBColor_to_U32model(color);
@@ -62,6 +62,7 @@ void BufferScreen::ClearScreen()
 
 void BufferScreen::FillScreen(RGBColor color)
 {
+	if (color.skip) return;
 	uint32_t u32_color = RGBColor_to_U32model(color);
 	for (size_t i = 0; i < width * height; ++i)
         image[i] = u32_color;

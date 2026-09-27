@@ -17,10 +17,12 @@
 #include <DrawFunctions/DrawText.hpp>
 #include <DrawFunctions/DrawRectangle.hpp>
 
+#include <Graphics/Fonts/base_6x6/base_6x6_font.hpp>
+
 #include <stdarg.h>
 
 /// Шрифт сообщений
-#define VC_FONT (&Default_Font_7x7_small)
+#define VC_FONT (&Base_6x6_Font)
 
 /// Количество сохраняемых сообщений
 #define VC_MSGS_COUNT 32

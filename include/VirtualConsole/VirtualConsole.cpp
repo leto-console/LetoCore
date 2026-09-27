@@ -44,13 +44,13 @@ void VirtualConsole::Draw(IScreen &screen, Point2_i offset)
         size_t length;
         if (length = msg.text.TextLength())
         {
-            DrawFunctions::DrawText(screen, point_txt, delim, msg.viewed ? DarkGrayColor : WhiteColor, BlackColor, false, VC_FONT);
-            DrawFunctions::DrawText(screen, point_txt + Point2_i{12, 0}, msg.text, msg.color, BlackColor, false, VC_FONT);
+            DrawFunctions::DrawText(screen, point_txt, delim, VC_FONT, msg.viewed ? DarkGrayColor : WhiteColor, BlackColor, false);
+            DrawFunctions::DrawText(screen, point_txt + Point2_i{12, 0}, msg.text, VC_FONT, msg.color, BlackColor, false);
 
             line++;
         }
 
-        point_txt.y -= VC_FONT->GetHeight();
+        point_txt.y -= (VC_FONT->GetHeight() + 1);
         msg.set_viewed = true;
 
         if (line > VC_LINE_SHOW) break;

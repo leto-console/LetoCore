@@ -42,6 +42,31 @@ namespace DrawFunctions
 		return TextWidth(text_view.ConstChar(), text_view.Capacity(), font);
 	}
 
+
+    // ===== GlyphFont =====
+
+
+    extern LETO_CORE_EXPORT void DrawGlyph(IScreen& screen, Point2_i point, const GlyphData& data, RGBColor bitmap_color, RGBColor background_color, bool inverse = false);
+
+    // Отрисовать символ в кодировке UTF-8
+    extern LETO_CORE_EXPORT void DrawChar(IScreen& screen, Point2_i point, const char* symbol, const GlyphFont* font, RGBColor color = WhiteColor, RGBColor background = BlackColor, bool inverse = false);
+
+    // Отрисовать текст в кодировке UTF-8
+    extern LETO_CORE_EXPORT void DrawText(IScreen& screen, Point2_i point, const char* text, size_t length, const GlyphFont* font, RGBColor color = WhiteColor, RGBColor background = BlackColor, bool inverse = false);
+
+    inline void DrawText(IScreen& screen, Point2_i point, StaticTextView text_view, const GlyphFont* font, RGBColor color = WhiteColor, RGBColor background = BlackColor, bool inverse = false)
+	{
+		DrawText(screen, point, text_view.ConstChar(), text_view.Capacity(), font, color, background, inverse);
+	}
+
+    // Получить ширину текста на экране
+    extern LETO_CORE_EXPORT int TextWidth(const char* text, size_t length, const GlyphFont* font);
+
+    inline int TextWidth(StaticTextView text_view, const GlyphFont* font)
+	{
+		return TextWidth(text_view.ConstChar(), text_view.Capacity(), font);
+	}
+
 }
 
 #endif

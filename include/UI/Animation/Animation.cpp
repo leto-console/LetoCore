@@ -13,6 +13,6 @@ bool Animation::IsPlaying() const
 void Animation::Play()
 {
 	if (state != State::PAUSE)
-		start_ms = leto_api_v1->Globals->GetCurrentMs();
+		start_ms = leto::globals::GetCurrentMs();
 	state = State::PLAY;
 }

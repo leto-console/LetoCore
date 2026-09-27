@@ -29,27 +29,29 @@ constexpr uint8_t GetColor(const char* txt, uint8_t order) { return HexCharToVal
 struct LETO_CORE_EXPORT RGBColor
 {    
     uint8_t R, G, B;
+    bool skip;
 
     RGBColor() = default;
 
-    constexpr RGBColor(uint8_t R, uint8_t G, uint8_t B) 
-        : R{ R }, G{ G }, B{ B }
+    constexpr RGBColor(uint8_t R, uint8_t G, uint8_t B, bool skip = false) 
+        : R{ R }, G{ G }, B{ B }, skip{ skip }
     {}
 
-    constexpr RGBColor(const char* txt)
-        : R { GetColor(txt, 0) }, G { GetColor(txt, 1) }, B{ GetColor(txt, 2) }
+    constexpr RGBColor(const char* txt, bool skip = false)
+        : R { GetColor(txt, 0) }, G { GetColor(txt, 1) }, B{ GetColor(txt, 2) }, skip{ skip }
     {}
 
     constexpr RGBColor(LetoColor_V1 color)
-        : R{ color.R }, G{ color.G }, B{ color.B }
+        : R{ color.R }, G{ color.G }, B{ color.B }, skip{ color.skip != 0 }
     { }
 
-    bool operator==(const RGBColor& other) const { return R == other.R && G == other.G && B == other.B; }
-    bool operator!=(const RGBColor& other) const { return !operator==(other); }
+    constexpr bool operator==(const RGBColor& other) const { return (skip == other.skip) || (R == other.R && G == other.G && B == other.B); }
+    constexpr bool operator!=(const RGBColor& other) const { return !operator==(other); }
 
-    operator LetoColor_V1() const { return {R, G, B}; }
+    operator LetoColor_V1() const { return {R, G, B, static_cast<uint8_t>(skip ? 1 : 0)}; }
 };
 
+constexpr RGBColor TransparentColor { "#ffffff", true };
 constexpr RGBColor WhiteColor 		{ "#ffffff" };
 constexpr RGBColor BlackColor 		{ "#000000" };
 

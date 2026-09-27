@@ -16,7 +16,7 @@ SSD1306_Screen::SSD1306_Screen()
 
 void SSD1306_Screen::PixelSet(int x, int y, RGBColor color)
 {
-	if (x >= SSD1306_Width || y >= SSD1306_Height ||
+	if (color.skip || x >= SSD1306_Width || y >= SSD1306_Height ||
 		x < 0 || y < 0)
 		return;
 
@@ -47,5 +47,6 @@ void SSD1306_Screen::ClearScreen()
 
 void SSD1306_Screen::FillScreen(RGBColor color)
 {
+	if (color.skip) return;
 	memset(pages, color == WhiteColor ? 1 : 0, SSD1306_ColumnsCount * SSD1306_PagesCount);
 }
