@@ -75,7 +75,6 @@ bool IButtonCatcher::ProcessInput(const AppEvent &event)
 
     if (ButtonEvent::IsPressed(event))
     {
-        button_pressed[button_idx] = true;
         if (!pressed)
         {
             if (mode & BCM_SINGLE_PRESS) Callback();
@@ -87,18 +86,19 @@ bool IButtonCatcher::ProcessInput(const AppEvent &event)
             holded = false;
             last_click_ms = leto_api_v1->Globals->GetCurrentMs();
         }
-        return true;
+        button_pressed[button_idx] = true;
+        return !(mode & BCM_HOLD_MULTIPLY);
     }
     else if (ButtonEvent::IsReleased(event))
     {
-        button_pressed[button_idx] = false;
         multiplied = false;
         if (pressed)
         {
             if (mode & BCM_SINGLE_RELEASE) Callback();
             pressed = holded = false;
         }
-        return true;
+        button_pressed[button_idx] = false;
+        return !(mode & BCM_HOLD_MULTIPLY);
     }
     
     return false;
