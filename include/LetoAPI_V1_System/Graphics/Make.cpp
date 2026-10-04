@@ -8,9 +8,29 @@
 
 // ====================================================================================================
 
+static void __DrawBitmap(IScreen& impl_screen, int32_t x, int32_t y, const uint8_t* bitmap, uint8_t width, uint8_t height, LetoColor_V1 color)
+{
+	if (!bitmap)
+        return;
+
+    // Ранний выход если полностью за экраном
+    if (x + width <= 0 || y + height <= 0 || 
+        x >= impl_screen.Width() || y >= impl_screen.Height())
+        return;
+
+    for (int _x = 0; _x < width; ++_x)
+	{
+		for (int _y = 0; _y < height; ++_y)
+		{
+            if (BitmapGetPixel(bitmap, width, height, _x, _y) )
+                impl_screen.PixelSet(x + _x, y + _y, color);
+		}
+	}
+}
+
 static void DrawBitmap(LetoScreen_V1* screen, int32_t x, int32_t y, const LetoBitmap_V1* bitmap, LetoColor_V1 color, bool inverse)
 {
-    if (!screen || !bitmap) return;
+    if (!screen || !bitmap || !color.A) return;
 
     IScreen& impl_screen = *IScreen::FromHandle(screen);
     const BitmapData& data = *BitmapData::FromHandle(bitmap);
@@ -32,7 +52,7 @@ static void DrawBitmap(LetoScreen_V1* screen, int32_t x, int32_t y, const LetoBi
 
 static void DrawPixel(LetoScreen_V1* screen, int32_t x, int32_t y, LetoColor_V1 color)
 {
-    if (!screen) return;
+    if (!screen || !color.A) return;
     IScreen& impl_screen = *IScreen::FromHandle(screen);
 
     impl_screen.PixelSet({x, y}, color);
@@ -49,7 +69,7 @@ static inline void SwapInt(int32_t& a, int32_t& b)
 // Алгоритм Брезенхема для линии с поддержкой толщины
 static void DrawLine(LetoScreen_V1* screen, int32_t x1, int32_t y1, int32_t x2, int32_t y2, int32_t thickness, LetoColor_V1 color)
 {
-    if (!screen) return;
+    if (!screen || !color.A) return;
     IScreen& impl_screen = *IScreen::FromHandle(screen);
 
     // Если толщина <= 1, используем классический алгоритм Брезенхема
@@ -123,7 +143,7 @@ static void DrawLine(LetoScreen_V1* screen, int32_t x1, int32_t y1, int32_t x2, 
 // Оптимизированная версия DrawRect
 static void DrawRect(LetoScreen_V1* screen, int32_t x1, int32_t y1, int32_t width, int32_t height, int32_t thickness, LetoColor_V1 color)
 {
-    if (!screen || width <= 0 || height <= 0) return;
+    if (!screen || width <= 0 || height <= 0 || !color.A) return;
     IScreen& impl_screen = *IScreen::FromHandle(screen);
 
     int32_t x2 = x1 + width - 1;
@@ -163,7 +183,7 @@ static void DrawRect(LetoScreen_V1* screen, int32_t x1, int32_t y1, int32_t widt
 
 static void DrawRoundRect(LetoScreen_V1* screen, int32_t x, int32_t y, int32_t width, int32_t height, int32_t radius, int32_t thickness, LetoColor_V1 color)
 {
-    if (!screen || width <= 0 || height <= 0) return;
+    if (!screen || width <= 0 || height <= 0 || !color.A) return;
     
     IScreen& impl_screen = *IScreen::FromHandle(screen);
     
@@ -268,7 +288,7 @@ static void PlotEllipsePoints(IScreen& screen, int32_t cx, int32_t cy, int32_t x
 
 static void DrawEllipse(LetoScreen_V1* screen, int32_t centerX, int32_t centerY, int32_t width, int32_t height, int32_t thickness, LetoColor_V1 color)
 {
-    if (!screen || width <= 0 || height <= 0) return;
+    if (!screen || width <= 0 || height <= 0 || !color.A) return;
     
     IScreen& impl_screen = *IScreen::FromHandle(screen);
     
@@ -407,7 +427,7 @@ static void FillTriangle(IScreen& screen, int32_t x1, int32_t y1, int32_t x2, in
 
 static void DrawTriangle(LetoScreen_V1* screen, int32_t x1, int32_t y1, int32_t x2, int32_t y2, int32_t x3, int32_t y3, int32_t thickness, LetoColor_V1 color)
 {
-    if (!screen) return;
+    if (!screen || !color.A) return;
     IScreen& impl_screen = *IScreen::FromHandle(screen);
     
     if (thickness == 0)
@@ -424,6 +444,193 @@ static void DrawTriangle(LetoScreen_V1* screen, int32_t x1, int32_t y1, int32_t 
     }
 }
 
+static void FillScreen(LetoScreen_V1* screen, LetoColor_V1 color)
+{
+    if (!screen) return;
+    IScreen& impl_screen = *IScreen::FromHandle(screen);
+
+    impl_screen.FillScreen(color);
+}
+
+// ====================================================================================================
+
+static void __DrawGlyph(IScreen& impl_screen, Point2_i point, const GlyphData &data, RGBColor bitmap_color)
+{
+	__DrawBitmap(impl_screen, point.x, point.y, data.bitmap, data.width, data.height, bitmap_color);
+}
+
+#define __GET_SYMBOL(text) (text < 0 ? 256 + text : text)
+
+#include <Graphics/Fonts/base_6x6/base_6x6_font.hpp>
+
+static uint32_t GetTextWidth(
+    const char* text, uint32_t length,
+    const LetoFont_V1* font, 
+    LetoTextStyle_V1 style);
+
+static const char CTRL_OPEN_SYMBOL = '{';
+static const char CTRL_CLOSE_SYMBOL = '}';
+
+static void DrawText(
+    LetoScreen_V1* screen, 
+    int32_t x, int32_t y, 
+    const char* text, uint32_t length, 
+    const LetoFont_V1* font, 
+    LetoColor_V1 color, LetoColor_V1 background,
+    LetoTextStyle_V1 style)
+{
+    if (!screen || !text) return;
+    IScreen& impl_screen = *IScreen::FromHandle(screen);
+
+    const GlyphFont& impl_font = font ? *GlyphFont::FromHandle(font) : Base_6x6_Font;
+    Point2_i point{ x, y };
+	
+	RGBColor draw_color = color; 
+	size_t idx{};
+	int symbol{};
+
+    if (background.A)
+        DrawRect(screen, x-1, y-1, GetTextWidth(text, length, font, style)+2, impl_font.GetHeight()+2, 0, background);
+
+	while (text[idx] != '\0' && idx < length) {
+		symbol = __GET_SYMBOL(text[idx]);
+
+		if (symbol == CTRL_OPEN_SYMBOL) 
+		{ 
+			// Обработка тегов управления
+			idx += 2;
+			symbol = __GET_SYMBOL(text[idx]);
+            
+            // TODO: Добавить возможность с помощью тегов настраивать цвет фона
+			/* 
+				{ #RRGGBB } - смена цвета
+				{ # } - отмена смены цвета
+			*/
+			if (symbol == '#') 
+			{
+				if (idx + 2 < length)
+				{
+					symbol = __GET_SYMBOL(text[idx + 2]);
+					if (symbol == CTRL_CLOSE_SYMBOL)			/* { # } - отмена смены цвета */
+					{
+						draw_color = color;
+						idx += 3;
+						continue;
+					}
+				}
+				if (idx + 8 < length)
+				{
+					symbol = __GET_SYMBOL(text[idx + 8]);		/* { #RRGGBB } - смена цвета */
+					if (symbol == CTRL_CLOSE_SYMBOL)
+					{
+						draw_color = RGBColor{ &text[idx] };
+						idx += 9;
+						continue;
+					}
+				}
+			}
+
+			++idx;
+			continue;
+		}
+		else if (symbol == 208 || symbol == 209)
+		{
+			// Русский символ - Wide char
+			int first_symbol = symbol;
+
+			++idx;
+			symbol = __GET_SYMBOL(text[idx]);
+			
+			GlyphData data = impl_font.GetUTF8(first_symbol, symbol);
+			__DrawGlyph(impl_screen, point, data, draw_color);
+			point.x += (data.width + style.intersymbol_interval); // TODO: межсимвольный интервал
+		}
+		else if (symbol >= 32 && symbol <= 122)
+		{
+			GlyphData data = impl_font.GetUTF8(symbol);
+			__DrawGlyph(impl_screen, point, data, draw_color);
+			point.x += (data.width + style.intersymbol_interval); // TODO: межсимвольный интервал
+		}
+		else
+		{
+			GlyphData data = impl_font.GetUTF8(__GET_SYMBOL(' '));
+			__DrawGlyph(impl_screen, point, data, draw_color);
+			point.x += (data.width + style.intersymbol_interval); // TODO: межсимвольный интервал
+		}
+		++idx;
+	}
+}
+
+static uint32_t GetTextWidth(
+    const char* text, uint32_t length,
+    const LetoFont_V1* font, 
+    LetoTextStyle_V1 style)
+{
+    if (!text) 
+        return 0;
+
+    const GlyphFont& impl_font = font ? *GlyphFont::FromHandle(font) : Base_6x6_Font;
+
+	int width = 0;
+
+	size_t idx{};
+	int symbol{};
+
+	while (text[idx] != '\0' && idx < length) {
+		symbol = __GET_SYMBOL(text[idx]);
+
+        if (symbol == CTRL_OPEN_SYMBOL) 
+		{ 
+			// Обработка тегов управления
+			idx += 2;
+			symbol = __GET_SYMBOL(text[idx]);
+
+			/* 
+				{ #RRGGBB } - смена цвета
+				{ # } - отмена смены цвета
+			*/
+			if (symbol == '#') 
+			{
+				if (idx + 2 < length)
+				{
+					symbol = __GET_SYMBOL(text[idx + 2]);
+					if (symbol == CTRL_CLOSE_SYMBOL)			/* { # } - отмена смены цвета */
+					{
+						idx += 3;
+						continue;
+					}
+				}
+				if (idx + 8 < length)
+				{
+					symbol = __GET_SYMBOL(text[idx + 8]);		/* { #RRGGBB } - смена цвета */
+					if (symbol == CTRL_CLOSE_SYMBOL)
+					{
+						idx += 9;
+						continue;
+					}
+				}
+			}
+
+			++idx;
+			continue;
+		}
+		else if (symbol == 208 || symbol == 209)
+		{
+			++idx;
+			width += impl_font.GetUTF8(symbol, __GET_SYMBOL(text[idx])).width;
+			width += style.intersymbol_interval; // TODO: межсимвольный интервал
+		}
+		else
+		{
+			width += impl_font.GetUTF8(symbol).width;
+			width += style.intersymbol_interval; // TODO: межсимвольный интервал
+		}
+		++idx;
+	}
+
+	return width;
+}
+
 // ====================================================================================================
 
 const GraphicsAPI_V1* Make_GraphicsAPI()
@@ -436,7 +643,10 @@ const GraphicsAPI_V1* Make_GraphicsAPI()
         &DrawRect,
         &DrawRoundRect,
         &DrawEllipse,
-        &DrawTriangle
+        &DrawTriangle,
+        &FillScreen,
+        &DrawText,
+        &GetTextWidth
     };
     
     return &api;

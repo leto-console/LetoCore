@@ -77,7 +77,9 @@ public:
 	void RemoveIf(Predicate predicate)
 	{
 		// 1. Проверяем возвращаемый тип (например, должен быть double)
-		typedef typename std::result_of<Predicate(Type&)>::type ReturnType;
+
+		
+		typedef typename std::invoke_result<Predicate, Type&>::type ReturnType;
 
 		static_assert(std::is_same<ReturnType, bool>::value, "Лямбда должна возвращать bool");
 

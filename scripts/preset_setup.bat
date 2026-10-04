@@ -5,9 +5,9 @@ if "%LETO_PATH%"=="" (
 	exit /b 1
 )
 echo [%~1] Собираем конфигурацию %~2
-setlocal 
-cd /d "%~dp0/.."
-cmake --preset %~2
-cmake --build --preset %~2 -j
-cmake --install build/%~2 --prefix "%LETO_PATH%Common/%~2"
+setlocal enabledelayedexpansion
+cd /d "%~dp0/.." || exit /b !errorlevel!
+cmake --preset %~2 || exit /b !errorlevel!
+cmake --build --preset %~2 -j || exit /b !errorlevel!
+cmake --install build/%~2 --prefix "%LETO_PATH%Common/%~2" || exit /b !errorlevel!
 endlocal

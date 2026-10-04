@@ -58,7 +58,7 @@ void ST7735_Screen::SetArea(int x, int y)
 
 void ST7735_Screen::PixelSet(int x, int y, RGBColor color)
 {
-	if (x >= (area_x + area_width) || y >= (area_y + area_height) ||
+	if (!color.A || x >= (area_x + area_width) || y >= (area_y + area_height) ||
 		x < area_x || y < area_y)
 		return;
 	image[(y - area_y) * area_width + x - area_x] = RGBColor_to_U16Model(color);
@@ -82,6 +82,12 @@ void ST7735_Screen::ClearScreen()
 
 void ST7735_Screen::FillScreen(RGBColor color)
 {
+	if (!color.A) return;	
+	if (color == BlackColor)
+	{
+		memset(image, 0, sizeof(uint16_t) * area_width * area_height);
+		return;
+	}
 	uint16_t u16_color = RGBColor_to_U16Model(color);
 	for (size_t i = 0; i < area_width * area_height; ++i)
         image[i] = u16_color;

@@ -12,7 +12,7 @@
 
 #include <Graphics/IScreen.hpp>
 
-#include <LetoAPI_V1/LetoAPI_V1.h> 
+#include <LetoFunctions/Globals.hpp>
 
 #include <cstdint>
 
@@ -47,7 +47,7 @@ protected:
 		if (state == State::STOP)
 			return reset_to_init ? 0.0f : 1.0f;
 
-		int cur_ms = leto_api_v1->Globals->GetCurrentMs();
+		int cur_ms = leto::globals::GetCurrentMs();
 		if (state == State::PAUSE) cur_ms = pause_ms;
 		
 		float t = 1.0f * (cur_ms - start_ms) / duration_ms;
@@ -72,7 +72,7 @@ public:
 	// Пауза анимации
 	virtual void Pause()
 	{
-		pause_ms = leto_api_v1->Globals->GetCurrentMs();
+		pause_ms = leto::globals::GetCurrentMs();
 		state = State::PAUSE;
 	}
 
