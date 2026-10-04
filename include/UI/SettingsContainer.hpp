@@ -99,13 +99,13 @@ public:
 
 	void ButtonCatchUp(uint8_t button_id)
 	{
-		up_catcher.Catch(button_id, BCM_SINGLE_PRESS | BCM_MULTI_HOLD);
+		up_catcher.Catch(button_id, BCM_SINGLE_PRESS | BCM_HOLD_REPETITION);
 		up_catcher.SetHoldTime(200, 100);
 	}
 
 	void ButtonCatchDown(uint8_t button_id)
 	{
-		down_catcher.Catch(button_id, BCM_SINGLE_PRESS | BCM_MULTI_HOLD);
+		down_catcher.Catch(button_id, BCM_SINGLE_PRESS | BCM_HOLD_REPETITION);
 		down_catcher.SetHoldTime(200, 100);
 	}
 

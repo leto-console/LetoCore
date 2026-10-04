@@ -5,8 +5,9 @@
 
 void IButtonCatcher::Reset()
 {
-    pressed = holded = false;
+    multiplied = pressed = holded = false;
     last_click_ms = 0;
+    memset(button_pressed, 0, sizeof(button_pressed));
 }
 
 void IButtonCatcher::Catch(uint8_t _button_id, uint16_t _mode)
@@ -29,30 +30,52 @@ void IButtonCatcher::Loop()
 
     if (now_ms - last_click_ms > hold_ms)
     {
+        if (!multiplied)
+        {
+            if (mode & BCM_HOLD_MULTIPLY)
+            {
+                bool multiply = true;
+                for (uint8_t idx = 0; idx < button_id.size(); ++idx)
+                {
+                    if (!button_pressed[idx])
+                    {
+                        multiply = false;
+                    }
+                }
+                if (multiply)
+                {
+                    Callback();
+                    multiplied = true;
+                }
+            }
+        }
+
         if (!holded)
         {
             if (mode & BCM_HOLD) Callback();
             holded = true;
-            multiply_timer.Start(multiply_ms);
+            repeatition_timer.Start(multiply_ms);
         }
         
-        if (multiply_timer.Expired())
+        if (repeatition_timer.Expired())
         {
-            if (mode & BCM_MULTI_HOLD) Callback();
-            multiply_timer.Start();
+            if (mode & BCM_HOLD_REPETITION) Callback();
+            repeatition_timer.Start();
         }
     }
 }
 
 bool IButtonCatcher::ProcessInput(const AppEvent &event)
 {
-    if (!button_id.Contains(event.id))
+    uint8_t button_idx{};
+    if (!GetIdxByID(button_idx, event.id))
         return false;
-    
+        
     uint32_t now_ms = leto_api_v1->Globals->GetCurrentMs();
 
     if (ButtonEvent::IsPressed(event))
     {
+        button_pressed[button_idx] = true;
         if (!pressed)
         {
             if (mode & BCM_SINGLE_PRESS) Callback();
@@ -68,6 +91,8 @@ bool IButtonCatcher::ProcessInput(const AppEvent &event)
     }
     else if (ButtonEvent::IsReleased(event))
     {
+        button_pressed[button_idx] = false;
+        multiplied = false;
         if (pressed)
         {
             if (mode & BCM_SINGLE_RELEASE) Callback();
@@ -76,5 +101,18 @@ bool IButtonCatcher::ProcessInput(const AppEvent &event)
         return true;
     }
     
+    return false;
+}
+
+bool IButtonCatcher::GetIdxByID(uint8_t& out_idx, uint32_t id) const
+{
+    for (uint8_t idx = 0; idx < button_id.size(); ++idx)
+    {
+        if (button_id[idx] == id)
+        {
+            out_idx = idx;
+            return true;
+        }
+    }
     return false;
 }

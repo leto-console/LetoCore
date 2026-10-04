@@ -21,7 +21,8 @@ enum ButtonCatcherMode : uint16_t
     BCM_SINGLE_RELEASE   = (1 << 1),    ///< Callback on single release
     BCM_DOUBLE_CLICK     = (1 << 2),    ///< Callback on double click
     BCM_HOLD             = (1 << 3),    ///< Callback on hold
-    BCM_MULTI_HOLD       = (1 << 4),    ///< Callback on hold multiply 
+    BCM_HOLD_REPETITION  = (1 << 4),    ///< Callback on hold with repetition
+    BCM_HOLD_MULTIPLY    = (1 << 5),    ///< Callback on hold multiply 
 };
 
 class LETO_CORE_EXPORT IButtonCatcher : public ISceneObject
@@ -47,14 +48,19 @@ public:
 
 private:
     StaticList<uint8_t, 4> button_id;
+    bool button_pressed[4]{};
+
     uint16_t mode{};
+
+    bool GetIdxByID(uint8_t& idx, uint32_t id) const;
 
     const uint32_t double_ms{ 200 };
     uint32_t hold_ms{}, multiply_ms{};
-    Timer multiply_timer;
+    Timer repeatition_timer;
 
     bool pressed{};
     bool holded{};
+    bool multiplied{};
     uint32_t last_click_ms{};
 };
 
