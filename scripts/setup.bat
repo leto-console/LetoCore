@@ -1,7 +1,7 @@
 @echo off
 echo [LetoCore] Собираем проект...
-setlocal 
-cd /d "%~dp0"
-call preset_setup.bat LetoCore win-debug
-call preset_setup.bat LetoCore stm32f411xe-debug
+setlocal enabledelayedexpansion
+cd /d "%~dp0" || exit /b !errorlevel!
+call preset_setup.bat LetoCore win-debug || exit /b !errorlevel!
+call preset_setup.bat LetoCore stm32f411xe-debug || exit /b !errorlevel!
 endlocal

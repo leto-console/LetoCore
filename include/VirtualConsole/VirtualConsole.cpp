@@ -1,6 +1,13 @@
 #include "VirtualConsole.hpp"
 
 #include <Input/SystemInputID.hpp>
+#include <LetoFunctions/Draw.hpp>
+#include <LetoFunctions/Font.hpp>
+
+VirtualConsole::VirtualConsole()
+{
+    font = leto::font::FindFont(6, LFV1_BASE_NORMAL);
+}
 
 void VirtualConsole::ResetViewed()
 {
@@ -44,13 +51,13 @@ void VirtualConsole::Draw(IScreen &screen, Point2_i offset)
         size_t length;
         if (length = msg.text.TextLength())
         {
-            DrawFunctions::DrawText(screen, point_txt, delim, msg.viewed ? DarkGrayColor : WhiteColor, BlackColor, false, VC_FONT);
-            DrawFunctions::DrawText(screen, point_txt + Point2_i{12, 0}, msg.text, msg.color, BlackColor, false, VC_FONT);
+            leto::graphics::DrawText(IScreen::ToHandle(&screen), point_txt, delim, font, msg.viewed ? DarkGrayColor : WhiteColor, BlackColor);
+            leto::graphics::DrawText(IScreen::ToHandle(&screen), point_txt + Point2_i{12, 0}, msg.text, font, msg.color, BlackColor);
 
             line++;
         }
-
-        point_txt.y -= VC_FONT->GetHeight();
+        
+        point_txt.y -= (leto::font::GetHeight(font) + 1);
         msg.set_viewed = true;
 
         if (line > VC_LINE_SHOW) break;

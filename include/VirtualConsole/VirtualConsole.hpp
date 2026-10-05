@@ -13,14 +13,9 @@
 #include <Data/StaticList.hpp>
 #include <Graphics/IScreen.hpp>
 #include <SceneManager/ISceneObject.hpp>
-#include <Graphics/DefaultFont.hpp>
-#include <DrawFunctions/DrawText.hpp>
 #include <DrawFunctions/DrawRectangle.hpp>
 
 #include <stdarg.h>
-
-/// Шрифт сообщений
-#define VC_FONT (&Default_Font_7x7_small)
 
 /// Количество сохраняемых сообщений
 #define VC_MSGS_COUNT 32
@@ -41,6 +36,9 @@ class LETO_CORE_EXPORT VirtualConsole : public ISceneObject
 protected:
     StaticList<VC_Message, VC_MSGS_COUNT> msgs;
     size_t bottom_offset{};
+    const LetoFont_V1* font{};
+
+    VirtualConsole();
 
 public:
     static VirtualConsole& Instance()

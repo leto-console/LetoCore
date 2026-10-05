@@ -22,6 +22,21 @@ enum BitmapFlags
 	BMF_RLE = (1 << 1),		///< Используется RLE для кодирования изображения
 };
 
+inline bool BitmapGetPixel(const uint8_t* bitmap, uint16_t width, uint16_t height, int x, int y)
+{
+	if (!bitmap)
+		return false;
+
+	if (x < 0 || x >= width || y < 0 || y >= height)
+		return false;
+	
+	const int bytes_per_column = (height + 7) >> 3;
+	const int idx = ((bytes_per_column * x) + (y >> 3));
+
+	return (bitmap[idx] >> (y & 0x7)) & 1;
+}
+
+
 /**
  * @brief Битмап
  * @headerfile BitmapData.hpp <Graphics/BitmapData.hpp>
@@ -96,16 +111,7 @@ public:
 
 	bool GetPixel(int x, int y) const
 	{
-		if (!bitmap)
-			return false;
-
-		if (x < 0 || x >= width || y < 0 || y >= height)
-			return false;
-		
-		const int bytes_per_column = (height + 7) >> 3;
-		const int idx = ((bytes_per_column * x) + (y >> 3));
-
-		return (bitmap[idx] >> (y & 0x7)) & 1;
+		return BitmapGetPixel(bitmap, width, height, x, y);
 	}
 };
 

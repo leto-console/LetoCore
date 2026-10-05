@@ -10,9 +10,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 file(
 	GLOB C_CPP_COURCES 
 	"src/*/*.cpp" "src/*/*.c"
+	"src/*/*/*.cpp" "src/*/*/*.c"
+	"src/*/*/*/*.cpp" "src/*/*/*/*.c"
+	"src/*/*/*/*/*.cpp" "src/*/*/*/*/*.c"
 	"include/*/*.cpp" "include/*/*.c"
-	"src/*/*/*.cpp" "src/*/*/*/*.c"
 	"include/*/*/*.cpp" "include/*/*/*.c"
+	"include/*/*/*/*.cpp" "include/*/*/*/*.c"
+	"include/*/*/*/*/*.cpp" "include/*/*/*/*/*.c"
 )
 
 if(MSVC)
