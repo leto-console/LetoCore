@@ -111,4 +111,6 @@ using StaticText32 = StaticText<32>;
 // Статический текст величиной не более 64 символов (с NULL-терминалом)
 using StaticText64 = StaticText<64>;
 
+#include <Data/to_text.hpp>
+
 #endif

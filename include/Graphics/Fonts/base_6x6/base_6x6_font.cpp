@@ -6,7 +6,7 @@
 const GlyphFont Base_6x6_Font
 (
     6, 
-    LFV1_BASE_NORMAL, 
+    LFT_V1_BASE_NORMAL, 
     GFP_BUILD_IN,
     __glyph_base_6x6_ascii__,
     __glyph_base_6x6_rus__

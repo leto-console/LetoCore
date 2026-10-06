@@ -6,7 +6,7 @@
 
 VirtualConsole::VirtualConsole()
 {
-    font = leto::font::FindFont(6, LFV1_BASE_NORMAL);
+    font = leto::font::FindFont(6, LFT_V1_BASE_NORMAL);
 }
 
 void VirtualConsole::ResetViewed()
