@@ -27,7 +27,7 @@
 
 #include <SceneManager/SceneManager.hpp>
 
-class LETO_CORE_EXPORT SystemSceneManager : public SceneManager<32, 1024, 20 * 1024>
+class LETO_CORE_EXPORT SystemSceneManager : public SceneManager<32, 1024, 18 * 1024>
 {
 protected:
 

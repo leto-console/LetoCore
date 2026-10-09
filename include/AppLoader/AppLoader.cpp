@@ -9,6 +9,7 @@
 // ======================================================================
 
 AppBinHeader* CurrentLoadedApp = nullptr;
+AppInfo CurrentLoadedAppInfo = {};
 
 // ======================================================================
 
@@ -99,16 +100,22 @@ bool GetBinary(const char *path, void* bin_info, uint32_t info_size, bool load_i
 
 #include <FatFs/low_level/ff.h>
 #include <HAL_include/HAL.hpp>
+#include <LetoAPI_V1_System/File/FileHandlerFatFs.hpp>
 
 extern SPI_HandleTypeDef hspi1;
 
 uint32_t ScanApps(AppInfo* array, uint32_t available)
 {
+    if (!array || available == 0)
+        return 0;
+
 	FRESULT res;
     uint32_t count = 0;
 
+    const char* base_path = "/";
+
     DIR dir;
-    res = f_opendir(&dir, "/");
+    res = f_opendir(&dir, base_path);
     if(res != FR_OK)
     {
     	VC_Printf("[SG]f_opendir() failed, res = %d\r\n", RedColor, res);
@@ -116,21 +123,26 @@ uint32_t ScanApps(AppInfo* array, uint32_t available)
     }
 
     FILINFO fileInfo;
-    for(;count < available;)
+    while(count < available)
     {
         res = f_readdir(&dir, &fileInfo);
         if((res != FR_OK) || (fileInfo.fname[0] == '\0'))
-        {
             break;
-        }
 
-        if(!(fileInfo.fattrib & AM_DIR) && CheckGame(fileInfo.fname, array[count]))
+        if (fileInfo.fattrib & AM_DIR)
+            continue;
+
+        char rel_path[128];
+        snprintf(rel_path, sizeof(rel_path), "%s%s", base_path, fileInfo.fname);
+
+        if (CheckGame(rel_path, array[count]))
         {
-			VC_Printf("[SG] %s\r\n", BlueColor, array[count].en_name);
-			count++;
+            VC_Printf("[SG] %s\r\n", BlueColor, array[count].en_name);
+            count++;
         }
     }
 
+    f_closedir(&dir);
     VC_Printf("[SG]Done!\r\n", BlueColor);
     return count;
 }
@@ -174,11 +186,8 @@ bool CheckGame(const char *path, AppInfo& info)
 
     if (!GetBinary(path, &bin_info, sizeof(AppBinHeader))) return false;
 
-	info.api_version = bin_info.api_version;
-	info.id = bin_info.id;
-	snprintf(info.en_name, 		sizeof(info.en_name), 		bin_info.en_name);
-	snprintf(info.ru_name, 		sizeof(info.ru_name), 		bin_info.ru_name);
-	snprintf(info.path, 	    sizeof(info.path), 	        path);
+    info.FromBinary(bin_info);
+	snprintf(info.path, sizeof(info.path), path);
 
 	return true;
 }
@@ -223,6 +232,10 @@ bool LoadApplication(const char *path)
     	VC_Printf("App_V1 Init success!\r\n", GreenColor);
 
         CurrentLoadedApp = reinterpret_cast<AppBinHeader*>(&app);
+
+        CurrentLoadedAppInfo.FromBinary(bin_info);
+        snprintf(CurrentLoadedAppInfo.path, sizeof(CurrentLoadedAppInfo.path), path);
+
         return true;
     }
 
@@ -249,6 +262,8 @@ void UnloadApplication()
         FreeLibrary(hLoadedDll);
         hLoadedDll = nullptr;
     }
+#else
+    FileHandlerFatFs::ClearPool();
 #endif
 }
 

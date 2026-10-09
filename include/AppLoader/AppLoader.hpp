@@ -17,6 +17,9 @@
 /// @brief Текущая запущенная игра
 extern LETO_CORE_EXPORT AppBinHeader* CurrentLoadedApp;
 
+/// @brief Информация о текущей запущенной игре
+extern LETO_CORE_EXPORT AppInfo CurrentLoadedAppInfo;
+
 /**
  * @brief Получить содержимое исполняемого файла в бинарном виде
  * 

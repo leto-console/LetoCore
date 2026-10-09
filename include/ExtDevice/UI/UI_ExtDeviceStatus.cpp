@@ -26,7 +26,7 @@ static const UI_ExtDeviceStatusDef ui_status[]
 
 UI_ExtDeviceStatus::UI_ExtDeviceStatus(ExtDevice* device)
 {
-    font = leto::font::FindFont(6, LFV1_BASE_NORMAL);
+    font = leto::font::FindFont(6, LFT_V1_BASE_NORMAL);
     SetDevice(device);
 }
 
