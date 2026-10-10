@@ -21,7 +21,7 @@ enum class CapacitySettingsStyle : uint8_t
 class CapacitySettingUI : public virtual ISettingUI
 {
 protected:
-	const StaticText32 N_A = "N/A";
+	static constexpr StaticText32 N_A = "N/A";
 
 	ICapacity* object;
 	CapacitySettingsStyle style;

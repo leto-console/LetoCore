@@ -28,7 +28,7 @@ bool VirtualConsole::ProcessInput(const AppEvent &event)
 
 void VirtualConsole::Draw(IScreen &screen, Point2_i offset)
 {
-    static StaticText8 delim = "#";
+    static constexpr StaticText8 delim = "#";
     size_t txt_area_width = 160 - 10 - 6;
 
     /// TODO: Warning: HARD_CODE value of ST7735

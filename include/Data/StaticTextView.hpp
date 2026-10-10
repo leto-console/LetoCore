@@ -20,24 +20,24 @@ public:
 	constexpr StaticTextView(const StaticText<Capacity>& text) noexcept 
 		: begin_ptr{ text.begin() }, capacity{ Capacity } { }
 
-	StaticTextView(const char* text) noexcept 
-		: begin_ptr{ text }, capacity{ strlen(text) } { }
+	constexpr StaticTextView(const char* text) noexcept 
+		: begin_ptr{ text }, capacity{ constexpr_string::strlen(text) } { }
 
-	const char* ConstChar() const noexcept { return begin_ptr; }
+	constexpr const char* ConstChar() const noexcept { return begin_ptr; }
 
-	bool Empty() const noexcept { return TextLength() == 0; }
+	constexpr bool Empty() const noexcept { return TextLength() == 0; }
 
 	// Размер строки (без нулей)
-	size_t TextLength() const noexcept { return strnlen(begin_ptr, capacity); }
+	constexpr size_t TextLength() const noexcept { return constexpr_string::strnlen(begin_ptr, capacity); }
 
 	// Запас по символам (без последнего нуля)
-	size_t Capacity() const noexcept { return capacity; }
+	constexpr size_t Capacity() const noexcept { return capacity; }
 
-	const char& operator[](size_t index) const noexcept { return begin_ptr[index]; }
+	constexpr const char& operator[](size_t index) const noexcept { return begin_ptr[index]; }
 
 	// Для чтения (const-контекст): for (const char& c : myText)
-	const char* begin() const noexcept { return begin_ptr; }
-	const char* end() const noexcept { return begin_ptr + TextLength(); }
+	constexpr const char* begin() const noexcept { return begin_ptr; }
+	constexpr const char* end() const noexcept { return begin_ptr + TextLength(); }
 };
 
 #endif

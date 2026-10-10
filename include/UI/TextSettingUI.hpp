@@ -19,8 +19,6 @@ template <int N = 8>
 class TextEditableSettingUI : public IEditableSettingUI
 {
 protected:
-	const StaticText32 N_A = "N/A";
-
 	int CharWidth = 8, CharHeight = 8;
 
 	IDataCell<StaticText<N>>* setting;

@@ -23,7 +23,7 @@
 class LETO_CORE_EXPORT ISettingUI : public IDrawable, public ISelectable, public ICapturable
 {
 protected:
-	const StaticText32 N_A = "N/A";
+	static constexpr StaticText32 N_A = "N/A";
 
 	StaticText32 name;
 	short name_value_offset = -1;

@@ -20,8 +20,6 @@ template <typename T>
 class ValueSettingUI : public virtual ISettingUI
 {
 protected:
-	const StaticText32 N_A = "N/A";
-
 	IDataCell<T>* cell{};
 	T* value_ptr{};
 
@@ -39,7 +37,7 @@ protected:
 			snprintf(value_txt, sizeof(value_txt), fmt, current_value);
 			return value_txt;
 		}
-		return N_A;
+		return ISettingUI::N_A;
 	}
 
 public:

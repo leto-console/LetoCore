@@ -215,7 +215,7 @@ void MenuHolder::Draw(IScreen& screen, Point2_i offset)
 			font);
 	}
 
-	static StaticText<8> symbol = ">";
+	static constexpr StaticText<8> symbol = ">";
 
 	if (style != MenuStyle::STYLE_3 && Count() > 0)
 	{

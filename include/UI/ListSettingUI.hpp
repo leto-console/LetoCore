@@ -27,8 +27,6 @@ template <typename T>
 class ListSettingUI : public virtual ISettingUI
 {
 protected:
-	const StaticText32 N_A = "N/A";
-
 	IDataCell<T>* cell;
 	const StaticListView<ListSettingItem<T>> list;
 
@@ -37,7 +35,7 @@ protected:
 	StaticText32 CurrentValueRepr() override
 	{
 		if (cur_idx == -1)
-			return N_A;
+			return ISettingUI::N_A;
 		return list[cur_idx].name;
 	}
 
@@ -71,8 +69,6 @@ template <typename T>
 class ListEditableSettingUI : public ListSettingUI<T>, public IEditableSettingUI
 {
 protected:
-	const StaticText32 N_A = "N/A";
-
 	int edit_idx = -1;
 
 	bool bounded = true;
@@ -80,7 +76,7 @@ protected:
 	StaticText32 EditingValueRepr() override
 	{
 		if (edit_idx == -1)
-			return N_A;
+			return ISettingUI::N_A;
 		return ListSettingUI<T>::list[edit_idx].name;
 	}
 

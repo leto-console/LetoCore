@@ -37,7 +37,7 @@ void GameCenter::OnHide()
 
 void GameCenter::Draw(IScreen& screen)
 {
-	static StaticText32 title = "------ИГРЫ------";
+	static constexpr StaticText32 title = "------ИГРЫ------";
 
 	DrawFunctions::DrawText(screen, { }, title, WhiteColor, BlackColor);
 	games_menu.Draw(screen);
