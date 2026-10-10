@@ -7,8 +7,9 @@
 #ifndef INC_DATA_STATIC_TEXT_HPP_
 #define INC_DATA_STATIC_TEXT_HPP_
 
-#include <cstring>
 #include <cstdint>
+
+#include <Utils/constexpr_string.hpp>
 
 template <size_t TextCapacity = 8>
 struct StaticText
@@ -18,85 +19,85 @@ protected:
 	static constexpr uint32_t MaxCapacity = (TextCapacity - 1);
 
 public:
-	StaticText() = default;
+	constexpr StaticText() = default;
 
-	StaticText(const char* value)
+	constexpr StaticText(const char* value)
 	{
-		memcpy(text, value, strnlen(value, MaxCapacity));
+		constexpr_string::memcpy(text, value, constexpr_string::strnlen(value, MaxCapacity));
 	}
 
 	template <size_t OtherCapacity>
-	StaticText(const StaticText<OtherCapacity>& other)
+	constexpr StaticText(const StaticText<OtherCapacity>& other)
 	{
-		memcpy(text, other.ConstChar(), OtherCapacity < MaxCapacity ? OtherCapacity : MaxCapacity);
+		constexpr_string::memcpy(text, other.ConstChar(), OtherCapacity < MaxCapacity ? OtherCapacity : MaxCapacity);
 	}
 
-	operator const char* () const
+	constexpr operator const char* () const
 	{
 		return text;
 	}
 
-	void operator+= (const StaticText& other)
+	constexpr void operator+= (const StaticText& other)
 	{
 		if (TextLength() < MaxCapacity)
 		{
 			size_t available = MaxCapacity - TextLength();
-			memcpy(&text[TextLength()], other.text, other.TextLength() < available ? other.TextLength() : available);
+			constexpr_string::memcpy(&text[TextLength()], other.text, other.TextLength() < available ? other.TextLength() : available);
 		}
 	}
 
-	StaticText operator+ (const StaticText& other) const
+	constexpr StaticText operator+ (const StaticText& other) const
 	{
 		StaticText left_op = *this;
 		left_op += other;
 		return left_op;
 	}
 
-	StaticText& operator= (const StaticText& other)
+	constexpr StaticText& operator= (const StaticText& other)
 	{
-		memcpy(text, other.text, MaxCapacity);
+		constexpr_string::memcpy(text, other.text, MaxCapacity);
 		return *this;
 	}
 
-	bool operator==(const char* other) const
+	constexpr bool operator==(const char* other) const
 	{
-		return strncmp(text, other, MaxCapacity) == 0;
+		return constexpr_string::strncmp(text, other, MaxCapacity) == 0;
 	}
 
-	bool operator==(const StaticText& other) const
+	constexpr bool operator==(const StaticText& other) const
 	{
-		return strncmp(text, other.text, MaxCapacity) == 0;
+		return constexpr_string::strncmp(text, other.text, MaxCapacity) == 0;
 	}
 
 	template <size_t OtherCapacity>
-	bool operator==(const StaticText<OtherCapacity>& other) const
+	constexpr bool operator==(const StaticText<OtherCapacity>& other) const
 	{
-		return strncmp(text, other.ConstChar(), MaxCapacity) == 0;
+		return constexpr_string::strncmp(text, other.ConstChar(), MaxCapacity) == 0;
 	}
 
-	const	char& operator[](size_t index) const	{ return text[index]; }
-			char& operator[](size_t index)			{ return text[index]; }
+	constexpr const	char& operator[](size_t index) const	{ return text[index]; }
+	constexpr		char& operator[](size_t index)			{ return text[index]; }
 
-	char*		CharPtr()			{ return text; }
-	const char* ConstChar() const	{ return text; }
+	constexpr char*		CharPtr()			{ return text; }
+	constexpr const char* ConstChar() const	{ return text; }
 
-	bool Empty() const { return TextLength() == 0; }
+	constexpr bool Empty() const { return TextLength() == 0; }
 
 	// Размер строки (без нулей)
-	size_t TextLength() const { return strnlen(text, MaxCapacity); }
+	constexpr size_t TextLength() const { return constexpr_string::strnlen(text, MaxCapacity); }
 
 	// Запас по символам (без последнего нуля)
-	size_t Capacity() const { return MaxCapacity; }
+	constexpr size_t Capacity() const { return MaxCapacity; }
 
 	// for-each logic:
 
 	// Для чтения и изменения: for (char& c : myText)
-	char* begin() { return text; }
-	char* end() { return text + TextLength(); }
+	constexpr char* begin() { return text; }
+	constexpr char* end() { return text + TextLength(); }
 
 	// Для чтения (const-контекст): for (const char& c : myText)
-	const char* begin() const { return text; }
-	const char* end() const { return text + TextLength(); }
+	constexpr const char* begin() const { return text; }
+	constexpr const char* end() const { return text + TextLength(); }
 };
 
 // Статический текст величиной не более 8 символов (с NULL-терминалом)

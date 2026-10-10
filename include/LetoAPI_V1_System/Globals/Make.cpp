@@ -5,6 +5,7 @@
 #include <System/DebugMode.hpp>
 #include <Time/TimeUtils.hpp>
 #include <System/DeviceID.hpp>
+#include <System/SystemLanguage.hpp>
 #include <Utils/crc16.hpp>
 
 #include <SceneManager/SystemSceneManager.hpp>
@@ -79,7 +80,6 @@ static bool GetAppDir(char* buffer, uint32_t length)
     return true;
 }
 
-
 // ====================================================================================================
 
 const GlobalsAPI_V1* Make_GlobalsAPI()
@@ -91,7 +91,8 @@ const GlobalsAPI_V1* Make_GlobalsAPI()
         &GetCurrentMs,
         &GetDeviceID,
         &calc_crc16,
-        &GetAppDir
+        &GetAppDir,
+        &GetSystemLanguage
     };
 	
     return &api;

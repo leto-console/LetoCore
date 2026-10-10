@@ -12,7 +12,7 @@
 void ISettingUI::DrawName(IScreen& screen)
 {
 	using namespace DrawFunctions;
-	static StaticText<8> delim_symbol = ": ";
+	static constexpr StaticText<8> delim_symbol = ": ";
 
 	// Инверсия цвета настройки при выделении, но не при редактировании
 	bool reverse_name = IsSelected() && !IsCaptured();

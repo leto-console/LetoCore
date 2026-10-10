@@ -13,7 +13,7 @@ struct UI_ExtDeviceStatusDef
     RGBColor color;
 };
 
-static const UI_ExtDeviceStatusDef ui_status[]
+static constexpr UI_ExtDeviceStatusDef ui_status[]
 {
     { "НЕОПРЕД", GrayColor },
     { "ЗАНЯТ", DeepOrangeColor },

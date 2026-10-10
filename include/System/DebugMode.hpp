@@ -17,7 +17,7 @@
 extern LETO_CORE_EXPORT void InitDebugModeCell(IDataCell<bool>* cell);
 
 /**
- * @brief Устанеовить отладочный режим работы системы
+ * @brief Установить отладочный режим работы системы
  * @param[in] debug `true` - включен, `false` - выключен
  */
 extern LETO_CORE_EXPORT void SetDebugMode(bool debug);

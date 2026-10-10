@@ -5,9 +5,9 @@
 
 #include <Input/SystemInputID.hpp>
 
-static const StaticText32 ST_AVAILABLE_HOSTS{ "ДОСТУПНЫЕ ХОСТЫ:" }; ///< ДОСТУПНЫЕ ХОСТЫ:
-static const StaticText32 ST_CONNECTED{ "ВЫ ПОДКЛЮЧЕНЫ!" };         ///< ВЫ ПОДКЛЮЧЕНЫ
-static const StaticText32 ST_WAITING{ "ОЖИДАЕМ" };                  ///< ОЖИДАЕМ
+static constexpr StaticText32 ST_AVAILABLE_HOSTS{ "ДОСТУПНЫЕ ХОСТЫ:" }; ///< ДОСТУПНЫЕ ХОСТЫ:
+static constexpr StaticText32 ST_CONNECTED{ "ВЫ ПОДКЛЮЧЕНЫ!" };         ///< ВЫ ПОДКЛЮЧЕНЫ
+static constexpr StaticText32 ST_WAITING{ "ОЖИДАЕМ" };                  ///< ОЖИДАЕМ
 
 MemberScene::MemberScene(ISceneManager* game, LobbyScene* main_scene, uint8_t max_count, LobbyConnection_V1_Callback callback) 
     : HostScene{ game, main_scene, max_count, callback }
