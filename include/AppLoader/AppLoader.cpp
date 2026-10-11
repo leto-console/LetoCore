@@ -20,48 +20,71 @@ AppInfo CurrentLoadedAppInfo = {};
 #ifdef _WIN32
 
 #include <Windows.h>
-#include <cstring>
+#include <string>
 
 static HMODULE hLoadedDll;
 
 uint32_t ScanApps(AppInfo* array, uint32_t available)
 {
-    WIN32_FIND_DATAA file_data;
     uint32_t count = 0;
+    std::string base_dir;
 
 #ifdef LETOCORE_SHARED
-    const char* base_path = "../../apps/";
-    const char* search_mask = "../../apps/*.dll";
+    const char* env_path = getenv("LETO_PATH");
+    if (!env_path) return 0;
+    base_dir = std::string(env_path) + "Apps/win-debug/";
 #else
-    const char* base_path = "apps/";
-    const char* search_mask = "apps/*.dll";
+    base_dir = "Apps/";
 #endif
 
-    HANDLE hFind = FindFirstFileA(search_mask, &file_data);
+    // 1. Ищем все подпапки в base_dir
+    std::string dir_mask = base_dir + "*";
+    WIN32_FIND_DATAA dir_data;
+    HANDLE hDir = FindFirstFileA(dir_mask.c_str(), &dir_data);
     
-    if (hFind == INVALID_HANDLE_VALUE) 
-    {
-        return 0;
-    }
+    if (hDir == INVALID_HANDLE_VALUE) return 0;
 
     do 
     {
-        // Проверяем, что это файл, а не папка
-        if (!(file_data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)) 
-        {
-            char rel_path[64];
-            snprintf(rel_path, sizeof(rel_path), "%s%s", base_path, file_data.cFileName);
+        // Пропускаем системные ссылки . и ..
+        if (strcmp(dir_data.cFileName, ".") == 0 || 
+            strcmp(dir_data.cFileName, "..") == 0)
+            continue;
+        
+        // Нас интересуют только директории (папки с играми)
+        if (!(dir_data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
+            continue;
 
-            if (CheckGame(rel_path, array[count]))
-                count++;
+        // 2. Внутри каждой папки ищем *.dll
+        std::string file_mask = base_dir + dir_data.cFileName + "/*.dll";
+        WIN32_FIND_DATAA file_data;
+        HANDLE hFile = FindFirstFileA(file_mask.c_str(), &file_data);
+        
+        if (hFile != INVALID_HANDLE_VALUE) {
+            do 
+            {
+                // Проверяем, что это файл, а не вложенная папка
+                if (!(file_data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)) 
+                {
+                    std::string full_path = base_dir + dir_data.cFileName + "/" + file_data.cFileName;
+                    
+                    if (count < available && CheckGame(full_path.c_str(), array[count])) 
+                    {
+                        count++;
+                    }
+                }
+            } 
+            while (count < available && FindNextFileA(hFile, &file_data));
+            
+            FindClose(hFile);
         }
+        
     } 
-    while (count < available && FindNextFileA(hFind, &file_data));
-
-    FindClose(hFind);
+    while (count < available && FindNextFileA(hDir, &dir_data));
+    
+    FindClose(hDir);
     return count;
 }
-
 bool GetBinary(const char *path, void* bin_info, uint32_t info_size, bool load_in_memory)
 {	
 	HMODULE hDll = LoadLibraryA(path);

@@ -4,6 +4,7 @@
 
 #include <GamesSupport/BaseGame.hpp>
 #include <GamesSupport/Lobby/LobbyScene.hpp>
+#include <LetoFunctions/Globals.hpp>
 
 HostScene::HostScene(ISceneManager* game, LobbyScene* main_scene, uint8_t max_count, LobbyConnection_V1_Callback callback) 
     : IScene{ game }, main_scene{ main_scene }, max_count{ max_count }, callback{ callback }
@@ -59,9 +60,7 @@ HostScene::HostScene(ISceneManager* game, LobbyScene* main_scene, uint8_t max_co
 
 void HostScene::OnShow()
 {
-    // ??????????
-    /// !!!!!!!!!!!!!!! TODO: Добавить GAME ID - можно через запрос в Leto о деталях текущей запущенной игры
-    //opened = leto_api_v1->Lobby->CreateLobby(&lobby, game->GetID(), max_count, callback);
+    opened = leto_api_v1->Lobby->CreateLobby(&lobby, leto::globals::GetAppID(), max_count, callback);
     menu.ResetCurrentID();
 }
 
@@ -159,11 +158,15 @@ void HostScene::RefreshLobby()
 
 void HostScene::RefreshMenu()
 {
-    menu.Clear();
+    uint8_t id = menu.GetCurrentID();
+    {
+        menu.Clear();
 
-    if (opened && lobby.connected > 1)
-        menu.AppendMenuItem("НАЧАТЬ", MENU_START);
-    menu.AppendMenuItem("ВЫЙТИ", MENU_QUIT);    
+        if (opened && lobby.connected > 1)
+            menu.AppendMenuItem("НАЧАТЬ", MENU_START);
+        menu.AppendMenuItem("ВЫЙТИ", MENU_QUIT);
+    }
+    menu.SetCurrentID(id);
 }
 
 void HostScene::Quit()

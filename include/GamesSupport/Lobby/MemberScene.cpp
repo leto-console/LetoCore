@@ -91,23 +91,27 @@ void MemberScene::RefreshLobby()
 
 void MemberScene::RefreshMenu()
 {
-    menu.Clear();
-
-    if (!opened)
+    uint8_t id = menu.GetCurrentID();
     {
-        menu.SetPosition({80, 40});
-        for (uint32_t i = 0; i < near_cnt; ++i)
+        menu.Clear();
+
+        if (!opened)
         {
-            char txt[16];
-            leto_api_v1->Text->FormatText(txt, sizeof(txt), "%d", near_info[i].owner);
-            menu.AppendMenuItem(txt, HOST_ID + i);
+            menu.SetPosition({80, 40});
+            for (uint32_t i = 0; i < near_cnt; ++i)
+            {
+                char txt[16];
+                leto_api_v1->Text->FormatText(txt, sizeof(txt), "%d", near_info[i].owner);
+                menu.AppendMenuItem(txt, HOST_ID + i);
+            }
+        }
+        else
+        {
+            menu.SetPosition({120, 55});
+            if (!leto_api_v1->Lobby->GetReady())
+                menu.AppendMenuItem("НАЧАТЬ", MENU_START);
+            menu.AppendMenuItem("ВЫЙТИ", MENU_QUIT);    
         }
     }
-    else
-    {
-        menu.SetPosition({120, 55});
-        if (!leto_api_v1->Lobby->GetReady())
-            menu.AppendMenuItem("НАЧАТЬ", MENU_START);
-        menu.AppendMenuItem("ВЫЙТИ", MENU_QUIT);    
-    }
+    menu.SetCurrentID(id);
 }

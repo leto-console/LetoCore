@@ -78,7 +78,8 @@ RGBColor MenuHolder::GetAddColor(int idx) const
 
 void MenuHolder::SetCurrentID(uint8_t idx)
 {
-	if (idx >= Count() - 1) idx = Count() - 1;
+	if (Count() == 0) idx = 0;
+	else if (idx >= Count() - 1) idx = Count() - 1;
 	currentID = idx;
 }
 

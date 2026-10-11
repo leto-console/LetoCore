@@ -12,6 +12,11 @@ void LobbyDataProcessor::UnregLobbyData(LobbyData *data)
     pool.RemoveIf([&](LobbyData* lobby_data) { return lobby_data == data; });
 }
 
+void LobbyDataProcessor::ClearLobbyData()
+{
+    pool.clear();
+}
+
 void LobbyDataProcessor::ReceiveData(uint32_t id, const void *data, uint32_t size)
 {
     for (LobbyData* lobby_data : pool)

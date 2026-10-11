@@ -20,6 +20,8 @@ public:
 
     void UnregLobbyData(LobbyData* data);
 
+    void ClearLobbyData();
+
     /// Получить данные (вызывается в callback)
     void ReceiveData(uint32_t id, const void* data, uint32_t size);
 
