@@ -4,6 +4,7 @@ LobbyData::LobbyData(uint8_t data_id, uint32_t period_ms)
     : data_id { data_id }, period_ms{ period_ms }
 {
     send_timer.Start(period_ms);
+    timeout_timer.Start(0);
 }
 
 bool LobbyData::PrepareSend(void *data, uint32_t size)
@@ -29,4 +30,16 @@ void LobbyData::ProcessReceive(uint32_t id, const void *data, uint32_t size)
     if (u_data[0] != data_id) return;
 
     OnReceive(id, &u_data[2], size - 2);
+    timeout_timer.Start(5 * period_ms);
+}
+
+void LobbyData::CheckTimeout()
+{
+    if (timeout_timer.Expired(true))
+        OnTimeout();
+}
+
+void LobbyData::SendNow()
+{
+    send_timer.Start(0);
 }

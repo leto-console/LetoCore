@@ -122,7 +122,8 @@ protected:
     }
 };
 
-#define SCENE_ONE_ARG_BUILDER(Class, ArgType) using Builder = ISceneOneArgBuilder<Class, ArgType>;
+#define SCENE_ONE_ARG_BUILDER(Class, ArgType) \
+using Builder = ISceneOneArgBuilder<Class, ArgType>;
 
 // ==========================================================================================
 
@@ -145,7 +146,8 @@ protected:
     }
 };
 
-#define SCENE_TWO_ARGS_BUILDER(Class, Arg1Type, Arg2Type) using Builder = ISceneTwoArgsBuilder<Class, Arg1Type, Arg2Type>;
+#define SCENE_TWO_ARGS_BUILDER(Class, Arg1Type, Arg2Type) \
+using Builder = ISceneTwoArgsBuilder<Class, Arg1Type, Arg2Type>;
 
 // ==========================================================================================
 
@@ -169,7 +171,34 @@ protected:
     }
 };
 
-#define SCENE_THREE_ARGS_BUILDER(Class, Arg1Type, Arg2Type, Arg3Type) using Builder = ISceneThreeArgsBuilder<Class, Arg1Type, Arg2Type, Arg3Type>;
+#define SCENE_THREE_ARGS_BUILDER(Class, Arg1Type, Arg2Type, Arg3Type) \
+using Builder = ISceneThreeArgsBuilder<Class, Arg1Type, Arg2Type, Arg3Type>;
+
+// ==========================================================================================
+
+template <typename Scene, typename Arg1Type, typename Arg2Type, typename Arg3Type, typename Arg4Type>
+class ISceneFourArgsBuilder : public ISceneBuilder
+{
+    static_assert(std::is_base_of<IScene, Scene>::value);
+public:
+    ISceneFourArgsBuilder(ISceneManager* manager, Arg1Type arg1, Arg2Type arg2, Arg3Type arg3, Arg4Type arg4) 
+        : ISceneBuilder(manager), arg1{ arg1 }, arg2{ arg2 }, arg3{ arg3 }, arg4{ arg4 }
+    { }
+
+protected:
+    Arg1Type arg1;
+    Arg2Type arg2;
+    Arg3Type arg3;
+    Arg4Type arg4;
+
+    IScene* Create(IAllocator& allocator) override
+    {
+        return allocator.Make<Scene>(this->scene_manager, arg1, arg2, arg3, arg4);
+    }
+};
+
+#define SCENE_FOUR_ARGS_BUILDER(Class, Arg1Type, Arg2Type, Arg3Type, Arg4Type) \
+using Builder = ISceneFourArgsBuilder<Class, Arg1Type, Arg2Type, Arg3Type, Arg4Type>;
 
 // ==========================================================================================
 

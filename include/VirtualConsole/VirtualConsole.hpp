@@ -21,7 +21,7 @@
 #define VC_MSGS_COUNT 32
 
 /// Количество отображаемых строк
-#define VC_LINE_SHOW 8
+#define VC_LINE_SHOW 10
 
 struct VC_Message
 {
@@ -37,8 +37,11 @@ protected:
     StaticList<VC_Message, VC_MSGS_COUNT> msgs;
     size_t bottom_offset{};
     const LetoFont_V1* font{};
+    bool pause{};
 
     VirtualConsole();
+    
+    virtual void SetAllViewed();
 
 public:
     static VirtualConsole& Instance()
@@ -47,8 +50,11 @@ public:
         return instance;
     }
 
+    void SetPause(bool pause);
+
     void Print(StaticText32 text, RGBColor color = WhiteColor)
     {
+        if (pause) return;
         if (msgs.Full())
         {
             msgs.Erase(&msgs.Front());

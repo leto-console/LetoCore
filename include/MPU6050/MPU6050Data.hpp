@@ -10,7 +10,7 @@
 
 #include "LibrariesExport.h"
 
-#include "Data/SingleData.hpp"
+#include <Data/IDataCell.hpp>
 #include "Data/SourceData.hpp"
 
 // Проекция на ось X кажущегося ускорения в базисе связной СК

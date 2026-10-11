@@ -9,9 +9,8 @@
 
 // Интерфейс ячейки с данными
 template <typename T>
-class IDataCell
+struct IDataCell
 {
-public:
 	virtual ~IDataCell() = default;
 	virtual void Set(const T& value) = 0;
 	virtual bool Get(T& value) const = 0;

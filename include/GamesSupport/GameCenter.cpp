@@ -11,9 +11,13 @@ void GameCenter::RefreshGamesList()
 {
 	uint32_t count = ScanApps(games_list, games_list_count);
 
-	games_menu.Clear();
-	for (uint32_t i = 0; i < count; ++i)
-		games_menu.AppendMenuItem(games_list[i].en_name, &games_list[i]);
+	uint8_t id = games_menu.GetCurrentID();
+    {
+		games_menu.Clear();
+		for (uint32_t i = 0; i < count; ++i)
+			games_menu.AppendMenuItem(games_list[i].en_name, &games_list[i]);
+	}
+    games_menu.SetCurrentID(id);
 }
 
 GameCenter::GameCenter(ISceneManager* scene_manager, uint32_t app_scene_id) 

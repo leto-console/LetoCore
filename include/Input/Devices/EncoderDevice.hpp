@@ -35,6 +35,7 @@ protected:
 	bool lastStateCLK{};
 #else
 	uint64_t key_left{}, key_right{};
+	bool enable_wheel{};
 #endif
 
 	bool state = false;			// Состояние дискретного сигнала (0 или 1)
@@ -45,7 +46,7 @@ public:
 #ifdef USE_HAL_DRIVER
 	void	Init(uint8_t id, GPIO_TypeDef* gpio_clk_port, uint16_t gpio_clk_pin, GPIO_TypeDef* gpio_dt_port, uint16_t gpio_dt_pin);
 #else
-	void	Init(uint8_t id, uint64_t key_left, uint64_t key_right);
+	void	Init(uint8_t id, uint64_t key_left, uint64_t key_right, bool enable_wheel = false);
 #endif
 	void	Tick();
 

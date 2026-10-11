@@ -13,10 +13,6 @@
 template <typename T>
 class DataCell : public IDataCell<T>
 {
-protected:
-	T value{};
-	bool inited{ false };
-
 public:
 	DataCell() = default;
 	DataCell(T init_value)
@@ -45,6 +41,10 @@ public:
 			return value;
 		return this->value;
 	}
+	
+protected:
+	T value{};
+	bool inited{ false };
 };
 
 #endif

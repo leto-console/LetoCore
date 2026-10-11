@@ -80,6 +80,12 @@ static bool GetAppDir(char* buffer, uint32_t length)
     return true;
 }
 
+static uint16_t GetAppID()
+{
+    if (!CurrentLoadedApp) return 0;
+    return CurrentLoadedApp->id;
+}
+
 // ====================================================================================================
 
 const GlobalsAPI_V1* Make_GlobalsAPI()
@@ -92,7 +98,8 @@ const GlobalsAPI_V1* Make_GlobalsAPI()
         &GetDeviceID,
         &calc_crc16,
         &GetAppDir,
-        &GetSystemLanguage
+        &GetSystemLanguage,
+        &GetAppID
     };
 	
     return &api;

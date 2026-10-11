@@ -22,7 +22,7 @@ class LobbyScene;
 class LETO_CORE_EXPORT MemberScene : public HostScene
 {
 public:
-    MemberScene(ISceneManager* game, LobbyScene* main_scene, uint8_t max_count, LobbyConnection_V1_Callback callback);
+    MemberScene(ISceneManager* game, LobbyScene* main_scene, uint8_t max_count, LobbyConnection_V1_Callback callback, LobbyReady_Callback on_ready);
 
     void OnShow() override;
 

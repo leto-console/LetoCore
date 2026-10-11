@@ -17,12 +17,18 @@
 #include <SceneManager/IScene.hpp>
 #include <SceneManager/ISceneBuilder.hpp>
 
+/**
+ * @brief Lobby ready callback
+ * @param[in] host `true` if callback for host
+ */
+typedef void (*LobbyReady_Callback)();
+
 class LobbyScene;
 
 class LETO_CORE_EXPORT HostScene : public IScene
 {
 public:
-    HostScene(ISceneManager* game, LobbyScene* lobby, uint8_t max_count, LobbyConnection_V1_Callback callback);
+    HostScene(ISceneManager* game, LobbyScene* lobby, uint8_t max_count, LobbyConnection_V1_Callback callback, LobbyReady_Callback on_ready);
 
     void OnShow() override;
 
@@ -47,7 +53,8 @@ protected:
     ParamMenu<uint8_t, 8> menu;
 
     LobbyConnection_V1_Callback callback;
-
+    LobbyReady_Callback on_ready;
+    
     uint8_t max_count;
     int32_t y_menu_bottom_pos;
 

@@ -3,5 +3,5 @@
 AnglesData Gravity_Angles;
 AnglesData Complement_Angles;
 
-FloatSingleData Complement_Koeff;
+DataCell<float> Complement_Koeff;
 QuaternionData Orientation_Quaternion;

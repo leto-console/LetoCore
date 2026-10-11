@@ -305,16 +305,18 @@ void LobbyManager_V1::Loop()
 
             if (!host_active)
             {
+                /// TODO: Maybe need to add specific callback for user about lost connection with host
                 global_lobby.state = LC_STATE_DISCONNECTED;
-                /// TODO: Maybe need to add specific callback for user about lost connection with host.
+                ready = false;
                 return;
             }
 
             // Monitor host connection state
             if (!IsMember(GetDeviceID()))
             {
-                global_lobby.state = LC_STATE_DISCONNECTED;
                 /// TODO: Maybe need to add specific callback for user about disconnection.
+                global_lobby.state = LC_STATE_DISCONNECTED;
+                ready = false;
                 return;
             }
             else if (global_lobby.state == LC_STATE_JOINING)
