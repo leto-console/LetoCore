@@ -22,6 +22,7 @@ bool VirtualConsole::ProcessInput(const AppEvent &event)
 {
     if (IsSystemNextEvent(event) && (bottom_offset != 0)) bottom_offset--;
     else if (IsSystemPrevEvent(event) && (bottom_offset + VC_LINE_SHOW < msgs.Count() - 1)) bottom_offset++;
+    else if (IsSystemAltEvent(event)) pause = !pause;
     
     return true;
 }
@@ -35,7 +36,7 @@ void VirtualConsole::Draw(IScreen &screen, Point2_i offset)
     Point2_i point_a{5, 5}, point_b = {160 - 5, 8 * VC_LINE_SHOW + 5 + 3};
     Point2_i point_txt = point_a + Point2_i{3, 8 * (VC_LINE_SHOW - 1) + 3};
 
-    DrawFunctions::DrawOutlinedRectangle(screen, point_a, point_b, BlackColor, GrayColor);
+    DrawFunctions::DrawOutlinedRectangle(screen, point_a, point_b, BlackColor, pause ? YellowColor : GrayColor);
 
     size_t line = 0, skip = bottom_offset;
 

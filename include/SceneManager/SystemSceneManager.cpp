@@ -34,7 +34,6 @@ SystemSceneManager::SystemSceneManager() :
 
 void SystemSceneManager::OnMenuHolded()
 {
-	EnableFPS_Setting.Set(false);
 	VirtualConsole::Instance().Enable();
 }
 
@@ -116,12 +115,11 @@ bool SystemSceneManager::ProcessEvent(const AppEvent& event)
 	if (IsSystemMenuEvent(event))
 	{
 		EnableFPS_Setting.Set(!enable_fps);
-		return true;
-	}
-	else if (IsSystemMenuEvent(event, false))
-	{
-		VirtualConsole::Instance().Disable();
-		VirtualConsole::Instance().ResetViewed();
+		if (!enable_fps)
+		{
+			VirtualConsole::Instance().Disable();
+			VirtualConsole::Instance().ResetViewed();
+		}
 		return true;
 	}
 

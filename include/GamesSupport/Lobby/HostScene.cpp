@@ -144,6 +144,7 @@ void HostScene::RefreshMembers()
         {
             members_text[i].SetText(info.web_name);
             members_text[i].SetTextColor(info.id == leto_api_v1->Globals->GetDeviceID() ? label_text.GetBackroundColor() : WhiteColor);
+            members_text[i].SetColorInverse(info.id == lobby.owner);
             members_text[i].Enable();
             if (info.flags & WD_FLAG_READY)
                 members_ready[i].Enable();
