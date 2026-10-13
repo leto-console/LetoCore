@@ -9,8 +9,8 @@ static constexpr StaticText32 ST_AVAILABLE_HOSTS{ "ДОСТУПНЫЕ ХОСТЫ
 static constexpr StaticText32 ST_CONNECTED{ "ВЫ ПОДКЛЮЧЕНЫ!" };         ///< ВЫ ПОДКЛЮЧЕНЫ
 static constexpr StaticText32 ST_WAITING{ "ОЖИДАЕМ" };                  ///< ОЖИДАЕМ
 
-MemberScene::MemberScene(ISceneManager* game, LobbyScene* main_scene, uint8_t max_count, LobbyConnection_V1_Callback callback) 
-    : HostScene{ game, main_scene, max_count, callback }
+MemberScene::MemberScene(ISceneManager* game, LobbyScene* main_scene, uint8_t max_count, LobbyConnection_V1_Callback callback, LobbyReady_Callback on_ready) 
+    : HostScene{ game, main_scene, max_count, callback, on_ready }
 {
     status_text.SetText(ST_AVAILABLE_HOSTS);
     label_text.SetBackroundColor(DeepOrangeColor);
@@ -18,6 +18,7 @@ MemberScene::MemberScene(ISceneManager* game, LobbyScene* main_scene, uint8_t ma
 
 void MemberScene::OnShow()
 {
+    leto_api_v1->Lobby->SetReady(false);
     menu.ResetCurrentID();
 }
 

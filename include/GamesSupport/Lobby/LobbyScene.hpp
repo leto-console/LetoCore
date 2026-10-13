@@ -27,7 +27,8 @@ public:
 public:
     LobbyScene(ISceneManager* game, uint8_t max_count, 
         LobbyConnection_V1_Callback host_callback,
-        LobbyConnection_V1_Callback member_callback);
+        LobbyConnection_V1_Callback member_callback,
+        LobbyReady_Callback ready_callback);
 
     void OnShow() override;
 
@@ -37,7 +38,7 @@ public:
 
     void Loop() override;
 
-    SCENE_THREE_ARGS_BUILDER(LobbyScene, uint8_t, LobbyConnection_V1_Callback, LobbyConnection_V1_Callback)
+    SCENE_FOUR_ARGS_BUILDER(LobbyScene, uint8_t, LobbyConnection_V1_Callback, LobbyConnection_V1_Callback, LobbyReady_Callback)
 
 protected:
     /// Выбор режима сцены
