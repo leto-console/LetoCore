@@ -49,7 +49,7 @@ TYPED_TEST(StaticListTest, InitCheck)
 {
     // Act, assert
     EXPECT_EQ(this->list.Count(), 0);
-    EXPECT_EQ(this->list.Size(), LIST_SIZE);
+    EXPECT_EQ(this->list.Capacity(), LIST_SIZE);
     EXPECT_TRUE(this->list.Empty());
     EXPECT_FALSE(this->list.Full());
 }
@@ -92,11 +92,11 @@ TYPED_TEST(StaticListTest, PushTwoCheck)
 TYPED_TEST(StaticListTest, Full) 
 {
     // Act
-    for (int i = 0; i < this->list.Size(); ++i)
+    for (int i = 0; i < this->list.Capacity(); ++i)
         this->list.Push(this->TestValue());
 
     // Assert
-    EXPECT_EQ(this->list.Count(), this->list.Size());
+    EXPECT_EQ(this->list.Count(), this->list.Capacity());
     EXPECT_FALSE(this->list.Empty());
     EXPECT_TRUE(this->list.Full());
 }
@@ -107,11 +107,11 @@ TYPED_TEST(StaticListTest, Full)
 TYPED_TEST(StaticListTest, Clear) 
 {
     // Act
-    for (int i = 0; i < this->list.Size(); ++i)
+    for (int i = 0; i < this->list.Capacity(); ++i)
         this->list.Push(this->TestValue());
     
     // Assert
-    EXPECT_EQ(this->list.Count(), this->list.Size());
+    EXPECT_EQ(this->list.Count(), this->list.Capacity());
     EXPECT_FALSE(this->list.Empty());
     EXPECT_TRUE(this->list.Full());
 
@@ -130,13 +130,13 @@ TYPED_TEST(StaticListTest, Clear)
 TYPED_TEST(StaticListTest, PushOnFull) 
 {
     // Act
-    for (int i = 0; i < this->list.Size(); ++i)
+    for (int i = 0; i < this->list.Capacity(); ++i)
         this->list.Push(this->TestValue());
     
     this->list.Push(this->TestValue() + 1);
 
     // Assert
-    EXPECT_EQ(this->list.Count(), this->list.Size());
+    EXPECT_EQ(this->list.Count(), this->list.Capacity());
     EXPECT_FALSE(this->list.Empty());
     EXPECT_TRUE(this->list.Full());
     for (const TypeParam& val : this->list)
@@ -274,7 +274,7 @@ TYPED_TEST(StaticListTest, ForEachTest)
 {
     // Act
     size_t i = 0;
-    for (; i < this->list.Size(); ++i)
+    for (; i < this->list.Capacity(); ++i)
         this->list.Push(this->TestValue() + i);
     
     // Assert
@@ -299,17 +299,17 @@ TYPED_TEST(StaticListTest, ReversedForEachTest)
 {
     // Act
     size_t i = 0;
-    for (; i < this->list.Size(); ++i)
+    for (; i < this->list.Capacity(); ++i)
         this->list.Push(this->TestValue() + i);
     
     // Assert
-    i = this->list.Size() - 1;
+    i = this->list.Capacity() - 1;
     for (TypeParam& elem : this->list.reversed())
     {
         EXPECT_EQ(elem, this->TestValue() + i);
         i--;
     }
-    i = this->list.Size() - 1;
+    i = this->list.Capacity() - 1;
     for (const TypeParam& elem : this->list.reversed())
     {
         EXPECT_EQ(elem, this->TestValue() + i);

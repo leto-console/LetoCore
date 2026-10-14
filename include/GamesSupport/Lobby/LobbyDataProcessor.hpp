@@ -16,6 +16,8 @@ class LETO_CORE_EXPORT LobbyDataProcessor
 public:
     LobbyDataProcessor() = default;
 
+    void Enable(bool enable);
+
     void RegLobbyData(LobbyData* data);
 
     void UnregLobbyData(LobbyData* data);
@@ -29,6 +31,7 @@ public:
     void Loop();
 
 protected:
+    bool enabled{};
     StaticList<LobbyData*, 16> pool;
 };
 

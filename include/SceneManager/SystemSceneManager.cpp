@@ -1,7 +1,7 @@
 #include <SceneManager/SystemSceneManager.hpp>
 #include <Time/TimeUtils.hpp>
 
-#include <stdio.h>
+#include <cstdio>
 #include <cstring>
 
 #include <Input/ButtonEvent.hpp>

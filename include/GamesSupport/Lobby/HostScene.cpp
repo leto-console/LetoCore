@@ -155,7 +155,7 @@ void HostScene::RefreshMembers()
                 ready_all = false;
         }
     }
-    if (ready_all) on_ready(lobby.owner == leto::globals::GetDeviceID());
+    if (ready_all) on_ready();
 }
 
 void HostScene::RefreshLobby()

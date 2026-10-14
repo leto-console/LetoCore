@@ -15,7 +15,7 @@
 #include <Graphics/IScreen.hpp>
 #include <DrawFunctions/DrawLine.hpp>
 
-#include <Data/SingleData.hpp>
+#include <Data/IDataCell.hpp>
 #include <Data/SourceData.hpp>
 
  // Графическое изображение графика
@@ -33,7 +33,7 @@ public:
 	{ 
 	}
 
-	void AddValue(SingleData<T> data)
+	void AddValue(IDataCell<T>& data)
 	{
 		T val; data.Get(val);
 		AddValue(val);

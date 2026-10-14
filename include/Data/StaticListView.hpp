@@ -17,29 +17,29 @@ class StaticListView
 private:
 	const Type* begin_ptr{};
     const size_t* count{};
-    size_t max_count{};
+    size_t capacity{};
 
 public:
 	constexpr StaticListView() = default;
 
-	template <typename T, size_t MaxCount>
-	constexpr StaticListView(const StaticList<T, MaxCount>& list) noexcept
-        : begin_ptr{ list.begin() }, count{ &list.count }, max_count{ MaxCount }
+	template <typename T, size_t _Capacity>
+	constexpr StaticListView(const StaticList<T, _Capacity>& list) noexcept
+        : begin_ptr{ list.begin() }, count{ &list.count }, capacity{ _Capacity }
 	{ }
 
-	template <typename T, size_t MaxCount>
-	constexpr void operator=(const StaticList<T, MaxCount>& list) noexcept
+	template <typename T, size_t _Capacity>
+	constexpr void operator=(const StaticList<T, _Capacity>& list) noexcept
 	{
 		begin_ptr = list.begin();
 		count = &list.count;
-		max_count = MaxCount;
+		capacity = _Capacity;
 	}
 
 	constexpr bool Empty() const { return *count == 0; }
-	constexpr bool Full() const { return *count >= max_count; }
+	constexpr bool Full() const { return *count >= capacity; }
 
     constexpr size_t Count() const noexcept { return *count; }
-	constexpr size_t Size() const noexcept { return max_count; }
+	constexpr size_t Capacity() const noexcept { return capacity; }
 
 	constexpr const Type& Back() 	const	{ return operator[](*count - 1); }
 

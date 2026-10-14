@@ -21,7 +21,7 @@
  * @brief Lobby ready callback
  * @param[in] host `true` if callback for host
  */
-typedef void (*LobbyReady_Callback)(bool host);
+typedef void (*LobbyReady_Callback)();
 
 class LobbyScene;
 

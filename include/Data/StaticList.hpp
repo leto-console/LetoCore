@@ -13,13 +13,13 @@
 #include <iterator>
 #include <Data/Range.hpp>
 
-template <typename Type, size_t MaxCount>
+template <typename Type, size_t _Capacity>
 class StaticList
 {
 	template <typename T>
 	friend class StaticListView;
 protected:
-	Type data[MaxCount];
+	Type data[_Capacity];
 	size_t count{};
 
 public:
@@ -32,7 +32,7 @@ public:
 	}
 
 	constexpr bool Empty() const { return count == 0; }
-	constexpr bool Full() const { return count >= MaxCount; }
+	constexpr bool Full() const { return count >= _Capacity; }
 
 	// Использование копии списка возможно только через View (для копии используется явно описанная функция CopyFrom)
 	StaticList(const StaticList& list) 				= delete;
@@ -61,9 +61,9 @@ public:
 			Push(value);
 			return;
 		}
-		memmove(iter + 1, iter, ((data + MaxCount) - iter - 1) * sizeof(Type));
+		memmove(iter + 1, iter, ((data + _Capacity) - iter - 1) * sizeof(Type));
 		*iter = value;
-		if (count < MaxCount)
+		if (count < _Capacity)
 			count++;
 	}
 
@@ -110,7 +110,7 @@ public:
 	void Clear() { count = 0; }
 
 	size_t Count() const { return count; }
-	size_t Size() const { return MaxCount; }
+	size_t Capacity() const { return _Capacity; }
 
 	Type&		operator[](size_t i)		{ return data[i]; }
 	const Type& operator[](size_t i) const { return data[i]; }
