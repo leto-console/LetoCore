@@ -9,6 +9,18 @@ VirtualConsole::VirtualConsole()
     font = leto::font::FindFont(6, LFT_V1_BASE_NORMAL);
 }
 
+void VirtualConsole::SetAllViewed()
+{
+    for (VC_Message& msg : msgs)
+        msg.viewed = true;
+}
+
+void VirtualConsole::SetPause(bool pause)
+{
+    if (this->pause && !pause) SetAllViewed();
+    this->pause = pause;
+}
+
 void VirtualConsole::ResetViewed()
 {
     for (VC_Message& msg : msgs)
@@ -22,7 +34,7 @@ bool VirtualConsole::ProcessInput(const AppEvent &event)
 {
     if (IsSystemNextEvent(event) && (bottom_offset != 0)) bottom_offset--;
     else if (IsSystemPrevEvent(event) && (bottom_offset + VC_LINE_SHOW < msgs.Count() - 1)) bottom_offset++;
-    else if (IsSystemAltEvent(event)) pause = !pause;
+    else if (IsSystemAltEvent(event)) SetPause(!pause);
     
     return true;
 }

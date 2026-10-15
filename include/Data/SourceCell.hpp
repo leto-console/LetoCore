@@ -38,6 +38,11 @@ public:
 		return map[source];
 	}
 
+	void Clear(Source source) override
+	{
+		map.Remove(source);
+	}
+
     // for-each support
 	MapItem*	    begin()			{ return map.begin(); }
 	const MapItem*  begin() const	{ return map.begin(); }

@@ -39,6 +39,7 @@ void LobbyDataProcessor::Loop()
     uint8_t buffer[16]{};
     for (LobbyData* data : pool)
     {
+        data->CheckTimeout();
         if (data->PrepareSend(buffer, sizeof(buffer)))
         {
             leto_api_v1->Lobby->SendData(buffer, sizeof(buffer));

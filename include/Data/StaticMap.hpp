@@ -12,6 +12,7 @@
 #include <initializer_list>
 #include <iterator>
 #include <Data/Range.hpp>
+#include <Data/StaticList.hpp>
 
 /**
  * @brief Статический контейнер для доступа к объектам по ключу
@@ -29,17 +30,16 @@ public:
 protected:
 	mutable ValueType dummy;
 	
-	MapItem items[_Capacity];
-	size_t size{};
+	StaticList<MapItem, _Capacity> items;
 
 public:
 	StaticMap() = default;
 	
 	bool ContainsKey(KeyType key) const
 	{
-		for (size_t i = 0; i < size; ++i)
+		for (const MapItem& item : items)
 		{
-			if (items[i].key == key) 
+			if (item.key == key) 
 				return true;
 		}
 		return false;
@@ -48,10 +48,10 @@ public:
 	/// Если не найден ключ, возвращается ссылка на "отбойную" ячейку
 	ValueType& Find(KeyType key)
 	{
-		for (size_t i = 0; i < size; ++i)
+		for (MapItem& item : items)
 		{
-			if (items[i].key == key) 
-				return items[i].value;
+			if (item.key == key) 
+				return item.value;
 		}
 		dummy = {};
 		return dummy;
@@ -60,10 +60,10 @@ public:
 	/// Если не найден ключ, возвращается ссылка на "отбойную" ячейку
 	const ValueType& Find(KeyType key) const
 	{
-		for (size_t i = 0; i < size; ++i)
+		for (const MapItem& item : items)
 		{
-			if (items[i].key == key) 
-				return items[i].value;
+			if (item.key == key) 
+				return item.value;
 		}
 		dummy = {};
 		return dummy;
@@ -72,20 +72,24 @@ public:
 	/// Если не найден ключ и кончилось место, возвращается ссылка на "отбойную" ячейку
 	ValueType& FindOrCreate(KeyType key)
 	{
-		for (size_t i = 0; i < size; ++i)
+		for (MapItem& item : items)
 		{
-			if (items[i].key == key) 
-				return items[i].value;
+			if (item.key == key) 
+				return item.value;
 		}
-		if (size < _Capacity)
+		if (!items.Full())
 		{
-			items[size] = MapItem{key};
-			MapItem& item = items[size];
-			size++;
+			items.push_back(MapItem{key});
+			MapItem& item = items.Back();
 			return item.value;
 		}
 		dummy = {};
 		return dummy;
+	}
+
+	void Remove(KeyType key)
+	{
+		items.RemoveIf([&](const MapItem& map_item){ return map_item.key == key; });
 	}
 
 	ValueType& 			operator[](KeyType key) 		{ return FindOrCreate(key); }
@@ -95,10 +99,10 @@ public:
 	// TODO::: добавить поддержку const auto& [key, value] ...
 
     // for-each support
-	MapItem*	    begin()			{ return items; }
-	const MapItem*  begin() const	{ return items; }
-	MapItem*        end()			{ return items + size; }
-	const MapItem*  end() const		{ return items + size; }
+	MapItem*	    begin()			{ return items.begin(); }
+	const MapItem*  begin() const	{ return items.begin(); }
+	MapItem*        end()			{ return items.end(); }
+	const MapItem*  end() const		{ return items.end(); }
 
 	constexpr Range<std::reverse_iterator<const MapItem*>> reversed() const noexcept 
 	{ 

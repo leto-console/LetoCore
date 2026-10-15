@@ -40,6 +40,8 @@ protected:
     bool pause{};
 
     VirtualConsole();
+    
+    virtual void SetAllViewed();
 
 public:
     static VirtualConsole& Instance()
@@ -48,7 +50,7 @@ public:
         return instance;
     }
 
-    void SetPause(bool pause) { this->pause = pause; }
+    void SetPause(bool pause);
 
     void Print(StaticText32 text, RGBColor color = WhiteColor)
     {
