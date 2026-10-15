@@ -8,7 +8,7 @@
 #define INC_DATA_I_SOURCE_CELL_HPP_
 
 // Интерфейс ячейки с данными от разных источников
-template <typename Source, typename Type>
+template <typename Type, typename Source>
 struct ISourceCell
 {
     virtual ~ISourceCell() = default;

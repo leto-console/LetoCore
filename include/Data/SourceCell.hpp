@@ -11,8 +11,8 @@
 #include <Data/StaticMap.hpp>
 
 // Наследник ячейки с данными от разных источников в оперативной памяти
-template <typename Source, typename Type, uint32_t _Capacity>
-class SourceCell : public ISourceCell<Source, Type>
+template <typename Type, typename Source, uint32_t _Capacity>
+class SourceCell : public ISourceCell<Type, Source>
 {
 public:
     using MapItem = typename StaticMap<Source, Type, _Capacity>::MapItem;

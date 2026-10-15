@@ -27,7 +27,7 @@ public:
 	};
 
 protected:
-	ValueType dummy;
+	mutable ValueType dummy;
 	
 	MapItem items[_Capacity];
 	size_t size{};
@@ -53,6 +53,7 @@ public:
 			if (items[i].key == key) 
 				return items[i].value;
 		}
+		dummy = {};
 		return dummy;
 	}
 	
@@ -64,6 +65,7 @@ public:
 			if (items[i].key == key) 
 				return items[i].value;
 		}
+		dummy = {};
 		return dummy;
 	}
 
@@ -82,6 +84,7 @@ public:
 			size++;
 			return item.value;
 		}
+		dummy = {};
 		return dummy;
 	}
 
