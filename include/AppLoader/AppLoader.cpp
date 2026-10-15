@@ -279,6 +279,8 @@ void UnloadApplication()
         CurrentLoadedApp = nullptr;
     }
 
+    leto_api_v1->Lobby->QuitLobby();
+
 #ifdef _WIN32
     if (hLoadedDll)
     {
