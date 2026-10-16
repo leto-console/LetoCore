@@ -38,3 +38,8 @@ void LobbyData::CheckTimeout()
     if (timeout_timer.Expired(true))
         OnTimeout();
 }
+
+void LobbyData::SendNow()
+{
+    send_timer.Start(0);
+}

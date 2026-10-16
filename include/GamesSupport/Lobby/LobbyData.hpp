@@ -28,6 +28,9 @@ public:
     /// Проверить актуальность данных
     void CheckTimeout();
 
+    /// Отправить данные прямо сейчас
+    void SendNow();
+
 protected:
     /**
      * @brief Отправить данные
@@ -52,7 +55,7 @@ private:
     Timer timeout_timer;
 
     bool CheckTimer() const { return send_timer.Expired(false); }
-    void RestartTimer() { send_timer.Start(); }
+    void RestartTimer() { send_timer.Start(period_ms); }
 };
 
 #endif /* INC_GAMES_SUPPORT_LOBBY_LOBBY_DATA_HPP_ */
