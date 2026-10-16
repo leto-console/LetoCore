@@ -50,7 +50,7 @@ namespace leto::lobby
      */
     inline void JoinLobby(struct LobbyInfo_V1 info, LobbyConnection_V1_Callback callback)
     {
-        LETO_CHECK_API(leto_api_v1, Lobby, JoinLobby);
+        LETO_CHECK_API(leto_api_v1, Lobby, JoinLobby,);
         leto_api_v1->Lobby->JoinLobby(info, callback);
     }
 
@@ -72,7 +72,7 @@ namespace leto::lobby
      */
     inline void QuitLobby()
     {
-        LETO_CHECK_API(leto_api_v1, Lobby, QuitLobby);
+        LETO_CHECK_API(leto_api_v1, Lobby, QuitLobby,);
         leto_api_v1->Lobby->QuitLobby();
     }
 
@@ -83,7 +83,7 @@ namespace leto::lobby
      */
     inline void DisconnectMember(uint32_t id)
     {
-        LETO_CHECK_API(leto_api_v1, Lobby, DisconnectMember);
+        LETO_CHECK_API(leto_api_v1, Lobby, DisconnectMember,);
         leto_api_v1->Lobby->DisconnectMember(id);
     }
 
@@ -95,7 +95,7 @@ namespace leto::lobby
 	 */
 	inline void SendData(const void* data, uint32_t size)
     {
-        LETO_CHECK_API(leto_api_v1, Lobby, SendData);
+        LETO_CHECK_API(leto_api_v1, Lobby, SendData,);
         leto_api_v1->Lobby->SendData(data, size);
     }
 
@@ -106,7 +106,7 @@ namespace leto::lobby
      */
     inline void SetReady(bool ready)
     {
-        LETO_CHECK_API(leto_api_v1, Lobby, SetReady);
+        LETO_CHECK_API(leto_api_v1, Lobby, SetReady,);
         leto_api_v1->Lobby->SetReady(ready);
     }
 
