@@ -1,7 +1,7 @@
 #pragma once
 
-#include <LetoFunctions/CheckAPI.hpp>
 #include <LetoAPI_V1/LetoAPI_V1.h>
+#include <LetoFunctions/CheckAPI.hpp>
 
 namespace leto::globals
 {

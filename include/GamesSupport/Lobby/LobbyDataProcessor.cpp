@@ -1,6 +1,6 @@
 #include "LobbyDataProcessor.hpp"
 
-#include <LetoAPI_V1/LetoAPI_V1.h>
+#include <LetoFunctions/Lobby.hpp>
 
 void LobbyDataProcessor::Enable(bool enable)
 {
@@ -42,7 +42,7 @@ void LobbyDataProcessor::Loop()
         data->CheckTimeout();
         if (data->PrepareSend(buffer, sizeof(buffer)))
         {
-            leto_api_v1->Lobby->SendData(buffer, sizeof(buffer));
+            leto::lobby::SendData(buffer, sizeof(buffer));
         }
     }
 }
