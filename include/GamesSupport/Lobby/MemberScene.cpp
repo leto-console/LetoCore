@@ -101,9 +101,11 @@ void MemberScene::RefreshMenu()
             menu.SetPosition({80, 40});
             for (uint32_t i = 0; i < near_cnt; ++i)
             {
-                char txt[16];
-                leto_api_v1->Text->FormatText(txt, sizeof(txt), "%d", near_info[i].owner);
-                menu.AppendMenuItem(txt, HOST_ID + i);
+                WebDeviceInfo_V1 info;
+                if (leto_api_v1->Web->FindDeviceNear(near_info[i].owner, &info))
+                {
+                    menu.AppendMenuItem(info.web_name, HOST_ID + i);
+                }
             }
         }
         else
