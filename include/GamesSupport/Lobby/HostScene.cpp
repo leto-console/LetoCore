@@ -4,9 +4,10 @@
 
 #include <GamesSupport/BaseGame.hpp>
 #include <GamesSupport/Lobby/LobbyScene.hpp>
+#include <LetoFunctions/Globals.hpp>
 
-HostScene::HostScene(ISceneManager* game, LobbyScene* main_scene, uint8_t max_count, LobbyConnection_V1_Callback callback) 
-    : IScene{ game }, main_scene{ main_scene }, max_count{ max_count }, callback{ callback }
+HostScene::HostScene(ISceneManager* game, LobbyScene* main_scene, uint8_t max_count, LobbyConnection_V1_Callback callback, LobbyReady_Callback on_ready) 
+    : IScene{ game }, main_scene{ main_scene }, max_count{ max_count }, callback{ callback }, on_ready{ on_ready }
 {
     const IFont* font = IFont::FromHandle(leto_api_v1->Font->GetFont(7, 7, 1));
 
@@ -59,9 +60,8 @@ HostScene::HostScene(ISceneManager* game, LobbyScene* main_scene, uint8_t max_co
 
 void HostScene::OnShow()
 {
-    // ??????????
-    /// !!!!!!!!!!!!!!! TODO: Добавить GAME ID - можно через запрос в Leto о деталях текущей запущенной игры
-    //opened = leto_api_v1->Lobby->CreateLobby(&lobby, game->GetID(), max_count, callback);
+    opened = leto_api_v1->Lobby->CreateLobby(&lobby, leto::globals::GetAppID(), max_count, callback);
+    leto_api_v1->Lobby->SetReady(false);
     menu.ResetCurrentID();
 }
 
@@ -108,6 +108,7 @@ void HostScene::Loop()
         }
         else if (menu_param == MENU_START)
         {
+            leto_api_v1->Lobby->SetReady(true);
             //.... Logic of start the game
         }
         return;
@@ -138,18 +139,23 @@ void HostScene::RefreshMembers()
     
     if (!opened) return;
 
+    bool ready_all = true;
     for (int i = 0; i < lobby.connected; ++i)
     {                
         WebDeviceInfo_V1 info;
         if (leto_api_v1->Web->FindDeviceNear(lobby.members[i], &info))
         {
             members_text[i].SetText(info.web_name);
-            members_text[i].SetTextColor(info.id == leto_api_v1->Globals->GetDeviceID() ? label_text.GetBackroundColor() : WhiteColor);
+            members_text[i].SetTextColor(info.id == leto::globals::GetDeviceID() ? label_text.GetBackroundColor() : WhiteColor);
+            members_text[i].SetColorInverse(info.id == lobby.owner);
             members_text[i].Enable();
             if (info.flags & WD_FLAG_READY)
                 members_ready[i].Enable();
+            else
+                ready_all = false;
         }
     }
+    if (ready_all) on_ready();
 }
 
 void HostScene::RefreshLobby()
@@ -159,11 +165,15 @@ void HostScene::RefreshLobby()
 
 void HostScene::RefreshMenu()
 {
-    menu.Clear();
+    uint8_t id = menu.GetCurrentID();
+    {
+        menu.Clear();
 
-    if (opened && lobby.connected > 1)
-        menu.AppendMenuItem("НАЧАТЬ", MENU_START);
-    menu.AppendMenuItem("ВЫЙТИ", MENU_QUIT);    
+        if (opened && lobby.connected > 1)
+            menu.AppendMenuItem("НАЧАТЬ", MENU_START);
+        menu.AppendMenuItem("ВЫЙТИ", MENU_QUIT);
+    }
+    menu.SetCurrentID(id);
 }
 
 void HostScene::Quit()

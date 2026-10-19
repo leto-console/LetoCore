@@ -8,18 +8,18 @@
 #ifndef INC_NAVIGATION_NAVDATA_HPP_
 #define INC_NAVIGATION_NAVDATA_HPP_
 
-#include <Data/SingleData.hpp>
+#include <Data/DataCell.hpp>
 #include "Quaternion/Quaternion.hpp"
 #include "NavigationTypes.hpp"
 
-using AnglesData		= SingleData<NavigationTypes::Angles>;
-using QuaternionData	= SingleData<Quaternion>;
+using AnglesData		= DataCell<NavigationTypes::Angles>;
+using QuaternionData	= DataCell<Quaternion>;
 
 // Углы вычисленные гравитационным способом
 extern AnglesData Gravity_Angles;
 
 // Коэффициент для вычисления углов комплементарным способом (акселерометр + гироскоп)
-extern FloatSingleData Complement_Koeff;
+extern DataCell<float> Complement_Koeff;
 
 // Углы вычисленные комплементарным способом (акселерометр + гироскоп)
 extern AnglesData Complement_Angles;

@@ -26,6 +26,7 @@ protected:
 	WebConnection_V1 connection;	
 	Account account;
 	Timer refresh_timer;
+	Timer send_name_timer;
 
 	bool inited;
 

@@ -121,8 +121,8 @@ void AuthHandler::Logout()
 
 void AuthHandler::Init(uint16_t auth_address, Storage& auth_storage, uint16_t auth_accounts_count, uint16_t start_address, uint16_t space_size)
 {
-	if (auth_accounts_count > (uint16_t) accounts.Size())
-		auth_accounts_count = (uint16_t) accounts.Size();
+	if (auth_accounts_count > (uint16_t) accounts.Capacity())
+		auth_accounts_count = (uint16_t) accounts.Capacity();
 
 	this->storage = &auth_storage;
 	this->accounts_count = auth_accounts_count;

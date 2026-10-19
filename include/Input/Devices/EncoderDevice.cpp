@@ -18,13 +18,14 @@ void EncoderDevice::Init(uint8_t id, GPIO_TypeDef* gpio_clk_port, uint16_t gpio_
 	UserInputDevice::Init(id);
 }
 #else
-void EncoderDevice::Init(uint8_t id, uint64_t key_left, uint64_t key_right)
+void EncoderDevice::Init(uint8_t id, uint64_t key_left, uint64_t key_right, bool enable_wheel)
 {
 	this->keys.push_back(key_left);
 	this->keys.push_back(key_right);
 
 	this->key_left = key_left;
 	this->key_right = key_right;
+	this->enable_wheel = enable_wheel;
 
 	UserInputDevice::Init(id);
 }
@@ -64,6 +65,18 @@ void EncoderDevice::Tick()
 		WinAPIKeyEvent& event = WinAPIEventsMap[key_right].front();
 		if (event.event == WinAPIKeyEvent::PRESSED) OnRightTurn();
 		WinAPIEventsMap[key_right].pop_front();
+	}
+
+	if (enable_wheel)
+	{
+		if (WinAPIEventsMap.find(Mouse_KeyEvent) != WinAPIEventsMap.end() &&
+		!WinAPIEventsMap[Mouse_KeyEvent].empty())
+		{
+			WinAPIKeyEvent& event = WinAPIEventsMap[Mouse_KeyEvent].front();
+			if      (event.event == WinAPIKeyEvent::ROTATE_LEFT)  OnLeftTurn();
+			else if (event.event == WinAPIKeyEvent::ROTATE_RIGHT) OnRightTurn();
+			WinAPIEventsMap[Mouse_KeyEvent].pop_front();
+		}
 	}
 
 #endif

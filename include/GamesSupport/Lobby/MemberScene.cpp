@@ -9,8 +9,8 @@ static constexpr StaticText32 ST_AVAILABLE_HOSTS{ "ДОСТУПНЫЕ ХОСТЫ
 static constexpr StaticText32 ST_CONNECTED{ "ВЫ ПОДКЛЮЧЕНЫ!" };         ///< ВЫ ПОДКЛЮЧЕНЫ
 static constexpr StaticText32 ST_WAITING{ "ОЖИДАЕМ" };                  ///< ОЖИДАЕМ
 
-MemberScene::MemberScene(ISceneManager* game, LobbyScene* main_scene, uint8_t max_count, LobbyConnection_V1_Callback callback) 
-    : HostScene{ game, main_scene, max_count, callback }
+MemberScene::MemberScene(ISceneManager* game, LobbyScene* main_scene, uint8_t max_count, LobbyConnection_V1_Callback callback, LobbyReady_Callback on_ready) 
+    : HostScene{ game, main_scene, max_count, callback, on_ready }
 {
     status_text.SetText(ST_AVAILABLE_HOSTS);
     label_text.SetBackroundColor(DeepOrangeColor);
@@ -18,6 +18,7 @@ MemberScene::MemberScene(ISceneManager* game, LobbyScene* main_scene, uint8_t ma
 
 void MemberScene::OnShow()
 {
+    leto_api_v1->Lobby->SetReady(false);
     menu.ResetCurrentID();
 }
 
@@ -91,23 +92,29 @@ void MemberScene::RefreshLobby()
 
 void MemberScene::RefreshMenu()
 {
-    menu.Clear();
-
-    if (!opened)
+    uint8_t id = menu.GetCurrentID();
     {
-        menu.SetPosition({80, 40});
-        for (uint32_t i = 0; i < near_cnt; ++i)
+        menu.Clear();
+
+        if (!opened)
         {
-            char txt[16];
-            leto_api_v1->Text->FormatText(txt, sizeof(txt), "%d", near_info[i].owner);
-            menu.AppendMenuItem(txt, HOST_ID + i);
+            menu.SetPosition({80, 40});
+            for (uint32_t i = 0; i < near_cnt; ++i)
+            {
+                WebDeviceInfo_V1 info;
+                if (leto_api_v1->Web->FindDeviceNear(near_info[i].owner, &info))
+                {
+                    menu.AppendMenuItem(info.web_name, HOST_ID + i);
+                }
+            }
+        }
+        else
+        {
+            menu.SetPosition({120, 55});
+            if (!leto_api_v1->Lobby->GetReady())
+                menu.AppendMenuItem("НАЧАТЬ", MENU_START);
+            menu.AppendMenuItem("ВЫЙТИ", MENU_QUIT);    
         }
     }
-    else
-    {
-        menu.SetPosition({120, 55});
-        if (!leto_api_v1->Lobby->GetReady())
-            menu.AppendMenuItem("НАЧАТЬ", MENU_START);
-        menu.AppendMenuItem("ВЫЙТИ", MENU_QUIT);    
-    }
+    menu.SetCurrentID(id);
 }

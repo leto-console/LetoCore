@@ -45,6 +45,39 @@ LRESULT WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		//WinAPIEventsMap[wParam] = { wParam, WinAPIKeyEvent::RELEASED };
 		//WinAPIKeyEvents.push_back({ wParam, WinAPIKeyEvent::RELEASED });
 		break;
+	case WM_MOUSEWHEEL:
+		{
+			int zDelta = GET_WHEEL_DELTA_WPARAM(wParam);
+			if (zDelta > 0)
+			{
+				// Действие при прокрутке ВВЕРХ (от пользователя)
+				WinAPIEventsMap[Mouse_KeyEvent].push_back({Mouse_KeyEvent, WinAPIKeyEvent::ROTATE_LEFT});
+			}
+			else if (zDelta < 0)
+			{
+				// Действие при прокрутке ВНИЗ (к пользователю)
+				WinAPIEventsMap[Mouse_KeyEvent].push_back({Mouse_KeyEvent, WinAPIKeyEvent::ROTATE_RIGHT});
+			}
+		}
+		break;
+	case WM_MBUTTONDOWN:
+		WinAPIEventsMap[VK_MBUTTON].push_back({ VK_MBUTTON, WinAPIKeyEvent::PRESSED });
+		break;
+	case WM_MBUTTONUP:
+		WinAPIEventsMap[VK_MBUTTON].push_back({ VK_MBUTTON, WinAPIKeyEvent::RELEASED });
+		break;
+	case WM_LBUTTONDOWN:
+		WinAPIEventsMap[VK_LBUTTON].push_back({ VK_LBUTTON, WinAPIKeyEvent::PRESSED });
+		break;
+	case WM_LBUTTONUP:
+		WinAPIEventsMap[VK_LBUTTON].push_back({ VK_LBUTTON, WinAPIKeyEvent::RELEASED });
+		break;
+	case WM_RBUTTONDOWN:
+		WinAPIEventsMap[VK_RBUTTON].push_back({ VK_RBUTTON, WinAPIKeyEvent::PRESSED });
+		break;
+	case WM_RBUTTONUP:
+		WinAPIEventsMap[VK_RBUTTON].push_back({ VK_RBUTTON, WinAPIKeyEvent::RELEASED });
+		break;
 	case WM_PAINT:
 		PAINTSTRUCT ps;
 		HDC hdc = BeginPaint(hWnd, &ps);

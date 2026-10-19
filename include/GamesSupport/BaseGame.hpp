@@ -39,6 +39,7 @@ protected:
 
 	virtual bool CustomInit() { return true; };
 	virtual void CustomClose() {};
+	virtual void CustomLoop() {};
 
 public:
 	BaseGame(const AppBinHeader& header) : header{ header } { LoadedGame = this; }
@@ -82,6 +83,13 @@ public:
 				capacity.Draw(screen);
 			}
 		}
+    }
+
+	
+	void Loop() override
+    {
+		SceneManager<TScenesMaxCount, TBuilderAllocSize, TCommonAllocSize>::Loop();
+		CustomLoop();
     }
 };
 

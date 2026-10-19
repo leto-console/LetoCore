@@ -23,10 +23,12 @@ void				DrawImage(HDC hdc);
 
 struct LETO_CORE_EXPORT WinAPIKeyEvent
 {
-	enum { IDLE, PRESSED, RELEASED };
+	enum { IDLE, PRESSED, RELEASED, ROTATE_LEFT, ROTATE_RIGHT };
 	uint64_t key;
 	int event;
 };
+
+constexpr int Mouse_KeyEvent = 7;
 
 extern LETO_CORE_EXPORT std::map<uint64_t, std::deque<WinAPIKeyEvent>> WinAPIEventsMap;
 

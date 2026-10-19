@@ -25,6 +25,12 @@ public:
     /// Обработать полученные данные
     void ProcessReceive(uint32_t id, const void* data, uint32_t size);
 
+    /// Проверить актуальность данных
+    void CheckTimeout();
+
+    /// Отправить данные прямо сейчас
+    void SendNow();
+
 protected:
     /**
      * @brief Отправить данные
@@ -36,14 +42,20 @@ protected:
      */
     virtual void OnReceive(uint32_t id, const void* data, uint32_t size) = 0;
 
+    /**
+     * @brief Потеряна связь (5 пропущенных пакетов)
+     */
+    virtual void OnTimeout() = 0;
+
 private:
     uint8_t data_id;        ///< Идентификатор данных
     uint32_t period_ms;     ///< Период передачи и приема данных
 
     Timer send_timer;
+    Timer timeout_timer;
 
     bool CheckTimer() const { return send_timer.Expired(false); }
-    void RestartTimer() { send_timer.Start(); }
+    void RestartTimer() { send_timer.Start(period_ms); }
 };
 
 #endif /* INC_GAMES_SUPPORT_LOBBY_LOBBY_DATA_HPP_ */

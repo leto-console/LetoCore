@@ -13,11 +13,9 @@
 
 enum DEVICE_INFO_TYPE
 {
-	INFO_NAME_0_6 = 0,
-	INFO_NAME_7_12,
-	INFO_ID_ACTIVE_LOBBY,
-	INFO_AVATAR_JOIN_LOBBY,
-	INFO_FLAGS,
+	INFO_NAME_0_12 = 0,
+	INFO_ID_ACTIVE_LOBBY_JOIN_LOBBY,
+	INFO_AVATAR_FLAGS,
 	INFO_MAX
 };
 
@@ -28,7 +26,7 @@ bool WebDevicesTask::UpdateInfo()
 
 void WebDevicesTask::SendAccountMsg()
 {
-	uint8_t u_data[10]{};
+	uint8_t u_data[16]{};
 	uint32_t device_id = GetDeviceID();
 	uint32_t lobby_owner = 0, join_lobby = 0;
 
@@ -56,30 +54,32 @@ void WebDevicesTask::SendAccountMsg()
 
 	for (uint8_t info = 0; info < INFO_MAX; ++info)
 	{
+		if (info == INFO_NAME_0_12)
+		{
+			if (!send_name_timer.Expired(false))
+				continue;
+			else 
+				send_name_timer.Start();
+		}
+
 		memset(u_data + 2, 0, 6);
 		u_data[1] = info;
 
 		switch (info)
 		{
-		case INFO_NAME_0_6:
-			memcpy(u_data + 2, &account.Name[0], 6);
+		case INFO_NAME_0_12:
+			memcpy(u_data + 2, &account.Name[0], 12);
 			break;
-		case INFO_NAME_7_12:
-			memcpy(u_data + 2, &account.Name[6], 6);
-			break;
-		case INFO_ID_ACTIVE_LOBBY:
+		case INFO_ID_ACTIVE_LOBBY_JOIN_LOBBY:
 			memcpy(u_data + 2, &self_info.id, 4);
 			memcpy(u_data + 6, &self_info.lobby_owner, 4);
+			memcpy(u_data + 10, &self_info.joining_lobby, 4);
 			break;
-		case INFO_AVATAR_JOIN_LOBBY:
+		case INFO_AVATAR_FLAGS:
 			memcpy(u_data + 2, &self_info.avatar_id, 4);
-			memcpy(u_data + 6, &self_info.joining_lobby, 4);
-			break;
-		case INFO_FLAGS:
-			memcpy(u_data + 2, &self_info.flags, 1);
+			memcpy(u_data + 6, &self_info.flags, 1);
 			break;
 		}
-
 
 		WebManager_V1::Instance().SendData(connection, u_data, sizeof(u_data));
 	}
@@ -155,8 +155,7 @@ bool WebDevicesTask::Do()
 
 static void WebDevTask_Callback(uint8_t channel, uint8_t port, uint32_t id, const void* data, uint32_t size)
 {
-	if (size < 10) return;
-	VC_Print("WebDevTask_Callback", BlueColor);
+	if (size < 14) return;
 
 	const uint8_t* u_data = static_cast<const uint8_t*>(data);
 
@@ -171,22 +170,17 @@ static void WebDevTask_Callback(uint8_t channel, uint8_t port, uint32_t id, cons
 				info.last_activity = TimeUtils::GetCurrentMs();
 				switch (u_data[1])
 				{
-				case INFO_NAME_0_6:
-					memcpy(&info.device.web_name[0], &u_data[2], 6);
+				case INFO_NAME_0_12:
+					memcpy(&info.device.web_name[0], &u_data[2], 12);
 					break;
-				case INFO_NAME_7_12:
-					memcpy(&info.device.web_name[6], &u_data[2], 6);
-					break;
-				case INFO_ID_ACTIVE_LOBBY:
+				case INFO_ID_ACTIVE_LOBBY_JOIN_LOBBY:
 					memcpy(&info.device.id, &u_data[2], 4);
 					memcpy(&info.device.lobby_owner, &u_data[6], 4);
+					memcpy(&info.device.joining_lobby, &u_data[10], 4);
 					break;
-				case INFO_AVATAR_JOIN_LOBBY:
+				case INFO_AVATAR_FLAGS:
 					memcpy(&info.device.avatar_id, &u_data[2], 4);
-					memcpy(&info.device.joining_lobby, &u_data[6], 4);
-					break;
-				case INFO_FLAGS:
-					memcpy(&info.device.flags, &u_data[2], 1);
+					memcpy(&info.device.flags, &u_data[6], 1);
 					break;
 				}
 				return;
@@ -220,6 +214,7 @@ WebDevicesTask::WebDevicesTask(const StaticText32& name, uint32_t period_ms, uin
 	: PriorityTask{ name, period_ms, priority }
 {
 	refresh_timer.Start(500);
+	send_name_timer.Start(1000);
 
 	inited = WebManager_V1::Instance().CreateConnection(&connection, WC_CHANNEL_ALL, WC_PORT_INFO, 0, &WebDevTask_Callback);
 }

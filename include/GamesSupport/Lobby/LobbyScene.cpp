@@ -10,10 +10,12 @@
 using namespace DrawFunctions;
 
 LobbyScene::LobbyScene(ISceneManager* game, uint8_t max_count, 
-    LobbyConnection_V1_Callback host_callback, LobbyConnection_V1_Callback member_callback) 
+    LobbyConnection_V1_Callback host_callback, 
+    LobbyConnection_V1_Callback member_callback,
+    LobbyReady_Callback ready_callback) 
     : IScene{ game }, scene_mode{ NONE }, 
-    host_scene{ game, this, max_count, host_callback }, 
-    member_scene{ game, this, max_count, member_callback }
+    host_scene{ game, this, max_count, host_callback, ready_callback }, 
+    member_scene{ game, this, max_count, member_callback, ready_callback }
 {
     const IFont* font = IFont::FromHandle(leto_api_v1->Font->GetFont(7, 7, 1));
 

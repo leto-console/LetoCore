@@ -4,6 +4,7 @@
 #include <LetoAPI_V1_System/Web/WebDevicesList.hpp>
 
 #include <System/DeviceID.hpp>
+#include <VirtualConsole/VirtualConsole.hpp>
 
 bool WebManager_V1::FindConnection(WebConnection_PoolItem** connection, uint8_t channel, uint8_t port, uint32_t id)
 {
@@ -148,6 +149,8 @@ void WebManager_V1::SendSynchronizeData(WebConnection_V1 connection, const void 
 
 void WebManager_V1::ReceiveData(uint8_t channel, const WebPacket_V1& packet)
 {
+    VC_Printf("%d>%d:%d:%02X%02X%02X%02X%02X%02X%02X%02X", BlueColor, packet.id_from, packet.id_to, packet.port,
+		packet.data[0], packet.data[1], packet.data[2], packet.data[3], packet.data[4], packet.data[5], packet.data[6], packet.data[7]);
     /**
      * If acknowledgment received for sent message, clear it
      */
@@ -258,7 +261,6 @@ void WebManager_V1::Loop()
         if (TimeUtils::GetCurrentMs() - item.last_send_ms >= TIMEOUT_IN_MS)
             sync_in.Erase(&item);
     }
-
     
     if (buffer_sec_timer.Expired())
     {
