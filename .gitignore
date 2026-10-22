@@ -381,3 +381,6 @@ Core/Src/Utils/ConfigIO
 
 # Doxygen docs
 DocsHelp/doxygen/
+
+# MacOS
+.DS_Store
