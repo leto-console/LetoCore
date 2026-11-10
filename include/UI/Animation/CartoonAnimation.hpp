@@ -8,7 +8,7 @@
 #ifndef INC_UI_ANIMATION_LAMBDA_ANIMATION_HPP_
 #define INC_UI_ANIMATION_LAMBDA_ANIMATION_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <UI/Animation/Animation.hpp>
 

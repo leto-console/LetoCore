@@ -8,7 +8,7 @@
 #ifndef INC_TASK_HANDLER_PRIORITY_TASK_H_
 #define INC_TASK_HANDLER_PRIORITY_TASK_H_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <stdint.h>
 #include <Data/StaticText.hpp>

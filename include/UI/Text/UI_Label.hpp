@@ -7,7 +7,7 @@
 #ifndef INC_UI_TEXT_UI_LABEL_HPP_
 #define INC_UI_TEXT_UI_LABEL_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <SceneManager/ISceneObject.hpp>
 

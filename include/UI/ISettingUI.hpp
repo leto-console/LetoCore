@@ -7,7 +7,7 @@
 #ifndef INC_UI_SETTING_UI_HPP_
 #define INC_UI_SETTING_UI_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <Drawable/IDrawable.hpp>
 #include <SceneManager/ISelectable.hpp>

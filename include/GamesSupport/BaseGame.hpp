@@ -8,7 +8,7 @@
 #ifndef INC_GAMES_BASE_GAME_HPP_
 #define INC_GAMES_BASE_GAME_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <Data/RingFIFO_Static.hpp>
 #include <Data/IAllocator.hpp>

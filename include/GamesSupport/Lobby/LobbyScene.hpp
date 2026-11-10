@@ -7,7 +7,7 @@
 #ifndef INC_GAMES_SUPPORT_LOBBY_LOBBY_SCENE_HPP_
 #define INC_GAMES_SUPPORT_LOBBY_LOBBY_SCENE_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <GamesSupport/Lobby/HostScene.hpp>
 #include <GamesSupport/Lobby/MemberScene.hpp>

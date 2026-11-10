@@ -7,7 +7,7 @@
 #ifndef INC_SCENE_MANAGER_I_SCENE_BUILDER_HPP_
 #define INC_SCENE_MANAGER_I_SCENE_BUILDER_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <Data/IAllocator.hpp>
 

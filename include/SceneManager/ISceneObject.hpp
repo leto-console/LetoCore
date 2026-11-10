@@ -7,7 +7,7 @@
 #ifndef INC_SCENE_MANAGER_I_SCENE_OBJECT_HPP_
 #define INC_SCENE_MANAGER_I_SCENE_OBJECT_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <Drawable/IDrawable.hpp>
 #include <SceneManager/ICapturable.hpp>

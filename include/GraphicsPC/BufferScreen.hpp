@@ -7,7 +7,7 @@
 #ifndef INC_GRAPHICS_PC_BUFFER_SCREEN_HPP_
 #define INC_GRAPHICS_PC_BUFFER_SCREEN_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <stdint.h>
 

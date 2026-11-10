@@ -7,7 +7,7 @@
 #ifndef INC_APP_LOADER_APP_LOADER_HPP_
 #define INC_APP_LOADER_APP_LOADER_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <LetoABI/AppBinHeader.h>
 

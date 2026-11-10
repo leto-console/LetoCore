@@ -7,7 +7,7 @@
 #ifndef INC_UI_MENU_MENU_HOLDER_HPP_
 #define INC_UI_MENU_MENU_HOLDER_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <Graphics/IFont.hpp>
 #include <Drawable/IDrawable.hpp>

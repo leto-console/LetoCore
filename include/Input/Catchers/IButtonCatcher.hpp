@@ -7,7 +7,7 @@
 #ifndef INC_INPUT_CATCHER_I_BUTTON_CATCHER_HPP_
 #define INC_INPUT_CATCHER_I_BUTTON_CATCHER_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <cstdint>
 

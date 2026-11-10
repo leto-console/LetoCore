@@ -7,7 +7,6 @@
 
 #include <Graphics/DefaultFont.hpp>
 #include <SceneManager/ISceneManager.hpp>
-#include <Auth/AuthScene.hpp>
 
 void DeviceID_Scene::OnRandom()
 {
@@ -18,8 +17,8 @@ void DeviceID_Scene::OnSave()
     SystemRestart();
 }
 
-DeviceID_Scene::DeviceID_Scene(ISceneManager *manager, AuthScene &auth_scene, IDataCell<uint32_t>* SerialNumber)
-    : IScene{manager}, auth_scene{auth_scene}, settings{"", &manager->GetCommonAllocator()}
+DeviceID_Scene::DeviceID_Scene(ISceneManager *manager, IDataCell<uint32_t>* SerialNumber)
+    : IScene{manager}, settings{"", &manager->GetCommonAllocator()}
 {
     settings.AddSetting<ValueEditableSettingUI<uint32_t>>("Ser.Num:", Point2_i{30, 44}, SerialNumber, "%d", 0, 10000, 1, false);
 

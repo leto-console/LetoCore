@@ -7,7 +7,7 @@
 #ifndef INC_FATFS_FILE_MANAGER_MENU_HPP
 #define INC_FATFS_FILE_MANAGER_MENU_HPP
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <SceneManager/ISceneBuilder.hpp>
 #include <UI/Menu/ParamMenu.hpp>

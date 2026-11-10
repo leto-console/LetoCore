@@ -7,7 +7,7 @@
 #ifndef INC_TASK_HANDLER_PRIORITY_TASK_SHEDULER_H_
 #define INC_TASK_HANDLER_PRIORITY_TASK_SHEDULER_H_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <stdint.h>
 #include <algorithm>

@@ -8,7 +8,7 @@
 #ifndef INC_GAMES_SUPPORT_GAME_BUTTON_HANDLER_MIDDLEWARE_HPP_
 #define INC_GAMES_SUPPORT_GAME_BUTTON_HANDLER_MIDDLEWARE_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <LetoABI/AppEvent.h>
 #include <UI/ButtonHoldHandler.hpp>

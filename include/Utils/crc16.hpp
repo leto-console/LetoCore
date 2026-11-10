@@ -1,7 +1,7 @@
 #ifndef INC_UTILS_CRC16_HPP
 #define INC_UTILS_CRC16_HPP
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <stdint.h>
 #include <stddef.h>

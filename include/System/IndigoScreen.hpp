@@ -7,7 +7,7 @@
 #ifndef INC_SYSTEM_INDIGO_SCREEN_HPP__
 #define INC_SYSTEM_INDIGO_SCREEN_HPP__
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <Graphics/IDrawer.hpp>
 #include <DrawFunctions/DrawText.hpp>

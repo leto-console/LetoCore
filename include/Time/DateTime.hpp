@@ -7,7 +7,7 @@
 #ifndef INC_TIME_DATE_TIME_HPP_
 #define INC_TIME_DATE_TIME_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #ifdef USE_HAL_DRIVER
 #include <HAL_include/HAL.hpp>

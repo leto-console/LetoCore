@@ -7,7 +7,7 @@
 #ifndef INC_NRF24L01_NRF24L01_EXT_DEVICE_HPP_
 #define INC_NRF24L01_NRF24L01_EXT_DEVICE_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <ExtDevice/ExtDevice.hpp>
 

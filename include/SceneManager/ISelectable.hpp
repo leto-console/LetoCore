@@ -8,7 +8,7 @@
 #ifndef INC_SCENE_MANAGER_I_SELECTABLE_HPP_
 #define INC_SCENE_MANAGER_I_SELECTABLE_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 // Класс для элементов, которые могут быть выбраны (например, из списка подряд идущих строк)
 class LETO_CORE_EXPORT ISelectable

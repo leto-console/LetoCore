@@ -7,7 +7,7 @@
 #ifndef INC_TIME_TIMEUTILS_HPP_
 #define INC_TIME_TIMEUTILS_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <stdint.h>
 

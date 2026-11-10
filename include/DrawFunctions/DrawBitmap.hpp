@@ -8,7 +8,7 @@
 #ifndef INC_DRAW_FUNCTIONS_DRAW_BITMAP_HPP_
 #define INC_DRAW_FUNCTIONS_DRAW_BITMAP_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <Graphics/IScreen.hpp>
 #include <Graphics/RGBColor.hpp>

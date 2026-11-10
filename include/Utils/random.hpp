@@ -1,7 +1,7 @@
 #ifndef INC_UTILS_RANDOM_HPP
 #define INC_UTILS_RANDOM_HPP
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <cstdlib>
 

@@ -21,7 +21,7 @@
 #ifndef FF_DEFINED
 #define FF_DEFINED	80386	/* Revision ID */
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #ifdef __cplusplus
 extern "C" {

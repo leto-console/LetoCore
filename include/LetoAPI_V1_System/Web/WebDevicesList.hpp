@@ -7,7 +7,7 @@
 #ifndef INC_LETO_API_V1_WEB_WEB_DEVICES_LIST_HPP_
 #define INC_LETO_API_V1_WEB_WEB_DEVICES_LIST_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <Data/StaticList.hpp>
 #include <LetoAPI_V1/Web/WebDeviceInfo.h>

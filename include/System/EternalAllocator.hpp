@@ -7,7 +7,7 @@
 #ifndef INC_SYSTEM_ETERNAL_ALLOCATOR_HPP_
 #define INC_SYSTEM_ETERNAL_ALLOCATOR_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <Data/ArenaAllocator.hpp>
 

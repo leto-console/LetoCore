@@ -7,7 +7,7 @@
 #ifndef INC_SYSTEM_SYSTEM_MODE_HPP_
 #define INC_SYSTEM_SYSTEM_MODE_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 /// Режим работы приложения
 enum class SystemMode : unsigned int

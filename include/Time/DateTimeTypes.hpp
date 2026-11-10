@@ -7,7 +7,7 @@
 #ifndef INC_TIME_DATE_TIME_TYPES_HPP_
 #define INC_TIME_DATE_TIME_TYPES_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <cstdint>
 

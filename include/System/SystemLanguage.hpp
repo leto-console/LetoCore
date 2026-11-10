@@ -7,7 +7,7 @@
 #ifndef INC_SYSTEM_LANGUAGE_HPP_
 #define INC_SYSTEM_LANGUAGE_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <Data/IDataCell.hpp>
 #include <cstdint>

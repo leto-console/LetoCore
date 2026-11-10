@@ -8,7 +8,7 @@
 #ifndef INC_GRAPHICS_MANAGER_I_FONT_HPP_
 #define INC_GRAPHICS_MANAGER_I_FONT_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <stdint.h>
 

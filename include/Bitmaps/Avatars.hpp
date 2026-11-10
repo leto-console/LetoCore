@@ -11,7 +11,7 @@
 #include <stdint.h>
 
 #include "Bitmaps.h"
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <Data/StaticListView.hpp>
 

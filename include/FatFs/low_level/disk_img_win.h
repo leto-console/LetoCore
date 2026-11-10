@@ -1,7 +1,7 @@
 #ifndef _DISK_IMG_WIN_DEFINED
 #define _DISK_IMG_WIN_DEFINED
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #ifdef __cplusplus
 extern "C" {

@@ -7,7 +7,7 @@
 #ifndef INC_GAMES_SUPPORT_LOBBY_LOBBY_DATA_HPP_
 #define INC_GAMES_SUPPORT_LOBBY_LOBBY_DATA_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <cstdint>
 #include <cstring>

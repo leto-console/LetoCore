@@ -8,7 +8,7 @@
 #ifndef INC_SSD1306_SSD1306_SCREEN_HPP_
 #define INC_SSD1306_SSD1306_SCREEN_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include "SSD1306/SSD1306_Properties.hpp"
 

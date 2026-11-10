@@ -7,7 +7,7 @@
 #ifndef INC_FATFS_TASK_HPP_
 #define INC_FATFS_TASK_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <TaskHandler/PriorityTask.hpp>
 #include <SDCard/SDCard_ExtDevice.hpp>

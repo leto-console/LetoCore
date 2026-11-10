@@ -8,7 +8,7 @@
 #ifndef INC_LIBS_SUPPORT_LIB_HEADER_HPP_
 #define INC_LIBS_SUPPORT_LIB_HEADER_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <type_traits>
 #include <cstdint>

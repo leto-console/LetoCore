@@ -8,7 +8,7 @@
 #ifndef INC_UI_BUTTON_SETTING_UI_HPP_
 #define INC_UI_BUTTON_SETTING_UI_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <UI/ISettingUI.hpp>
 #include <Data/StaticText.hpp>

@@ -8,7 +8,7 @@
 #ifndef INC_INPUT_USER_INPUT_DEVICE_HPP_
 #define INC_INPUT_USER_INPUT_DEVICE_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <cstdint>
 

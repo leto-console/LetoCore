@@ -7,7 +7,7 @@
 #ifndef INC_GAMES_SUPPORT_LOBBY_HOST_SCENE_HPP_
 #define INC_GAMES_SUPPORT_LOBBY_HOST_SCENE_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <UI/Geometry/UI_Circle.hpp>
 #include <UI/Text/UI_Label.hpp>

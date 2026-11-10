@@ -7,7 +7,7 @@
 #ifndef INC_SYSTEM_SYSTEM_TEST_HPP_
 #define INC_SYSTEM_SYSTEM_TEST_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <SceneManager/IScene.hpp>
 #include <SceneManager/ISceneBuilder.hpp>

@@ -8,7 +8,7 @@
 #ifndef INC_INPUT_DEVICES_DISCRETESIGNAL_DEVICE_HPP_
 #define INC_INPUT_DEVICES_DISCRETESIGNAL_DEVICE_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #ifdef USE_HAL_DRIVER
 

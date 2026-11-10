@@ -7,7 +7,7 @@
 #ifndef INC_SYSTEM_SYSTEM_RESTART_HPP_
 #define INC_SYSTEM_SYSTEM_RESTART_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 extern LETO_CORE_EXPORT void SystemRestart();
 

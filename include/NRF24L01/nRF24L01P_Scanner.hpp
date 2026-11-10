@@ -8,7 +8,7 @@
 #ifndef INC_NRF24L01_SCANNER_HPP_
 #define INC_NRF24L01_SCANNER_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <Data/DataCell.hpp>
 #include <Drawable/IDrawable.hpp>

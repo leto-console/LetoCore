@@ -10,7 +10,7 @@
 #ifndef INC_UTILS_FILECONFIG_HPP_
 #define INC_UTILS_FILECONFIG_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <string>
 #include "Data/SourceData.hpp"
