@@ -7,7 +7,7 @@
 #ifndef INC_BITMAPS_EYES_HPP_
 #define INC_BITMAPS_EYES_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <stdint.h>
 

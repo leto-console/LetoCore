@@ -7,7 +7,7 @@
 #ifndef INC_UI_GEOMETRY_UI_CIRCLE_HPP_
 #define INC_UI_GEOMETRY_UI_CIRCLE_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <SceneManager/ISceneObject.hpp>
 

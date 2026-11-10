@@ -7,7 +7,7 @@
 #ifndef INC_SYSTEM_DEVICE_ID_HPP_
 #define INC_SYSTEM_DEVICE_ID_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <cstdint>
 

@@ -7,7 +7,7 @@
 #ifndef INC_GAMES_GAME_CENTER_HPP_
 #define INC_GAMES_GAME_CENTER_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <SceneManager/IScene.hpp>
 #include <SceneManager/ISceneBuilder.hpp>

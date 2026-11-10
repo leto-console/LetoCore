@@ -7,7 +7,7 @@
 #ifndef INC_LETO_API_V1_WEB_WEB_MANAGER_HPP_
 #define INC_LETO_API_V1_WEB_WEB_MANAGER_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <cstdint>
 

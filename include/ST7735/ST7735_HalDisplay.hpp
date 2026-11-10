@@ -10,7 +10,7 @@
 #ifndef ST7735_ST7735_HALDISPLAY_HPP_
 #define ST7735_ST7735_HALDISPLAY_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include "ST7735/ST7735_Properties.hpp"
 

@@ -8,7 +8,7 @@
 #ifndef INC_BITMAPS_EMOJI_HPP_
 #define INC_BITMAPS_EMOJI_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <stdint.h>
 

@@ -8,7 +8,7 @@
 #ifndef INC_QUATERNION_QUATERNION_HPP_
 #define INC_QUATERNION_QUATERNION_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include "stdint.h"
 

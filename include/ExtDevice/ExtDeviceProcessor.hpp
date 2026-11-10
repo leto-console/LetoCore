@@ -7,7 +7,7 @@
 #ifndef INC_SYSTEM_EXT_DEVICE_PROCESSOR_HPP_
 #define INC_SYSTEM_EXT_DEVICE_PROCESSOR_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <cstdint>
 

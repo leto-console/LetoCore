@@ -1,6 +1,6 @@
 #pragma once
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 #include <LetoAPI_V1/LetoAPI_V1.h>
 
 namespace leto::file

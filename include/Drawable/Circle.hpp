@@ -8,7 +8,7 @@
 #ifndef INC_DRAWABLE_CIRCLE_HPP_
 #define INC_DRAWABLE_CIRCLE_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <Drawable/IDrawable.hpp>
 

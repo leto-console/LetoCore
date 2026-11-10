@@ -7,7 +7,7 @@
 #ifndef INC_APP_LOADER_APP_INFO_HPP_
 #define INC_APP_LOADER_APP_INFO_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <cstdint>
 #include <cstdio>

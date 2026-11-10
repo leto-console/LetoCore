@@ -8,7 +8,7 @@
 #ifndef INC_UI_INPUT_HELPER_UI_HPP_
 #define INC_UI_INPUT_HELPER_UI_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <Drawable/IDrawable.hpp>
 #include <Time/Timer.hpp>

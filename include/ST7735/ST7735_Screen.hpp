@@ -10,7 +10,7 @@
 #ifndef INC_ST7735_ST7735_SCREEN_HPP_
 #define INC_ST7735_ST7735_SCREEN_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include "ST7735/ST7735_Properties.hpp"
 

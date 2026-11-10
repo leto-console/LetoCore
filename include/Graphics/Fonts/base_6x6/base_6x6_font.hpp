@@ -1,6 +1,6 @@
 #pragma once
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <Graphics/IFont.hpp>
 

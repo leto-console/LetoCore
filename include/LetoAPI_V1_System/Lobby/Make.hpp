@@ -7,7 +7,7 @@
 #ifndef INC_LETO_API_V1_LOBBY_MAKE_HPP_
 #define INC_LETO_API_V1_LOBBY_MAKE_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <LetoAPI_V1/Lobby/LobbyAPI.h>
 

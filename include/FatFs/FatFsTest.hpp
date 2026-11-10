@@ -7,7 +7,7 @@
 #ifndef INC_FATFS_TEST_HPP_
 #define INC_FATFS_TEST_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 extern LETO_CORE_EXPORT void fatfs_test();
 

@@ -7,7 +7,7 @@
 #ifndef INC_VIRTUAL_CONSOLE_VIRTUAL_CONSOLE_HPP__
 #define INC_VIRTUAL_CONSOLE_VIRTUAL_CONSOLE_HPP__
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <Data/StaticTextView.hpp>
 #include <Data/StaticList.hpp>

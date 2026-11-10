@@ -1,7 +1,5 @@
 #include "DeviceID.hpp"
 
-#include <Auth/AuthHandler.hpp>
-
 static uint32_t device_id = 0;
 
 void SetDeviceID(uint32_t id)

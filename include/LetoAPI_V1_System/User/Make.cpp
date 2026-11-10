@@ -5,7 +5,7 @@
 
 // ====================================================================================================
 
-#include <Auth/AuthHandler.hpp>
+//#include <Auth/AuthHandler.hpp>
 #include <Bitmaps/Avatars.hpp>
 
 const LetoBitmap_V1* _GetAvatarByID(uint32_t ID)

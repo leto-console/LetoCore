@@ -7,7 +7,7 @@
 #ifndef INC_LETO_API_V1_GRAPHICS_MAKE_HPP_
 #define INC_LETO_API_V1_GRAPHICS_MAKE_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <LetoAPI_V1/Graphics/GraphicsAPI.h>
 

@@ -7,7 +7,7 @@
 #ifndef INC_UI_SYSTEM_UI_EXT_DEVICE_STATUS_HPP_
 #define INC_UI_SYSTEM_UI_EXT_DEVICE_STATUS_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <SceneManager/ISceneObject.hpp>
 #include <ExtDevice/ExtDevice.hpp>

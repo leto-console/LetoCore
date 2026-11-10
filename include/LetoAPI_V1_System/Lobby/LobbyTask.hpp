@@ -7,11 +7,10 @@
 #ifndef INC_LETO_API_V1_LOBBY_LOBBY_TASK_HPP_
 #define INC_LETO_API_V1_LOBBY_LOBBY_TASK_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <TaskHandler/PriorityTask.hpp>
 #include <Time/Timer.hpp>
-#include <Auth/Account.hpp>
 #include <Data/StaticText.hpp>
 
 #include <LetoAPI_V1/Web/WebConnection.h>

@@ -7,7 +7,7 @@
 #ifndef INC_FATFS_MNT_HPP_
 #define INC_FATFS_MNT_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <FatFs/low_level/ff.h>
 

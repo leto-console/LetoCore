@@ -7,7 +7,7 @@
 #ifndef INC_INPUT_CATCHER_I_ENCODER_CATCHER_HPP_
 #define INC_INPUT_CATCHER_I_ENCODER_CATCHER_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <cstdint>
 

@@ -8,7 +8,7 @@
 #ifndef INC_INPUT_SYSTEM_INPUT_ID_HPP_
 #define INC_INPUT_SYSTEM_INPUT_ID_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <stdint.h>
 

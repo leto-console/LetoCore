@@ -9,7 +9,7 @@
 #ifndef GRAPHICS_PC_WIN_DISPLAY_HPP_
 #define GRAPHICS_PC_WIN_DISPLAY_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <Windows.h>
 #include <stdint.h>

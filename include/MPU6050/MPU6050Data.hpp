@@ -8,7 +8,7 @@
 #ifndef INC_MPU6050_MPU6050DATA_HPP_
 #define INC_MPU6050_MPU6050DATA_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <Data/IDataCell.hpp>
 #include "Data/SourceData.hpp"

@@ -8,7 +8,7 @@
 #ifndef INC_GRAPHICS_RGB_COLOR_HPP_
 #define INC_GRAPHICS_RGB_COLOR_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <cstdint>
 #include <cstring>

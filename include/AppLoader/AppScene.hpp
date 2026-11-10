@@ -7,7 +7,7 @@
 #ifndef INC_APP_LOADER_APP_SCENE_HPP_
 #define INC_APP_LOADER_APP_SCENE_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <SceneManager/IScene.hpp>
 #include <SceneManager/ISceneBuilder.hpp>

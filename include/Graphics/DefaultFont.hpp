@@ -8,7 +8,7 @@
 #ifndef INC_GRAPHICS_DEFAULT_FONT_H_
 #define INC_GRAPHICS_DEFAULT_FONT_H_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <stdint.h>
 

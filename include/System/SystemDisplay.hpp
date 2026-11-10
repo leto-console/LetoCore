@@ -7,7 +7,7 @@
 #ifndef INC_SYSTEM_SYSTEM_DISPLAY_HPP_
 #define INC_SYSTEM_SYSTEM_DISPLAY_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <Graphics/IDisplay.hpp>
 #include <System/StackGuard.hpp>

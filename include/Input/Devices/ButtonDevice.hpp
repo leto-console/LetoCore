@@ -8,7 +8,7 @@
 #ifndef INC_INPUT_DEVICES_BUTTON_DEVICE_HPP_
 #define INC_INPUT_DEVICES_BUTTON_DEVICE_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <string>
 

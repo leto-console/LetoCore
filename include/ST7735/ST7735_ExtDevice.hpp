@@ -7,7 +7,7 @@
 #ifndef INC_ST7735_ST7735_EXT_DEVICE_HPP_
 #define INC_ST7735_ST7735_EXT_DEVICE_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <ExtDevice/ExtDevice.hpp>
 

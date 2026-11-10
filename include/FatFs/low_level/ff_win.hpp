@@ -3,7 +3,7 @@
 
 #ifdef _WIN32
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include "ff.h"
 #include <string>

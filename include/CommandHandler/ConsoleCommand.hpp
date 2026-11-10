@@ -8,7 +8,7 @@
 #ifndef INC_COMMANDHANDLER_CONSOLECOMMAND_HPP_
 #define INC_COMMANDHANDLER_CONSOLECOMMAND_HPP_
 
-#include "LibrariesExport.h"
+#include "LetoCoreExport.h"
 
 #include <Data/StaticText.hpp>
 #include <Data/StaticListView.hpp>
