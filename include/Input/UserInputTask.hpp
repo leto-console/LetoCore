@@ -9,7 +9,7 @@
 #define INC_INPUT_USER_INPUT_TASK_HPP_
 
 #include <TaskHandler/PriorityTask.hpp>
-#include <SceneManager/SystemSceneManager.hpp>
+#include <System/SystemSceneManager.hpp>
 #include <Data/StaticListView.hpp>
 #include <Input/Devices/UserInputDevice.hpp>
 #include <Input/ButtonEvent.hpp>

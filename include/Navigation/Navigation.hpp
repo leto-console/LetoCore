@@ -15,7 +15,7 @@ using namespace NavigationTypes;
 
 namespace Navigation
 {
-	extern OrientationBlock orientation;
+	extern OrientationBlock* orientation;
 };
 
 #endif /* INC_NAVIGATION_NAVIGATION_HPP_ */

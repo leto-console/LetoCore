@@ -1,6 +1,6 @@
 #include "Stopwatch.hpp"
 
-#include <Time/TimeUtils.hpp>
+#include <LetoFunctions/Globals.hpp>
 
 Stopwatch::Stopwatch(bool auto_start)
 {
@@ -9,7 +9,7 @@ Stopwatch::Stopwatch(bool auto_start)
 
 void Stopwatch::Start()
 {
-    start_mks = TimeUtils::GetCurrentMks();
+    start_mks = leto::globals::GetCurrentMcs();
 }
 
 uint32_t Stopwatch::ElapsedMs()
@@ -20,5 +20,5 @@ uint32_t Stopwatch::ElapsedMs()
 uint32_t Stopwatch::ElapsedMks()
 {
     if (!start_mks) return 0;
-    return TimeUtils::GetCurrentMks() - start_mks;
+    return leto::globals::GetCurrentMcs() - start_mks;
 }

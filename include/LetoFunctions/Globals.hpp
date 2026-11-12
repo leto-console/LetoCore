@@ -39,6 +39,15 @@ namespace leto::globals
     }
 
     /**
+     * @brief Get number of microseconds elapsed since MCU startup
+     */
+    inline uint32_t GetCurrentMcs()
+    {
+        LETO_CHECK_API(leto_api_v1, Globals, GetCurrentMcs, 0);
+        return leto_api_v1->Globals->GetCurrentMcs();
+    }
+
+    /**
      * @brief Get device hardware identifier
      */
     inline uint32_t GetDeviceID()
@@ -95,6 +104,18 @@ namespace leto::globals
     {
         LETO_CHECK_API(leto_api_v1, Globals, GetAppID, 0);
         return leto_api_v1->Globals->GetAppID();
+    }
+
+    /**
+     * @brief Terminates the app and shows the indigo crash screen.
+     * 
+     * @param[in] message Short problem description (NUL-terminated, non-NULL).
+     * @param[in] data    Optional problem context, e.g. stack trace (NUL-terminated, may be NULL).
+     */
+    inline void CrashIndigoScreen(const char* message, const char* data)
+    {
+        LETO_CHECK_API(leto_api_v1, Globals, CrashIndigoScreen,);
+        leto_api_v1->Globals->CrashIndigoScreen(message, data);
     }
 
 }

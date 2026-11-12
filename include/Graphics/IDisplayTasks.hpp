@@ -8,7 +8,7 @@
 
 #include <TaskHandler/PriorityTask.hpp>
 
-#include <SceneManager/SystemSceneManager.hpp>
+#include <System/SystemSceneManager.hpp>
 #include <Data/StaticText.hpp>
 #include <Graphics/IDisplay.hpp>
 

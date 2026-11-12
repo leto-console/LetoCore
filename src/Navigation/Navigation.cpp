@@ -9,5 +9,5 @@
 
 namespace Navigation
 {
-	OrientationBlock orientation;
+	OrientationBlock* orientation = nullptr;
 };

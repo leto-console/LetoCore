@@ -25,8 +25,7 @@ endif()
 
 if("${PRESET_DEFINE_MACRO}" STREQUAL "__STM32__")
 	project("LetoCore" C CXX ASM)
-	file(GLOB HW_COURCES "src/*.cpp" "src/*.c" )
-	add_library(${PROJECT_NAME} STATIC "${C_CPP_COURCES}" "${HW_COURCES}")
+	add_library(${PROJECT_NAME} STATIC "${C_CPP_COURCES}")
 else()
 	project("LetoCore" C CXX)
 	if(DEFINED ENV{LETO_PATH})
@@ -69,16 +68,6 @@ if (${PRESET_DEFINE_MACRO} STREQUAL "__STM32__")
 	set(CMAKE_ASM_FLAGS "${OBJECT_GEN_FLAGS} -x assembler-with-cpp" CACHE INTERNAL "ASM Compiler Flags")
 
 	#set(CMAKE_EXE_LINKER_FLAGS "-Wl,--gc-sections --specs=nano.specs --specs=nosys.specs -mthumb -mabi=aapcs -Wl,-Map=${CMAKE_PROJECT_NAME}.map" CACHE INTERNAL "Linker options")
-
-	# ------------------------------------------------------------------------------
-	# Пути к заголовочным файлам (-I)
-	# ------------------------------------------------------------------------------
-	target_include_directories(${PROJECT_NAME} PUBLIC
-		Drivers/CMSIS/Device/ST/STM32F4xx/Include
-		Drivers/CMSIS/Include
-		Drivers/STM32F4xx_HAL_Driver/Inc
-		Drivers/STM32F4xx_HAL_Driver/Inc/Legacy
-	)
 
 elseif (${PRESET_DEFINE_MACRO} STREQUAL "__WIN__")
 

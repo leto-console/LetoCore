@@ -5,7 +5,6 @@
 
 #include <GamesSupport/BaseGame.hpp>
 #include <Input/SystemInputID.hpp>
-#include <System/DeviceID.hpp>
 
 using namespace DrawFunctions;
 

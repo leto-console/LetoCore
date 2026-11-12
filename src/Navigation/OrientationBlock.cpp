@@ -8,10 +8,13 @@
 #include "Navigation/OrientationBlock.hpp"
 #include "Navigation/NavigationUtils.hpp"
 
-#include "MPU6050/MPU6050Data.hpp"
 #include "Navigation/NavData.hpp"
 
-OrientationBlock::OrientationBlock()
+OrientationBlock::OrientationBlock(
+	FloatSourceData &Linked_Wx, FloatSourceData &Linked_Wy, FloatSourceData &Linked_Wz,
+	FloatSourceData &Linked_Nx, FloatSourceData &Linked_Ny, FloatSourceData &Linked_Nz)
+	: Linked_Wx{ Linked_Wx }, Linked_Wy{ Linked_Wy }, Linked_Wz{ Linked_Wz },
+	Linked_Nx{ Linked_Nx }, Linked_Ny{ Linked_Ny }, Linked_Nz{ Linked_Nz }
 {
 }
 
