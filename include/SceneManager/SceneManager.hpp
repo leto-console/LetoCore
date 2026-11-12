@@ -11,7 +11,6 @@
 #include <SceneManager/IScene.hpp>
 #include <SceneManager/ISceneBuilder.hpp>
 #include <SceneManager/ISceneManager.hpp>
-#include <System/EternalAllocator.hpp>
 #include <LetoABI/AppEvent.h>
 #include <Time/Timer.hpp>
 #include <Input/Catchers/ButtonCatcher.hpp>
@@ -19,12 +18,11 @@
 #include <type_traits>
 #include <utility>
 
+#include <Data/ArenaAllocator.hpp>
 #include <Data/RingFIFO_Static.hpp>
 #include <UI/CapacityIndicatorUI.hpp>
 
 #include <Graphics/IDrawer.hpp>
-#include <GamesSupport/GameCenter.hpp>
-#include <TaskHandler/PriorityTaskSheduler.hpp>
 
 template <uint32_t TScenesMaxCount, uint32_t TBuilderAllocSize, uint32_t TCommonAllocSize>
 class SceneManager : public ISceneManager
