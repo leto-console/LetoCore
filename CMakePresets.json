@@ -51,7 +51,7 @@
             }
         },
         {
-            "name": "ubuntu-base",
+            "name": "linux-base",
 			"inherits": "base",
 			"hidden": true,
             "cacheVariables": {
@@ -103,16 +103,16 @@
             }
         },
         {
-            "name": "ubuntu-debug",
-            "displayName": "ubuntu-debug",
-            "inherits": "ubuntu-base",
+            "name": "linux-debug",
+            "displayName": "linux-debug",
+            "inherits": "linux-base",
             "architecture": {
                 "value": "x64",
                 "strategy": "external"
             },
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug",
-                "PRESET_NAME": "ubuntu-debug"
+                "PRESET_NAME": "linux-debug"
             }
         },
         {
@@ -161,12 +161,12 @@
             "configurePreset": "win-release"
         },
         {
-            "name": "ubuntu-debug",
-            "configurePreset": "ubuntu-debug"
+            "name": "linux-debug",
+            "configurePreset": "linux-debug"
         },
         {
             "name": "termux-debug",
-            "configurePreset": "ubuntu-debug"
+            "configurePreset": "linux-debug"
         }
     ]
 }

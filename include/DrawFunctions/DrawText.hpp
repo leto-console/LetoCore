@@ -1,12 +1,10 @@
-/*
- * DrawText.hpp
- *
- *  Created on: Mar 21, 2026
- *      Author: Timur
+/**
+ * @file DrawText.hpp
+ * @date Mar 21, 2026
+ * @author Rakhimov T.
  */
 
-#ifndef INC_DRAW_FUNCTIONS_DRAW_TEXT_HPP_
-#define INC_DRAW_FUNCTIONS_DRAW_TEXT_HPP_
+#pragma once
 
 #include "LetoCoreExport.h"
 
@@ -43,5 +41,3 @@ namespace DrawFunctions
 	}
 
 }
-
-#endif

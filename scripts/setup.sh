@@ -1,11 +1,11 @@
 #!/bin/bash
 
-echo "[LetoAPI] Собираем проект..."
+echo "[LetoCore] Собираем проект..."
 set -e
 
 (
     cd "$(dirname "${BASH_SOURCE}")" || exit 1
 
-    #./preset_setup.sh LetoAPI ubuntu-debug
-    ./preset_setup.sh LetoAPI stm32f411xe-debug
+    ./preset_setup.sh LetoCore linux-debug
+    ./preset_setup.sh LetoCore stm32f411xe-debug
 )
