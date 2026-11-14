@@ -207,7 +207,7 @@ void MenuHolder::Draw(IScreen& screen, Point2_i offset)
 			elem_offset_x -= (TextWidth(GetText(i), font) / 2);
 		}
 
-		DrawText(
+		DrawString(
 			screen,
 			{style == MenuStyle::STYLE_3 ? elem_offset_x : CharWidth + elem_offset_x, elem_offset_y},
 			GetText(i),
@@ -222,7 +222,7 @@ void MenuHolder::Draw(IScreen& screen, Point2_i offset)
 	{
 		if (vertical_align == MenuVerticalAlignment::CENTER)
 		{
-			DrawText(
+			DrawString(
 				screen,
 				position + offset,
 				symbol,
@@ -236,7 +236,7 @@ void MenuHolder::Draw(IScreen& screen, Point2_i offset)
 
 		if (id >= 0 || id < visible_elements)
 		{
-			DrawText(
+			DrawString(
 				screen,
 				position + offset + Point2_i{0, id*CharHeight},
 				symbol,

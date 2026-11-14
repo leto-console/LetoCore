@@ -186,7 +186,7 @@ public:
 	void Draw(IScreen& screen, Point2_i offset = {}) override
 	{
 		if (!title.Empty())
-			DrawFunctions::DrawText(screen, {0, 0}, title);
+			DrawFunctions::DrawString(screen, {0, 0}, title);
 
 		for (int i = 0, y = settings_font ? settings_font->GetHeight() : 8; i < settings.Count(); ++i)
 		{

@@ -18,14 +18,14 @@ namespace leto::graphics
      * @param[in] background Background color
      * @param[in] style Text style
      */
-    inline void DrawText(
+    inline void DrawString(
         LetoScreen_V1* screen, int32_t x, int32_t y, 
         const char* text, uint32_t length, 
         const LetoFont_V1* font = nullptr, 
         LetoColor_V1 color = WhiteColor, LetoColor_V1 background = BlackColor,
         LetoTextStyle_V1 style = {2,2})
     {
-        leto_api_v1->Graphics->DrawText(screen, x, y, text, length, font, color, background, style);
+        leto_api_v1->Graphics->DrawString(screen, x, y, text, length, font, color, background, style);
     }
 
     /**
@@ -41,14 +41,14 @@ namespace leto::graphics
         return leto_api_v1->Graphics->GetTextWidth(text, length, font, style);
     }
 
-    inline void DrawText(
+    inline void DrawString(
         LetoScreen_V1* screen, Point2_i point, 
         StaticTextView text_view,
         const LetoFont_V1* font = nullptr, 
         LetoColor_V1 color = WhiteColor, LetoColor_V1 background = BlackColor,
         LetoTextStyle_V1 style = {2,2})
 	{
-		DrawText(screen, point.x, point.y, text_view.ConstChar(), text_view.Capacity(), font, color, background, style);
+		DrawString(screen, point.x, point.y, text_view.ConstChar(), text_view.Capacity(), font, color, background, style);
 	}
 
     inline uint32_t GetTextWidth(StaticTextView text_view, const LetoFont_V1* font, LetoTextStyle_V1 style = {2,2})

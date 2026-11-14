@@ -13,8 +13,6 @@
 #include <cstdint>
 #include <cstring>
 
-#pragma pack(push, 1)
-
 /**
  * @brief Глиф
  */
@@ -64,7 +62,5 @@ struct LETO_CORE_EXPORT GlyphData
 		return (bitmap[idx] >> (y & 0x7)) & 1;
     }
 };
-
-#pragma pack(pop)
 
 #endif
