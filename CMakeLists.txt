@@ -1,6 +1,8 @@
-add_compile_definitions(${PRESET_DEFINE_MACRO})
-
 cmake_minimum_required(VERSION 3.10)
+project("LetoCore" C CXX)
+
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+include(AddLetoLibrary)
 
 set(CMAKE_C_STANDARD 17)
 set(CMAKE_C_STANDARD_REQUIRED ON)
@@ -19,21 +21,22 @@ file(
 	"include/*/*/*/*/*.cpp" "include/*/*/*/*/*.c"
 )
 
+add_compile_definitions(${PRESET_DEFINE_MACRO})
+
 if(MSVC)
     add_compile_options(/wd4251)
 endif()
 
-if("${PRESET_DEFINE_MACRO}" STREQUAL "__STM32__")
-	project("LetoCore" C CXX ASM)
-	add_library(${PROJECT_NAME} STATIC "${C_CPP_COURCES}")
+if(DEFINED ENV{LETO_PATH} AND WIN32)
+    set(LIBRARY_TYPE SHARED)
 else()
-	project("LetoCore" C CXX)
-	if(DEFINED ENV{LETO_PATH})
-		add_library("${PROJECT_NAME}" SHARED "${C_CPP_COURCES}")
-		target_compile_definitions(${PROJECT_NAME} PRIVATE LETOCORE_SHARED)
-	else()
-		add_library("${PROJECT_NAME}" STATIC "${C_CPP_COURCES}")
-	endif()
+	set(LIBRARY_TYPE STATIC)
+endif()
+
+add_library(${PROJECT_NAME} ${LIBRARY_TYPE} ${C_CPP_COURCES})
+
+if(${LIBRARY_TYPE} STREQUAL "SHARED")
+	target_compile_definitions(${PROJECT_NAME} PRIVATE LETOCORE_SHARED)
 endif()
 
 target_include_directories(${PROJECT_NAME} PUBLIC 
@@ -50,6 +53,8 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE LETOCORE_EXPORT_LIBRARY)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 if (${PRESET_DEFINE_MACRO} STREQUAL "__STM32__")
+	enable_language(ASM)
+
 	target_compile_definitions(${PROJECT_NAME} PRIVATE
 		USE_HAL_DRIVER
 		${MCU_CHIP}
