@@ -219,7 +219,7 @@ protected:
 			// Прописать сюда заливку сначала белым вокруг, потом черным - поля, которое редактируется
 
             StaticText32 edit_text = EditingValueRepr();
-			DrawText(screen, position + Point2_i{name_value_offset, 0}, edit_text, WhiteColor, BlackColor, false, setting_font);
+			DrawString(screen, position + Point2_i{name_value_offset, 0}, edit_text, WhiteColor, BlackColor, false, setting_font);
 
             if (edit_param > 3) return;
             int edit_char = edit_param * 3;
@@ -233,7 +233,7 @@ protected:
 		else
 		{
 			edit_param = 0;
-			DrawText(screen, position + Point2_i{name_value_offset, 0}, CurrentValueRepr(), WhiteColor, BlackColor, false, setting_font);
+			DrawString(screen, position + Point2_i{name_value_offset, 0}, CurrentValueRepr(), WhiteColor, BlackColor, false, setting_font);
 		}
 	}
 

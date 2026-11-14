@@ -17,7 +17,7 @@ void UI_Label::Draw(IScreen &screen, Point2_i offset)
 
     Point2_i _draw_pos = position + offset + Point2_i(h_offset, v_offset);
     
-    DrawText(screen, _draw_pos, label_text, label_text_color, label_background_color, label_inverse, label_font);
+    DrawString(screen, _draw_pos, label_text, label_text_color, label_background_color, label_inverse, label_font);
 }
 
 bool UI_Label::ProcessInput(const AppEvent &event)

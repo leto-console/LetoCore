@@ -226,14 +226,14 @@
 // 	if (web_state == SELECT)
 // 	{
 // 		text = "В СЕТИ";
-// 		DrawText(screen, { 64 - TextWidth(text) / 2, 0 }, text);
+// 		DrawString(screen, { 64 - TextWidth(text) / 2, 0 }, text);
 
 // 		gamers_list.Draw(screen, {40, 20});
 
 // 		if (gamers_list.Count() == 0)
 // 		{
 // 			text = "НИКОГО...";
-// 			DrawText(screen, {64 - TextWidth(text) / 2, 20}, text, WhiteColor, BlackColor, false, font);
+// 			DrawString(screen, {64 - TextWidth(text) / 2, 20}, text, WhiteColor, BlackColor, false, font);
 // 		}
 // 		else
 // 		{
@@ -255,25 +255,25 @@
 // 			return;
 // 		}
 // 		// TODO: выделить все опции нужные для отрисовки в отдельный объект, который можно будет использовать для разных подряд идущих функций (передавая при этом его по ссылке)
-// 		DrawText(screen, {64 - TextWidth(text) / 2, 20}, text, WhiteColor, BlackColor, false, font);
+// 		DrawString(screen, {64 - TextWidth(text) / 2, 20}, text, WhiteColor, BlackColor, false, font);
 // 	}
 // 	else if (web_state == TIMEOUT_RESPONSE)
 // 	{
 // 		text = "НЕУДАЧА";
-// 		DrawText(screen, {64 - TextWidth(text) / 2, 20}, text, WhiteColor, BlackColor, false, font);
+// 		DrawString(screen, {64 - TextWidth(text) / 2, 20}, text, WhiteColor, BlackColor, false, font);
 // 	}
 // 	else if (web_state == REJECT_RESPONSE)
 // 	{
 // 		text = "ОТКАЗАНО";
-// 		DrawText(screen, {64 - TextWidth(text) / 2, 20}, text, WhiteColor, BlackColor, false, font);
+// 		DrawString(screen, {64 - TextWidth(text) / 2, 20}, text, WhiteColor, BlackColor, false, font);
 // 	}
 // 	else if (web_state == REQUEST)
 // 	{
 // 		text = "НАЧАТЬ ИГРУ";
-// 		DrawText(screen, {64 - TextWidth(text) / 2, 0}, text, WhiteColor, BlackColor, false, font);
+// 		DrawString(screen, {64 - TextWidth(text) / 2, 0}, text, WhiteColor, BlackColor, false, font);
 
 // 		text = opp_name;
-// 		DrawText(screen, {45, 20}, text, WhiteColor, BlackColor, true, font);
+// 		DrawString(screen, {45, 20}, text, WhiteColor, BlackColor, true, font);
 
 // 		BitmapData avatar;
 // 		if (leto_api_v1->User->GetAvatarByID(opp_avatar, &avatar))

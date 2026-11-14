@@ -16,9 +16,9 @@ void ISettingUI::DrawName(IScreen& screen)
 
 	// Инверсия цвета настройки при выделении, но не при редактировании
 	bool reverse_name = IsSelected() && !IsCaptured();
-	DrawText(screen, {position.x, position.y}, name, WhiteColor, BlackColor, reverse_name, setting_font);
+	DrawString(screen, {position.x, position.y}, name, WhiteColor, BlackColor, reverse_name, setting_font);
 	if (delimiter)
-		DrawText(screen, {position.x + name_delim_offset, position.y}, delim_symbol, WhiteColor, BlackColor, false, setting_font);
+		DrawString(screen, {position.x + name_delim_offset, position.y}, delim_symbol, WhiteColor, BlackColor, false, setting_font);
 }
 
 void ISettingUI::DrawValue(IScreen& screen)
@@ -28,10 +28,10 @@ void ISettingUI::DrawValue(IScreen& screen)
 	if (name_value_offset + repr.TextLength() * 8 > screen.Width())
 	{
 		SetHeight(16);
-		DrawText(screen, {position.x, position.y + 8}, CurrentValueRepr(), WhiteColor, BlackColor, false, setting_font);
+		DrawString(screen, {position.x, position.y + 8}, CurrentValueRepr(), WhiteColor, BlackColor, false, setting_font);
 	}
 	else
-		DrawText(screen, {position.x + name_value_offset, position.y}, CurrentValueRepr(), WhiteColor, BlackColor, false, setting_font);
+		DrawString(screen, {position.x + name_value_offset, position.y}, CurrentValueRepr(), WhiteColor, BlackColor, false, setting_font);
 }
 
 ISettingUI::ISettingUI(const StaticText32& name, Point2_i position)
@@ -78,7 +78,7 @@ void IEditableSettingUI::DrawValue(IScreen& screen)
 		// Инверсия заливки при редактировании
 		// Прописать сюда заливку сначала белым вокруг, потом черным - поля, которое редактируется
 
-		DrawText(screen, {position.x + name_value_offset, position.y}, EditingValueRepr(), WhiteColor, BlackColor, true, setting_font);
+		DrawString(screen, {position.x + name_value_offset, position.y}, EditingValueRepr(), WhiteColor, BlackColor, true, setting_font);
 		return;
 	}
 

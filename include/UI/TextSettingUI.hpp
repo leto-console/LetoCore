@@ -123,13 +123,13 @@ protected:
 			// Инверсия заливки при редактировании
 			// Прописать сюда заливку сначала белым вокруг, потом черным - поля, которое редактируется
 
-			DrawText(screen, position + Point2_i{name_value_offset, 0}, EditingValueRepr(), WhiteColor, BlackColor, false, setting_font);
+			DrawString(screen, position + Point2_i{name_value_offset, 0}, EditingValueRepr(), WhiteColor, BlackColor, false, setting_font);
 			DrawChar(screen, position + Point2_i{name_value_offset + edit_char * CharWidth, 0}, &edit_text.ConstChar()[edit_char], WhiteColor, BlackColor, true, setting_font);
 		}
 		else
 		{
 			edit_char = 0;
-			DrawText(screen, position + Point2_i{name_value_offset, 0}, CurrentValueRepr(), WhiteColor, BlackColor, false, setting_font);
+			DrawString(screen, position + Point2_i{name_value_offset, 0}, CurrentValueRepr(), WhiteColor, BlackColor, false, setting_font);
 		}
 	}
 

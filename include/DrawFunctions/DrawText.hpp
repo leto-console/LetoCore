@@ -25,11 +25,11 @@ namespace DrawFunctions
     extern LETO_CORE_EXPORT void DrawChar(IScreen& screen, Point2_i point, const char* symbol, RGBColor color = WhiteColor, RGBColor background = BlackColor, bool inverse = false, const IFont* font = nullptr);
 
     // Отрисовать текст в кодировке UTF-8
-    extern LETO_CORE_EXPORT void DrawText(IScreen& screen, Point2_i point, const char* text, size_t length, RGBColor color = WhiteColor, RGBColor background = BlackColor, bool inverse = false, const IFont* font = nullptr);
+    extern LETO_CORE_EXPORT void DrawString(IScreen& screen, Point2_i point, const char* text, size_t length, RGBColor color = WhiteColor, RGBColor background = BlackColor, bool inverse = false, const IFont* font = nullptr);
 
-    inline void DrawText(IScreen& screen, Point2_i point, StaticTextView text_view, RGBColor color = WhiteColor, RGBColor background = BlackColor, bool inverse = false, const IFont* font = nullptr)
+    inline void DrawString(IScreen& screen, Point2_i point, StaticTextView text_view, RGBColor color = WhiteColor, RGBColor background = BlackColor, bool inverse = false, const IFont* font = nullptr)
 	{
-		DrawText(screen, point, text_view.ConstChar(), text_view.Capacity(), color, background, inverse, font);
+		DrawString(screen, point, text_view.ConstChar(), text_view.Capacity(), color, background, inverse, font);
 	}
 
     // Получить ширину текста на экране

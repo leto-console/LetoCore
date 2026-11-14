@@ -48,7 +48,7 @@ void DrawFunctions::DrawChar(IScreen& screen, Point2_i point, const char *symbol
 	}
 }
 
-void DrawFunctions::DrawText(IScreen &screen, Point2_i point, const char *text, size_t length, RGBColor color, RGBColor background, bool inverse, const IFont *font)
+void DrawFunctions::DrawString(IScreen &screen, Point2_i point, const char *text, size_t length, RGBColor color, RGBColor background, bool inverse, const IFont *font)
 {
     if (!CheckAndSetFont(font) || !text) 
         return;

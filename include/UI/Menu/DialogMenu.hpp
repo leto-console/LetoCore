@@ -150,7 +150,7 @@ public:
 
 		// TODO: offset's
 		for (int i = 0; i < TEXT_SIZE; ++i)
-			DrawText(
+			DrawString(
 				screen,
 				{pos.x - TextWidth(text[i], font) / 2, 8 * (i + 1)},
 				text[i],
