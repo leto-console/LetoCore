@@ -116,6 +116,20 @@
             }
         },
         {
+            "name": "macos-debug",
+            "displayName": "macos-debug",
+            "inherits": "linux-base",
+            "architecture": 
+            {
+                "value": "x64", 
+                "strategy": "external" 
+            },
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "PRESET_NAME": "macos-debug"
+            }
+        },
+        {
             "name": "termux-debug",
             "displayName": "termux-debug",
             "inherits": "termux-base",
@@ -165,8 +179,34 @@
             "configurePreset": "linux-debug"
         },
         {
+            "name": "macos-debug",
+            "configurePreset": "macos-debug"
+        },
+        {
             "name": "termux-debug",
             "configurePreset": "linux-debug"
+        }
+    ],
+    "testPresets": [
+        {
+            "name": "win-debug",
+            "configurePreset": "win-debug",
+            "output": { "outputOnFailure": true }
+        },
+        {
+            "name": "win-release",
+            "configurePreset": "win-release",
+            "output": { "outputOnFailure": true }
+        },
+        {
+            "name": "linux-debug",
+            "configurePreset": "linux-debug",
+            "output": { "outputOnFailure": true }
+        },
+        {
+            "name": "macos-debug",
+            "configurePreset": "macos-debug",
+            "output": { "outputOnFailure": true }
         }
     ]
 }
