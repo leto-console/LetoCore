@@ -10,16 +10,24 @@ jobs:
   # 1. Сборка прошивок для микроконтроллеров STM32
   build-and-pack:
     strategy:
+      fail-fast: false
       matrix:
         include:
           - preset: "stm32f401xc-debug"
             os: ubuntu-latest
+            test: false
           - preset: "stm32f411xe-debug"
             os: ubuntu-latest
+            test: false
           - preset: "win-debug"
             os: windows-latest
+            test: true
           - preset: "win-release"
             os: windows-latest
+            test: true
+          - preset: "linux-debug"
+            os: ubuntu-latest
+            test: true
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -46,6 +54,10 @@ jobs:
     - name: Build Firmware
       run: cmake --build --preset ${{ matrix.preset }}
 
+    - name: Run Tests
+      if: matrix.test
+      run: ctest --preset ${{ matrix.preset }} --output-on-failure
+
     - name: Install and Organize SDK
       run: cmake --install build/${{ matrix.preset }} --prefix dist/${{ matrix.preset }}
 
@@ -55,3 +67,18 @@ jobs:
         name: LetoCore-${{ matrix.preset }}
         path: dist/${{ matrix.preset }}/
         if-no-files-found: error
+  
+  ci-result:
+    name: CI Result
+    if: always()
+    needs: [build-and-pack]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check all matrix jobs status
+        run: |
+          # Проверяем, что все джобы из needs завершились со статусом success
+          if [[ "${{ needs.build-and-pack.result }}" != "success" ]]; then
+            echo "❌ Один или несколько джобов матрицы завершились с ошибкой."
+            exit 1
+          fi
+          echo "✅ Все сборки и тесты успешно пройдены."

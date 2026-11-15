@@ -168,5 +168,22 @@
             "name": "termux-debug",
             "configurePreset": "linux-debug"
         }
+    ],
+    "testPresets": [
+        {
+            "name": "win-debug",
+            "configurePreset": "win-debug",
+            "output": { "outputOnFailure": true }
+        },
+        {
+            "name": "win-release",
+            "configurePreset": "win-release",
+            "output": { "outputOnFailure": true }
+        },
+        {
+            "name": "linux-debug",
+            "configurePreset": "linux-debug",
+            "output": { "outputOnFailure": true }
+        }
     ]
 }
