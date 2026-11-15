@@ -137,6 +137,7 @@ public:
 	}
 	
 protected:
+	List<UI_Object*> childs;
 
 	virtual void ObjectDraw(LetoScreen_V1* screen) { (void)screen; };
 	virtual void ObjectLoop() { };
@@ -202,6 +203,4 @@ protected:
 private:
 	uint32_t flags{};
 	Point2_i pos{ }, size{ };
-	
-	List<UI_Object*> childs;
 };
