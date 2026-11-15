@@ -6,8 +6,6 @@
 
 #pragma once
 
-#include <type_traits>
-
 #include <LetoAPI_V1/LetoAPI_V1.h>
 
 #include "Iterators.hpp"

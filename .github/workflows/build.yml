@@ -28,6 +28,9 @@ jobs:
           - preset: "linux-debug"
             os: ubuntu-latest
             test: true
+          - preset: "macos-debug"
+            os: macos-latest
+            test: true
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -43,6 +46,10 @@ jobs:
     - name: Install Dependencies (Windows)
       if: runner.os == 'Windows'
       run: choco install ninja
+
+    - name: Install Dependencies (macOS)
+      if: runner.os == 'macOS'
+      run: brew install ninja
 
     - name: Set up MSVC Developer Command Prompt (Windows)
       if: runner.os == 'Windows'
