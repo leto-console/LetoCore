@@ -305,6 +305,36 @@ TEST_F(TestList, Erase)
 }
 
 /*
+    Удаление всех элементов с заданным значением
+*/
+TEST_F(TestList, Remove) 
+{
+    // Arrange
+    List<int> list{ &leto_alloc };
+    list.push_back(4);
+    list.push_back(5);
+    list.push_back(4);
+    list.insert_after(list.begin()+1, 777);
+    list.push_front(4);
+    list.push_front(2);
+    list.push_front(1);
+
+    // Act
+    list.remove(4);
+
+    // Assert
+    //int check[] { 1, 2, 4, 4, 5, 777, 4 };
+    int check[] { 1, 2, 5, 777 };
+
+    size_t idx = 0;
+    for (int& val : list)
+    {
+        EXPECT_EQ(val, check[idx++]);
+    }
+
+}
+
+/*
     Вставка элемента после итератора с аллокатором
 */
 TEST_F(TestList, InsertAfter) 
@@ -373,3 +403,5 @@ TEST_F(TestList, ForeachCheck)
     }
 
 }
+
+

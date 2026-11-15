@@ -12,10 +12,12 @@
 struct StaticTextView
 {
 protected:
-	const char* begin_ptr;
-	const size_t capacity;
+	const char* begin_ptr{ nullptr };
+	size_t capacity{ };
 
 public:
+	constexpr StaticTextView() noexcept = default;
+
 	template <size_t Capacity>
 	constexpr StaticTextView(const StaticText<Capacity>& text) noexcept 
 		: begin_ptr{ text.begin() }, capacity{ Capacity } { }
@@ -26,6 +28,21 @@ public:
 	constexpr const char* ConstChar() const noexcept { return begin_ptr; }
 
 	constexpr bool Empty() const noexcept { return TextLength() == 0; }
+
+	constexpr bool operator==(StaticTextView other) const
+	{
+		size_t min_capacity = capacity < other.capacity ? capacity : other.capacity;
+		return constexpr_string::strncmp(begin_ptr, other.begin_ptr, min_capacity) == 0;
+	}
+	
+	constexpr bool operator!=(StaticTextView other) const { return !operator==(other); }
+
+	constexpr StaticTextView& operator=(StaticTextView other) 
+	{ 
+		begin_ptr = other.begin_ptr; 
+		capacity = other.capacity;
+		return *this;
+	}
 
 	// Размер строки (без нулей)
 	constexpr size_t TextLength() const noexcept { return constexpr_string::strnlen(begin_ptr, capacity); }

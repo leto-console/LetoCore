@@ -133,6 +133,17 @@ public:
 		m_size--;
 	}
 
+	void remove(T value)
+	{
+		auto it = begin();
+		while (it != end())
+		{
+			if (*it == value)
+				erase(it);
+			++it;
+		}
+	}
+
 	/**
 	* @brief Скопировать значение по индексу
 	*/
