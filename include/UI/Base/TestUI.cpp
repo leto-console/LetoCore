@@ -77,45 +77,10 @@ public:
         //srand(0xC1A0C1A0);
         rand_timer.Start(50);
         Point2_i p{90, 20};
-        AddChild(SetupLabel(leto_new UI_Label_new(p)));
-        AddChild(SetupLabel(leto_new UI_Label_new(p)));
-        AddChild(SetupLabel(leto_new UI_Label_new(p)));
-        AddChild(SetupLabel(leto_new UI_Label_new(p)));
-        AddChild(SetupLabel(leto_new UI_Label_new(p)));
-        AddChild(SetupLabel(leto_new UI_Label_new(p)));
-        AddChild(SetupLabel(leto_new UI_Label_new(p)));
-        AddChild(SetupLabel(leto_new UI_Label_new(p)));
-        AddChild(SetupLabel(leto_new UI_Label_new(p)));
-        AddChild(SetupLabel(leto_new UI_Label_new(p)));
-        AddChild(SetupLabel(leto_new UI_Label_new(p)));
-        AddChild(SetupLabel(leto_new UI_Label_new(p)));
-        AddChild(SetupLabel(leto_new UI_Label_new(p)));
-        AddChild(SetupLabel(leto_new UI_Label_new(p)));
-        AddChild(SetupLabel(leto_new UI_Label_new(p)));
-        AddChild(SetupLabel(leto_new UI_Label_new(p)));
-        AddChild(SetupLabel(leto_new UI_Label_new(p)));
-        AddChild(SetupLabel(leto_new UI_Label_new(p)));
-        AddChild(SetupLabel(leto_new UI_Label_new(p)));
-        AddChild(SetupLabel(leto_new UI_Label_new(p)));
-        AddChild(SetupLabel(leto_new UI_Label_new(p)));
-        AddChild(SetupLabel(leto_new UI_Label_new(p)));
-        AddChild(SetupLabel(leto_new UI_Label_new(p)));
-        AddChild(SetupLabel(leto_new UI_Label_new(p)));
-        AddChild(SetupLabel(leto_new UI_Label_new(p)));
-        AddChild(SetupLabel(leto_new UI_Label_new(p)));
-        AddChild(SetupLabel(leto_new UI_Label_new(p)));
-        AddChild(SetupLabel(leto_new UI_Label_new(p)));
-        AddChild(SetupLabel(leto_new UI_Label_new(p)));
-        AddChild(SetupLabel(leto_new UI_Label_new(p)));
-        AddChild(SetupLabel(leto_new UI_Label_new(p)));
-        AddChild(SetupLabel(leto_new UI_Label_new(p)));
-        AddChild(SetupLabel(leto_new UI_Label_new(p)));
-        AddChild(SetupLabel(leto_new UI_Label_new(p)));
-        AddChild(SetupLabel(leto_new UI_Label_new(p)));
-        AddChild(SetupLabel(leto_new UI_Label_new(p)));
-        AddChild(SetupLabel(leto_new UI_Label_new(p)));
-        AddChild(SetupLabel(leto_new UI_Label_new(p)));
-        AddChild(SetupLabel(leto_new UI_Label_new(p)));
+
+        for (int i = 0; i < 32; ++i)
+            AddChild(SetupLabel(leto_new UI_Label_new(p)));
+ 
         Enable(true);
     }
 

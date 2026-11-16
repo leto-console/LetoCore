@@ -29,20 +29,20 @@ enum UI_Events
 class UI_Object
 {
 protected:
-	typedef enum
+	enum
 	{
 		UIE_FLAG_ENABLED,		///< Object enabled flag
 		UIE_FLAG_SELECTED, 		///< Object selected flag
 	};
 
-	inline void SendUIEvent(uint16_t event, uint32_t data = 0) 
+	void SendUIEvent(uint16_t event, uint32_t data = -1u) 
 	{
 		OnEvent({ AE_UserInterface, event, data });
 	}
 
-	inline bool IsUIEvent(const AppEvent& check_event, uint16_t ui_event, uint32_t data = 0) const
+	bool IsUIEvent(const AppEvent& check_event, uint16_t ui_event, uint32_t data = -1u) const
 	{
-		return check_event.source == AE_UserInterface && check_event.id == ui_event && check_event.data == data;
+		return check_event.source == AE_UserInterface && check_event.id == ui_event && (data == -1u || check_event.data == data);
 	}
 
 public:
@@ -51,7 +51,7 @@ public:
 	{ }
 	virtual ~UI_Object() = default;
 		
-	inline void Enable(bool enable) 
+	void Enable(bool enable) 
 	{ 
 		if (SetFlag(UIE_FLAG_ENABLED, enable))
 		{
@@ -59,9 +59,9 @@ public:
 			Invalidate();
 		}
 	}
-	inline bool IsEnabled() const { return CheckFlag(UIE_FLAG_ENABLED); }
+	bool IsEnabled() const { return CheckFlag(UIE_FLAG_ENABLED); }
 	
-	inline void Select(bool select)
+	void Select(bool select)
 	{
 		if (SetFlag(UIE_FLAG_SELECTED, select))
 		{
@@ -69,72 +69,46 @@ public:
 			Invalidate();
 		}
 	}
-	inline bool IsSelected() const { return CheckFlag(UIE_FLAG_SELECTED); }
+	bool IsSelected() const { return CheckFlag(UIE_FLAG_SELECTED); }
 
-	inline void SetPosition(Point2_i pos) 
+	void SetPosition(Point2_i pos) 
 	{ 
 		if (this->pos != pos)
 		{
+			this->pos = pos;
 			SendUIEvent(UIE_ON_MOVE);
 			Invalidate();
 		}
-		this->pos = pos;
 	}
-	inline Point2_i GetPosition() const { return pos; }
+	Point2_i GetPosition() const { return pos; }
 	
-	inline void SetSize(Point2_i size) 
+	void SetSize(Point2_i size) 
 	{ 
 		if (this->size != size)
 		{
+			this->size = size;
 			SendUIEvent(UIE_ON_RESIZE);
 			Invalidate();
 		}
-		this->size = size;
 	}
-	inline Point2_i GetSize() const { return size; }
+	Point2_i GetSize() const { return size; }
 
-	inline void Invalidate()
-	{
-		//leto::graphics::InvalidateRect(pos, size);
-		for (UI_Object* child : childs)
-			child->Invalidate();
-		SendUIEvent(UIE_ON_INVALIDATE);
-	}
+	void Invalidate();
 
 	/**
 	 * @brief Главная функция отрисовки
 	 */
-	void Draw(LetoScreen_V1* screen)
-	{
-		if (!IsEnabled()) return;
-		/// Самый передний объект отрисовывается 
-		/// самым последним
-		for (UI_Object* child : childs)
-			child->Draw(screen);
-		ObjectDraw(screen);
-	}
+	void Draw(LetoScreen_V1* screen);
 	
 	/**
 	 * @brief Главная функция фоновой обработки
 	 */
-	void Loop()
-	{
-		if (!IsEnabled()) return;
-		ObjectLoop();
-		for (UI_Object* child : childs)
-			child->Loop();
-	}
+	void Loop();
 	
 	/**
 	 * @brief Главная функция обработки событий
 	 */
-	bool OnEvent(const AppEvent& event)
-	{
-		if (!IsEnabled()) return false;
-		if (ObjectOnEvent(event)) return true;
-
-		return OnEventChilds(event);
-	}
+	bool OnEvent(const AppEvent& event);
 	
 protected:
 	List<UI_Object*> childs;
@@ -180,24 +154,24 @@ protected:
 	 */
 	bool SetFlag(uint8_t flag, bool state) 
 	{
-		if (flag >= 8 * sizeof(flags)) return false;
+		if (flag >= 8u * sizeof(flags)) return false;
 
 		bool prev_state = CheckFlag(flag);
 		if (prev_state == state) return false;
 		
 		if (state)
-			flags |= (1 << flag);
+			flags |= (1u << flag);
 		else
-			flags &= ~(1 << flag);
+			flags &= ~(1u << flag);
 
 		return true;
 	}
 	
 	bool CheckFlag(uint8_t flag) const
 	{
-		if (flag >= 8 * sizeof(flags)) return false;
+		if (flag >= 8u * sizeof(flags)) return false;
 		
-		return (flags >> flag) & 1;
+		return (flags >> flag) & 1u;
 	}
 
 private:
