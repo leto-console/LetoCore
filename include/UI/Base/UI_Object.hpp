@@ -20,10 +20,18 @@ enum UI_Events
 	UIE_NONE = 0,
 
 	UIE_ON_INVALIDATE,			///< UI object is invalidated
-	UIE_ON_ENABLE,				///< UI object is enabled (by Enable), data = 0 - false, 1 - true
-	UIE_ON_SELECT,				///< UI object is enabled (by Select), data = 0 - false, 1 - true
+	UIE_ON_ENABLE,				///< UI object is enabled (by Enable), data: UID_TRUE | UID_FALSE
+	UIE_ON_SELECT,				///< UI object is enabled (by Select), data: UID_TRUE | UID_FALSE
 	UIE_ON_MOVE,				///< UI object is moved (by SetPosition)
 	UIE_ON_RESIZE,				///< UI object is resized (by SetSize)
+};
+
+enum UI_DataFlag
+{
+	UID_ANY_DATA 	= 0,				///< Any UI data
+	UID_NOT_SELF 	= (1u << 0),		///< 
+	UID_FALSE 		= (1u << 1),		///< UI data `false`
+	UID_TRUE 		= (1u << 2),		///< UI data `true`
 };
 
 class UI_Object
@@ -31,18 +39,23 @@ class UI_Object
 protected:
 	enum
 	{
-		UIE_FLAG_ENABLED,		///< Object enabled flag
-		UIE_FLAG_SELECTED, 		///< Object selected flag
+		UIF_ENABLED,		///< Object enabled flag
+		UIF_SELECTED, 		///< Object selected flag
 	};
 
-	void SendUIEvent(uint16_t event, uint32_t data = -1u) 
+	void SendUIEvent(uint16_t event, uint32_t data = UID_ANY_DATA) 
 	{
 		OnEvent({ AE_UserInterface, event, data });
 	}
 
-	bool IsUIEvent(const AppEvent& check_event, uint16_t ui_event, uint32_t data = -1u) const
+	bool IsUIEvent(const AppEvent& check_event) const 
+	{ 
+		return check_event.source == AE_UserInterface; 
+	}
+
+	bool IsUIEvent(const AppEvent& check_event, uint16_t event_id, uint32_t event_data = UID_ANY_DATA) const
 	{
-		return check_event.source == AE_UserInterface && check_event.id == ui_event && (data == -1u || check_event.data == data);
+		return IsUIEvent(check_event) && check_event.id == event_id && (check_event.data & event_data) == event_data;
 	}
 
 public:
@@ -53,23 +66,23 @@ public:
 		
 	void Enable(bool enable) 
 	{ 
-		if (SetFlag(UIE_FLAG_ENABLED, enable))
+		if (SetFlag(UIF_ENABLED, enable))
 		{
-			SendUIEvent(UIE_ON_ENABLE, enable ? 1 : 0);
+			SendUIEvent(UIE_ON_ENABLE, enable ? UID_TRUE : UID_FALSE);
 			Invalidate();
 		}
 	}
-	bool IsEnabled() const { return CheckFlag(UIE_FLAG_ENABLED); }
+	bool IsEnabled() const { return CheckFlag(UIF_ENABLED); }
 	
 	void Select(bool select)
 	{
-		if (SetFlag(UIE_FLAG_SELECTED, select))
+		if (SetFlag(UIF_SELECTED, select))
 		{
-			SendUIEvent(UIE_ON_SELECT, select ? 1 : 0);
+			SendUIEvent(UIE_ON_SELECT, select ? UID_TRUE : UID_FALSE);
 			Invalidate();
 		}
 	}
-	bool IsSelected() const { return CheckFlag(UIE_FLAG_SELECTED); }
+	bool IsSelected() const { return CheckFlag(UIF_SELECTED); }
 
 	void SetPosition(Point2_i pos) 
 	{ 
@@ -124,6 +137,7 @@ protected:
 	UI_Object& AddChild(UI_Object* child)
 	{
 		childs.push_back(child);
+		Invalidate();
 		return *this;
 	}
 	
@@ -133,48 +147,25 @@ protected:
 	UI_Object& RemoveChild(UI_Object* child)
 	{
 		childs.remove(child);
+		Invalidate();
 		return *this;
 	}
 	
 	/**
 	 * @brief Обработка событий дочерними объектами
 	 */
-	bool OnEventChilds(const AppEvent& event)
-	{
-		for (UI_Object* child : childs)
-		{
-			if (child->OnEvent(event)) 
-				return true;
-		}
-		return false;
-	}
-	
+	bool OnEventChilds(const AppEvent& event);
+		
 	/**
 	 * @return Флаг изменился
 	 */
-	bool SetFlag(uint8_t flag, bool state) 
-	{
-		if (flag >= 8u * sizeof(flags)) return false;
-
-		bool prev_state = CheckFlag(flag);
-		if (prev_state == state) return false;
-		
-		if (state)
-			flags |= (1u << flag);
-		else
-			flags &= ~(1u << flag);
-
-		return true;
-	}
+	bool SetFlag(uint8_t flag, bool state);
 	
-	bool CheckFlag(uint8_t flag) const
-	{
-		if (flag >= 8u * sizeof(flags)) return false;
-		
-		return (flags >> flag) & 1u;
-	}
+	bool CheckFlag(uint8_t flag) const;
 
 private:
 	uint32_t flags{};
 	Point2_i pos{ }, size{ };
+
+	void InvalidateRect();
 };

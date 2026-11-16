@@ -11,7 +11,9 @@
 
 #include <Data/StaticTextView.hpp>
 #include <Graphics/RGBColor.hpp>
+
 #include <UI/Base/UI_Object.hpp>
+#include <UI/Base/UI_Themes.hpp>
 
 enum class UI_Label_HAlign : uint8_t
 {
@@ -33,37 +35,40 @@ class LETO_CORE_EXPORT UI_Label_new : public UI_Object
 public:
     UI_Label_new(Point2_i size);
 	
-	bool ObjectOnEvent(const AppEvent& event) override;
-	void ObjectDraw(LetoScreen_V1* screen) override;
-
-	/// TODO: Think about std::move operation of &&
     void SetText(StaticTextView text);
-
 	StaticTextView GetText() const;
 
 	// Установить горизонтальное выравнивание
-	UI_Label_new& SetHorizonAlignment(UI_Label_HAlign alignment);
+	void SetHorizonAlignment(UI_Label_HAlign alignment);
 
 	// Установить вертикальное выравнивание
-	UI_Label_new& SetVerticalAlignment(UI_Label_VAlign align);
+	void SetVerticalAlignment(UI_Label_VAlign align);
 
-	UI_Label_new& SetFont(const LetoFont_V1* font);
+	void SetFont(const LetoFont_V1* font);
 	const LetoFont_V1* GetFont() const;
 
-	UI_Label_new& SetTextColor(LetoColor_V1 color);
+	void SetTextColor(LetoColor_V1 color);
 	LetoColor_V1 GetTextColor() const;
 
-	UI_Label_new& SetBackroundColor(LetoColor_V1 color);
+	void SetBackroundColor(LetoColor_V1 color);
 	LetoColor_V1 GetBackroundColor() const;
 
-	UI_Label_new& SetColorInverse(bool inverse);
+	void SetColorInverse(bool inverse);
 	
-	UI_Label_new& SetStyle(LetoTextStyle_V1 style);
+	void SetStyle(LetoTextStyle_V1 style);
 	LetoTextStyle_V1 GetStyle() const;
 
 	void UpdateOffsets();
 
+	void SetSelectionTheme(const UI_SelectionTheme* theme);
+
+protected:
+	bool ObjectOnEvent(const AppEvent& event) override;
+	void ObjectDraw(LetoScreen_V1* screen) override;
+
 private:
+	const UI_SelectionTheme* selection_theme{ &UI_SelectionTheme_Base };
+
 	StaticTextView label_text;
 
 	UI_Label_HAlign h_align = UI_Label_HAlign::LEFT;

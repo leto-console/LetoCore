@@ -24,6 +24,8 @@ void UI_Label_new::ObjectDraw(LetoScreen_V1 *screen)
     LetoColor_V1 back_clr = label_inverse ? label_text_color : label_background_color;
 
     leto::graphics::DrawString(screen, _draw_pos, label_text, label_font, text_clr, back_clr, label_style);
+
+    if (selection_theme) selection_theme->DrawSelection(screen, *this);
 }
 
 void UI_Label_new::SetText(StaticTextView text)
@@ -40,34 +42,31 @@ StaticTextView UI_Label_new::GetText() const
     return label_text;
 }
 
-UI_Label_new& UI_Label_new::SetHorizonAlignment(UI_Label_HAlign alignment)
+void UI_Label_new::SetHorizonAlignment(UI_Label_HAlign alignment)
 {
-    if (alignment == h_align) return *this;
+    if (alignment == h_align) return;
 
     h_align = alignment;
 
     Invalidate();
-    return *this;
 }
 
-UI_Label_new& UI_Label_new::SetVerticalAlignment(UI_Label_VAlign alignment)
+void UI_Label_new::SetVerticalAlignment(UI_Label_VAlign alignment)
 {
-    if (alignment == v_align) return *this;
+    if (alignment == v_align) return;
 
     v_align = alignment;
 
     Invalidate();
-    return *this;
 }
 
-UI_Label_new& UI_Label_new::SetFont(const LetoFont_V1 *font)
+void UI_Label_new::SetFont(const LetoFont_V1 *font)
 {
     if (font)
     {
         label_font = font;
         Invalidate();
     }
-    return *this;
 }
 
 const LetoFont_V1 *UI_Label_new::GetFont() const
@@ -75,14 +74,13 @@ const LetoFont_V1 *UI_Label_new::GetFont() const
     return label_font;
 }
 
-UI_Label_new& UI_Label_new::SetTextColor(LetoColor_V1 color)
+void UI_Label_new::SetTextColor(LetoColor_V1 color)
 {
     if (label_text_color != color)
     {
         label_text_color = color;
         Invalidate();
     }
-    return *this;
 }
 
 LetoColor_V1 UI_Label_new::GetTextColor() const
@@ -90,14 +88,13 @@ LetoColor_V1 UI_Label_new::GetTextColor() const
     return label_text_color;
 }
 
-UI_Label_new& UI_Label_new::SetBackroundColor(LetoColor_V1 color)
+void UI_Label_new::SetBackroundColor(LetoColor_V1 color)
 {
     if (label_background_color != color)
     {
         label_background_color = color;
         Invalidate();
     }
-    return *this;
 }
 
 LetoColor_V1 UI_Label_new::GetBackroundColor() const
@@ -105,24 +102,27 @@ LetoColor_V1 UI_Label_new::GetBackroundColor() const
     return label_background_color;
 }
 
-UI_Label_new& UI_Label_new::SetColorInverse(bool inverse)
+void UI_Label_new::SetColorInverse(bool inverse)
 {
     if (label_inverse != inverse)
     {
         label_inverse = inverse;
         Invalidate();
     }
-    return *this;
 }
 
-UI_Label_new &UI_Label_new::SetStyle(LetoTextStyle_V1 style)
+void UI_Label_new::SetStyle(LetoTextStyle_V1 style)
 {
     if (memcmp(&label_style, &style, sizeof(LetoTextStyle_V1)) != 0)
     {
         label_style = style;
         Invalidate();
     }
-    return *this;
+}
+
+LetoTextStyle_V1 UI_Label_new::GetStyle() const
+{
+    return label_style;
 }
 
 void UI_Label_new::UpdateOffsets()
@@ -160,5 +160,14 @@ void UI_Label_new::UpdateOffsets()
     case UI_Label_VAlign::TOP:
     default:
         break;
+    }
+}
+
+void UI_Label_new::SetSelectionTheme(const UI_SelectionTheme* theme)
+{
+    if (selection_theme != theme)
+    {
+        selection_theme = theme;
+        Invalidate();
     }
 }

@@ -2,6 +2,9 @@
 
 #include <LetoAPI_V1/LetoAPI_V1.h>
 
+#include <Data/StaticTextView.hpp>
+#include <Graphics/RGBColor.hpp>
+
 namespace leto::graphics
 {
     

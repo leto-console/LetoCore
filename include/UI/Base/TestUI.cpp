@@ -55,6 +55,8 @@ static UI_Label_new* SetupLabel(UI_Label_new* label)
     int rand_clr = Random<int>(0, sizeof(pairs)/sizeof(*pairs));
     label->SetTextColor(pairs[rand_clr].m);
     label->SetBackroundColor(pairs[rand_clr].b);
+    if (rand_clr % 2 == 0)
+        label->Select(true);
 
     Point2_i pos;
     pos.x = Random<int>(0, 160);
