@@ -216,6 +216,8 @@ public:
 	ConstIterator cbegin() const { return begin(); }
 	ConstIterator cend() const { return end(); }
 
+	const LetoAllocator_V1* get_allocator() const { return allocator; }
+
 protected:
 	const LetoAllocator_V1* allocator = nullptr;
 
