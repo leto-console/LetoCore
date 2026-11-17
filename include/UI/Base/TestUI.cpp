@@ -2,6 +2,7 @@
 
 #include "UI_Object.hpp"
 #include "UI_Label.hpp"
+#include "UI_Container.hpp"
 
 NEW_LETO_UI_USING
 
@@ -118,11 +119,45 @@ public:
         }
     }
 };
-static TestUI_Scene* object = nullptr;
+class TestContainer_Scene : public UI_Object
+{
+protected:
+    UI_Container* container;
+
+public:
+    TestContainer_Scene() : UI_Object{ {160, 128}, leto_api_v1->Globals->GetAllocator() }
+    {
+        //srand(0xC1A0C1A0);
+        container = leto_new UI_Container(UI_ContainerType::Vertical, {40, 128}, *this);
+        container->InitBaseCatchers();
+        container->Select(true);
+        container->SetAlign(UI_ContainerAlign::Center);
+
+        Point2_i p{90, 20};
+        *container << SetupLabel(leto_new UI_Label(p));
+        *container << SetupLabel(leto_new UI_Label(p));
+        *container << SetupLabel(leto_new UI_Label(p));
+        *container << SetupLabel(leto_new UI_Label(p));
+
+        AddChild(container, true);
+ 
+        Enable(true);
+    }
+
+    void ObjectDraw(LetoScreen_V1* screen) override
+    {
+    }
+
+    void ObjectLoop() override
+    {
+    }
+};
+
+static UI_Object* object = nullptr;
 
 void TestUI_Init()
 {
-    object = leto_new TestUI_Scene;
+    object = leto_new TestContainer_Scene{};
 }
 
 void TestUI_DeInit()

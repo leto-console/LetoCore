@@ -65,10 +65,18 @@ protected:
 	}
 
 public:
-	UI_Object(Point2_i size, const LetoAllocator_V1* allocator = nullptr) 
+	UI_Object(Point2_i size = {}, const LetoAllocator_V1* allocator = nullptr) 
 		: size{ size }, childs{ allocator }
 	{ }
+	UI_Object(Point2_i size, UI_Object& parent)
+		: UI_Object{ size, parent.GetAllocator() }
+	{ }
 	virtual ~UI_Object() = default;
+
+	const LetoAllocator_V1* GetAllocator() const
+	{
+		return childs.get_allocator();
+	}
 		
 	void Enable(bool enable) 
 	{ 
@@ -140,10 +148,11 @@ protected:
 	 * @brief Добавить дочерний объект
 	 * @note Добавленный объект будет отрисован на самом переднем плане
 	 */
-	UI_Object& AddChild(UI_Object* child)
+	UI_Object& AddChild(UI_Object* child, bool enable = false)
 	{
 		childs.push_back(child);
 		Invalidate();
+		if (enable) child->Enable(true);
 		return *this;
 	}
 	

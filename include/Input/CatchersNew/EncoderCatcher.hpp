@@ -1,0 +1,47 @@
+/**
+ * @file EncoderCatcher.hpp
+ * @date Jul 24, 2026
+ * @author Rakhimov T.
+ */
+
+#ifndef INC_INPUT_CATCHER_ENCODER_CATCHER_HPP_
+#define INC_INPUT_CATCHER_ENCODER_CATCHER_HPP_
+
+#include <Input/CatchersNew/IEncoderCatcher.hpp>
+
+NEW_LETO_UI_BEGIN
+
+template <typename Class>
+class EncoderCatcher : public IEncoderCatcher
+{    
+public:
+    using OnCatchFunc = void(Class::*)(bool);
+
+    EncoderCatcher() = default;
+
+    EncoderCatcher(Class* instance, OnCatchFunc callback)
+    {
+    	InitInstance(instance, callback);
+    }
+
+    void InitInstance(Class* instance, OnCatchFunc callback)
+	{
+		this->instance = instance;
+		this->callback = callback;
+        Enable();
+	}
+
+protected:
+    Class* instance;
+    OnCatchFunc callback{};
+
+    void Callback(bool left) override final
+    {
+        if (instance && callback)
+            (instance->*callback)(left);
+    }
+};
+
+NEW_LETO_UI_END
+
+#endif

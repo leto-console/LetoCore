@@ -6,6 +6,8 @@
 
 #pragma once
 
+#include "LetoCoreExport.h"
+
 #include <UI/Base/UI_Object.hpp>
 
 #include <LetoAPI_V1/LetoAPI_V1.h>
@@ -40,6 +42,6 @@ protected:
     RGBColor bound_color{ WhiteColor };
 };
 
-extern UI_SelectionTheme UI_SelectionTheme_Base;
+extern LETO_CORE_EXPORT UI_SelectionTheme UI_SelectionTheme_Base;
 
 NEW_LETO_UI_END
