@@ -15,6 +15,8 @@
 #include <UI/Base/UI_Object.hpp>
 #include <UI/Base/UI_Themes.hpp>
 
+NEW_LETO_UI_BEGIN
+
 enum class UI_Label_HAlign : uint8_t
 {
 	LEFT,		// Выравнивание по левому краю
@@ -30,10 +32,10 @@ enum class UI_Label_VAlign : uint8_t
 };
 
 /// @brief Text label UI element
-class LETO_CORE_EXPORT UI_Label_new : public UI_Object
+class LETO_CORE_EXPORT UI_Label : public UI_Object
 {
 public:
-    UI_Label_new(Point2_i size);
+    UI_Label(Point2_i size);
 	
     void SetText(StaticTextView text);
 	StaticTextView GetText() const;
@@ -86,5 +88,7 @@ private:
 	LetoTextStyle_V1 label_style{2, 2};
 	const LetoFont_V1* label_font = nullptr;
 };
+
+NEW_LETO_UI_END
 
 #endif

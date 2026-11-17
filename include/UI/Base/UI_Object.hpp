@@ -15,6 +15,12 @@
 #include <LetoABI/AppEvent.h>
 #include <LetoAPI_V1/LetoAPI_V1.h>
 
+#define NEW_LETO_UI_BEGIN namespace LetoNewUI {
+#define NEW_LETO_UI_END	}
+#define NEW_LETO_UI_USING using namespace LetoNewUI;
+
+NEW_LETO_UI_BEGIN
+
 enum UI_Events
 {
 	UIE_NONE = 0,
@@ -169,3 +175,5 @@ private:
 
 	void InvalidateRect();
 };
+
+NEW_LETO_UI_END

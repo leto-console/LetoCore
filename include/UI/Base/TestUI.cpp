@@ -3,6 +3,8 @@
 #include "UI_Object.hpp"
 #include "UI_Label.hpp"
 
+NEW_LETO_UI_USING
+
 #include <cstdlib>
 
 #include <Time/Timer.hpp>
@@ -21,7 +23,7 @@ static Type Random(Type a, Type b)
     return (Type) (r * (b - a)) + a;
 }
 
-static UI_Label_new* SetupLabel(UI_Label_new* label)
+static UI_Label* SetupLabel(UI_Label* label)
 {
     const char* texts[]
     {
@@ -70,7 +72,7 @@ static UI_Label_new* SetupLabel(UI_Label_new* label)
 class TestUI_Scene : public UI_Object
 {
 protected:
-    UI_Label_new* label = nullptr;
+    UI_Label* label = nullptr;
     Timer rand_timer;
 
 public:
@@ -81,7 +83,7 @@ public:
         Point2_i p{90, 20};
 
         for (int i = 0; i < 32; ++i)
-            AddChild(SetupLabel(leto_new UI_Label_new(p)));
+            AddChild(SetupLabel(leto_new UI_Label(p)));
  
         Enable(true);
     }

@@ -14,6 +14,8 @@
 
 #include <Graphics/RGBColor.hpp>
 
+NEW_LETO_UI_BEGIN
+
 struct UI_SelectionTheme
 {
 public:
@@ -39,3 +41,5 @@ protected:
 };
 
 extern UI_SelectionTheme UI_SelectionTheme_Base;
+
+NEW_LETO_UI_END

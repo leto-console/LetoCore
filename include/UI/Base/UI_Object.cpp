@@ -1,5 +1,7 @@
 #include "UI_Object.hpp"
 
+NEW_LETO_UI_USING
+
 void UI_Object::Invalidate()
 {
     InvalidateRect();

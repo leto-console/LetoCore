@@ -3,12 +3,14 @@
 #include <LetoFunctions/Draw.hpp>
 #include <LetoFunctions/Font.hpp>
 
-UI_Label_new::UI_Label_new(Point2_i size) : UI_Object{ size }
+NEW_LETO_UI_USING
+
+UI_Label::UI_Label(Point2_i size) : UI_Object{ size }
 {
     //text_height = DrawFunctions::GetDefaultFont()->GetHeight();
 }
 
-bool UI_Label_new::ObjectOnEvent(const AppEvent &event)
+bool UI_Label::ObjectOnEvent(const AppEvent &event)
 {
     if (IsUIEvent(event, UIE_ON_INVALIDATE))
         UpdateOffsets();
@@ -16,7 +18,7 @@ bool UI_Label_new::ObjectOnEvent(const AppEvent &event)
     return false;
 }
 
-void UI_Label_new::ObjectDraw(LetoScreen_V1 *screen)
+void UI_Label::ObjectDraw(LetoScreen_V1 *screen)
 {
     Point2_i _draw_pos = GetPosition() + Point2_i(h_offset, v_offset);
 
@@ -28,7 +30,7 @@ void UI_Label_new::ObjectDraw(LetoScreen_V1 *screen)
     if (selection_theme) selection_theme->DrawSelection(screen, *this);
 }
 
-void UI_Label_new::SetText(StaticTextView text)
+void UI_Label::SetText(StaticTextView text)
 {
     if (text != label_text)
     {
@@ -37,12 +39,12 @@ void UI_Label_new::SetText(StaticTextView text)
     }
 }
 
-StaticTextView UI_Label_new::GetText() const
+StaticTextView UI_Label::GetText() const
 {
     return label_text;
 }
 
-void UI_Label_new::SetHorizonAlignment(UI_Label_HAlign alignment)
+void UI_Label::SetHorizonAlignment(UI_Label_HAlign alignment)
 {
     if (alignment == h_align) return;
 
@@ -51,7 +53,7 @@ void UI_Label_new::SetHorizonAlignment(UI_Label_HAlign alignment)
     Invalidate();
 }
 
-void UI_Label_new::SetVerticalAlignment(UI_Label_VAlign alignment)
+void UI_Label::SetVerticalAlignment(UI_Label_VAlign alignment)
 {
     if (alignment == v_align) return;
 
@@ -60,7 +62,7 @@ void UI_Label_new::SetVerticalAlignment(UI_Label_VAlign alignment)
     Invalidate();
 }
 
-void UI_Label_new::SetFont(const LetoFont_V1 *font)
+void UI_Label::SetFont(const LetoFont_V1 *font)
 {
     if (font)
     {
@@ -69,12 +71,12 @@ void UI_Label_new::SetFont(const LetoFont_V1 *font)
     }
 }
 
-const LetoFont_V1 *UI_Label_new::GetFont() const
+const LetoFont_V1 *UI_Label::GetFont() const
 {
     return label_font;
 }
 
-void UI_Label_new::SetTextColor(LetoColor_V1 color)
+void UI_Label::SetTextColor(LetoColor_V1 color)
 {
     if (label_text_color != color)
     {
@@ -83,12 +85,12 @@ void UI_Label_new::SetTextColor(LetoColor_V1 color)
     }
 }
 
-LetoColor_V1 UI_Label_new::GetTextColor() const
+LetoColor_V1 UI_Label::GetTextColor() const
 {
     return label_text_color;
 }
 
-void UI_Label_new::SetBackroundColor(LetoColor_V1 color)
+void UI_Label::SetBackroundColor(LetoColor_V1 color)
 {
     if (label_background_color != color)
     {
@@ -97,12 +99,12 @@ void UI_Label_new::SetBackroundColor(LetoColor_V1 color)
     }
 }
 
-LetoColor_V1 UI_Label_new::GetBackroundColor() const
+LetoColor_V1 UI_Label::GetBackroundColor() const
 {
     return label_background_color;
 }
 
-void UI_Label_new::SetColorInverse(bool inverse)
+void UI_Label::SetColorInverse(bool inverse)
 {
     if (label_inverse != inverse)
     {
@@ -111,7 +113,7 @@ void UI_Label_new::SetColorInverse(bool inverse)
     }
 }
 
-void UI_Label_new::SetStyle(LetoTextStyle_V1 style)
+void UI_Label::SetStyle(LetoTextStyle_V1 style)
 {
     if (memcmp(&label_style, &style, sizeof(LetoTextStyle_V1)) != 0)
     {
@@ -120,12 +122,12 @@ void UI_Label_new::SetStyle(LetoTextStyle_V1 style)
     }
 }
 
-LetoTextStyle_V1 UI_Label_new::GetStyle() const
+LetoTextStyle_V1 UI_Label::GetStyle() const
 {
     return label_style;
 }
 
-void UI_Label_new::UpdateOffsets()
+void UI_Label::UpdateOffsets()
 {
     text_width = leto::graphics::GetTextWidth(label_text, label_font, label_style);
     text_height = leto::font::GetHeight(label_font);
@@ -163,7 +165,7 @@ void UI_Label_new::UpdateOffsets()
     }
 }
 
-void UI_Label_new::SetSelectionTheme(const UI_SelectionTheme* theme)
+void UI_Label::SetSelectionTheme(const UI_SelectionTheme* theme)
 {
     if (selection_theme != theme)
     {
