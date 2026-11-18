@@ -30,11 +30,10 @@ bool UI_Object::OnEvent(const AppEvent &event)
 {
     // События UI распространяются на все элементы без возможности захватить их
     if (IsUIEvent(event))
-    {
-        if (IsUIEvent(event, UIE_ON_INVALIDATE, UID_NOT_SELF)) 
-            InvalidateRect();
+    {        
         ObjectOnEvent(event);
         OnEventChilds(event);
+        OnEventParent(event);
         return false;
     }
     // Прочие события только для включенного объекта и имеют возможность захвата
@@ -50,7 +49,7 @@ bool UI_Object::OnEventChilds(const AppEvent &event)
 {
     AppEvent child_event = event;
     if (IsUIEvent(child_event))        
-        child_event.data |= UID_NOT_SELF;
+        child_event.data |= UID_FROM_PARENT;
 
     for (UI_Object* child : childs)
     {
@@ -58,6 +57,17 @@ bool UI_Object::OnEventChilds(const AppEvent &event)
             return true;
     }
     return false;
+}
+
+bool UI_Object::OnEventParent(const AppEvent &event)
+{
+    // В родителя отсылаются только UI события
+    if (!IsUIEvent(event))
+        return false;
+    
+    AppEvent parent_event = event;
+    parent_event.data |= UID_FROM_CHILD;
+    return parent && parent->OnEvent(parent_event);
 }
 
 bool UI_Object::SetFlag(uint8_t flag, bool state)

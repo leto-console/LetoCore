@@ -5,17 +5,9 @@
 
 NEW_LETO_UI_USING
 
-UI_Label::UI_Label(Point2_i size) : UI_Object{ size }
+UI_Label::UI_Label(Point2_i size) : UI_Alignable{ size }
 {
     //text_height = DrawFunctions::GetDefaultFont()->GetHeight();
-}
-
-bool UI_Label::ObjectOnEvent(const AppEvent &event)
-{
-    if (IsUIEvent(event, UIE_ON_INVALIDATE))
-        UpdateOffsets();
-
-    return false;
 }
 
 void UI_Label::ObjectDraw(LetoScreen_V1 *screen)
@@ -30,11 +22,52 @@ void UI_Label::ObjectDraw(LetoScreen_V1 *screen)
     if (selection_theme) selection_theme->DrawSelection(screen, *this);
 }
 
+bool UI_Label::RefreshAlign()
+{
+    text_width = leto::graphics::GetTextWidth(label_text, label_font, label_style);
+    text_height = leto::font::GetHeight(label_font);
+
+    int prev_h_offset = h_offset;
+    int prev_v_offset = v_offset;
+
+    h_offset = v_offset = 0;
+    
+    switch (GetXAlign())
+    {
+    case UI_XAlign::CENTER:
+        h_offset = (GetSize().x - text_width) / 2;
+        break;
+    case UI_XAlign::RIGHT:
+        h_offset = GetSize().x - text_width;
+        break;
+    case UI_XAlign::LEFT:
+    default:
+        break;
+    }
+
+    switch (GetYAlign())
+    {
+    case UI_YAlign::CENTER:
+        v_offset = (GetSize().y - text_height) / 2;
+        break;
+    case UI_YAlign::BOTTOM:
+        v_offset = (GetSize().y - text_height);
+        break;
+    case UI_YAlign::TOP:
+    default:
+        break;
+    }
+
+    return (prev_h_offset != h_offset ||
+        prev_v_offset != v_offset);
+}
+
 void UI_Label::SetText(StaticTextView text)
 {
     if (text != label_text)
     {
         label_text = text;
+        RefreshAlign();
         Invalidate();
     }
 }
@@ -44,29 +77,12 @@ StaticTextView UI_Label::GetText() const
     return label_text;
 }
 
-void UI_Label::SetHorizonAlignment(UI_Label_HAlign alignment)
-{
-    if (alignment == h_align) return;
-
-    h_align = alignment;
-
-    Invalidate();
-}
-
-void UI_Label::SetVerticalAlignment(UI_Label_VAlign alignment)
-{
-    if (alignment == v_align) return;
-
-    v_align = alignment;
-
-    Invalidate();
-}
-
 void UI_Label::SetFont(const LetoFont_V1 *font)
 {
     if (font)
     {
         label_font = font;
+        RefreshAlign();
         Invalidate();
     }
 }
@@ -118,6 +134,7 @@ void UI_Label::SetStyle(LetoTextStyle_V1 style)
     if (memcmp(&label_style, &style, sizeof(LetoTextStyle_V1)) != 0)
     {
         label_style = style;
+        RefreshAlign();
         Invalidate();
     }
 }
@@ -125,44 +142,6 @@ void UI_Label::SetStyle(LetoTextStyle_V1 style)
 LetoTextStyle_V1 UI_Label::GetStyle() const
 {
     return label_style;
-}
-
-void UI_Label::UpdateOffsets()
-{
-    text_width = leto::graphics::GetTextWidth(label_text, label_font, label_style);
-    text_height = leto::font::GetHeight(label_font);
-
-    h_offset = v_offset = 0;
-    
-    switch (h_align)
-    {
-    case UI_Label_HAlign::CENTER:
-        h_offset += GetSize().x / 2;
-        h_offset -= text_width / 2;
-        break;
-    case UI_Label_HAlign::RIGHT:
-        h_offset = GetSize().x;
-        h_offset -= text_width;
-        break;
-    case UI_Label_HAlign::LEFT:
-    default:
-        break;
-    }
-
-    switch (v_align)
-    {
-    case UI_Label_VAlign::CENTER:
-        v_offset += GetSize().y / 2;
-        v_offset -= text_height / 2;
-        break;
-    case UI_Label_VAlign::BOTTOM:
-        v_offset = GetSize().y;
-        v_offset -= text_height;
-        break;
-    case UI_Label_VAlign::TOP:
-    default:
-        break;
-    }
 }
 
 void UI_Label::SetSelectionTheme(const UI_SelectionTheme* theme)

@@ -35,7 +35,8 @@ enum UI_Events
 enum UI_DataFlag
 {
 	UID_ANY_DATA 	= 0,				///< Any UI data
-	UID_NOT_SELF 	= (1u << 0),		///< 
+	UID_FROM_PARENT = (1u << 0),		///< 
+	UID_FROM_CHILD 	= (1u << 0),		///< 
 	UID_FALSE 		= (1u << 1),		///< UI data `false`
 	UID_TRUE 		= (1u << 2),		///< UI data `true`
 };
@@ -69,7 +70,7 @@ public:
 		: size{ size }, childs{ allocator }
 	{ }
 	UI_Object(Point2_i size, UI_Object& parent)
-		: UI_Object{ size, parent.GetAllocator() }
+		: size{ size }, childs{ parent.GetAllocator() }, parent{ &parent }
 	{ }
 	virtual ~UI_Object() = default;
 
@@ -120,6 +121,9 @@ public:
 	}
 	Point2_i GetSize() const { return size; }
 
+	/**
+	 * @brief Обновить объект на экране
+	 */
 	void Invalidate();
 
 	/**
@@ -150,9 +154,9 @@ protected:
 	 */
 	UI_Object& AddChild(UI_Object* child, bool enable = false)
 	{
+		if (enable) child->Enable(true);
 		childs.push_back(child);
 		Invalidate();
-		if (enable) child->Enable(true);
 		return *this;
 	}
 	
@@ -170,7 +174,12 @@ protected:
 	 * @brief Обработка событий дочерними объектами
 	 */
 	bool OnEventChilds(const AppEvent& event);
-		
+			
+	/**
+	 * @brief Обработка событий дочерними объектами
+	 */
+	bool OnEventParent(const AppEvent& event);
+
 	/**
 	 * @return Флаг изменился
 	 */
@@ -179,7 +188,9 @@ protected:
 	bool CheckFlag(uint8_t flag) const;
 
 private:
-	uint32_t flags{};
+	UI_Object* parent{ };
+
+	uint32_t flags{ };
 	Point2_i pos{ }, size{ };
 
 	void InvalidateRect();

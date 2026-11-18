@@ -37,8 +37,8 @@ static UI_Label* SetupLabel(UI_Label* label)
     int rand_txt = Random<int>(0, sizeof(texts)/sizeof(*texts));
     label->SetText(texts[rand_txt]);
     label->SetFont(leto_api_v1->Font->FindFont(6, LFT_V1_BASE_NORMAL));
-    label->SetHorizonAlignment(UI_Label_HAlign::CENTER);
-    label->SetVerticalAlignment(UI_Label_VAlign::CENTER);
+    label->SetXAlign(UI_XAlign::CENTER);
+    label->SetYAlign(UI_YAlign::CENTER);
     
     struct
     {
@@ -122,27 +122,28 @@ public:
 class TestContainer_Scene : public UI_Object
 {
 protected:
-    UI_Container* container;
+    UI_Container container;
 
 public:
-    TestContainer_Scene() : UI_Object{ {160, 128}, leto_api_v1->Globals->GetAllocator() }
+    TestContainer_Scene() : UI_Object{ {160, 128}, leto_api_v1->Globals->GetAllocator() },
+        container{ UI_ContainerType::Vertical, {160, 128}, *this }
     {
         //srand(0xC1A0C1A0);
-        container = leto_new UI_Container(UI_ContainerType::Vertical, {40, 128}, *this);
-        container->InitBaseCatchers();
-        container->Select(true);
-        container->SetAlign(UI_ContainerAlign::Center);
+        //container = leto_new UI_Container(UI_ContainerType::Vertical, {40, 128}, *this);
+        container.InitBaseCatchers();
+        container.SetAlign(UI_XAlign::CENTER, UI_YAlign::CENTER);
+        container.Select(true);
 
         Point2_i p{90, 20};
-        *container << SetupLabel(leto_new UI_Label(p));
-        *container << SetupLabel(leto_new UI_Label(p));
-        *container << SetupLabel(leto_new UI_Label(p));
-        *container << SetupLabel(leto_new UI_Label(p));
+        container << SetupLabel(leto_new UI_Label(p));
+        container << SetupLabel(leto_new UI_Label(p));
+        container << SetupLabel(leto_new UI_Label(p));
+        container << SetupLabel(leto_new UI_Label(p));
 
-        AddChild(container, true);
- 
-        Enable(true);
-    }
+        //container.Invalidate();
+
+        AddChild(&container, true);
+     }
 
     void ObjectDraw(LetoScreen_V1* screen) override
     {
@@ -158,6 +159,7 @@ static UI_Object* object = nullptr;
 void TestUI_Init()
 {
     object = leto_new TestContainer_Scene{};
+    object->Enable(true);
 }
 
 void TestUI_DeInit()
