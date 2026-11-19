@@ -2,6 +2,11 @@
 
 NEW_LETO_UI_USING
 
+void UI_Object::InvalidateRect(const Rect_i& rect)
+{
+	//leto::graphics::InvalidateRect(rect.pos, rect.size);
+}
+
 void UI_Object::Invalidate()
 {
     InvalidateRect();
@@ -94,5 +99,5 @@ bool UI_Object::CheckFlag(uint8_t flag) const
 
 void UI_Object::InvalidateRect()
 {
-    //leto::graphics::InvalidateRect(pos, size);
+	InvalidateRect({pos, size});
 }

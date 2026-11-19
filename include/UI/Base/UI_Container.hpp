@@ -111,7 +111,7 @@ protected:
 		return align;
 	}
 
-	bool RefreshAlign() override;
+	void RefreshAlign() override;
 	void UpdateLayer();
 	
 	void ObjectDraw(LetoScreen_V1* screen) override

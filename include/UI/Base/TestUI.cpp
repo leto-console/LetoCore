@@ -37,8 +37,7 @@ static UI_Label* SetupLabel(UI_Label* label)
     int rand_txt = Random<int>(0, sizeof(texts)/sizeof(*texts));
     label->SetText(texts[rand_txt]);
     label->SetFont(leto_api_v1->Font->FindFont(6, LFT_V1_BASE_NORMAL));
-    label->SetXAlign(UI_XAlign::CENTER);
-    label->SetYAlign(UI_YAlign::CENTER);
+    label->SetAlign(UI_XAlign::CENTER, UI_YAlign::CENTER);
     
     struct
     {
@@ -119,6 +118,9 @@ public:
         }
     }
 };
+
+#include <Input/EncoderEvent.hpp>
+
 class TestContainer_Scene : public UI_Object
 {
 protected:
@@ -126,7 +128,7 @@ protected:
 
 public:
     TestContainer_Scene() : UI_Object{ {160, 128}, leto_api_v1->Globals->GetAllocator() },
-        container{ UI_ContainerType::Vertical, {160, 128}, *this }
+        container{ UI_ContainerType::Horizontal, {160, 128}, *this }
     {
         //srand(0xC1A0C1A0);
         //container = leto_new UI_Container(UI_ContainerType::Vertical, {40, 128}, *this);
@@ -151,6 +153,18 @@ public:
 
     void ObjectLoop() override
     {
+    }
+
+    bool ObjectOnEvent(const AppEvent& event) override
+    {
+        if (EncoderEvent::IsTurnedLeft(event))
+        {
+            Point2_i size = container.GetSize();
+            size.x--;
+            container.SetSize(size);
+            return true;
+        }
+        return false;
     }
 };
 

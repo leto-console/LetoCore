@@ -9,6 +9,7 @@
 #include <cstdint>
 
 #include <Data/Point2.hpp>
+#include <Data/Rect.hpp>
 #include <Data/List.hpp>
 
 #include <LetoABI/AppEventSources.h>
@@ -122,6 +123,11 @@ public:
 	Point2_i GetSize() const { return size; }
 
 	/**
+	 * @brief Обновить область на экране
+	 */
+	void InvalidateRect(const Rect_i& rect);
+
+	/**
 	 * @brief Обновить объект на экране
 	 */
 	void Invalidate();
@@ -140,7 +146,7 @@ public:
 	 * @brief Главная функция обработки событий
 	 */
 	bool OnEvent(const AppEvent& event);
-	
+		
 protected:
 	List<UI_Object*> childs;
 

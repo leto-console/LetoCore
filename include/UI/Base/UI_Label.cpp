@@ -12,7 +12,7 @@ UI_Label::UI_Label(Point2_i size) : UI_Alignable{ size }
 
 void UI_Label::ObjectDraw(LetoScreen_V1 *screen)
 {
-    Point2_i _draw_pos = GetPosition() + Point2_i(h_offset, v_offset);
+    Point2_i _draw_pos = GetPosition() + align_offset;
 
     LetoColor_V1 text_clr = label_inverse ? label_background_color : label_text_color;
     LetoColor_V1 back_clr = label_inverse ? label_text_color : label_background_color;
@@ -22,44 +22,23 @@ void UI_Label::ObjectDraw(LetoScreen_V1 *screen)
     if (selection_theme) selection_theme->DrawSelection(screen, *this);
 }
 
-bool UI_Label::RefreshAlign()
+void UI_Label::RefreshAlign()
 {
-    text_width = leto::graphics::GetTextWidth(label_text, label_font, label_style);
+	text_width = leto::graphics::GetTextWidth(label_text, label_font, label_style);
     text_height = leto::font::GetHeight(label_font);
-
-    int prev_h_offset = h_offset;
-    int prev_v_offset = v_offset;
-
-    h_offset = v_offset = 0;
-    
-    switch (GetXAlign())
-    {
-    case UI_XAlign::CENTER:
-        h_offset = (GetSize().x - text_width) / 2;
-        break;
-    case UI_XAlign::RIGHT:
-        h_offset = GetSize().x - text_width;
-        break;
-    case UI_XAlign::LEFT:
-    default:
-        break;
-    }
-
-    switch (GetYAlign())
-    {
-    case UI_YAlign::CENTER:
-        v_offset = (GetSize().y - text_height) / 2;
-        break;
-    case UI_YAlign::BOTTOM:
-        v_offset = (GetSize().y - text_height);
-        break;
-    case UI_YAlign::TOP:
-    default:
-        break;
-    }
-
-    return (prev_h_offset != h_offset ||
-        prev_v_offset != v_offset);
+	
+	Rect_i text_rect{ align_offset, { text_width, text_height } };
+	Point2_i new_offset = AlignRect(text_rect);
+	
+	if (new_offset != align_offset)
+	{
+		text_rect.pos += GetPosition();
+		InvalidateRect(text_rect);
+	}
+	
+	text_rect.pos = align_offset = new_offset;
+	text_rect.pos += GetPosition();
+	InvalidateRect(text_rect);
 }
 
 void UI_Label::SetText(StaticTextView text)

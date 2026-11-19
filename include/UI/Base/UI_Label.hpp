@@ -25,6 +25,13 @@ class LETO_CORE_EXPORT UI_Label : public UI_Alignable
 public:
     UI_Label(Point2_i size);
 	
+	void Setup(
+		StaticTextView text,
+		const LetoFont_V1* font, 
+		LetoColor_V1 text_color, 
+		LetoColor_V1 back_color = BlackColor, 
+		LetoTextStyle_V1 style = {2, 2});
+	
     void SetText(StaticTextView text);
 	StaticTextView GetText() const;
 
@@ -47,7 +54,7 @@ public:
 protected:
 	void ObjectDraw(LetoScreen_V1* screen) override;
 
-	bool RefreshAlign() override;
+	void RefreshAlign() override;
 
 private:
 	const UI_SelectionTheme* selection_theme{ &UI_SelectionTheme_Base };
@@ -58,8 +65,7 @@ private:
 	RGBColor label_background_color = BlackColor;
 	bool label_inverse = false;
 
-	int h_offset = 0;
-	int v_offset = 0;
+	Point2_i align_offset{};
 
 	int text_width = 0;
 	int text_height = 0;

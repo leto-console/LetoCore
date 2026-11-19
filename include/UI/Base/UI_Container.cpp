@@ -17,7 +17,7 @@ bool UI_Container::ObjectOnEvent(const AppEvent &event)
 //                 [--]
 //               [--|---]
 //            [--|---|-----]
-bool UI_Container::RefreshAlign()
+void UI_Container::RefreshAlign()
 {
     // Пересобрать сетку (при изменении выравнивания или ещё чего-нибудь)
     int length = 0;
@@ -57,7 +57,7 @@ bool UI_Container::RefreshAlign()
         GetAxis(p) += margin;
     }
 
-    return true;
+    Invalidate();
 }
 
 void UI_Container::UpdateLayer()

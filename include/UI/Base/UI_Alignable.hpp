@@ -44,8 +44,7 @@ public:
 		{
 			x_align = _x_align;
 			y_align = _y_align;
-			if (RefreshAlign()) 
-				Invalidate();
+			RefreshAlign();
 		}
 	}
 
@@ -55,8 +54,7 @@ public:
 		if (x_align != align)
 		{
 			x_align = align;
-			if (RefreshAlign()) 
-				Invalidate();
+			RefreshAlign();
 		}
 	}
 
@@ -71,8 +69,7 @@ public:
 		if (y_align != align)
 		{
 			y_align = align;
-			if (RefreshAlign()) 
-				Invalidate();
+			RefreshAlign();
 		}
 	}
 
@@ -80,25 +77,22 @@ public:
 	{ 
 		return y_align; 
 	}
+	
+	/**
+	 * @brief Выровнять по установленным правилам
+	 * 
+	 * @return Новая позиция выровненного прямоугольника
+	 */
+	Point2_i AlignRect(Rect_i rect);
 
 protected:
 
 	/**
-	 * @return Необходимость инвалидировать картинку на экране
+	 * @note Инвалидация по необходимости производится в реализации
 	 */
-	virtual bool RefreshAlign() = 0;
+	virtual void RefreshAlign() = 0;
 
-	bool ObjectOnEvent(const AppEvent& event) override
-	{
-		if (IsUIEvent(event, UIE_ON_MOVE) ||
-			IsUIEvent(event, UIE_ON_RESIZE))
-		{
-			if (RefreshAlign()) 
-				Invalidate();
-		}
-
-		return UI_Object::ObjectOnEvent(event);
-	}
+	bool ObjectOnEvent(const AppEvent& event) override;
 
 private:
 	UI_XAlign x_align;
