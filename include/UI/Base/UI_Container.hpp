@@ -114,31 +114,13 @@ protected:
 	void RefreshAlign() override;
 	void UpdateLayer();
 	
-	void ObjectDraw(LetoScreen_V1* screen) override
-	{
-		for (UI_Object* layer : layers)
-			layer->Draw(screen);
-	}
+	void ObjectDraw(LetoScreen_V1* screen) override;
 	
 	bool ObjectOnEvent(const AppEvent& event) override;
 	
-	void OnPrev()
-	{
-		if (layer_idx > 0)
-		{
-			--layer_idx;
-			UpdateLayer();
-		}
-	}
+	void OnPrev();
 	
-	void OnNext()
-	{
-		if (layer_idx + 1 < layers.size())
-		{
-			++layer_idx;
-			UpdateLayer();
-		}
-	}
+	void OnNext();
 	
 private:
 	UI_ContainerType type;

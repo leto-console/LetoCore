@@ -38,7 +38,7 @@ bool UI_Object::OnEvent(const AppEvent &event)
     {        
         ObjectOnEvent(event);
         OnEventChilds(event);
-        OnEventParent(event);
+        //OnEventParent(event); TODO:!!! recursive
         return false;
     }
     // Прочие события только для включенного объекта и имеют возможность захвата

@@ -3,12 +3,9 @@
 #include <LetoFunctions/Draw.hpp>
 #include <LetoFunctions/Font.hpp>
 
-NEW_LETO_UI_USING
+#include <UI/Base/UI_Themes.hpp>
 
-UI_Label::UI_Label(Point2_i size) : UI_Alignable{ size }
-{
-    //text_height = DrawFunctions::GetDefaultFont()->GetHeight();
-}
+NEW_LETO_UI_USING
 
 void UI_Label::ObjectDraw(LetoScreen_V1 *screen)
 {
@@ -19,7 +16,8 @@ void UI_Label::ObjectDraw(LetoScreen_V1 *screen)
 
     leto::graphics::DrawString(screen, _draw_pos, label_text, label_font, text_clr, back_clr, label_style);
 
-    if (selection_theme) selection_theme->DrawSelection(screen, *this);
+    if (BaseDrawSelection(screen, *this)) return;
+    if (BaseDrawHover(screen, *this)) return;
 }
 
 void UI_Label::RefreshAlign()
@@ -39,6 +37,15 @@ void UI_Label::RefreshAlign()
 	text_rect.pos = align_offset = new_offset;
 	text_rect.pos += GetPosition();
 	InvalidateRect(text_rect);
+}
+
+void UI_Label::Setup(StaticTextView text, const LetoFont_V1 *font, LetoColor_V1 text_color, LetoColor_V1 back_color, LetoTextStyle_V1 style)
+{
+    SetText(text);
+    SetFont(font);
+    SetTextColor(text_color);
+    SetBackroundColor(back_color);
+    SetStyle(style);
 }
 
 void UI_Label::SetText(StaticTextView text)
@@ -121,13 +128,4 @@ void UI_Label::SetStyle(LetoTextStyle_V1 style)
 LetoTextStyle_V1 UI_Label::GetStyle() const
 {
     return label_style;
-}
-
-void UI_Label::SetSelectionTheme(const UI_SelectionTheme* theme)
-{
-    if (selection_theme != theme)
-    {
-        selection_theme = theme;
-        Invalidate();
-    }
 }

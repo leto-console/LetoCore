@@ -57,8 +57,11 @@ static UI_Label* SetupLabel(UI_Label* label)
     int rand_clr = Random<int>(0, sizeof(pairs)/sizeof(*pairs));
     label->SetTextColor(pairs[rand_clr].m);
     label->SetBackroundColor(pairs[rand_clr].b);
-    if (rand_clr % 2 == 0)
-        label->Select(true);
+    //if (rand_clr % 2 == 0)
+    //    label->Select(true);
+    IButtonCatcher* catcher = leto_new ButtonCatcher<UI_Object>(label, &UI_Object::Select);
+    catcher->Catch(SYSTEM_BTN_ENTER, BCM_SINGLE_PRESS);
+    label->AddChild(catcher, true);
 
     Point2_i pos;
     pos.x = Random<int>(0, 160);
@@ -83,7 +86,7 @@ public:
         Point2_i p{90, 20};
 
         for (int i = 0; i < 32; ++i)
-            AddChild(SetupLabel(leto_new UI_Label(p)));
+            AddChild(SetupLabel(leto_new UI_Label(p, *this)));
  
         Enable(true);
     }
@@ -125,25 +128,26 @@ class TestContainer_Scene : public UI_Object
 {
 protected:
     UI_Container container;
+    Timer start;
 
 public:
     TestContainer_Scene() : UI_Object{ {160, 128}, leto_api_v1->Globals->GetAllocator() },
-        container{ UI_ContainerType::Horizontal, {160, 128}, *this }
+        container{ UI_ContainerType::Vertical, {160, 0 }, *this }
     {
         //srand(0xC1A0C1A0);
         //container = leto_new UI_Container(UI_ContainerType::Vertical, {40, 128}, *this);
         container.InitBaseCatchers();
-        container.SetAlign(UI_XAlign::CENTER, UI_YAlign::CENTER);
+        container.SetAlign(UI_XAlign::CENTER, UI_YAlign::BOTTOM);
         container.Select(true);
 
         Point2_i p{90, 20};
-        container << SetupLabel(leto_new UI_Label(p));
-        container << SetupLabel(leto_new UI_Label(p));
-        container << SetupLabel(leto_new UI_Label(p));
-        container << SetupLabel(leto_new UI_Label(p));
+        container << SetupLabel(leto_new UI_Label(p, *this));
+        container << SetupLabel(leto_new UI_Label(p, *this));
+        container << SetupLabel(leto_new UI_Label(p, *this));
+        container << SetupLabel(leto_new UI_Label(p, *this));
 
         //container.Invalidate();
-
+        start.Start(800);
         AddChild(&container, true);
      }
 
@@ -153,6 +157,12 @@ public:
 
     void ObjectLoop() override
     {
+        if (!start.Expired(false))
+        {
+            Point2_i size = container.GetSize();
+            size.y = start.GetProgress() * 128;
+            container.SetSize(size);
+        }
     }
 
     bool ObjectOnEvent(const AppEvent& event) override
@@ -161,6 +171,13 @@ public:
         {
             Point2_i size = container.GetSize();
             size.x--;
+            container.SetSize(size);
+            return true;
+        }
+        else if (EncoderEvent::IsTurnedRight(event))
+        {
+            Point2_i size = container.GetSize();
+            size.y--;
             container.SetSize(size);
             return true;
         }

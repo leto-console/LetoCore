@@ -18,30 +18,7 @@
 
 NEW_LETO_UI_BEGIN
 
-struct UI_SelectionTheme
-{
-public:
-    UI_SelectionTheme(LetoColor_V1 bound_color = WhiteColor)
-        : bound_color(bound_color)
-    { }
-
-    LetoColor_V1 GetBoundColor() const { return bound_color; }
-
-    virtual void DrawSelection(LetoScreen_V1* screen, UI_Object& object) const 
-    {
-        int32_t x = object.GetPosition().x;
-        int32_t y = object.GetPosition().y;
-        int32_t width = object.GetSize().x;
-        int32_t height = object.GetSize().y;
-
-        if (object.IsSelected())
-            leto_api_v1->Graphics->DrawRoundRect(screen, x, y, width, height, 6, 1, bound_color );
-    }
-
-protected:
-    RGBColor bound_color{ WhiteColor };
-};
-
-extern LETO_CORE_EXPORT UI_SelectionTheme UI_SelectionTheme_Base;
+extern LETO_CORE_EXPORT bool BaseDrawSelection(LetoScreen_V1* screen, UI_Object& object);
+extern LETO_CORE_EXPORT bool BaseDrawHover(LetoScreen_V1* screen, UI_Object& object);
 
 NEW_LETO_UI_END

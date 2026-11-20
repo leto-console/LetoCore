@@ -28,7 +28,8 @@ enum UI_Events
 
 	UIE_ON_INVALIDATE,			///< UI object is invalidated
 	UIE_ON_ENABLE,				///< UI object is enabled (by Enable), data: UID_TRUE | UID_FALSE
-	UIE_ON_SELECT,				///< UI object is enabled (by Select), data: UID_TRUE | UID_FALSE
+	UIE_ON_SELECT,				///< UI object is selected (by Select), data: UID_TRUE | UID_FALSE
+	UIE_ON_HOVER,				///< UI object is hovered (by Select), data: UID_TRUE | UID_FALSE
 	UIE_ON_MOVE,				///< UI object is moved (by SetPosition)
 	UIE_ON_RESIZE,				///< UI object is resized (by SetSize)
 };
@@ -49,6 +50,7 @@ protected:
 	{
 		UIF_ENABLED,		///< Object enabled flag
 		UIF_SELECTED, 		///< Object selected flag
+		UIF_HOVERED, 		///< Object hovered flag
 	};
 
 	void SendUIEvent(uint16_t event, uint32_t data = UID_ANY_DATA) 
@@ -88,6 +90,8 @@ public:
 			Invalidate();
 		}
 	}
+	void Enable() 			{ Enable(true); }
+	void Disable() 			{ Enable(false); }
 	bool IsEnabled() const { return CheckFlag(UIF_ENABLED); }
 	
 	void Select(bool select)
@@ -98,7 +102,21 @@ public:
 			Invalidate();
 		}
 	}
+	void Select() 			{ Select(true); }
+	void Unselect() 		{ Select(false); }
 	bool IsSelected() const { return CheckFlag(UIF_SELECTED); }
+
+	void Hover(bool hover)
+	{
+		if (SetFlag(UIF_HOVERED, hover))
+		{
+			SendUIEvent(UIE_ON_HOVER, hover ? UID_TRUE : UID_FALSE);
+			Invalidate();
+		}
+	}
+	void Hover() 			{ Hover(true); }
+	void Unhover() 			{ Hover(false); }
+	bool IsHovered() const { return CheckFlag(UIF_HOVERED); }
 
 	void SetPosition(Point2_i pos) 
 	{ 
@@ -122,6 +140,29 @@ public:
 	}
 	Point2_i GetSize() const { return size; }
 
+
+	/**
+	 * @brief Добавить дочерний объект
+	 * @note Добавленный объект будет отрисован на самом переднем плане
+	 */
+	UI_Object& AddChild(UI_Object* child, bool enable = false)
+	{
+		if (enable) child->Enable(true);
+		childs.push_back(child);
+		Invalidate();
+		return *this;
+	}
+	
+	/**
+	 * @brief Добавить дочерний объект
+	 */
+	UI_Object& RemoveChild(UI_Object* child)
+	{
+		childs.remove(child);
+		Invalidate();
+		return *this;
+	}
+	
 	/**
 	 * @brief Обновить область на экране
 	 */
@@ -154,27 +195,6 @@ protected:
 	virtual void ObjectLoop() { };
 	virtual bool ObjectOnEvent(const AppEvent& event) { (void)event; return false; };
 
-	/**
-	 * @brief Добавить дочерний объект
-	 * @note Добавленный объект будет отрисован на самом переднем плане
-	 */
-	UI_Object& AddChild(UI_Object* child, bool enable = false)
-	{
-		if (enable) child->Enable(true);
-		childs.push_back(child);
-		Invalidate();
-		return *this;
-	}
-	
-	/**
-	 * @brief Добавить дочерний объект
-	 */
-	UI_Object& RemoveChild(UI_Object* child)
-	{
-		childs.remove(child);
-		Invalidate();
-		return *this;
-	}
 	
 	/**
 	 * @brief Обработка событий дочерними объектами

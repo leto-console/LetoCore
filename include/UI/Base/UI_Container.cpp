@@ -1,5 +1,7 @@
 #include "UI_Container.hpp"
 
+#include <UI/Base/UI_Themes.hpp>
+
 NEW_LETO_UI_USING
 
 bool UI_Container::ObjectOnEvent(const AppEvent &event)
@@ -14,6 +16,26 @@ bool UI_Container::ObjectOnEvent(const AppEvent &event)
     return layer_ptr && layer_ptr->OnEvent(event);
 }
 
+void UI_Container::OnPrev()
+{
+    if (layer_ptr && layer_ptr->IsSelected()) return;
+    if (layer_idx > 0)
+    {
+        --layer_idx;
+        UpdateLayer();
+    }
+}
+
+void UI_Container::OnNext()
+{
+    if (layer_ptr && layer_ptr->IsSelected()) return;
+    if (layer_idx + 1 < layers.size())
+    {
+        ++layer_idx;
+        UpdateLayer();
+    }
+}
+
 //                 [--]
 //               [--|---]
 //            [--|---|-----]
@@ -21,7 +43,7 @@ void UI_Container::RefreshAlign()
 {
     // Пересобрать сетку (при изменении выравнивания или ещё чего-нибудь)
     int length = 0;
-    for (UI_Object* layer : layers)
+    for (const UI_Object* layer : layers)
     {
         length += GetAxis(layer->GetSize());
         length += margin;
@@ -41,7 +63,7 @@ void UI_Container::RefreshAlign()
     Point2_i p = GetPosition() + align_offset;
     for (UI_Object* layer : layers)
     {
-        switch (GetContainerAlign())
+        switch (GetContainerAlign(true))
         {
         case UI_ContainerAlign::Center:
             GetAxis(p, true) = (GetAxis(GetSize(), true) - GetAxis(layer->GetSize(), true)) / 2;
@@ -63,14 +85,23 @@ void UI_Container::RefreshAlign()
 void UI_Container::UpdateLayer()
 {		
     for (UI_Object* layer : layers)
-        layer->Select(false);
+        layer->Hover(false);
             
     if (IsSelected() && layers.get(layer_idx, layer_ptr)) 
     {
-        layer_ptr->Select(true);
+        layer_ptr->Hover(true);
     }
     else
     {
         layer_ptr = nullptr;
     }
+}
+
+void UI_Container::ObjectDraw(LetoScreen_V1 *screen)
+{
+    for (UI_Object* layer : layers)
+        layer->Draw(screen);
+        
+    if (BaseDrawSelection(screen, *this)) return;
+    if (BaseDrawHover(screen, *this)) return;
 }

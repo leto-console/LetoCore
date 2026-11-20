@@ -13,7 +13,6 @@
 #include <Graphics/RGBColor.hpp>
 
 #include <UI/Base/UI_Object.hpp>
-#include <UI/Base/UI_Themes.hpp>
 #include <UI/Base/UI_Alignable.hpp>
 #include <UI/Base/UI_Alignable.hpp>
 
@@ -23,7 +22,12 @@ NEW_LETO_UI_BEGIN
 class LETO_CORE_EXPORT UI_Label : public UI_Alignable
 {
 public:
-    UI_Label(Point2_i size);
+	UI_Label(Point2_i size = {}, const LetoAllocator_V1* allocator = nullptr) 
+		: UI_Alignable{ size, allocator }
+	{ }
+	UI_Label(Point2_i size, UI_Object& parent)
+		: UI_Alignable{ size, parent }
+	{ }
 	
 	void Setup(
 		StaticTextView text,
@@ -49,16 +53,12 @@ public:
 	void SetStyle(LetoTextStyle_V1 style);
 	LetoTextStyle_V1 GetStyle() const;
 
-	void SetSelectionTheme(const UI_SelectionTheme* theme);
-
 protected:
 	void ObjectDraw(LetoScreen_V1* screen) override;
 
 	void RefreshAlign() override;
 
 private:
-	const UI_SelectionTheme* selection_theme{ &UI_SelectionTheme_Base };
-
 	StaticTextView label_text;
 
 	RGBColor label_text_color = WhiteColor;
