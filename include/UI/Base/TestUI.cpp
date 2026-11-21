@@ -59,9 +59,9 @@ static UI_Label* SetupLabel(UI_Label* label)
     label->SetBackroundColor(pairs[rand_clr].b);
     //if (rand_clr % 2 == 0)
     //    label->Select(true);
-    IButtonCatcher* catcher = leto_new ButtonCatcher<UI_Object>(label, &UI_Object::Select);
-    catcher->Catch(SYSTEM_BTN_ENTER, BCM_SINGLE_PRESS);
-    label->AddChild(catcher, true);
+    //IButtonCatcher* catcher = leto_new ButtonCatcher<UI_Object>(label, &UI_Object::Select);
+    //catcher->Catch(SYSTEM_BTN_ENTER, BCM_SINGLE_PRESS);
+    //label->AddChild(catcher, true);
 
     Point2_i pos;
     pos.x = Random<int>(0, 160);
@@ -123,6 +123,12 @@ public:
 };
 
 #include <Input/EncoderEvent.hpp>
+#include <UI/Base/UI_Button.hpp>
+
+struct Caller : public ICaller
+{
+    void Call() override { }
+};
 
 class TestContainer_Scene : public UI_Object
 {
@@ -137,7 +143,7 @@ public:
         //srand(0xC1A0C1A0);
         //container = leto_new UI_Container(UI_ContainerType::Vertical, {40, 128}, *this);
         container.InitBaseCatchers();
-        container.SetAlign(UI_XAlign::CENTER, UI_YAlign::BOTTOM);
+        container.SetAlign(UI_XAlign::CENTER, UI_YAlign::CENTER);
         container.Select(true);
 
         Point2_i p{90, 20};
@@ -146,10 +152,14 @@ public:
         container << SetupLabel(leto_new UI_Label(p, *this));
         container << SetupLabel(leto_new UI_Label(p, *this));
 
+        UI_Button<UI_Label>* button = leto_new UI_Button<UI_Label>(*(leto_new Caller), p, *this);
+        button->InitBaseCatchers();
+        container << SetupLabel(button);
+
         //container.Invalidate();
         start.Start(800);
         AddChild(&container, true);
-     }
+    }
 
     void ObjectDraw(LetoScreen_V1* screen) override
     {
@@ -176,9 +186,13 @@ public:
         }
         else if (EncoderEvent::IsTurnedRight(event))
         {
-            Point2_i size = container.GetSize();
-            size.y--;
-            container.SetSize(size);
+            UI_Object* cur_obj;
+            if (container.GetCurrentLayer(cur_obj))
+            {
+                Point2_i size = cur_obj->GetSize();
+                size.y++;
+                cur_obj->SetSize(size);
+            }
             return true;
         }
         return false;

@@ -61,6 +61,13 @@ public:
 		UpdateLayer();
 		Invalidate();
 	}
+
+	bool GetCurrentLayer(UI_Object*& layer)
+	{
+		if (layers.empty()) return false;
+		layer = layer_ptr;
+		return true;
+	}
 	
 	UI_Container& operator<<(UI_Object* layer)
 	{

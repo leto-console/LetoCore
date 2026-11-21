@@ -32,7 +32,7 @@ class LETO_CORE_EXPORT IButtonCatcher : public UI_Object
 public:
     IButtonCatcher() = default;
 
-    virtual void Callback() = 0;
+    virtual void Callback(uint16_t mode) = 0;
 
     void Reset();
 

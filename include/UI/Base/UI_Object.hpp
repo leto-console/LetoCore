@@ -26,7 +26,6 @@ enum UI_Events
 {
 	UIE_NONE = 0,
 
-	UIE_ON_INVALIDATE,			///< UI object is invalidated
 	UIE_ON_ENABLE,				///< UI object is enabled (by Enable), data: UID_TRUE | UID_FALSE
 	UIE_ON_SELECT,				///< UI object is selected (by Select), data: UID_TRUE | UID_FALSE
 	UIE_ON_HOVER,				///< UI object is hovered (by Select), data: UID_TRUE | UID_FALSE
@@ -194,7 +193,6 @@ protected:
 	virtual void ObjectDraw(LetoScreen_V1* screen) { (void)screen; };
 	virtual void ObjectLoop() { };
 	virtual bool ObjectOnEvent(const AppEvent& event) { (void)event; return false; };
-
 	
 	/**
 	 * @brief Обработка событий дочерними объектами

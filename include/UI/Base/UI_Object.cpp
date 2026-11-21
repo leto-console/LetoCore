@@ -10,7 +10,6 @@ void UI_Object::InvalidateRect(const Rect_i& rect)
 void UI_Object::Invalidate()
 {
     InvalidateRect();
-    SendUIEvent(UIE_ON_INVALIDATE);
 }
 
 void UI_Object::Draw(LetoScreen_V1 *screen)
@@ -38,7 +37,7 @@ bool UI_Object::OnEvent(const AppEvent &event)
     {        
         ObjectOnEvent(event);
         OnEventChilds(event);
-        //OnEventParent(event); TODO:!!! recursive
+        OnEventParent(event); //TODO:!!! recursive
         return false;
     }
     // Прочие события только для включенного объекта и имеют возможность захвата
@@ -53,8 +52,12 @@ bool UI_Object::OnEvent(const AppEvent &event)
 bool UI_Object::OnEventChilds(const AppEvent &event)
 {
     AppEvent child_event = event;
-    if (IsUIEvent(child_event))        
+    if (IsUIEvent(child_event))
+    {
+        // Событие от ребенка идет только вверх по иерархии
+        //if (child_event.data & UID_FROM_CHILD) return false;
         child_event.data |= UID_FROM_PARENT;
+    }  
 
     for (UI_Object* child : childs)
     {
@@ -66,8 +69,8 @@ bool UI_Object::OnEventChilds(const AppEvent &event)
 
 bool UI_Object::OnEventParent(const AppEvent &event)
 {
-    // В родителя отсылаются только UI события
-    if (!IsUIEvent(event))
+    // В родителя отсылаются только UI события, не пришедшие от него же
+    if (!IsUIEvent(event) || event.data & UID_FROM_PARENT)
         return false;
     
     AppEvent parent_event = event;

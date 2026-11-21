@@ -16,10 +16,16 @@ class ButtonCatcher : public IButtonCatcher
 {    
 public:
     using OnCatchFunc = void(Class::*)();
+    using OnCatchModeFunc = void(Class::*)(uint16_t);
 
     ButtonCatcher() = default;
 
     ButtonCatcher(Class* instance, OnCatchFunc callback)
+    {
+    	InitInstance(instance, callback);
+    }
+
+    ButtonCatcher(Class* instance, OnCatchModeFunc callback)
     {
     	InitInstance(instance, callback);
     }
@@ -31,14 +37,25 @@ public:
         Enable(true);
 	}
 
+    void InitInstance(Class* instance, OnCatchModeFunc callback)
+	{
+		this->instance = instance;
+		this->callback_mode = callback;
+        Enable(true);
+	}
 protected:
     Class* instance;
     OnCatchFunc callback{};
+    OnCatchModeFunc callback_mode{};
 
-    void Callback() override final
+    void Callback(uint16_t mode) override final
     {
-        if (instance && callback)
-            (instance->*callback)();
+        if (instance)
+        {
+            if (callback) (instance->*callback)();
+            if (callback_mode) (instance->*callback_mode)(mode);
+        }
+            
     }
 };
 

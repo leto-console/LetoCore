@@ -46,7 +46,7 @@ void IButtonCatcher::ObjectLoop()
                 }
                 if (multiply)
                 {
-                    Callback();
+                    Callback(BCM_HOLD_MULTIPLY);
                     multiplied = true;
                 }
             }
@@ -54,14 +54,14 @@ void IButtonCatcher::ObjectLoop()
 
         if (!holded)
         {
-            if (mode & BCM_HOLD) Callback();
+            if (mode & BCM_HOLD) Callback(BCM_HOLD);
             holded = true;
             repeatition_timer.Start(multiply_ms);
         }
         
         if (repeatition_timer.Expired())
         {
-            if (mode & BCM_HOLD_REPETITION) Callback();
+            if (mode & BCM_HOLD_REPETITION) Callback(BCM_HOLD_REPETITION);
             repeatition_timer.Start();
         }
     }
@@ -79,10 +79,10 @@ bool IButtonCatcher::ObjectOnEvent(const AppEvent &event)
     {
         if (!pressed)
         {
-            if (mode & BCM_SINGLE_PRESS) Callback();
+            if (mode & BCM_SINGLE_PRESS) Callback(BCM_SINGLE_PRESS);
             if (now_ms - last_click_ms < double_ms)
             {
-                if (mode & BCM_DOUBLE_CLICK) Callback();
+                if (mode & BCM_DOUBLE_CLICK) Callback(BCM_DOUBLE_CLICK);
             }
             pressed = true;
             holded = false;
@@ -96,7 +96,7 @@ bool IButtonCatcher::ObjectOnEvent(const AppEvent &event)
         multiplied = false;
         if (pressed)
         {
-            if (mode & BCM_SINGLE_RELEASE) Callback();
+            if (mode & BCM_SINGLE_RELEASE) Callback(BCM_SINGLE_RELEASE);
             pressed = holded = false;
         }
         button_pressed[button_idx] = false;
