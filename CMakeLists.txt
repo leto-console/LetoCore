@@ -95,21 +95,6 @@ elseif (${PRESET_DEFINE_MACRO} STREQUAL "__LINUX__")
 	#add_executable ("${PROJECT_NAME}" "Main/App.cpp" "${C_CPP_COURCES}")
 	#target_link_libraries("${PROJECT_NAME}" PRIVATE Qt6::Core Qt6::Widgets)
 
-elseif (${PRESET_DEFINE_MACRO} STREQUAL "__TERMUX__")
-
-	include(FetchContent)
-	FetchContent_Declare(
-		cpp-httplib
-		GIT_REPOSITORY https://github.com/yhirose/cpp-httplib.git
-		GIT_TAG        v0.19.0
-	)
-	FetchContent_MakeAvailable(cpp-httplib)
-
-	set_target_properties("${PROJECT_NAME}" PROPERTIES POSITION_INDEPENDENT_CODE ON)
-
-	target_link_libraries(${PROJECT_NAME} PRIVATE httplib::httplib)
-	target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
-
 endif ()
 
 target_compile_definitions("${PROJECT_NAME}" PRIVATE LETOCORE_EXPORT_LIBRARY)
