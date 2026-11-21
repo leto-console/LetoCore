@@ -12,6 +12,8 @@
     #else
         #define LETO_CORE_EXPORT __declspec(dllimport)
     #endif
+#elif defined(__GNUC__) || defined(__clang__)
+    #define LETO_CORE_EXPORT __attribute__((visibility("default")))
 #else
     #define LETO_CORE_EXPORT
 #endif
