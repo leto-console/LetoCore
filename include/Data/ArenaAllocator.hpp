@@ -8,6 +8,7 @@
 #define INC_DATA_ARENA_ALLOCATOR_HPP_
 
 #include <stdint.h>
+#include <cstddef>
 #include <cstring>
 
 #include <Data/IAllocator.hpp>
@@ -16,8 +17,46 @@ template <int ArenaSize, bool FreeAllowed = true>
 class ArenaAllocator : public IAllocator
 {
 protected:
-	uint8_t data[ArenaSize];
+	/// Заголовок аллокации, лежит вплотную перед полезной нагрузкой
+	struct Head
+	{
+		uint32_t prev;	///< Смещение от начала арены до начала этой аллокации
+		uint32_t size;	///< Размер полезной нагрузки
+	};
+
+	static constexpr uint32_t Alignment = alignof(std::max_align_t);
+
+	static constexpr uint32_t AlignUp(uint32_t value)
+	{
+		return (value + Alignment - 1) / Alignment * Alignment;
+	}
+
+	/*
+		Выравнивание полезной нагрузки держится на выравнивании самой арены:
+		смещение payload кратно Alignment, значит и адрес тоже
+	*/
+	alignas(std::max_align_t) uint8_t data[ArenaSize];
 	uint32_t _inner_idx{};
+
+	/**
+	 * @brief Прочитать заголовок аллокации по указателю на её полезную нагрузку
+	 * @return false, если освобождение запрещено или указатель не из арены
+	 */
+	bool ReadHead(const void* ptr, Head& head) const
+	{
+		if (!FreeAllowed || !ptr)
+			return false;
+
+		const uintptr_t base = reinterpret_cast<uintptr_t>(data);
+		const uintptr_t p = reinterpret_cast<uintptr_t>(ptr);
+
+		// Полезная нагрузка всегда идёт после заголовка и внутри арены
+		if (p < base + sizeof(Head) || p >= base + static_cast<uintptr_t>(ArenaSize))
+			return false;
+
+		memcpy(&head, reinterpret_cast<const void*>(p - sizeof(Head)), sizeof(head));
+		return true;
+	}
 
 public:
 	// Получить занятое количество байтов ресурса
@@ -34,10 +73,13 @@ public:
 
 	void* Alloc(uint32_t size) override
 	{
+		const uint32_t payload = AlignUp(_inner_idx + static_cast<uint32_t>(sizeof(Head)));
+
 		/*
 			Не скупись, выдели больше памяти
 		*/
-		if (_inner_idx + size + sizeof(uint32_t) > ArenaSize)
+		if (payload >= static_cast<uint32_t>(ArenaSize) ||
+			size > static_cast<uint32_t>(ArenaSize) - payload)
 		{
 #ifdef WIN32
 			throw "Bad_alloc";
@@ -46,34 +88,35 @@ public:
 #endif
 		}
 
-		memcpy(&data[_inner_idx], &size, sizeof(size));
-		_inner_idx += sizeof(uint32_t);
+		const Head head{ _inner_idx, size };
+		memcpy(&data[payload - sizeof(Head)], &head, sizeof(head));
 
-		void* ptr = &data[_inner_idx];
-		_inner_idx += size;
-		return ptr;
+		_inner_idx = payload + size;
+		return &data[payload];
 	}
 
 	void Free(const void* ptr) override
 	{
-		if (!FreeAllowed || ptr < data || ptr >= &data[ArenaSize])
+		Head head{};
+		if (!ReadHead(ptr, head))
 			return;
 
-		uint32_t size{};
-		const uint8_t* size_ptr = static_cast<const uint8_t*>(ptr) - sizeof(uint32_t);
-		memcpy(&size, size_ptr, sizeof(uint32_t));
-		
 		// Если освобождается только что выделенная память, функционал аналогичен стеку
-		if (&data[_inner_idx - size] == ptr)
-			_inner_idx -= (size + sizeof(uint32_t));
+		const uintptr_t base = reinterpret_cast<uintptr_t>(data);
+		const uintptr_t end = reinterpret_cast<uintptr_t>(ptr) + head.size;
+		if (end == base + _inner_idx)
+			_inner_idx = head.prev;
 	}
 
-	void Clear(const void* ptr)
+	void Clear(const void* ptr) override
 	{
-		if (!FreeAllowed || ptr < data || ptr >= &data[ArenaSize])
+		Head head{};
+		if (!ReadHead(ptr, head))
 			return;
 
-		_inner_idx = (static_cast<const uint8_t*>(ptr) - data - sizeof(uint32_t));
+		// Заголовок помнит начало своей аллокации, поэтому откат корректен
+		// для любой аллокации, а не только для верхней
+		_inner_idx = head.prev;
 	}
 
 	void Clear() override
