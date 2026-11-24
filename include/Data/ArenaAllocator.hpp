@@ -33,7 +33,9 @@ protected:
 
 	/*
 		Выравнивание полезной нагрузки держится на выравнивании самой арены:
-		смещение payload кратно Alignment, значит и адрес тоже
+		смещение payload кратно Alignment, значит и адрес тоже. Типы с alignof
+		больше Alignment этой гарантией не покрыты: на платформах, где
+		max_align_t == 8 (MSVC, ARM), это касается alignas(16)
 	*/
 	alignas(std::max_align_t) uint8_t data[ArenaSize];
 	uint32_t _inner_idx{};

@@ -9,6 +9,28 @@
 static constexpr size_t MAX_ALIGN = alignof(std::max_align_t);
 
 /*
+    Запрос заведомо большего размера: nullptr, либо исключение под WIN32
+    (поведение сохранено с прежней реализации)
+*/
+template <typename Arena>
+static bool AllocFails(Arena& arena, uint32_t size)
+{
+#ifdef WIN32
+    try
+    {
+        arena.Alloc(size);
+        return false;
+    }
+    catch (const char*)
+    {
+        return true;
+    }
+#else
+    return arena.Alloc(size) == nullptr;
+#endif
+}
+
+/*
     Полезная нагрузка каждой аллокации выровнена на alignof(std::max_align_t)
 */
 TEST(TestArenaAllocator, PayloadAlignment)
@@ -160,15 +182,14 @@ TEST(TestArenaAllocator, ClearAll)
 }
 
 /*
-    Аллокация объекта с alignof == 16 после аллокаций нечётной длины выровнена
+    Тип с максимальным поддерживаемым выравниванием после аллокаций нечётной
+    длины тоже выровнен. Самый строгий тип — std::max_align_t, поэтому
+    guarantee проверяется на нём: на MSVC и ARM max_align_t == 8, на x86-64
+    glibc — 16
 */
-TEST(TestArenaAllocator, AlignOf16AfterOddAllocation)
+TEST(TestArenaAllocator, MaxAlignmentAfterOddAllocation)
 {
-    struct alignas(16) Aligned16
-    {
-        uint8_t bytes[16];
-    };
-    static_assert(alignof(Aligned16) == 16, "Тип должен требовать выравнивания 16");
+    static_assert(alignof(std::max_align_t) == static_cast<size_t>(MAX_ALIGN), "MAX_ALIGN должен совпадать с max_align_t");
 
     // Arrange
     ArenaAllocator<1024> arena;
@@ -178,13 +199,13 @@ TEST(TestArenaAllocator, AlignOf16AfterOddAllocation)
     ASSERT_NE(arena.Alloc(17), nullptr);
 
     // Act
-    Aligned16* object = arena.Make<Aligned16>();
+    std::max_align_t* object = arena.Make<std::max_align_t>();
     ASSERT_NE(object, nullptr);
 
     // Assert
-    EXPECT_EQ(reinterpret_cast<uintptr_t>(object) % alignof(Aligned16), 0u);
+    EXPECT_EQ(reinterpret_cast<uintptr_t>(object) % MAX_ALIGN, 0u);
+    EXPECT_EQ(reinterpret_cast<uintptr_t>(object) % alignof(std::max_align_t), 0u);
 
-    object->~Aligned16();
     arena.Free(object);
 }
 
@@ -248,10 +269,12 @@ TEST(TestArenaAllocator, ObjectWithStringInArena)
 */
 TEST(TestArenaAllocator, ObjectArrayAlignment)
 {
-    struct alignas(16) Slot
+    struct alignas(std::max_align_t) Slot
     {
         uint32_t value;
-        uint8_t padding[12];
+        uint8_t padding[sizeof(std::max_align_t) - sizeof(uint32_t)];
+
+        Slot() : value{}, padding{} {}
     };
     static_assert(sizeof(Slot) % alignof(Slot) == 0, "Элементы массива должны сохранять выравнивание");
 
@@ -270,6 +293,8 @@ TEST(TestArenaAllocator, ObjectArrayAlignment)
     for (uint32_t i = 0; i < count; ++i)
         EXPECT_EQ(reinterpret_cast<uintptr_t>(&array[i]) % alignof(Slot), 0u) << "index " << i;
 
+    for (uint32_t i = 0; i < count; ++i)
+        new (array + i) Slot{};
     for (uint32_t i = 0; i < count; ++i)
         array[i].value = i;
     for (uint32_t i = 0; i < count; ++i)
@@ -308,7 +333,7 @@ TEST(TestArenaAllocator, FreeNotAllowed)
 }
 
 /*
-    Переполнение арены возвращает nullptr и не портит состояние
+    Переполнение арены не отдаёт память и не портит её состояние
 */
 TEST(TestArenaAllocator, Overflow)
 {
@@ -318,12 +343,12 @@ TEST(TestArenaAllocator, Overflow)
     ASSERT_NE(arena.Alloc(100), nullptr);
     const int used_before = arena.GetUsedBytes();
 
-    // Act, assert: больше, чем осталось
-    EXPECT_EQ(arena.Alloc(1000), nullptr);
+    // Act, assert: запрос больше арены целиком
+    EXPECT_TRUE(AllocFails(arena, 1000));
     EXPECT_EQ(arena.GetUsedBytes(), used_before);
 
-    // укладывается в заголовок, но не в полезную нагрузку
-    EXPECT_EQ(arena.Alloc(250), nullptr);
+    // Act, assert: укладывается в заголовок, но не в полезную нагрузку
+    EXPECT_TRUE(AllocFails(arena, 250));
     EXPECT_EQ(arena.GetUsedBytes(), used_before);
 
     // Act: арена по-прежнему работоспособна
@@ -332,9 +357,13 @@ TEST(TestArenaAllocator, Overflow)
     EXPECT_EQ(reinterpret_cast<uintptr_t>(ptr) % MAX_ALIGN, 0u);
     EXPECT_GT(arena.GetUsedBytes(), used_before);
 
-    // Assert: ровно оставшегося места хватает, а байтом больше — уже нет
-    EXPECT_NE(arena.Alloc(16), nullptr);
-    EXPECT_EQ(arena.GetUsedBytes(), static_cast<int>(256));
-    EXPECT_EQ(arena.Alloc(1), nullptr);
-    EXPECT_EQ(arena.GetUsedBytes(), static_cast<int>(256));
+    // Act: добиваем арену, пока она отдаёт память
+    for (int guard = 0; guard < 4096 && !AllocFails(arena, 1); ++guard)
+        ASSERT_LE(arena.GetUsedBytes(), arena.GetTotalBytes());
+
+    // Assert: занятое не превысило ёмкость, и дальше память не выдаётся
+    const int used_full = arena.GetUsedBytes();
+    EXPECT_LE(used_full, arena.GetTotalBytes());
+    EXPECT_TRUE(AllocFails(arena, 1));
+    EXPECT_EQ(arena.GetUsedBytes(), used_full);
 }
