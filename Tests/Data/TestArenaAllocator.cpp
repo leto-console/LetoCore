@@ -3,6 +3,7 @@
 #include <Data/ArenaAllocator.hpp>
 
 #include <cstdint>
+#include <cstring>
 #include <string>
 #include <vector>
 
@@ -160,6 +161,64 @@ TEST(TestArenaAllocator, ClearByPointerOfAnyAllocation)
     // Act: откат по самой первой аллокации очищает арену
     arena.Clear(first);
     EXPECT_EQ(arena.GetUsedBytes(), 0);
+}
+
+/*
+    Произвольный выровненный указатель внутри живой полезной нагрузки не должен
+    ломать арену: перед ним лежат данные объекта, а не заголовок аллокации
+*/
+TEST(TestArenaAllocator, JunkPointerKeepsArenaConsistent)
+{
+    // Arrange
+    ArenaAllocator<1024> arena;
+
+    uint8_t* first = static_cast<uint8_t*>(arena.Alloc(MAX_ALIGN * 4));
+    ASSERT_NE(first, nullptr);
+    ASSERT_NE(arena.Alloc(16), nullptr);
+
+    /*
+            Заполняем полезную нагрузку значением, которое заведомо больше занятого
+            объёма: иначе чужие байты по месту фиктивного заголовка могут оказаться
+            нулями и проверка пройдёт случайно
+    */
+    memset(first, 0xFF, MAX_ALIGN * 4);
+
+    // Act: выровненный, но не начальный адрес внутри первой полезной нагрузки
+    arena.Clear(first + MAX_ALIGN);
+    arena.Free(first + MAX_ALIGN);
+
+    // Assert: инвариант вместимости не нарушен, арена пригодна к работе
+    EXPECT_LE(arena.GetUsedBytes(), arena.GetTotalBytes());
+    EXPECT_GE(arena.GetUsedBytes(), 0);
+
+    arena.Clear();
+    EXPECT_EQ(arena.GetUsedBytes(), 0);
+
+    void* again = arena.Alloc(32);
+    ASSERT_NE(again, nullptr);
+    EXPECT_EQ(reinterpret_cast<uintptr_t>(again) % MAX_ALIGN, 0u);
+}
+
+/*
+    Невыровненный указатель не может быть началом полезной нагрузки, поэтому
+    откат по нему не выполняется даже внутри границ арены
+*/
+TEST(TestArenaAllocator, MisalignedPointerRejected)
+{
+    // Arrange
+    ArenaAllocator<1024> arena;
+
+    uint8_t* first = static_cast<uint8_t*>(arena.Alloc(MAX_ALIGN * 2));
+    ASSERT_NE(first, nullptr);
+    ASSERT_NE(arena.Alloc(16), nullptr);
+    const int used_before = arena.GetUsedBytes();
+
+    // Act, assert: смещение на 1 байт нарушает выравнивание
+    arena.Clear(first + 1);
+    EXPECT_EQ(arena.GetUsedBytes(), used_before);
+
+    arena.Free(first + 1);
+    EXPECT_EQ(arena.GetUsedBytes(), used_before);
 }
 
 /*
@@ -330,6 +389,11 @@ TEST(TestArenaAllocator, FreeNotAllowed)
 
     arena.Clear();
     EXPECT_EQ(arena.GetUsedBytes(), used_before);
+
+    // Запрет не ломает арену: она по-прежнему отдаёт память
+    void* third = arena.Alloc(30);
+    ASSERT_NE(third, nullptr);
+    EXPECT_GT(arena.GetUsedBytes(), used_before);
 }
 
 /*

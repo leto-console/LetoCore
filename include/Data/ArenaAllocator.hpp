@@ -42,11 +42,16 @@ protected:
 
 	/**
 	 * @brief Прочитать заголовок аллокации по указателю на её полезную нагрузку
-	 * @return false, если освобождение запрещено или указатель не из арены
+	 *
+	 * Чтение заголовка состояние арены не меняет, поэтому FreeAllowed здесь не
+	 * проверяется: флаг ограничивает освобождение, а не разбор указателя. Проверку
+	 * делают вызывающие методы.
+	 *
+	 * @return false, если указатель не является началом полезной нагрузки
 	 */
 	bool ReadHead(const void* ptr, Head& head) const
 	{
-		if (!FreeAllowed || !ptr)
+		if (!ptr)
 			return false;
 
 		const uintptr_t base = reinterpret_cast<uintptr_t>(data);
@@ -56,8 +61,17 @@ protected:
 		if (p < base + sizeof(Head) || p >= base + static_cast<uintptr_t>(ArenaSize))
 			return false;
 
+		// Полезная нагрузка выровнена, поэтому указатель с другим смещением
+		// началом аллокации быть не может
+		if ((p - base) % Alignment != 0)
+			return false;
+
 		memcpy(&head, reinterpret_cast<const void*>(p - sizeof(Head)), sizeof(head));
-		return true;
+
+		// Попадание в границы арены ещё не делает указатель началом аллокации:
+		// заголовок перед ним может быть чужим. Откат по такому prev увёл бы
+		// _inner_idx за занятую область, и GetUsedBytes() превысил бы GetTotalBytes()
+		return head.prev <= _inner_idx;
 	}
 
 public:
@@ -97,8 +111,19 @@ public:
 		return &data[payload];
 	}
 
+	/**
+	 * @brief Освободить последнюю аллокацию
+	 *
+	 * Освобождается только верхняя аллокация: арена работает как стек, и вернуть
+	 * память из середины нельзя, не потеряв всё, что выделено после неё. Если ptr
+	 * не указывает на верхнюю аллокацию, вызов ничего не меняет — для выборочного
+	 * отката есть Clear(ptr).
+	 */
 	void Free(const void* ptr) override
 	{
+		if (!FreeAllowed)
+			return;
+
 		Head head{};
 		if (!ReadHead(ptr, head))
 			return;
@@ -110,8 +135,19 @@ public:
 			_inner_idx = head.prev;
 	}
 
+	/**
+	 * @brief Освободить память от указанной аллокации до конца арены
+	 *
+	 * В отличие от Free, откатывает не только верхнюю аллокацию: указанная
+	 * аллокация и все следующие за ней считаются освобождёнными, а _inner_idx
+	 * возвращается к состоянию перед ней. Так загрузчик приложений помечает
+	 * состояние перед запуском игры и откатывается к нему после выгрузки.
+	 */
 	void Clear(const void* ptr) override
 	{
+		if (!FreeAllowed)
+			return;
+
 		Head head{};
 		if (!ReadHead(ptr, head))
 			return;
