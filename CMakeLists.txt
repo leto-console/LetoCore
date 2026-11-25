@@ -35,6 +35,14 @@ endif()
 
 add_library(${PROJECT_NAME} ${LIBRARY_TYPE} ${C_CPP_COURCES})
 
+# glibc never unmaps a DSO that exports STB_GNU_UNIQUE symbols, and GCC emits them
+# for local statics in inline and template code. AppLoader closes game libraries
+# with dlclose, so neither this archive nor a game may carry such symbols.
+# GNU only: AppleClang and MSVC reject the flag, Mach-O has no STB_GNU_UNIQUE.
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+        target_compile_options(${PROJECT_NAME} PUBLIC -fno-gnu-unique)
+endif()
+
 if(${LIBRARY_TYPE} STREQUAL "SHARED")
 	target_compile_definitions(${PROJECT_NAME} PRIVATE LETOCORE_SHARED)
 endif()
