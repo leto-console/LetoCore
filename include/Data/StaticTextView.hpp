@@ -16,9 +16,13 @@ protected:
 	const size_t capacity;
 
 public:
+	// Ёмкость берётся у самого текста: StaticText<N> хранит N - 1 символов и
+	// нулевой терминал, поэтому Capacity() == N - 1. Раньше здесь стояло
+	// capacity{ Capacity } — на единицу больше, чем влезает, и
+	// view[view.Capacity()] читал байт за границей буфера.
 	template <size_t Capacity>
 	constexpr StaticTextView(const StaticText<Capacity>& text) noexcept 
-		: begin_ptr{ text.begin() }, capacity{ Capacity } { }
+		: begin_ptr{ text.begin() }, capacity{ text.Capacity() } { }
 
 	constexpr StaticTextView(const char* text) noexcept 
 		: begin_ptr{ text }, capacity{ constexpr_string::strlen(text) } { }
